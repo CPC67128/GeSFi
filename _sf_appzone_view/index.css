@@ -1,0 +1,23 @@
+body {
+	font-family: Verdana,Arial,sans-serif;
+	font-size: 0.75em;
+}
+
+#standardTable {
+  background-color: #ccccff;
+  border: 1px solid;
+  cellspacing: 0px;
+  font-family: Verdana,Arial,sans-serif;
+  font-size: 1em;
+}
+
+#standardTable td, th {
+	vertical-align: top;
+	text-align: center;
+	padding-left:10px;
+	padding-right:10px;
+}
+
+.tableRowTitle { font-style: italic }
+.tableRow0    { background-color: #eeeeff; }
+.tableRow1    { background-color: #ffffff; }

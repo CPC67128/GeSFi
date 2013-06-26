@@ -11,6 +11,8 @@ $translator = new Translator();
 $accountsManager = new AccountsManager();
 $activeAccount = $accountsManager->GetCurrentActiveAccount();
 
+$accountType = $activeAccount->getType();
+
 $categoryHandler = new CategoryHandler();
 
 $recordsManager = new RecordsManager();
@@ -26,6 +28,16 @@ switch ($pageName)
 		break;
 
 	case 'expense';
+		if ($activeAccount->getType() == 1)
+			$pageName = $pageName.'_private';
+		else if ($activeAccount->getType() == 3)
+			$pageName = $pageName.'_duo_account';
+		else
+			$pageName = $pageName.'_duo_virtual_account';
+		include 'page_'.$pageName.'.php';
+		AddFormManagementEnd($pageName);
+		break;
+
 	case 'income';
 	case 'balance';
 		if ($activeAccount->getType() == 1)
@@ -37,6 +49,17 @@ switch ($pageName)
 		break;
 
 	case 'records';
+	/*
+		if ($activeAccount->getType() == 1)
+			$pageName = 'page_'.$pageName.'_single_account.php';
+		else if ($activeAccount->getType() == 3)
+			$pageName = 'page_'.$pageName.'_duo_account.php';
+		else
+			$pageName = 'page_'.$pageName.'_duo_virtual_account.php';
+		*/
+		include 'page_'.$pageName.'.php';;
+		break;
+
 	case 'statistics';
 		if ($activeAccount->getType() == 1)
 			include 'page_'.$pageName.'_private.php';

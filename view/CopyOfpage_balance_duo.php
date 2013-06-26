@@ -222,6 +222,40 @@ else
 
 <br />
 
+<table style="border-spacing: 0px; cellpadding:0px; border:0px;">
+<?php
+$criticalJointAccountBalance = false;
+if ($jointAccountExpectedMinimumBalance >= ($balanceJointAccount + $jointAccountPlannedDebit))
+	$criticalJointAccountBalance = true;
+?>
+<tr>
+<td style="border-top: 1px solid; border-bottom: 1px solid; border-left: 1px solid; padding: 5px; text-align:center; font-style: italic;">
+<?= $criticalJointAccountBalance ? '<font color="red"><b>' : '' ?>
+<?= $translator->getTranslation('Sole du compte commun réel') ?><br />
+<?= $translator->getCurrencyValuePresentation($balanceJointAccount) ?>
+<?= $criticalJointAccountBalance ? '</b></font>' : '' ?>
+</td>
+<td style="border-top: 1px solid; border-bottom: 1px solid; border-left: 1px solid; padding: 5px; background:#AAFFAA; text-align:center;">
+<?= $translator->getTranslation('Total crédit') ?><br />
+<?= $translator->getCurrencyValuePresentation($totalIncomeJointAccount) ?>
+</td>
+<td style="border-top: 1px solid; border-bottom: 1px solid; border-right: 1px solid; padding: 5px; background:#FFFFAA; text-align:center;">
+<?= $translator->getTranslation('Total débit') ?><br />
+<?= $translator->getCurrencyValuePresentation($totalExpenseJointAccount) ?>
+</td>
+<td style="border-top: 1px solid; border-bottom: 1px solid; border-right: 1px solid; border-right: 1px solid; padding: 5px; text-align:center;">
+<?= $translator->getTranslation('Solde minimum requis') ?><br />
+<?= $translator->getCurrencyValuePresentation($jointAccountExpectedMinimumBalance) ?>
+</td>
+<td style="border-top: 1px solid; border-bottom: 1px solid; border-right: 1px solid; padding: 5px; text-align:center;">
+<?= $translator->getTranslation('Dépenses prévues (10 jours)') ?><br />
+<?= $translator->getCurrencyValuePresentation($jointAccountPlannedDebit) ?>
+</td>
+</tr>
+</table>
+
+<br />
+
 <h1><?= $translator->getTranslation('Etat des lieux global du couple'); ?></h1>
 <?php
 if ($difference > 0)

@@ -10,8 +10,13 @@ try
 {
 	switch ($_GET['action'])
 	{
-		case 'expense_duo':
-			$newExpense = new Operation_Money_Expense_Duo();
+		case 'expense_duo_virtual_account':
+			$newExpense = new Operation_Money_Expense_Duo_Virtual_Account();
+			$newExpense->hydrate($_POST);
+			$newExpense->Save();
+			break;
+		case 'expense_duo_account':
+			$newExpense = new Operation_Money_Expense_Duo_Account();
 			$newExpense->hydrate($_POST);
 			$newExpense->Save();
 			break;

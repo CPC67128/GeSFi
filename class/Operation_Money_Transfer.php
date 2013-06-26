@@ -73,8 +73,8 @@ class Operation_Money_Transfer extends Operation_Money
 				$monthly_months = 12;
 		}
 
-		$recordTypeOutcome = 4;
-		$recordTypeIncome = 3;
+		$recordTypeOutcome = 20;
+		$recordTypeIncome = 10;
 
 		$amountOutcome = $this->_amount;
 		$amountIncome = $this->_amount;
@@ -82,7 +82,7 @@ class Operation_Money_Transfer extends Operation_Money
 		$accountsManager = new AccountsManager();
 		$fromAccount = $accountsManager->GetAccount($this->_fromAccount);
 
-		if ($fromAccount->getType() == 2) // Particular to account type DUO R+V (2)
+		if ($fromAccount->getType() == 2) // Particular to account type DUO R+V (2) TODO
 		{
 			$amountOutcome = -1 * $amountOutcome;
 			$recordTypeOutcome = 3;

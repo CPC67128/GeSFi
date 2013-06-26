@@ -19,13 +19,13 @@
   	  }
   	  ?>
 	  <br/>
-  	  <?= $translator->getTranslation('Vers') ?> <input type="radio" name="toAccount" value="duo" checked><?= $translator->getTranslation('le compte commun') ?> </input><?= $translator->getTranslation('ou'); ?> <input type="radio" name="toAccount" value="private"><?= $translator->getTranslation('son partenaire'); ?></input>
+  	  <?= $translator->getTranslation('Vers') ?> <input type="radio" name="toAccount" value="duo" onClick="javascript: onDestinationChange('duo');" checked><?= $translator->getTranslation('le compte commun') ?> </input><?= $translator->getTranslation('ou'); ?> <input type="radio" name="toAccount" onClick="javascript: onDestinationChange('private');" value="private"><?= $translator->getTranslation('son partenaire'); ?></input>
 	  <br/>
 	  <?= $translator->getTranslation('Date') ?> <input title="aaaa-mm-jj hh:mm:ss" size="10" id="datePicker" name="date" value="<?php echo date("Y-m-d") ?>">
 	  <br/>
   	  <?= $translator->getTranslation('Montant') ?> <input type="text" name="amount" size="6">&nbsp;&euro;
 	  <br/>
-  	  <?= $translator->getTranslation('Désignation') ?> <input type="text" name="designation" size="30" value="<?= $translator->getTranslation('Versement sur compte commun') ?>">
+  	  <?= $translator->getTranslation('Désignation') ?> <input type="text" name="designation" id="designation" size="30" value="<?= $translator->getTranslation('Versement sur compte commun') ?>">
   </td>
   <td style="vertical-align: middle;">
 	  <?= $translator->getTranslation('Périodicité:') ?>
@@ -44,3 +44,12 @@
 <input type='button' value='<?= $translator->getTranslation('Annuler') ?>' onclick='LoadRecords();' />
 <div id="formResult"></div>
 </form>
+<script type="text/javascript">
+function onDestinationChange(destination)
+{
+	if (destination == 'duo')
+		document.getElementById("designation").value = '<?= $translator->getTranslation('Versement sur compte commun') ?>';
+	else
+		document.getElementById("designation").value = '<?= $translator->getTranslation('Versement au partenaire') ?>';
+}
+</script>

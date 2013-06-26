@@ -1,18 +1,9 @@
 <?php
-class Operation_Money_Expense_Duo extends Operation_Money
+class Operation_Money_Expense_Duo_Virtual_Account extends Operation_Money
 {
-	protected $_fromAccount;
 	protected $_privateAccount;
 	protected $_categories;
 
-	public function setFromAccount($fromAccount)
-	{
-		if (!isset($fromAccount))
-			throw new Exception('Merci de renseigner le compte d\'origine');
-	
-		$this->_fromAccount = $fromAccount;
-	}
-	
 	public function setCategoryAmount($categoryIndex, $amount)
 	{
 		$this->_categories[$categoryIndex]['amount'] = $amount;
@@ -86,18 +77,12 @@ class Operation_Money_Expense_Duo extends Operation_Money
 				$monthly_months = 12;
 		}
 
-		$recordType = 4;
 		$accountId = $_SESSION['account_id'];
-		$reverseRecordType = -1;
 		$handlePrivateAccount = false;
-
-		if ($this->_fromAccount != 'duo')
-		{
-			$recordType = 1;
-			if ($this->_privateAccount != "")
-				$handlePrivateAccount = true;
-			$reverseRecordType = 4;
-		}
+		$recordType = 1;
+		if ($this->_privateAccount != "")
+			$handlePrivateAccount = true;
+		$reverseRecordType = 4;
 
 		for ($currentMonth = 0; $currentMonth < $monthly_months; $currentMonth++)
 		{
@@ -125,7 +110,7 @@ class Operation_Money_Expense_Duo extends Operation_Money
 				}
 			}
 
-			if ($this->_fromAccount != 'duo')
+			if ($handlePrivateAccount)
 			{
 				$db->InsertRecord(
 					$this->_privateAccount,

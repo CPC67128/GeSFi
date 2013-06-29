@@ -2,7 +2,14 @@
 $accountPlannedDebit = $activeAccount->GetPlannedOutcome(10);
 
 // ------------ Affichage du solde d'un compte réel
-if ($accountType != 2)
+if ($accountType == 4)
+{
+	$balance = $activeAccount->GetBalance();
+?>
+Epargne : <?= $translator->getCurrencyValuePresentation($balance) ?>
+<?php
+}
+else if ($accountType != 2)
 {
 	$accountExpectedMinimumBalance = $activeAccount->getExpectedMinimumBalance();
 	$balance = $activeAccount->GetBalance();
@@ -93,47 +100,51 @@ function AddRow($index, $row, $mergeRow)
 		if ($activeAccount->getType() != 1) echo '<td></td>';
 	}
 	echo '<td style="text-align: right;">';
-	if ($row['record_type'] == 0 || $row['record_type'] == 3)
+	if ($row['record_type'] == 0 || $row['record_type'] == 3|| $row['record_type'] == 12)
 		echo '<font color="blue">';
-	else if ($row['record_type'] == 10)
+	else if ($row['record_type'] == 10 || $row['record_type'] == 11)
 		echo '<font color="DarkBlue">';
-	else if ($row['record_type'] == 20)
+	else if ($row['record_type'] == 20 || $row['record_type'] == 21)
 		echo '<font color="DarkRed">';
 	else
 		echo '<font color="red">';
-	
+
 	if ($row['record_type'] < 2 || $row['record_type'] >= 3)
 		echo $translator->getCurrencyValuePresentation($row['amount']);
-
+	
 	echo '</font>';
 	echo '</td>';
 
 	if ($activeAccount->getType() != 1)
 	{
 		echo '<td style="text-align: right;">';
-		if ($row['record_type'] == 1 || $row['record_type'] == 4)
+		if ($row['record_type'] == 1 || $row['record_type'] == 4 || $row['record_type'] == 22)
 			echo $row['charge'].'&nbsp;%';
 		echo '</td>';
 		echo '<td style="text-align: right;">';
-		if ($row['record_type'] == 1 || $row['record_type'] == 4)
+		if ($row['record_type'] == 1 || $row['record_type'] == 4 || $row['record_type'] == 22)
 			echo $translator->getCurrencyValuePresentation($row['part_actor1']);
 		echo '</td>';
 		echo '<td style="text-align: right;">';
-		if ($row['record_type'] == 1 || $row['record_type'] == 4)
+		if ($row['record_type'] == 1 || $row['record_type'] == 4 || $row['record_type'] == 22)
 			echo $translator->getCurrencyValuePresentation($row['part_actor2']);
 		echo '</td>';
 	}
+
 	echo '<td style="text-align: right;">';
-	if ($row['record_type'] == 1 || $row['record_type'] == 4)
+	if ($row['link_type'] == 'USER' && $activeAccount->getType() != 1)
 	{
-		if ($row['link_type'] == 'USER')
-		{
-			echo $translator->getTranslation('Privée');
-			echo ' / ';
-		}
-		echo $row['category'];
+		echo $translator->getTranslation('Privée');
+		echo ' / ';
 	}
+	else if ($row['link_type'] == 'DUO' && $activeAccount->getType() == 1)
+	{
+		echo $translator->getTranslation('Duo');
+		echo ' / ';
+	}
+	echo $row['category'];
 	echo '</td>';
+
 	echo '<td style="text-align: center;"><span class="ui-icon ui-icon-trash" onclick="if (confirm(\''.$translator->getTranslation('Etes-vous sûr de vouloir supprimer cette entrée ?').'\')) { DeleteRecord(\''.$row['record_id'].'\'); }"></span></td>';
 	echo '</tr>';
 }

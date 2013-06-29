@@ -215,9 +215,9 @@ if ($jointAccountExpectedMinimumBalance >= ($balanceJointAccount + $jointAccount
 
 <?php
 if ($differenceJointAccountContribution > 0)
-	echo $activeAccount->GetOwnerName().$translator->getTranslation(' a crédité de plus part rapport à ').$activeAccount->GetCoownerName();
+	echo $activeAccount->GetOwnerName().$translator->getTranslation(' a crédité de plus par rapport à ').$activeAccount->GetCoownerName();
 else
-	echo $activeAccount->GetCoownerName().$translator->getTranslation(' a crédité de plus part rapport à ').$activeAccount->GetOwnerName();
+	echo $activeAccount->GetCoownerName().$translator->getTranslation(' a crédité de plus par rapport à ').$activeAccount->GetOwnerName();
 ?>&nbsp;<?= $translator->getCurrencyValuePresentation(abs($differenceJointAccountContribution)) ?>
 
 <br />

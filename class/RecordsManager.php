@@ -13,7 +13,7 @@ class RecordsManager
 			where record_date < adddate(curdate(), interval 2 month)
 			and account_id = \'{ACCOUNTID}\'
 			and actor = 1
-			and record_type in (1, 4)
+			and record_type in (1, 4, 22)
 			and record_date > adddate((select max(record_date) from {TABLEPREFIX}record where record_date <= curdate() and account_id = \'{ACCOUNTID}\'), interval -'.$month.' month)
 			union all
 			select r.*, (amount * ((100 - charge) / 100)) as part_actor1, (amount * (charge / 100)) as part_actor2, c.category, c.link_type
@@ -22,7 +22,7 @@ class RecordsManager
 			where record_date < adddate(curdate(), interval 2 month)
 			and account_id = \'{ACCOUNTID}\'
 			and actor = 2
-			and record_type in (1, 4)
+			and record_type in (1, 4, 22)
 			and record_date > adddate((select max(record_date) from {TABLEPREFIX}record where record_date <= curdate() and account_id = \'{ACCOUNTID}\'), interval -'.$month.' month)
 			union all
 			select r.*, 0 as part_actor2, 0 as part_actor1, c.category, c.link_type
@@ -30,7 +30,7 @@ class RecordsManager
 			left join {TABLEPREFIX}category c on r.category_id = c.category_id
 			where record_date < adddate(curdate(), interval 2 month)
 			and account_id = \'{ACCOUNTID}\'
-			and record_type not in (1, 4)
+			and record_type not in (1, 4, 22)
 			and record_date > adddate((select max(record_date) from {TABLEPREFIX}record where record_date <= curdate() and account_id = \'{ACCOUNTID}\'), interval -'.$month.' month)
 			order by record_date desc, creation_date desc';
 		$result = $db->Select($query);

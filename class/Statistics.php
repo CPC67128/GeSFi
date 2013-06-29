@@ -7,9 +7,9 @@ class Statistics
 
 		$query = 'select sum(amount) as total
 			from {TABLEPREFIX}record
-			where record_type = 1
+			where record_type = 22
 			and marked_as_deleted = 0
-			and account_id in (select account_id from {TABLEPREFIX}account where type in (2, 3) and (owner_user_id = \'{USERID}\' or coowner_user_id = \'{USERID}\'))
+			and account_id in (select account_id from {TABLEPREFIX}account where type in (2) and (owner_user_id = \'{USERID}\' or coowner_user_id = \'{USERID}\'))
 			and record_date <= curdate()
 			and actor = '.$actor;
 		$row = $db->SelectRow($query);
@@ -23,9 +23,9 @@ class Statistics
 
 		$query = 'select sum(amount) as total
 			from {TABLEPREFIX}record
-			where record_type = 4
+			where record_type = 22
 			and marked_as_deleted = 0
-			and account_id in (select account_id from {TABLEPREFIX}account where type in (2, 3) and (owner_user_id = \'{USERID}\' or coowner_user_id = \'{USERID}\'))
+			and account_id in (select account_id from {TABLEPREFIX}account where type in (3) and (owner_user_id = \'{USERID}\' or coowner_user_id = \'{USERID}\'))
 			and record_date <= curdate()
 			and actor = '.$actor;
 		$row = $db->SelectRow($query);
@@ -39,9 +39,9 @@ class Statistics
 	
 		$query = 'select sum(amount * (charge / 100)) as total
 		from {TABLEPREFIX}record
-		where record_type in (4)
+		where record_type in (22)
 		and marked_as_deleted = 0
-		and account_id in (select account_id from {TABLEPREFIX}account where type in (2, 3) and (owner_user_id = \'{USERID}\' or coowner_user_id = \'{USERID}\'))
+		and account_id in (select account_id from {TABLEPREFIX}account where type in (3) and (owner_user_id = \'{USERID}\' or coowner_user_id = \'{USERID}\'))
 		and record_date <= curdate()
 		and actor = '.$actor;
 		$row = $db->SelectRow($query);
@@ -49,9 +49,9 @@ class Statistics
 	
 		$query = 'select sum(amount * ((100 - charge) / 100)) as total
 		from {TABLEPREFIX}record
-		where record_type in (4)
+		where record_type in (22)
 		and marked_as_deleted = 0
-		and account_id in (select account_id from {TABLEPREFIX}account where type in (2, 3) and (owner_user_id = \'{USERID}\' or coowner_user_id = \'{USERID}\'))
+		and account_id in (select account_id from {TABLEPREFIX}account where type in (3) and (owner_user_id = \'{USERID}\' or coowner_user_id = \'{USERID}\'))
 		and record_date <= curdate()
 		and actor != '.$actor;
 		$row = $db->SelectRow($query);
@@ -66,9 +66,9 @@ class Statistics
 
 		$query = 'select sum(amount) as total
 			from {TABLEPREFIX}record
-			where record_type = 4
+			where record_type = 22
 			and marked_as_deleted = 0
-			and account_id in (select account_id from {TABLEPREFIX}account where type in (2, 3) and (owner_user_id = \'{USERID}\' or coowner_user_id = \'{USERID}\'))
+			and account_id in (select account_id from {TABLEPREFIX}account where type in (3) and (owner_user_id = \'{USERID}\' or coowner_user_id = \'{USERID}\'))
 			and record_date <= curdate()';
 		$row = $db->SelectRow($query);
 	
@@ -81,9 +81,9 @@ class Statistics
 	
 		$query = 'select sum(amount * (charge / 100)) as total
 			from {TABLEPREFIX}record
-			where record_type = 1
+			where record_type = 22
 			and marked_as_deleted = 0
-			and account_id in (select account_id from {TABLEPREFIX}account where type in (2, 3) and (owner_user_id = \'{USERID}\' or coowner_user_id = \'{USERID}\'))
+			and account_id in (select account_id from {TABLEPREFIX}account where type in (2) and (owner_user_id = \'{USERID}\' or coowner_user_id = \'{USERID}\'))
 			and record_date <= curdate()
 			and actor = '.$actor;
 		$row = $db->SelectRow($query);
@@ -91,9 +91,9 @@ class Statistics
 	
 		$query = 'select sum(amount * ((100 - charge) / 100)) as total
 			from {TABLEPREFIX}record
-			where record_type = 1
+			where record_type = 22
 			and marked_as_deleted = 0
-			and account_id in (select account_id from {TABLEPREFIX}account where type in (2, 3) and (owner_user_id = \'{USERID}\' or coowner_user_id = \'{USERID}\'))
+			and account_id in (select account_id from {TABLEPREFIX}account where type in (2) and (owner_user_id = \'{USERID}\' or coowner_user_id = \'{USERID}\'))
 			and record_date <= curdate()
 			and actor != '.$actor;
 		$row = $db->SelectRow($query);
@@ -108,7 +108,7 @@ class Statistics
 	
 		$query = 'select sum(amount * (charge / 100)) as total
 			from {TABLEPREFIX}record
-			where record_type in (1, 4)
+			where record_type in (22)
 			and marked_as_deleted = 0
 			and account_id in (select account_id from {TABLEPREFIX}account where type in (2, 3) and (owner_user_id = \'{USERID}\' or coowner_user_id = \'{USERID}\'))
 			and record_date <= curdate()
@@ -118,7 +118,7 @@ class Statistics
 	
 		$query = 'select sum(amount * ((100 - charge) / 100)) as total
 			from {TABLEPREFIX}record
-			where record_type in (1, 4)
+			where record_type in (22)
 			and marked_as_deleted = 0
 			and account_id in (select account_id from {TABLEPREFIX}account where type in (2, 3) and (owner_user_id = \'{USERID}\' or coowner_user_id = \'{USERID}\'))
 			and record_date <= curdate()
@@ -135,9 +135,9 @@ class Statistics
 	
 		$query = 'select sum(amount) as total
 			from {TABLEPREFIX}record
-			where record_type in (3, 10)
+			where record_type in (10)
 			and marked_as_deleted = 0
-			and account_id in (select account_id from {TABLEPREFIX}account where type in (2, 3) and (owner_user_id = \'{USERID}\' or coowner_user_id = \'{USERID}\'))
+			and account_id in (select account_id from {TABLEPREFIX}account where type in (3) and (owner_user_id = \'{USERID}\' or coowner_user_id = \'{USERID}\'))
 			and record_date <= curdate()
 			and actor = '.$actor;
 		$row = $db->SelectRow($query);
@@ -147,7 +147,7 @@ class Statistics
 			from {TABLEPREFIX}record
 			where record_type in (20)
 			and marked_as_deleted = 0
-			and account_id in (select account_id from {TABLEPREFIX}account where type in (2, 3) and (owner_user_id = \'{USERID}\' or coowner_user_id = \'{USERID}\'))
+			and account_id in (select account_id from {TABLEPREFIX}account where type in (3) and (owner_user_id = \'{USERID}\' or coowner_user_id = \'{USERID}\'))
 			and record_date <= curdate()
 			and actor = '.$actor;
 		$row = $db->SelectRow($query);
@@ -162,9 +162,9 @@ class Statistics
 	
 		$query = 'select sum(amount) as total
 			from {TABLEPREFIX}record
-			where record_type = 0
+			where record_type in (12)
 			and marked_as_deleted = 0
-			and account_id in (select account_id from {TABLEPREFIX}account where type in (2, 3) and (owner_user_id = \'{USERID}\' or coowner_user_id = \'{USERID}\'))
+			and account_id in (select account_id from {TABLEPREFIX}account where type in (2) and (owner_user_id = \'{USERID}\' or coowner_user_id = \'{USERID}\'))
 			and record_date <= curdate()
 			and actor = '.$actor;
 		$row = $db->SelectRow($query);

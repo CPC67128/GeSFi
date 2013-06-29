@@ -109,7 +109,7 @@ class Account
 	
 		$query = 'select sum(amount) as total
 			from {TABLEPREFIX}record
-			where record_type in (0, 3, 10)
+			where record_type between 10 and 19
 			and marked_as_deleted = 0
 			and account_id = \''.$this->_accountId.'\'
 			and record_date <= curdate()';
@@ -124,7 +124,7 @@ class Account
 
 		$query = 'select sum(amount) as total
 			from {TABLEPREFIX}record
-			where record_type in (1, 4, 20)
+			where record_type between 20 and 29
 			and marked_as_deleted = 0
 			and account_id = \''.$this->_accountId.'\'
 			and record_date <= curdate()';
@@ -199,18 +199,17 @@ class Account
 		return $row['email'];
 	}
 
-	public function GetAccountCategoriesForOutcome()
+	public function GetDuoCategoriesForOutcome()
 	{
 		$db = new DB();
 	
 		$query = 'select category, category_id
 		from {TABLEPREFIX}category
-		where link_type = \'ACCOUNT\'
-		and link_id = \'{ACCOUNTID}\'
+		where link_type = \'DUO\'
+		and link_id in (\''.$this->_ownerUserId.'\', \''.$this->_coownerUserId.'\')
 		and type = 1
 		order by sort_order';
 		$result = $db->Select($query);
-	
 		return $result;
 	}
 

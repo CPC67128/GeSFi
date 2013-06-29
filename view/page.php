@@ -29,12 +29,20 @@ switch ($pageName)
 
 	case 'expense';
 		if ($activeAccount->getType() == 1)
+		{
 			$pageName = $pageName.'_private';
+			include 'page_'.$pageName.'.php';
+		}
 		else if ($activeAccount->getType() == 3)
+		{
+			include 'page_'.$pageName.'_duo.php';
 			$pageName = $pageName.'_duo_account';
+		}
 		else
+		{
+			include 'page_'.$pageName.'_duo.php';
 			$pageName = $pageName.'_duo_virtual_account';
-		include 'page_'.$pageName.'.php';
+		}
 		AddFormManagementEnd($pageName);
 		break;
 

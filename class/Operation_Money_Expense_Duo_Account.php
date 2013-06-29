@@ -1,5 +1,5 @@
 <?php
-class Operation_Money_Expense_Duo_Account extends Operation_Money_Expense_Duo
+class Operation_Money_Expense_Duo_Account extends Operation_Money_Expense_Duo_Virtual_Account
 {
 	// -------------------------------------------------------------------------------------------------------------------
 
@@ -18,10 +18,8 @@ class Operation_Money_Expense_Duo_Account extends Operation_Money_Expense_Duo
 				$monthly_months = 12;
 		}
 
-		$recordType = 4;
+		$recordType = 22;
 		$accountId = $_SESSION['account_id'];
-		$reverseRecordType = -1;
-		$handlePrivateAccount = false;
 
 		for ($currentMonth = 0; $currentMonth < $monthly_months; $currentMonth++)
 		{

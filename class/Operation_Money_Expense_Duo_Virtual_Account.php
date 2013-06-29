@@ -79,10 +79,11 @@ class Operation_Money_Expense_Duo_Virtual_Account extends Operation_Money
 
 		$accountId = $_SESSION['account_id'];
 		$handlePrivateAccount = false;
-		$recordType = 1;
+		$recordType = 22;
+
 		if ($this->_privateAccount != "")
 			$handlePrivateAccount = true;
-		$reverseRecordType = 4;
+		$reverseRecordType = 12;
 
 		for ($currentMonth = 0; $currentMonth < $monthly_months; $currentMonth++)
 		{
@@ -117,9 +118,9 @@ class Operation_Money_Expense_Duo_Virtual_Account extends Operation_Money
 					1,
 					$currentDate,
 					$amount,
-					'Utilisation Duo / '.$this->_designation,
+					$this->_designation,
 					0,
-					'',
+					$categoryData['categoryId'],
 					$reverseRecordType,
 					$uuid);
 			}

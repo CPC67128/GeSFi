@@ -7,10 +7,12 @@ class AccountsManager
 
 		$db = new DB();
 	
-		$query = 'select *
-			from {TABLEPREFIX}account
-			where owner_user_id = \'{USERID}\'
-			or coowner_user_id = \'{USERID}\'';
+		$query = 'select ACC.*
+			from {TABLEPREFIX}account as ACC
+			left join {TABLEPREFIX}account_user_preference as PRF on ACC.account_id = PRF.account_id and PRF.user_id = \'{USERID}\' 
+			where ACC.owner_user_id = \'{USERID}\'
+			or ACC.coowner_user_id = \'{USERID}\'
+			order by PRF.sort_order';
 		$result = $db->Select($query);
 		while ($row = $result->fetch())
 		{

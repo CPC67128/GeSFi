@@ -1,4 +1,4 @@
-<h1><?= $translator->getTranslation('Saisir un versement') ?></h1>
+<h1><?= $translator->getTranslation('Saisir un versement (TO REVIEW)') ?></h1>
 
 <form id="form" action="/">
 <table class="actionsTable">
@@ -18,6 +18,8 @@
   	  <?php
   	  }
   	  ?>
+	  <br/>
+  	  <?= $translator->getTranslation('Vers') ?> <input type="radio" name="toAccount" value="duo" onClick="javascript: onDestinationChange('duo');" checked><?= $translator->getTranslation('le compte commun') ?> </input><?= $translator->getTranslation('ou'); ?> <input type="radio" name="toAccount" onClick="javascript: onDestinationChange('private');" value="private"><?= $translator->getTranslation('son partenaire'); ?></input>
 	  <br/>
 	  <?= $translator->getTranslation('Date') ?> <input title="aaaa-mm-jj hh:mm:ss" size="10" id="datePicker" name="date" value="<?php echo date("Y-m-d") ?>">
 	  <br/>

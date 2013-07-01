@@ -56,7 +56,7 @@ class Operation_Money_Income_Private extends Operation_Money
 				$monthly_months = 12;
 		}
 		
-		$recordType = 3;
+		$recordType = 10;
 
 		for ($currentMonth = 0; $currentMonth < $monthly_months; $currentMonth++)
 		{

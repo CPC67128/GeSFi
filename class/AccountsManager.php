@@ -27,7 +27,9 @@ class AccountsManager
 	function GetDefaultAccount()
 	{
 		$db = new DB();
-	
+
+		$newAccount = null;
+
 		$query = 'select *
 			from {TABLEPREFIX}account
 			where owner_user_id = \'{USERID}\'

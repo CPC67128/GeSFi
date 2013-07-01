@@ -85,7 +85,7 @@ class Operation_Money_Transfer extends Operation_Money
 		if ($fromAccount->getType() == 2) // Particular to account type DUO R+V (2) TODO
 		{
 			$amountOutcome = -1 * $amountOutcome;
-			$recordTypeOutcome = 3;
+			$recordTypeOutcome = 10;
 		}
 
 		for ($currentMonth = 0; $currentMonth < $monthly_months; $currentMonth++)

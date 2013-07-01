@@ -3,20 +3,20 @@
 <form action="/" id="form">
 <table class="actionsTable">
 <tr>
-  <td style="vertical-align: middle;">
-  	  <input type="hidden" name="actor" value="1" />
-	  <?= $translator->getTranslation('Date') ?> <input title="aaaa-mm-jj hh:mm:ss" size="10" id="datePicker" name="date" value="<?php echo date("Y-m-d") ?>">
-	  <br/>
-  	  <?= $translator->getTranslation('Désignation') ?> <input type="text" name="designation" size="30">
-  </td>
-  </td>
-    <td style="vertical-align: middle;">
-    	<table class="categoriesTable">
-    	<thead>
-    	<td><?= $translator->getTranslation('Catégorie') ?></td>
-    	<td><?= $translator->getTranslation('Formule') ?></td>
-    	<td><?= $translator->getTranslation('Montant') ?></td>
-    	</thead>	
+<td style="vertical-align: middle;">
+<input type="hidden" name="actor" value="1" />
+<?= $translator->getTranslation('Date') ?> <input title="aaaa-mm-jj hh:mm:ss" size="10" id="datePicker" name="date" value="<?php echo date("Y-m-d") ?>"><br/>
+<?= $translator->getTranslation('Désignation') ?> <input type="text" name="designation" size="30">
+</td>
+
+<td style="vertical-align: middle;">
+
+<table class="categoriesTable">
+<thead>
+<td><?= $translator->getTranslation('Catégorie') ?></td>
+<td><?= $translator->getTranslation('Formule') ?></td>
+<td><?= $translator->getTranslation('Montant') ?></td>
+</thead>	
 <?php
 $categories = $activeAccount->GetUserCategoriesForOutcome();
 $i = 1;
@@ -24,43 +24,31 @@ while ($row = $categories->fetch())
 {
 	$categoryId = $row['category_id'];
 	$category = $row['category'];
-
-	?><tr><?php
-	if ($category != '')
-	{
 	?>
-	<td>
-	<?php echo $category; ?>
-	</td>
-	<td>
-	<input type="text" name="category<?php echo $i; ?>Formula" tabindex="<?php echo $categoryId; ?>" size="12" onkeyup="javascript: CalculateAllAmounts();">&nbsp;=&nbsp; 
-	</td>
-	<td>
-	<input type="text" name="category<?php echo $i; ?>Amount"  tabindex="-1" size="6" readonly> &euro;
-	<input type="hidden" name="category<?php echo $i; ?>CategoryId"  tabindex="-1" size="6" readonly value='<?php echo $categoryId; ?>'>
-	</td>
-	<?php
-	}
-
+<tr>
+<td><?= $category ?></td>
+<td><input type="text" name="category<?= $i ?>Formula" tabindex="<?= ($i * 2) ?>" size="12" onkeyup="javascript: CalculateAllAmounts();">&nbsp;=&nbsp;</td>
+<td><input type="text" name="category<?= $i ?>Amount"  tabindex="-1" size="6" readonly> &euro;<input type="hidden" name="category<?= $i ?>CategoryId" tabindex="-1" size="6" readonly value='<?= $categoryId ?>'></td>
+</tr>
+<?php
 	$i++;
 }
 ?>
-		<tfoot>
-    	<td>Total</td>
-		<td><font size=1>x-- = x - others<br />x+y-z</font></td>
-		<td><input type="text" name="totalAmount" tabindex="-1" size="6" readonly>&nbsp;&euro;</td>
-    	<td></td>
-    	</tfoot>
-	</table>
-  <td style="vertical-align: middle;">
-	  <?= $translator->getTranslation('Périodicité:') ?>
-	  <br/>
-	  <input type="radio" name="periodicity" value="unique" checked><?= $translator->getTranslation('unique') ?></input>
-	  <br />
-	  <input type="radio" name="periodicity" value="monthly"><?= $translator->getTranslation('tous les mois') ?></input>
-	  <br />
-	  <?= $translator->getTranslation('pendant') ?> <input type="text" name="periodicityNumber" size="3"> <?= $translator->getTranslation('mois') ?>
-  </td>
+<tfoot>
+<td>Total</td>
+<td><font size=1>x-- = x - others<br />x+y-z</font></td>
+<td><input type="text" name="totalAmount" tabindex="-1" size="6" readonly>&nbsp;&euro;</td>
+<td></td>
+</tfoot>
+</table>
+
+<td style="vertical-align: middle;">
+<?= $translator->getTranslation('Périodicité:') ?>
+<br/>
+<input type="radio" name="periodicity" value="unique" checked><?= $translator->getTranslation('unique') ?></input><br />
+<input type="radio" name="periodicity" value="monthly"><?= $translator->getTranslation('tous les mois') ?></input><br />
+<?= $translator->getTranslation('pendant') ?> <input type="text" name="periodicityNumber" size="3"> <?= $translator->getTranslation('mois') ?>
+</td>
 </tr>
 </table>
 <br />

@@ -82,7 +82,6 @@ while ($row = $categories->fetch())
 	$i++;
 }
 ?>
-<tr>
 
 <tfoot>
 <td>Total</td>

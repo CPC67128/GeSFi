@@ -1,6 +1,6 @@
 <?php
 $DB_HOST = "localhost";
-$DB_NAME = "budgetfox_private"; //_private
+$DB_NAME = "budgetfox"; //_private
 $DB_USER = "root";
 $DB_PASSWORD = "";
 

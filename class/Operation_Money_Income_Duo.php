@@ -61,13 +61,8 @@ class Operation_Money_Income_Duo extends Operation_Money
 				$monthly_months = 12;
 		}
 		
-		$recordType = 3;
-		$reverseRecordType = 1;
-		if ($this->_toAccount != 'duo')
-		{
-			$recordType = 0;
-			$reverseRecordType = 1;
-		}
+		$recordType = 10;
+		$reverseRecordType = 20;
 
 		for ($currentMonth = 0; $currentMonth < $monthly_months; $currentMonth++)
 		{
@@ -94,7 +89,7 @@ class Operation_Money_Income_Duo extends Operation_Money
 					$this->_amount,
 					$this->_designation,
 					0,
-					'Virement bancaire',
+					'',
 					$reverseRecordType,
 					$uuid);
 			}

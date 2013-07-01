@@ -47,6 +47,16 @@ switch ($pageName)
 		break;
 
 	case 'income';
+		if ($activeAccount->getType() == 1)
+			$pageName = $pageName.'_private';
+		else if ($activeAccount->getType() == 2)
+			$pageName = $pageName.'_duo_virtual';
+		else if ($activeAccount->getType() == 3)
+			$pageName = $pageName.'_duo';
+		include 'page_'.$pageName.'.php';
+		AddFormManagementEnd($pageName);
+		break;
+
 	case 'balance';
 		if ($activeAccount->getType() == 1)
 			$pageName = $pageName.'_private';

@@ -1,68 +1,10 @@
 $.fx.speeds._default = 200;
+
 $(function() {
-	$("#recordsMenuIcon").click(function() {
-		LoadRecords();
-	});
-
-	$("#expenseMenuIcon").click(function() {
-		LoadPage('expense');
-	});
-
-	$("#incomeMenuIcon").click(function() {
-		$.ajax({
-	        type : 'POST',
-	        url : 'page.php?name=income',
-	        dataType: 'html',
-	        success : function(data) {
-	            $('#content').html(data);
-	        }
-	    });
-	});
-
-	$("#transferMenuIcon").click(function() {
-		$.ajax({
-	        type : 'POST',
-	        url : 'page.php?name=transfer',
-	        dataType: 'html',
-	        success : function(data) {
-	            $('#content').html(data);
-	        }
-	    });
-	});
-
-	$("#remarkMenuIcon").click(function() {
-		$.ajax({
-	        type : 'POST',
-	        url : 'page.php?name=remark',
-	        dataType: 'html',
-	        success : function(data) {
-	            $('#content').html(data);
-	        }
-	    });
-	});
-	$("#balanceMenuIcon").click(function() {
-		$('#content').html('<img src="../media/loading.gif" />');
-		$.ajax({
-	        type : 'POST',
-	        url : 'page.php?name=balance',
-	        dataType: 'html',
-	        success : function(data) {
-	            $('#content').html(data);
-	        }
-	    });
-	});
-
-	$("#statisticsMenuIcon").click(function() {
-		$('#content').html('<img src="../media/loading.gif" />');
-		LoadPage('statistics');
-	});
-
-	$("#configurationMenuIcon").click(function() {
-		LoadConfigurationPage();
-	});
+	LoadTopMenu();
+	LoadLeftMenu();
 
 	LoadRecords();
-	LoadTopMenu();
 })
 
 function DeleteRecord(recordIdToDelete)
@@ -84,6 +26,7 @@ function LoadPage(pageName)
         dataType: 'html',
         success : function(data) {
             $('#content').html(data);
+            LoadLeftMenu();
         }
     });
 }
@@ -111,10 +54,22 @@ function LoadTopMenu()
 {
 	$.ajax({
         type : 'POST',
-        url : 'content_topmenu.php',
+        url : 'content_top_menu.php',
         dataType: 'html',
         success : function(data) {
             $('#topMenu').html(data);
+        }
+    });
+}
+
+function LoadLeftMenu()
+{
+	$.ajax({
+        type : 'POST',
+        url : 'content_left_menu.php',
+        dataType: 'html',
+        success : function(data) {
+            $('#leftMenu').html(data);
         }
     });
 }
@@ -209,13 +164,26 @@ function CreateUnexpectedErrorWeb($error)
 
 function ChangeAccount(id)
 {
-	$.post (
-		'controller.php?action=changeAccount',
-		{ accountId: id },
-		function(response, status) {
-			LoadTopMenu();
-			LoadRecords();
-		}
-	);
+	if (id == 'dashboard')
+	{
+		$.post (
+				'controller.php?action=dashboard',
+				function(response, status) {
+					LoadTopMenu();
+					LoadPage('dashboard');
+				}
+		);
+	}
+	else
+	{
+		$.post (
+				'controller.php?action=changeAccount',
+				{ accountId: id },
+				function(response, status) {
+					LoadTopMenu();
+					LoadRecords();
+				}
+		);
+	}
 }
 

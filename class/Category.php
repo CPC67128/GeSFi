@@ -101,7 +101,7 @@ class Category
 
 		$query = "select sum(amount) as total
 			from {TABLEPREFIX}record
-			where record_type in (1, 4)
+			where record_type in (22)
 			and marked_as_deleted = 0
 			and record_date <= curdate()
 			and record_date_month = ".$month."
@@ -118,7 +118,7 @@ class Category
 
 		$query = "select sum(amount) as total
 			from {TABLEPREFIX}record
-			where record_type in (0, 3)
+			where record_type in (12)
 			and marked_as_deleted = 0
 			and record_date <= curdate()
 			and record_date_month = ".$month."
@@ -137,7 +137,7 @@ class Category
 	
 		$query = "select sum(amount) as total
 			from {TABLEPREFIX}record
-			where record_type in (1, 4)
+			where record_type in (22)
 			and marked_as_deleted = 0
 			and record_date <= curdate()
 			and category_id = '".$this->_categoryId."'";
@@ -169,7 +169,7 @@ class Category
 	
 		$query = "select sum(amount) as total
 			from {TABLEPREFIX}record
-			where record_type in (0, 4)
+			where record_type in (12)
 			and marked_as_deleted = 0
 			and record_date <= curdate()
 			and category_id = '".$this->_categoryId."'";

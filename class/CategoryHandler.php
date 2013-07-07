@@ -13,22 +13,22 @@ class CategoryHandler
 		return $row['category'];
 	}
 	
-	function GetOutcomeCategoriesForAccount($accountId)
+	function GetOutcomeCategoriesForDuo($userId)
 	{
 		$categories = array();
 	
 		$db = new DB();
 	
 		$query = "select category_id as CategoryId,
-		link_type as LinkType,
-		link_id as LinkId,
-		type,
-		category,
-		active_from as ActiveFrom,
-		sort_order as SortOrder
+			link_type as LinkType,
+			link_id as LinkId,
+			type,
+			category,
+			active_from as ActiveFrom,
+			sort_order as SortOrder
 		from {TABLEPREFIX}category
-		where link_type = 'ACCOUNT'
-		and link_id = '".$accountId."'
+		where link_type = 'DUO'
+		and link_id = '".$userId."'
 		and type = 1
 		order by sort_order, category";
 		$result = $db->Select($query);
@@ -49,12 +49,12 @@ class CategoryHandler
 		$db = new DB();
 	
 		$query = "select category_id as CategoryId,
-		link_type as LinkType,
-		link_id as LinkId,
-		type,
-		category,
-		active_from as ActiveFrom,
-		sort_order as SortOrder
+			link_type as LinkType,
+			link_id as LinkId,
+			type,
+			category,
+			active_from as ActiveFrom,
+			sort_order as SortOrder
 		from {TABLEPREFIX}category
 		where link_type = 'USER'
 		and link_id = '".$userId."'
@@ -78,12 +78,12 @@ class CategoryHandler
 		$db = new DB();
 	
 		$query = "select category_id as CategoryId,
-			link_type as LinkType,
-			link_id as LinkId,
-			type,
-			category,
-			active_from as ActiveFrom,
-			sort_order as SortOrder
+				link_type as LinkType,
+				link_id as LinkId,
+				type,
+				category,
+				active_from as ActiveFrom,
+				sort_order as SortOrder
 			from {TABLEPREFIX}category
 			where link_type = 'USER'
 			and link_id = '".$userId."'

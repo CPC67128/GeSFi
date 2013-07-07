@@ -58,11 +58,11 @@ function AddTitleRow()
 	<tr class="tableRowTitle">
 	<td style="vertical-align: top; text-align: center; font-style: italic;"><?= $translator->getTranslation('Date') ?></td>
 	<td style="vertical-align: top; text-align: center; font-style: italic;"><?= $translator->getTranslation('Désignation') ?></td>
-	<?php if ($activeAccount->getType() != 1) { ?>
+	<?php if ($activeAccount->getType() != 1 && $activeAccount->getType() != 4) { ?>
 	<td style="vertical-align: top; text-align: center; font-style: italic;"><?= $translator->getTranslation('Effectuée par') ?></td>
 	<?php } ?>
 	<td style="vertical-align: top; text-align: center; font-style: italic;"><?= $translator->getTranslation('Montant') ?></td>
-	<?php if ($activeAccount->getType() != 1) { ?>
+	<?php if ($activeAccount->getType() != 1 && $activeAccount->getType() != 4) { ?>
 	<td style="vertical-align: top; text-align: center; font-style: italic;"><?= $translator->getTranslation('Prise en charge') ?></td>
 	<td style="vertical-align: top; text-align: center; font-style: italic;">/ <?= $activeAccount->GetOwnerName() ?></td>
 	<td style="vertical-align: top; text-align: center; font-style: italic;">/ <?= $activeAccount->GetCoownerName() ?></td>
@@ -115,7 +115,7 @@ function AddRow($index, $row, $mergeRow)
 	echo '</font>';
 	echo '</td>';
 
-	if ($activeAccount->getType() != 1)
+	if ($activeAccount->getType() != 1 && $activeAccount->getType() != 4)
 	{
 		echo '<td style="text-align: right;">';
 		if ($row['record_type'] == 1 || $row['record_type'] == 4 || $row['record_type'] == 22)
@@ -175,7 +175,7 @@ function AddSubTotalRow($index, $row, $subtotal)
 	echo '</font>';
 	echo '</td>';
 
-	if ($activeAccount->getType() != 1) echo '<td></td><td></td><td></td><td></td>';
+	if ($activeAccount->getType() != 1 && $activeAccount->getType() != 4) echo '<td></td><td></td><td></td><td></td>';
 
 	echo '<td style="text-align: center;"><span class="ui-icon ui-icon-trash" onclick="if (confirm(\''.$translator->getTranslation('Etes-vous sûr de vouloir supprimer cette entrée ?').'\')) { DeleteRecord(\''.$row['record_id'].'\'); }"></span></td>';
 	echo '</tr>';

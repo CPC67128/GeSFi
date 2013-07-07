@@ -8,16 +8,19 @@ function __autoload($class_name)
 
 $translator = new Translator();
 
-$accountsManager = new AccountsManager();
-$activeAccount = $accountsManager->GetCurrentActiveAccount();
+$pageName = $_GET['name'];
 
+$accountsManager = new AccountsManager();
+
+$activeAccount = $accountsManager->GetCurrentActiveAccount();
 $accountType = $activeAccount->getType();
+
+if ($accountType == 0 && $pageName == 'records')
+	$pageName = 'dashboard';
 
 $categoryHandler = new CategoryHandler();
 
 $recordsManager = new RecordsManager();
-
-$pageName = $_GET['name'];
 
 switch ($pageName)
 {
@@ -67,26 +70,21 @@ switch ($pageName)
 		break;
 
 	case 'records';
-	/*
-		if ($activeAccount->getType() == 1)
-			$pageName = 'page_'.$pageName.'_single_account.php';
-		else if ($activeAccount->getType() == 3)
-			$pageName = 'page_'.$pageName.'_duo_account.php';
-		else
-			$pageName = 'page_'.$pageName.'_duo_virtual_account.php';
-		*/
 		include 'page_'.$pageName.'.php';;
 		break;
 
 	case 'statistics';
-		if ($activeAccount->getType() == 1)
+		if ($activeAccount->getType() == 0)
+			include 'page_'.$pageName.'_global.php';
+		else if ($activeAccount->getType() == 1)
 			include 'page_'.$pageName.'_private.php';
 		else
 			include 'page_'.$pageName.'_duo.php';
 		break;
 
 	case 'configuration';
-	case 'none';
+	case 'configuration_accounts';
+	case 'dashboard';
 		include 'page_'.$pageName.'.php';
 		break;
 }

@@ -6,6 +6,13 @@ function __autoload($class_name)
 	include '../class/'.$class_name . '.php';
 }
 
+if ($_SESSION['account_id'] != 'dashboard')
+	echo '<a href="#" onclick="javascript:ChangeAccount(\'dashboard\'); return false;">';
+echo 'Tableau de bord';
+if ($_SESSION['account_id'] != 'dashboard')
+	echo '</a>';
+echo ' / ';
+
 $accountsManager = new AccountsManager();
 $accounts = $accountsManager->GetAllAccounts();
 

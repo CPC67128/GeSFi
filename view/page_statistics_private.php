@@ -1,4 +1,4 @@
-<h1>Statistiques par catégories</h1>
+<h1>Statistiques par catégories privées</h1>
 <table id="recordsTable">
 <thead>
 <tr class="tableRowTitle">
@@ -93,7 +93,7 @@ foreach ($categories as $category)
 	echo '<td style="text-align: right;">';
 	if ($total > 0)
 	{
-		$average = $category->GetAverageExpenseByMonth();
+		$average = $category->GetAverageRevenueByMonth();
 		$totalAverage += $average;
 		echo $translator->getCurrencyValuePresentation($average);
 	}
@@ -336,22 +336,36 @@ echo '</tr>';
 ?>
 </tbody>
 </table>
-
-
-
-<h1>Compte physique commun</h1>
+ 
+<h1><?= $translator->getTranslation('Mouvement des comptes privés') ?></h1>
 <?php
-$openingBalance = $activeAccount->getOpeningBalance();
-$totalCredit = $activeAccount->GetTotalCredit();
-$totalDebit = $activeAccount->GetTotalDebit();
-?>
-Solde = <?= $translator->getCurrencyValuePresentation($openingBalance) ?> + <?= $translator->getCurrencyValuePresentation($totalCredit) ?> (crédit) - <?= $translator->getCurrencyValuePresentation($totalDebit) ?> (débit) = <?= $translator->getCurrencyValuePresentation($openingBalance + $totalCredit - $totalDebit) ?> 
+$accountsManager = new AccountsManager();
+$accounts = $accountsManager->GetAllPrivateAccounts();
+?>	
 <table id="recordsTable">
 <thead>
 <tr class="tableRowTitle">
 <td style="vertical-align: top; text-align: center; font-style: italic;"><?= $translator->getTranslation('Month') ?><br></td>
-<td style="vertical-align: top; text-align: center; font-style: italic;">Débit<br></td>
-<td style="vertical-align: top; text-align: center; font-style: italic;">Crédit de <?= $activeAccount->GetOwnerName() ?><br></td>
+<?php
+foreach ($accounts as $account)
+{
+?>
+<td colspan='2'><?= $account->getName() ?></td>
+<?php
+}
+?>
+</tr>
+<tr class="tableRowTitle">
+<td style="vertical-align: top; text-align: center; font-style: italic;"><?= $translator->getTranslation('Month') ?><br></td>
+<?php
+foreach ($accounts as $account)
+{
+?>
+<td style="vertical-align: top; text-align: center; font-style: italic;"><?= $translator->getTranslation('Crédit') ?><br></td>
+<td style="vertical-align: top; text-align: center; font-style: italic;"><?= $translator->getTranslation('Débit') ?><br></td>
+<?php
+}
+?>
 </tr>
 </thead>
 <tbody>
@@ -384,21 +398,24 @@ for ($month = 0; $month < 24; $month++)
 	echo $translator->getMonthYearPresentation($currentMonth, $currentYear);
 	echo '</td>';
 	
-	echo '<td style="text-align: right;">';
-	$value = $activeAccount->GetTotalDebitByMonthAndYear($currentMonth, $currentYear);
-	if ($value > 0)
+	foreach ($accounts as $account)
 	{
-		echo $translator->getCurrencyValuePresentation($value);
-	}
-	echo '</td>';
+		echo '<td style="text-align: right;">';
+		$value = $account->GetTotalCreditByActorAndMonthAndYear(1, $currentMonth, $currentYear);
+		if ($value > 0)
+		{
+			echo $translator->getCurrencyValuePresentation($value);
+		}
+		echo '</td>';
 
-	echo '<td style="text-align: right;">';
-	$value = $activeAccount->GetTotalCreditByActorAndMonthAndYear(1, $currentMonth, $currentYear);
-	if ($value > 0)
-	{
-		echo $translator->getCurrencyValuePresentation($value);
+		echo '<td style="text-align: right;">';
+		$value = $account->GetTotalDebitByMonthAndYear($currentMonth, $currentYear);
+		if ($value > 0)
+		{
+			echo $translator->getCurrencyValuePresentation($value);
+		}
+		echo '</td>';
 	}
-	echo '</td>';
 
 	echo '</tr>';
 }

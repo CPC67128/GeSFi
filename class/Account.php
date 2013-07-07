@@ -8,6 +8,7 @@ class Account
 	protected $_coownerUserId;
 	protected $_openingBalance;
 	protected $_expectedMinimumBalance;
+	protected $_creationDate;
 
 	public function setAccountId($accountId)
 	{
@@ -37,7 +38,17 @@ class Account
 	public function getType()
 	{
 		return $this->_type;
-		// 1: private account, 2: duo account real+virtual
+	}
+
+	public function getTypeDescription()
+	{
+		switch ($this->_type)
+		{
+			case 1: return 'Compte privé';
+			case 2: return 'Compte duo virtuel';
+			case 3: return 'Compte duo';
+			case 4: return 'Compte d\'optimisation financière';
+		}
 	}
 
 	public function setOpeningBalance($openingBalance)
@@ -80,6 +91,16 @@ class Account
 		return $this->_coownerUserId;
 	}
 	
+	public function setCreationDate($creationDate)
+	{
+		$this->_creationDate = $creationDate;
+	}
+
+	public function getCreationDate()
+	{
+		return $this->_creationDate;
+	}
+
 	public function hydrate(array $data)
 	{
 		foreach ($data as $key => $value)
@@ -91,6 +112,7 @@ class Account
 				case 'expected_minimum_balance': $key = 'ExpectedMinimumBalance'; break;
 				case 'owner_user_id': $key = 'OwnerUserId'; break;
 				case 'coowner_user_id': $key = 'CoownerUserId'; break;
+				case 'creation_date': $key = 'CreationDate'; break;
 				default: $key = ucfirst($key); break;
 			}
 			$method = 'set'.$key;
@@ -249,7 +271,7 @@ class Account
 	
 		$query = "select sum(amount) as total
 			from {TABLEPREFIX}record
-			where record_type = 3
+			where record_type >= 10 and record_type < 20 
 			and marked_as_deleted = 0
 			and record_date <= curdate()
 			and record_date_month = ".$month."
@@ -297,7 +319,7 @@ class Account
 	
 		$query = "select sum(amount) as total
 			from {TABLEPREFIX}record
-			where record_type = 4
+			where record_type >= 20 and record_type < 30
 			and marked_as_deleted = 0
 			and record_date <= curdate()
 			and record_date_month = ".$month."

@@ -1,4 +1,10 @@
 <?php
+$accountsManager = new AccountsManager();
+$accounts = $accountsManager->GetAllDuoAccounts();
+$activeAccount = $accounts[0];
+
+?>	
+<?php
 $statistics = new Statistics();
 $translator = new Translator();
 
@@ -243,8 +249,8 @@ if ($balanceJointAccount <= $jointAccountExpectedMinimumBalance)
 if ($expectedTotalIncome < 150) //getJointAccountExpectedMinimumCredit())
 	$expectedTotalIncome = 150;
 
-$expectedIncomeFromActor1 = 0;
-$expectedIncomeFromActor2 = 0;
+$expectedIncomeFromActor1 = $expectedTotalIncome / 2;
+$expectedIncomeFromActor2 = $expectedTotalIncome / 2;
 
 $expectedIncomeDueToEngagmentDifference = abs($difference);
 if ($expectedIncomeDueToEngagmentDifference > 500)
@@ -254,12 +260,6 @@ if ($difference)
 	$expectedIncomeFromActor2 += $expectedIncomeDueToEngagmentDifference;
 else
 	$expectedIncomeFromActor1 += $expectedIncomeDueToEngagmentDifference;
-
-if (($expectedIncomeFromActor1 + $expectedIncomeFromActor2) < $expectedTotalIncome)
-{
-	$expectedIncomeFromActor1 = (($expectedIncomeFromActor1 + $expectedIncomeFromActor2) - $expectedTotalIncome) / 2;
-	$expectedIncomeFromActor2 = (($expectedIncomeFromActor1 + $expectedIncomeFromActor2) - $expectedTotalIncome) / 2;
-}
 ?>
 <ul>
 <li><?= $activeAccount->GetOwnerName() ?> : <input type='text' name='actor1AskedIncome' size="6" value='<?= number_format($expectedIncomeFromActor1, 2) ?>' /><?= $translator->getCurrencyPresentation() ?>

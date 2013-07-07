@@ -46,16 +46,23 @@ class AccountsManager
 	
 	function GetCurrentActiveAccount()
 	{
-		$db = new DB();
-	
-		$query = 'select *
-			from {TABLEPREFIX}account
-			where (owner_user_id = \'{USERID}\' or coowner_user_id = \'{USERID}\')
-			and account_id = \'{ACCOUNTID}\'';
-		$row = $db->SelectRow($query);
 		$newAccount = new Account();
-		$newAccount->hydrate($row);
 
+		if ($_SESSION['account_id'] == 'dashboard')
+		{
+			$newAccount->setType(0);
+		}
+		else
+		{
+			$db = new DB();
+		
+			$query = 'select *
+				from {TABLEPREFIX}account
+				where (owner_user_id = \'{USERID}\' or coowner_user_id = \'{USERID}\')
+				and account_id = \'{ACCOUNTID}\'';
+			$row = $db->SelectRow($query);
+			$newAccount->hydrate($row);
+		}
 		return $newAccount;
 	}
 
@@ -105,21 +112,86 @@ class AccountsManager
 	
 		return $accounts;
 	}
+	
+	function GetAllDuoAccounts()
+	{
+		$accounts = array();
+	
+		$db = new DB();
+	
+		$query = 'select *
+		from {TABLEPREFIX}account
+		where (owner_user_id = \'{USERID}\' or coowner_user_id = \'{USERID}\')
+		and type = 3';
+		$result = $db->Select($query);
+		while ($row = $result->fetch())
+		{
+			$newAccount = new Account();
+			$newAccount->hydrate($row);
+			array_push($accounts, $newAccount);
+		}
+	
+		return $accounts;
+	}
 
 	function GetAccount($id)
 	{
+		$newAccount = new Account();
+		
 		$db = new DB();
-	
+
 		$query = 'select *
 			from {TABLEPREFIX}account
 			where account_id = \''.$id.'\'';
 		$row = $db->SelectRow($query);
-		$newAccount = new Account();
 		$newAccount->hydrate($row);
 	
 		return $newAccount;
 	}
+
+	function InsertAccount($name, $owner, $coowner, $type, $openingBalance, $expectedMinimumBalance)
+	{
+		$db = new DB();
+
+		$query = sprintf("insert into {TABLEPREFIX}account (account_id, name, type, owner_user_id, coowner_user_id, opening_balance, expected_minimum_balance, creation_date)
+				values (uuid(), '%s', %s, '%s', '%s', %s, %s, CURRENT_TIMESTAMP())",
+				$name,
+				$type,
+				$owner,
+				$coowner,
+				$openingBalance,
+				$expectedMinimumBalance);
+
+		$result = $db->Execute($query);
+
+		return $result;
+	}
+
+	function DeleteAccount($accountId)
+	{
+		$db = new DB();
 	
+		$query = sprintf("delete from {TABLEPREFIX}account where account_id = '%s'",
+				$accountId);
 	
+		$result = $db->Execute($query);
+	
+		return $result;
+	}
+
+	function UpdateAccount($accountId, $name, $openingBalance, $expectedMinimumBalance)
+	{
+		$db = new DB();
+	
+		$query = sprintf("update {TABLEPREFIX}account set name = '%s', opening_balance = %s, expected_minimum_balance = %s where account_id = '%s'",
+				$name,
+				$openingBalance,
+				$expectedMinimumBalance,
+				$accountId);
+	
+		$result = $db->Execute($query);
+	
+		return $result;
+	}
 }
 

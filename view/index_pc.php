@@ -36,52 +36,7 @@ $common_acount_actor2_charge = 50;
 <body>
 <div id='topMenu' class='topMenu'>
 </div>
-<div class='leftMenu' align='center'>
-<!-- ----------------------------------- Accordion ----------------------------------- -->
-
-<img id='recordsMenuIcon' class='menuIcon' src="../media/recordsMenuIcon.jpg" />
-<br />
-Lignes
-<br />
-<br />
-<img id='expenseMenuIcon' class='menuIcon' src="../media/expenseMenuIcon.png" />
-<br />
-Dépense
-<br />
-<br />
-<img id='incomeMenuIcon' class='menuIcon' src="../media/incomeMenuIcon.gif" />
-<br />
-Revenu
-<br />
-<br />
-<img id='transferMenuIcon' class='menuIcon' src="../media/transferMenuIcon.png" />
-<br />
-Virement
-<br />
-<br />
-<img id='remarkMenuIcon' class='menuIcon' src="../media/remarkMenuIcon.png" />
-<br />
-Remarque
-<br />
-<br />
-<img id='balanceMenuIcon' class='menuIcon' src="../media/balanceMenuIcon.png" />
-<br />
-Balance
-<br />
-<br />
-<img id='statisticsMenuIcon' class='menuIcon' src="../media/statsMenuIcon.png" />
-<br />
-Statistiques
-<br />
-<br />
-<img id='configurationMenuIcon' class='menuIcon' src="../media/configurationMenuIcon.png" />
-<br />
-Configuration
-<br />
-<br />
-<a href="../appzone/copyright.htm">Copyright</a>
-<br />
-<a href="../appzone/index.php">AppZone</a>
+<div id='leftMenu' class='leftMenu' align='center'>
 </div>
 
 <!-- ----------------------------------- Records display ----------------------------------- -->

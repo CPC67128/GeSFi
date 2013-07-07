@@ -65,6 +65,16 @@ try
 			$newAction->hydrate($_POST);
 			$newAction->Execute();
 			break;
+		case 'accountModification':
+			$newAction = new Action_AccountModification();
+			$newAction->hydrate($_POST);
+			$newAction->Execute();
+			break;
+		case 'dashboard':
+			$newAction = new Action_ChangeAccount();
+			$newAction->setAccountId('dashboard');
+			$newAction->Execute();
+			break;
 		case 'deleteRecord':
 			$newAction = new Action_DeleteRecord();
 			$newAction->hydrate($_POST);

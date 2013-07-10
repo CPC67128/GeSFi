@@ -84,6 +84,8 @@ switch ($pageName)
 
 	case 'configuration';
 	case 'configuration_accounts';
+	case 'configuration_user';
+	case 'configuration_category';
 	case 'dashboard';
 		include 'page_'.$pageName.'.php';
 		break;

@@ -1,116 +1,67 @@
 <?php
-class Account
+class User
 {
-	protected $_accountId;
+	protected $_userId;
+	protected $_email;
+	protected $_password;
+	protected $_subscriptionDate;
 	protected $_name;
-	protected $_type;
-	protected $_ownerUserId;
-	protected $_coownerUserId;
-	protected $_openingBalance;
-	protected $_expectedMinimumBalance;
-	protected $_creationDate;
+	protected $_culture;
+	protected $_readOnly;
+	protected $_duoId;
 
-	protected $_sortOrder;
-
-	public function setAccountId($accountId)
+	public function setUserId($userId)
 	{
-		$this->_accountId = $accountId;
+		$this->_userId = $userId;
 	}
 	
-	public function getAccountId()
+	public function getUserId()
 	{
-		return $this->_accountId;
+		return $this->_userId;
 	}
 	
-	public function setName($accountName)
+	public function setEmail($email)
 	{
-		$this->_name = $accountName;
+		$this->_email = $email;
 	}
-
+	
 	public function getName()
 	{
-		return $this->_name;
+		return $this->_email;
+	}
+	
+	public function setPassword($password)
+	{
+		$this->_password = $password;
+	}
+	
+	public function getPassword()
+	{
+		return $this->_password;
+	}
+	
+	public function setSubscriptionDate($subscriptionDate)
+	{
+		$this->_subscriptionDate = $subscriptionDate;
+	}
+	
+	public function getSubscriptionDate()
+	{
+		return $this->_subscriptionDate;
+	}
+		
+	public function set($member, $value)
+	{
+		$this->$member = $value;
 	}
 
-	public function setType($type)
+	public function get($member)
 	{
-		$this->_type = $type;
-	}
-
-	public function getType()
-	{
-		return $this->_type;
-	}
-
-	public function getTypeDescription()
-	{
-		switch ($this->_type)
-		{
-			case 1: return 'Compte privé';
-			case 2: return 'Compte duo virtuel';
-			case 3: return 'Compte duo';
-			case 4: return 'Compte d\'optimisation financière';
-		}
-	}
-
-	public function setOpeningBalance($openingBalance)
-	{
-		$this->_openingBalance = $openingBalance;
-	}
-	
-	public function getOpeningBalance()
-	{
-		return $this->_openingBalance;
-	}
-	
-	public function setExpectedMinimumBalance($expectedMinimumBalance)
-	{
-		$this->_expectedMinimumBalance = $expectedMinimumBalance;
-	}
-	
-	public function getExpectedMinimumBalance()
-	{
-		return $this->_expectedMinimumBalance;
-	}
-	
-	public function setOwnerUserId($ownerUserId)
-	{
-		$this->_ownerUserId = $ownerUserId;
-	}
-	
-	public function getOwnerUserId()
-	{
-		return $this->_ownerUserId;
-	}
-	
-	public function setCoownerUserId($coownerUserId)
-	{
-		$this->_coownerUserId = $coownerUserId;
-	}
-	
-	public function getCoownerUserId()
-	{
-		return $this->_coownerUserId;
-	}
-	
-	public function setCreationDate($creationDate)
-	{
-		$this->_creationDate = $creationDate;
-	}
-
-	public function getCreationDate()
-	{
-		return $this->_creationDate;
-	}
-	
-	public function setSortOrder($sortOrder)
-	{
-		$this->_sortOrder = $sortOrder;
-	}
-	
-	public function getSortOrder()
-	{
-		return $this->_sortOrder;
+		$member = '_'.$member;
+		if (isset($this->$member))
+			return $this->$member;
+		else
+			throw new Exception('Unknow attribute '.$member);
 	}
 
 	public function hydrate(array $data)
@@ -119,20 +70,13 @@ class Account
 		{
 			switch ($key)
 			{
-				case 'account_id': $key = 'AccountId'; break;
-				case 'opening_balance': $key = 'OpeningBalance'; break;
-				case 'expected_minimum_balance': $key = 'ExpectedMinimumBalance'; break;
-				case 'owner_user_id': $key = 'OwnerUserId'; break;
-				case 'coowner_user_id': $key = 'CoownerUserId'; break;
-				case 'creation_date': $key = 'CreationDate'; break;
-				case 'sort_order': $key = 'SortOrder'; break;
-				default: $key = ucfirst($key); break;
+				case 'user_id': $key = 'userId'; break;
+				case 'subscription_date': $key = 'subscriptionDate'; break;
+				case 'read_only': $key = 'readOnly'; break;
+				case 'duo_id': $key = 'duoId'; break;
+				default: $key = $key; break;
 			}
-			$method = 'set'.$key;
-			if (method_exists($this, $method))
-			{
-				$this->$method($value);
-			}
+			$this->set('_'.$key, $value);
 		}
 	}
 
@@ -372,5 +316,24 @@ class Account
 		$row = $db->SelectRow($query);
 	
 		return $row['total'];
+	}
+
+	function GetPartnerId()
+	{
+		$db = new DB();
+
+		$query = "select user_id
+			from {TABLEPREFIX}user
+			where duo_id != ''
+			and duo_id = '".$this->_duoId."'
+			and user_id != '".$this->_userId."'";
+		$row = $db->SelectRow($query);
+
+		if ($row)
+		{
+			return $row['user_id'];
+		}
+	
+		return '';
 	}
 }

@@ -42,7 +42,7 @@ Tableau de bord
 <br />
 <br />
 <?php } ?>
-<?php if ($account->getType() == 2 || $account->getType() == 3) { ?>
+<?php if ($account->getType() == 2 || $account->getType() == 3 || $account->getType() == 0) { ?>
 <img id='balanceMenuIcon' class='menuIcon' src="../media/balanceMenuIcon.png" />
 <br />
 Balance
@@ -55,14 +55,19 @@ Statistiques
 <br />
 <br />
 <?php if ($account->getType() == 0) { ?>
-<img id='configurationMenuIcon' class='menuIcon' src="../media/configurationMenuIcon.png" />
-<br />
-Configuration
-<br />
-<br />
 <img id='accountsMenuIcon' class='menuIcon' src="../media/accountsMenuIcon.png" />
 <br />
 Comptes
+<br />
+<br />
+<img id='categoriesMenuIcon' class='menuIcon' src="../media/categoriesMenuIcon.jpg" />
+<br />
+Catégories
+<br />
+<br />
+<img id='userMenuIcon' class='menuIcon' src="../media/userMenuIcon.png" />
+<br />
+Utilisateur
 <br />
 <br />
 <?php } ?>
@@ -148,5 +153,13 @@ $("#configurationMenuIcon").click(function() {
 
 $("#accountsMenuIcon").click(function() {
 	LoadPage('configuration_accounts');
+});
+
+$("#userMenuIcon").click(function() {
+	LoadPage('configuration_user');
+});
+
+$("#categoriesMenuIcon").click(function() {
+	LoadPage('configuration_category');
 });
 </script>

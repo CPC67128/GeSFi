@@ -8,6 +8,7 @@ function __autoload($class_name)
 
 $translator = new Translator();
 ?>
+<div id='formPlaceHolder'>
 <form action="/" id="form">
 <?php
 if ($_POST['accountId'] == 'AddAccount')
@@ -25,6 +26,7 @@ if ($_POST['accountId'] == 'AddAccount')
 <?= $translator->getTranslation('Co-titulaire') ?> <input name='coowner' type='text' size='41' /> <i>(l'identifiant de votre partenaire)</i><br />
 <?= $translator->getTranslation('Solde initial') ?> <input name='openingBalance' type='text' size='7' value="0.00" /><?= $translator->getCurrencyPresentation() ?><br />
 <?= $translator->getTranslation('Solde minimum') ?> <input name='expectedMinimumBalance' type='text' size='7' value="0.00" /><?= $translator->getCurrencyPresentation() ?><br />
+<?= $translator->getTranslation('Ordre') ?> <input name='sortOrder' type='text' size='5' /><br />
 <?php
 }
 else
@@ -40,12 +42,14 @@ else
 <?= $translator->getTranslation('Date de création') ?> <input type='text' size='41' style='background-color : #d1d1d1;' readonly="readonly" value="<?= $account->getCreationDate() ?>" /><br />
 <?= $translator->getTranslation('Solde initial') ?> <input name='openingBalance' type='text' size='7' value="<?= $account->getOpeningBalance() ?>" /><?= $translator->getCurrencyPresentation() ?><br />
 <?= $translator->getTranslation('Solde minimum') ?> <input name='expectedMinimumBalance' type='text' size='7' value="<?= $account->getExpectedMinimumBalance() ?>" /><?= $translator->getCurrencyPresentation() ?><br />
+<?= $translator->getTranslation('Ordre') ?> <input name='sortOrder' type='text' size='5' value="<?= $account->getSortOrder() ?>" /><br />
 <br />
 <font color='red'><?= $translator->getTranslation('Supprimer') ?> <input name='delete' type='checkbox' /></font> <i>Cocher pour supprimer le compte</i><br /><br />
 <?php
 }
 ?>
 <input type="submit" id='submitForm' value="Envoyer" />
+</div>
 <div id='formResult'></div>
 </form>
 
@@ -63,7 +67,8 @@ $("#form").submit( function () {
 				}
 				else {
 					$("#formResult").html(response);
-					LoadPage('configuration_accounts');
+					$("#formPlaceHolder").html('');
+					listAccounts();
 					LoadTopMenu();
 				}
 			}

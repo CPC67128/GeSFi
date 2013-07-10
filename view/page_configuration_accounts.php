@@ -1,27 +1,34 @@
 <h1><?= $translator->getTranslation('Gestion des comptes') ?></h1>
 
-<select name="accountsList" onChange="changeAccount(this)">
-<option value="">Choisissez votre compte ou votre action...</option>
-<option value="AddAccount">Ajouter un nouveau compte...</option>
-<?php
-$accountsManager = new AccountsManager();
-$accounts = $accountsManager->GetAllAccounts();
-
-foreach ($accounts as $account)
-{
-?>
-<option value="<?= $account->getAccountId() ?>"><?= $account->getName() ?></option>
-<?php
-}
-?>
-</select> 
-
-<br />
-<br />
-<div id="accountModification">
+<table class="actionsTable">
+<tr>
+<td style="vertical-align: top;">
+<div id="accountsList">
 </div>
+</td>
+<td style="vertical-align: top;">
+<div id="accountModification">
+Sélectionnez une action ou un compte...
+</div>
+</td>
+</tr>
+</table>
 
 <script type="text/javascript">
+listAccounts();
+
+function listAccounts()
+{
+	$.ajax({
+	    type : 'POST',
+	    url : 'page_configuration_accounts_list.php',
+	    dataType: 'html',
+	    success : function(data) {
+	        $('#accountsList').html(data);
+	    }
+	});
+}
+
 function changeAccount(accountsList)
 {
   var idx = accountsList.selectedIndex;
@@ -32,7 +39,7 @@ function changeAccount(accountsList)
   else
 	  $.ajax({
 	      type : 'POST',
-	      url : 'page_configuration_accounts__form.php',
+	      url : 'page_configuration_accounts_form.php',
 	      data: { accountId: value }, 
 	      dataType: 'html',
 	      success : function(data) {

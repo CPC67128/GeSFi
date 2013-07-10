@@ -8,9 +8,7 @@ function __autoload($class_name)
 
 if (!isset($_SESSION['account_id']))
 {
-	$accountsManager = new AccountsManager();
-	$defaultAccount = $accountsManager->GetDefaultAccount();
-	$_SESSION['account_id'] = $defaultAccount->getAccountId();
+	$_SESSION['account_id'] = 'dashboard';
 }
 
 $translator = new Translator();

@@ -9,7 +9,9 @@ class Action_AccountModification extends Action
 	protected $_openingBalance;
 	protected $_expectedMinimumBalance;
 	protected $_delete;
-	
+
+	protected $_sortOrder;
+
 	public function setAccountId($accountId)
 	{
 		$this->_accountId = $accountId;
@@ -52,7 +54,12 @@ class Action_AccountModification extends Action
 	{
 		$this->_delete = $delete;
 	}
-	
+
+	public function setSortOrder($sortOrder)
+	{
+		$this->_sortOrder = $sortOrder;
+	}
+
 	public function hydrate(array $data)
 	{
 		foreach ($data as $key => $value)
@@ -73,14 +80,14 @@ class Action_AccountModification extends Action
 
 		if ($this->_accountId == '')
 		{
-			$handler->InsertAccount($this->_name, $this->_owner, $this->_coowner, $this->_type, $this->_openingBalance, $this->_expectedMinimumBalance);
+			$handler->InsertAccount($this->_name, $this->_owner, $this->_coowner, $this->_type, $this->_openingBalance, $this->_expectedMinimumBalance, $this->_sortOrder);
 		}
 		else
 		{
 			if ($this->_delete == 'on')
 				$handler->DeleteAccount($this->_accountId);
 			else
-				$handler->UpdateAccount($this->_accountId, $this->_name, $this->_openingBalance, $this->_expectedMinimumBalance);
+				$handler->UpdateAccount($this->_accountId, $this->_name, $this->_openingBalance, $this->_expectedMinimumBalance, $this->_sortOrder);
 		}
 	}
 }

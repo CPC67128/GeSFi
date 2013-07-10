@@ -70,6 +70,21 @@ try
 			$newAction->hydrate($_POST);
 			$newAction->Execute();
 			break;
+		case 'userCategoryModification':
+			$newAction = new Action_UserCategoryModification();
+			$newAction->hydrate($_POST);
+			$newAction->Execute();
+			break;
+		case 'duoCategoryModification':
+			$newAction = new Action_DuoCategoryModification();
+			$newAction->hydrate($_POST);
+			$newAction->Execute();
+			break;
+		case 'userModification':
+			$newAction = new Action_UserModification();
+			$newAction->hydrate($_POST);
+			$newAction->Execute();
+			break;
 		case 'dashboard':
 			$newAction = new Action_ChangeAccount();
 			$newAction->setAccountId('dashboard');

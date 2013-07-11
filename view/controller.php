@@ -85,6 +85,11 @@ try
 			$newAction->hydrate($_POST);
 			$newAction->Execute();
 			break;
+		case 'duoModification':
+			$newAction = new Action_DuoModification();
+			$newAction->hydrate($_POST);
+			$newAction->Execute();
+			break;
 		case 'dashboard':
 			$newAction = new Action_ChangeAccount();
 			$newAction->setAccountId('dashboard');

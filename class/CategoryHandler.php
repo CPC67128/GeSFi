@@ -38,6 +38,9 @@ class CategoryHandler
 	
 	function GetOutcomeCategoriesForDuo($userId)
 	{
+		$usersHandler = new UsersHandler();
+		$currentUser = $usersHandler->GetUser($userId);
+
 		$categories = array();
 	
 		$db = new DB();
@@ -49,12 +52,12 @@ class CategoryHandler
 			category,
 			active_from as ActiveFrom,
 			sort_order as SortOrder
-		from {TABLEPREFIX}category
-		where link_type = 'DUO'
-		and link_id = '".$userId."'
-		and type = 1
-		and marked_as_deleted = 0
-		order by sort_order, category";
+			from {TABLEPREFIX}category
+			where link_type = 'DUO'
+			and link_id = '".$currentUser->getDuoId()."'
+			and type = 1
+			and marked_as_deleted = 0
+			order by sort_order, category";
 		$result = $db->Select($query);
 		while ($row = $result->fetch())
 		{
@@ -157,6 +160,9 @@ class CategoryHandler
 
 	function GetCategoriesForDuo($userId)
 	{
+		$usersHandler = new UsersHandler();
+		$currentUser = $usersHandler->GetUser($userId);
+
 		$categories = array();
 	
 		$db = new DB();
@@ -170,7 +176,7 @@ class CategoryHandler
 			sort_order as SortOrder
 			from {TABLEPREFIX}category
 			where link_type = 'DUO'
-			and link_id in (select duo_id from {TABLEPREFIX}user where user_id = '{USERID}')
+			and link_id = '".$currentUser->getDuoId()."'
 			and marked_as_deleted = 0
 			order by type, sort_order, category";
 		$result = $db->Select($query);

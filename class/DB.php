@@ -6,6 +6,7 @@ class DB
 	private $_isReadOnly = false;
 	private $_userId;
 	private $_accountId;
+	private $_duoId;
 
 	public function __construct()
 	{

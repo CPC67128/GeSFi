@@ -49,6 +49,10 @@ class User
 	{
 		return $this->_subscriptionDate;
 	}
+	public function getDuoId()
+	{
+		return $this->_duoId;
+	}
 		
 	public function set($member, $value)
 	{

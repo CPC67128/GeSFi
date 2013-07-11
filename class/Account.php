@@ -236,12 +236,15 @@ class Account
 
 	public function GetDuoCategoriesForOutcome()
 	{
+		$usersHandler = new UsersHandler();
+		$currentUser = $usersHandler->GetCurrentUser();
+
 		$db = new DB();
 	
 		$query = 'select category, category_id
 		from {TABLEPREFIX}category
 		where link_type = \'DUO\'
-		and link_id in (\''.$this->_ownerUserId.'\', \''.$this->_coownerUserId.'\')
+		and link_id = \''.$currentUser->getDuoId().'\'
 		and type = 1
 		order by sort_order';
 		$result = $db->Select($query);

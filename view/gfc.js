@@ -18,6 +18,23 @@ function DeleteRecord(recordIdToDelete)
 		);
 }
 
+function ConfirmRecord(recordIdToConfirm, sender)
+{
+	if (sender.checked)
+		confirmation = 1;
+	else
+		confirmation = 0;
+
+	sender.disabled = true;
+	$.post (
+			'controller.php?action=confirmRecord',
+			{ recordId: recordIdToConfirm , confirmed: confirmation },
+			function(response, status) {
+				sender.disabled = false;
+			}
+		);
+}
+
 function LoadPage(pageName)
 {
 	$.ajax({

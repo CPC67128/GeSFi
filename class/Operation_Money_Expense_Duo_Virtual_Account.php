@@ -83,7 +83,7 @@ class Operation_Money_Expense_Duo_Virtual_Account extends Operation_Money
 
 		if ($this->_privateAccount != "")
 			$handlePrivateAccount = true;
-		$reverseRecordType = 12;
+		$reverseRecordType = 20;
 
 		for ($currentMonth = 0; $currentMonth < $monthly_months; $currentMonth++)
 		{
@@ -120,7 +120,7 @@ class Operation_Money_Expense_Duo_Virtual_Account extends Operation_Money
 					$amount,
 					$this->_designation,
 					0,
-					$categoryData['categoryId'],
+					'',
 					$reverseRecordType,
 					$uuid);
 			}

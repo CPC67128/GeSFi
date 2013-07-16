@@ -61,6 +61,7 @@ function AddTitleRow()
 	<?php if ($activeAccount->getType() != 1 && $activeAccount->getType() != 4) { ?>
 	<td style="vertical-align: top; text-align: center; font-style: italic;"><?= $translator->getTranslation('Effectuée par') ?></td>
 	<?php } ?>
+	<td style="vertical-align: top; text-align: center; font-style: italic;"></td>
 	<td style="vertical-align: top; text-align: center; font-style: italic;"><?= $translator->getTranslation('Montant') ?></td>
 	<?php if ($activeAccount->getType() != 1 && $activeAccount->getType() != 4) { ?>
 	<td style="vertical-align: top; text-align: center; font-style: italic;"><?= $translator->getTranslation('Prise en charge') ?></td>
@@ -99,6 +100,14 @@ function AddRow($index, $row, $mergeRow)
 		echo '<td></td>';
 		if ($activeAccount->getType() != 1) echo '<td></td>';
 	}
+
+	if (!$mergeRow && !($row['record_date'] > $now))
+	{
+		echo '<td><input type="checkbox" '.($row['confirmed'] == 1 ? 'checked' : '').' onclick="ConfirmRecord(\''.$row['record_id'].'\', this);"></span></td>';
+	}
+	else
+		echo "<td></td>";
+
 	echo '<td style="text-align: right;">';
 	if ($row['record_type'] == 0 || $row['record_type'] == 3|| $row['record_type'] == 12)
 		echo '<font color="blue">';
@@ -165,6 +174,8 @@ function AddSubTotalRow($index, $row, $subtotal)
 	echo '<td></td><td></td>';
 	if ($activeAccount->getType() != 1) { echo '<td></td>'; }
 
+	echo "<td></td>";
+
 	echo '<td style="text-align: right;">';
 	if ($row['record_type'] == 0 || $row['record_type'] == 3) echo '<font color="blue">';
 	else if ($row['record_type'] == 10) echo '<font color="DarkBlue">';
@@ -198,14 +209,6 @@ while ($row = $result->fetch())
 	if ($row['marked_as_deleted'] && !$fullView)
 		continue;
 
-	if ($row['record_date'] <= $now)
-	{
-		if ($previousRow != null && $previousRow['record_date_month'] != $row['record_date_month'])
-		{
-			AddTitleRow();
-		}
-	}
-
 	// ------ Merging of rows if similar group
 	if ($row['record_group_id'] == '' || $previousRow == null || $previousRow['record_group_id'] != $row['record_group_id'])
 	{
@@ -220,6 +223,14 @@ while ($row = $result->fetch())
 	else
 	{
 		$mergeRow = true;
+	}
+
+	if ($row['record_date'] <= $now)
+	{
+		if ($previousRow != null && $previousRow['record_date_month'] != $row['record_date_month'])
+		{
+			AddTitleRow();
+		}
 	}
 
 	AddRow($index, $row, $mergeRow);

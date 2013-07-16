@@ -100,6 +100,11 @@ try
 			$newAction->hydrate($_POST);
 			$newAction->Execute();
 			break;
+		case 'confirmRecord':
+			$newAction = new Action_ConfirmRecord();
+			$newAction->hydrate($_POST);
+			$newAction->Execute();
+			break;
 	}
 }
 catch (Exception $e)

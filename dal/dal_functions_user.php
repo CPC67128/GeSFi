@@ -1,31 +1,5 @@
 <?php
 
-function security_IsPasswordCorrect($Email, $Hashed_password)
-{
-	include 'database_use_start.php';
-
-	$are_passwords_matching = false;
-
-	$escaped_email = String2StringForSprintfQueryBuilder($Email);
-
-	$query = sprintf("select password from ".$DB_TABLE_PREFIX."sf_user where lower(email) = '%s'",
-		strtolower($escaped_email));
-
-	$result = mysql_query($query) or die('Erreur SQL ! '.$query.'<br />'.mysql_error());
-
-	$row = mysql_fetch_assoc($result);
-	
-	if (isset($row["password"]))
-	{
-		if ($row["password"] == $Hashed_password)
-			$are_passwords_matching = true;
-	}
-	
-	include 'database_use_stop.php';
-
-	return $are_passwords_matching;
-}
-
 function security_IsEmailExisting($Email)
 {
 	include 'database_use_start.php';
@@ -102,32 +76,6 @@ function security_UpdateUser($User_id, $Email, $Full_name, $Password)
     return true;
 }
 
-function security_GetUserId($Email)
-{
-    include 'database_use_start.php';
-
-    $user_id = -1;
-
-    $escaped_email = String2StringForSprintfQueryBuilder($Email);
-    
-    $query = sprintf("select user_id from ".$DB_TABLE_PREFIX."sf_user where lower(email) = '%s'",
-        strtolower($escaped_email));
-
-    $result = mysql_query($query) or die('Erreur SQL ! '.$query.'<br />'.mysql_error());
-
-    $row = mysql_fetch_assoc($result);
-    
-    if (isset($row["user_id"]))
-    {
-        $user_id = $row["user_id"];
-    }
-    
-    include 'database_use_stop.php';
-
-    return $user_id;
-    
-}
-
 function security_GetUserRow($User_id)
 {
     include 'database_use_start.php';
@@ -142,25 +90,6 @@ function security_GetUserRow($User_id)
     include 'database_use_stop.php';
 
     return $row;
-}
-
-function security_RecordUserConnection($User_id, $Ip, $Browser)
-{
-	include 'database_use_start.php';
-
-	$escaped_browser = String2StringForSprintfQueryBuilder($Browser);
-	
-	$query = sprintf("insert into ".$DB_TABLE_PREFIX."user_connection (user_id, connection_date_time, ip_address, browser) values('%s', now(), '%s', '%s')",
-		$User_id,
-		$Ip,
-		$escaped_browser);
-
-	$result = mysql_query($query) or die('Erreur SQL ! '.$query.'<br />'.mysql_error());
-
-	include 'database_use_stop.php';
-
-	return true;
-	
 }
 
 function security_GetLastConections($User_id)

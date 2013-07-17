@@ -1,6 +1,13 @@
 <?php
 include_once('../dal/dal_appzone.php');
-include_once('mailing.php');
+include_once('../security/mailing.php');
+
+function __autoload($class_name)
+{
+	include '../class/'.$class_name . '.php';
+}
+
+$userHandler = new UsersHandler();
 
 function UnrecognizedUser()
 {
@@ -18,6 +25,7 @@ function UnrecognizedUser()
 
 function Success()
 {
+	die();
 ?>
 <div class="ui-widget">
 <div class="ui-state-highlight ui-corner-all" style="margin-top: 20px; margin-bottom: 20px; padding: 0 .7em;">
@@ -40,12 +48,11 @@ if (trim($_POST["email"]) == '' || trim($_POST["passwordMD5"]) == '')
 	exit();
 }
 
-if (security_IsPasswordCorrect($_POST["email"], $_POST["passwordMD5"]))
+if ($userHandler->IsPasswordCorrect($_POST["email"], $_POST["passwordMD5"]))
 {
-	$user_id = security_GetUserId($_POST["email"]);
-	$row = security_GetUserRow($user_id);
+	$user = $userHandler->GetUserByEmail($_POST["email"]);
 
-	if (!$SECURITY_SINGLE_USER_MODE && $user_id == '0')
+	if (!$SECURITY_SINGLE_USER_MODE && $user->getUserId() == '0')
 	{
 		UnrecognizedUser();
 		exit();
@@ -53,11 +60,12 @@ if (security_IsPasswordCorrect($_POST["email"], $_POST["passwordMD5"]))
 	else
 	{
 		session_start();
-		$_SESSION['email'] = $_POST["email"];
-		$_SESSION['user_id'] = $user_id;
-		$_SESSION['full_name'] = $row['full_name'];
-		$_SESSION['read_only'] = $row['read_only'];
-		security_RecordUserConnection($user_id, $_SERVER['REMOTE_ADDR'], $_SERVER['HTTP_USER_AGENT']);
+		$_SESSION['email'] = $user->get('email');
+		$_SESSION['user_id'] = $user->getUserId();
+		$_SESSION['full_name'] = $user->getName();
+		$_SESSION['read_only'] = $user->get('readOnly');
+
+		$userHandler->RecordUserConnection($user->getUserId(), $_SERVER['REMOTE_ADDR'], $_SERVER['HTTP_USER_AGENT']);
 	
 		$body = "Nouvelle connection de ".$_SESSION['email'];
 		SendEmailToAdministrator("Nouvelle connection", $body);

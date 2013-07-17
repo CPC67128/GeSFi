@@ -1,4 +1,3 @@
-<?php include '../configuration/3rd_party.php'; ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -9,9 +8,9 @@
 <meta http-equiv="cache-control" content="no-cache, must-revalidate">
 <meta name="Description" content="Applications conçues par Steve Fuchs (gestion financière du couple, gestionnaire de relations personnelles ou privées, générateur de mots de passe, bloc-notes en ligne)">
 <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
-<link type="text/css" href="<?php echo $THIRD_PARTY_FOLDER; ?>jquery/css/smoothness/jquery-ui-1.8.23.custom.css" rel="stylesheet" />	
-<script type="text/javascript" src="<?php echo $THIRD_PARTY_FOLDER; ?>jquery/js/jquery-1.8.0.min.js"></script>
-<script type="text/javascript" src="<?php echo $THIRD_PARTY_FOLDER; ?>jquery/js/jquery-ui-1.8.23.custom.min.js"></script>
+<link type="text/css" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" rel="stylesheet" />	
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 <script language="javascript" src="<?php echo $THIRD_PARTY_FOLDER; ?>md5.js"></script>
 <style type="text/css">
 body {
@@ -103,7 +102,7 @@ $(function() {
       });
 
 	$("#cancelButton").click( function () {
-		window.location="../pages/login.php";
+		window.location="login.php";
 	}); 
 });
 
@@ -177,7 +176,7 @@ function CreateErrorWeb($error)
 <br />
 Vérification captcha : <font color="red"><strong>*</strong></font><br />
 <?php
-require_once($THIRD_PARTY_FOLDER.'recaptcha-php/recaptchalib.php');
+require_once('../3rd_party/recaptcha-php/recaptchalib.php');
 $publickey = "6Ld6LNYSAAAAAPOsMcXZymlFhIevhg8UEnY2eE_D"; // you got this from the signup page
 echo recaptcha_get_html($publickey);
 ?>

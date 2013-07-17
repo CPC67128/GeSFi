@@ -56,7 +56,12 @@ body {
 	font-size: 1em;
 }
 
-.summaryTable td, th {
+.summaryTable td {
+	border: thin dotted #a5a5a5;
+	padding:2px;
+}
+
+.summaryTable thead th {
 	border: thin dotted #a5a5a5;
 	padding:2px;
 }

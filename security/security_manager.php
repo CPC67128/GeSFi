@@ -1,34 +1,18 @@
 <?php
 session_start();
 include_once '../dal/dal_appzone.php';
-include_once('../_sf_appzone_view/mailing.php');
+include_once('mailing.php');
 
 function RedirectToLoginPage()
 {
-?>
-AppZone par <a href="http://stevefuchs.fr">Steve Fuchs</a>
-<br />
-<br />
-Merci de vous <a href="../_sf_appzone_view/login.php">connecter</a> d'abord.
-<script type="text/javascript">
-window.location='../_sf_appzone_view/login.php';
-</script>
-<?php
-exit();
+	header("location:../view/login.php");
+	exit();
 }
 
 function RedirectToPage($url)
 {
-?>
-AppZone par <a href="http://stevefuchs.fr">Steve Fuchs</a>
-<br />
-<br />
-Merci de vous <a href="../_sf_appzone_view/login.php">connecter</a> d'abord.
-<script type="text/javascript">
-window.location='<?php echo $url; ?>';
-</script>
-<?php
-exit();
+	header("location:".$url);
+	exit();
 }
 
 if (!isset($_SESSION['user_id']))

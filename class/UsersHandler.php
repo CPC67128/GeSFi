@@ -18,6 +18,24 @@ class UsersHandler
 	
 		return $newUser;
 	}
+	
+	function GetUserByEmail($email)
+	{
+		$newUser = new User();
+	
+		$db = new DB();
+
+		$query = sprintf("select * from {TABLEPREFIX}user where lower(email) = '%s'",
+				$email);
+
+		$result = $db->Select($query);
+		if ($row = $result->fetch())
+		{
+			$newUser->hydrate($row);
+		}
+	
+		return $newUser;
+	}
 
 	function GetCurrentUser()
 	{
@@ -84,5 +102,43 @@ class UsersHandler
 
 		return $result;
 	}
+
+	function IsPasswordCorrect($Email, $Hashed_password)
+	{
+		$db = new DB();
+
+		$are_passwords_matching = false;
 	
+		$escaped_email = String2StringForSprintfQueryBuilder($Email);
+	
+		$query = sprintf("select password from {TABLEPREFIX}user where lower(email) = '%s'",
+				strtolower($escaped_email));
+
+		$row = $db->SelectRow($query);
+	
+		if (isset($row["password"]))
+		{
+			if ($row["password"] == $Hashed_password)
+				$are_passwords_matching = true;
+		}
+
+		return $are_passwords_matching;
+	}
+
+	function RecordUserConnection($User_id, $Ip, $Browser)
+	{
+		$db = new DB();
+	
+		$escaped_browser = String2StringForSprintfQueryBuilder($Browser);
+	
+		$query = sprintf("insert into {TABLEPREFIX}user_connection (user_id, connection_date_time, ip_address, browser) values('%s', now(), '%s', '%s')",
+				$User_id,
+				$Ip,
+				$escaped_browser);
+
+		$result = $db->Execute($query);
+	
+		return true;
+	
+	}
 }

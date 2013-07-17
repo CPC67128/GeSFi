@@ -1,5 +1,5 @@
 <?php
-include_once '../_sf_appzone_security/security_manager.php';
+include_once '../security/security_manager.php';
 
 function __autoload($class_name)
 {
@@ -71,9 +71,9 @@ Utilisateur
 <br />
 <br />
 <?php } ?>
-<a href="../appzone/copyright.htm">Copyright</a>
+<a href="../view/copyright.htm">Copyright</a>
 <br />
-<a href="../appzone/index.php">AppZone</a>
+<a href="../view/disconnection.php">Déconnection</a>
 
 <script type="text/javascript">
 <?php if ($_SESSION['account_id'] != 'dashboard') { ?>

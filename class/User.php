@@ -340,4 +340,16 @@ class User
 	
 		return '';
 	}
+
+	function GetLastConections()
+	{
+		$db = new DB();
+
+		$query = sprintf("select * from {TABLEPREFIX}user_connection where user_id = '%s' order by connection_date_time desc limit 1,10",
+				$this->_userId);
+	
+		$result = $db->Select($query);
+	
+		return $result;
+	}
 }

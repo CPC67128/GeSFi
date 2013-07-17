@@ -1,5 +1,5 @@
 <?php
-include '../_sf_appzone_security/security_manager.php';
+include '../security/security_manager.php';
 
 function __autoload($class_name)
 {

@@ -10,7 +10,8 @@ class DB
 
 	public function __construct()
 	{
-		$this->_userId = $_SESSION['user_id'];
+		if (isset($_SESSION['user_id']))
+			$this->_userId = $_SESSION['user_id'];
 
 		if (isset($_SESSION['account_id']))
 			$this->_accountId = $_SESSION['account_id'];

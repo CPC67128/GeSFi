@@ -11,7 +11,7 @@ $EMAIL_ACTIVE = false;
 $EMAIL_FROM = "do-not-respond@nowhere.nowhere";
 $EMAIL_ADMINISTRATION = "contact@nowhere.nowhere";
 
-$SECURITY_SINGLE_USER_MODE = true;
+$SECURITY_SINGLE_USER_MODE = false;
 /* if $SECURITY_SINGLE_USER_MODE is set to true, the following parameters must be configured:
  * $SECURITY_SINGLE_USER_MODE_USER_ID = 'e9ee6ea8-393e-11e2-ad8e-00ff9f7445d4'; <-- fill with the correct user-id you want to be connected with
 */

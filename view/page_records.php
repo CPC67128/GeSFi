@@ -1,3 +1,35 @@
+<?php if ($accountType == 0) { ?>
+<h1><?= $translator->getTranslation('Situation des comptes') ?></h1>
+
+<table class="summaryTable">
+<?php
+$accountsManager = new AccountsManager();
+$accounts = $accountsManager->GetAllAccounts();
+
+foreach ($accounts as $account)
+{
+	if ($account->getType() != 2 && $account->getType() != 4)
+	{
+		$balance = $account->GetBalance();
+?>
+<tr>
+<td><a href="#" onclick="javascript:ChangeAccount('<?= $account->getAccountId() ?>'); return false;"><?= $account->getName() ?></a></td>
+<td style='text-align: right;<?php 
+if ($balance <= $account->getExpectedMinimumBalance())
+	echo 'background-color: #FF0000';
+else
+	echo 'background-color: #00FF00';
+?>'><?= $translator->getCurrencyValuePresentation($balance) ?></td>
+<td style='text-align: right; font-style:italic;'><?= $translator->getTranslation($account->getTypeDescription()) ?></td>
+</tr>
+<?php
+	}
+}
+?>
+</table>
+<br />
+<?php } ?>
+
 <?php
 $accountPlannedDebit = $activeAccount->GetPlannedOutcome(10);
 
@@ -9,7 +41,7 @@ if ($accountType == 4)
 Epargne : <?= $translator->getCurrencyValuePresentation($balance) ?>
 <?php
 }
-else if ($accountType != 2)
+else if ($accountType != 2 && $accountType != 0)
 {
 	$accountExpectedMinimumBalance = $activeAccount->getExpectedMinimumBalance();
 	$balance = $activeAccount->GetBalance();
@@ -46,7 +78,7 @@ if (isset($_GET['fullview']))
 if ($fullView)
 	$result = $recordsManager->GetAllRecords(12 * 10);
 else
-	$result = $recordsManager->GetAllRecords(3);
+	$result = $recordsManager->GetAllRecords(3*40);
 
 $now = date('Y-m-d');
 
@@ -58,17 +90,12 @@ function AddTitleRow()
 	<tr class="tableRowTitle">
 	<td style="vertical-align: top; text-align: center; font-style: italic;"><?= $translator->getTranslation('Date') ?></td>
 	<td style="vertical-align: top; text-align: center; font-style: italic;"><?= $translator->getTranslation('Désignation') ?></td>
-	<?php if ($activeAccount->getType() != 1 && $activeAccount->getType() != 4) { ?>
 	<td style="vertical-align: top; text-align: center; font-style: italic;"><?= $translator->getTranslation('Effectuée par') ?></td>
-	<?php } ?>
+	<td style="vertical-align: top; text-align: center; font-style: italic;"><?= $translator->getTranslation('Compte') ?></td>
 	<td style="vertical-align: top; text-align: center; font-style: italic;"></td>
 	<td style="vertical-align: top; text-align: center; font-style: italic;"><?= $translator->getTranslation('Montant') ?></td>
-	<?php if ($activeAccount->getType() != 1 && $activeAccount->getType() != 4) { ?>
-	<td style="vertical-align: top; text-align: center; font-style: italic;"><?= $translator->getTranslation('Prise en charge') ?></td>
-	<td style="vertical-align: top; text-align: center; font-style: italic;">/ <?= $activeAccount->GetOwnerName() ?></td>
-	<td style="vertical-align: top; text-align: center; font-style: italic;">/ <?= $activeAccount->GetCoownerName() ?></td>
-	<?php } ?>
 	<td style="vertical-align: top; text-align: center; font-style: italic;"><?= $translator->getTranslation('Catégorie') ?></td>
+	<td style="vertical-align: top; text-align: center; font-style: italic;"><?= $translator->getTranslation('Prise en charge') ?></td>
 	<td style="vertical-align: top; text-align: center; font-style: italic;"></td>
 	</tr>
 	<?php
@@ -91,13 +118,14 @@ function AddRow($index, $row, $mergeRow)
 	{
 		echo '<td>'.($row['record_date'] == 0 ? '' : $row['record_date']).'</td>';
 		echo '<td style="text-align: left;">'.$row['designation'].'</td>';
-		if ($activeAccount->getType() != 1)
-			echo '<td style="text-align: right;">'.($row['actor'] == 1 ? $activeAccount->GetOwnerName() : $activeAccount->GetCoownerName() ).'</td>';
+		echo '<td style="text-align: right;">'.$row['user_name'].'</td>';
+		echo '<td style="text-align: right;">'.$row['account_name'].'</td>';
 	}
 	else
 	{
 		echo '<td></td>';
 		echo '<td></td>';
+		if ($activeAccount->getType() != 1) echo '<td></td>';
 		if ($activeAccount->getType() != 1) echo '<td></td>';
 	}
 
@@ -124,37 +152,57 @@ function AddRow($index, $row, $mergeRow)
 	echo '</font>';
 	echo '</td>';
 
-	if ($activeAccount->getType() != 1 && $activeAccount->getType() != 4)
+	// Category
+	if (isset($row['category']))
 	{
-		echo '<td style="text-align: right;">';
-		if ($row['record_type'] == 1 || $row['record_type'] == 4 || $row['record_type'] == 22)
-			echo $row['charge'].'&nbsp;%';
-		echo '</td>';
-		echo '<td style="text-align: right;">';
-		if ($row['record_type'] == 1 || $row['record_type'] == 4 || $row['record_type'] == 22)
-			echo $translator->getCurrencyValuePresentation($row['part_actor1']);
-		echo '</td>';
-		echo '<td style="text-align: right;">';
-		if ($row['record_type'] == 1 || $row['record_type'] == 4 || $row['record_type'] == 22)
-			echo $translator->getCurrencyValuePresentation($row['part_actor2']);
-		echo '</td>';
+		echo "<td style='text-align: left;'>";
+	
+		echo "<img src='../media/information.png' title='";
+		echo $translator->getCurrencyValuePresentation($row['part_actor1'])." / ".$translator->getCurrencyValuePresentation($row['part_actor2']); 
+		echo "'>";
+	
+		echo "&nbsp;";
+	
+		if ($row['link_type'] == 'USER') echo "<font color='DarkGreen'>";
+		else if ($row['link_type'] == 'DUO') echo "<font color='MediumVioletRed'>";
+	
+		echo $row['category'];
+	
+		echo "</font>";
+		echo "</td>";
 	}
+	else if (isset($row['category_id']) && substr($row['category_id'], 0, 5) == "USER/")
+	{
+		echo "<td style='text-align: left;'>";
+	
+		echo "<img src='../media/information.png' title='";
+		echo $translator->getCurrencyValuePresentation($row['part_actor1'])." / ".$translator->getCurrencyValuePresentation($row['part_actor2']); 
+		echo "'>";
 
-	echo '<td style="text-align: right;">';
-	if ($row['link_type'] == 'USER' && $activeAccount->getType() != 1)
-	{
-		echo $translator->getTranslation('Privée');
-		echo ' / ';
+		echo "&nbsp;";
+
+		$usersHandler = new UsersHandler();
+		$user = $usersHandler->GetUser(substr($row['category_id'], 5, 36));
+
+		echo "<font color='DarkGreen'>";
+	
+		echo 'Non définie / '.$user->getName();
+	
+		echo "</font>";
+		echo "</td>";
 	}
-	else if ($row['link_type'] == 'DUO' && $activeAccount->getType() == 1)
-	{
-		echo $translator->getTranslation('Duo');
-		echo ' / ';
-	}
-	echo $row['category'];
+	else
+		echo "<td></td>";
+
+	// Charge level
+	echo '<td style="text-align: left;">';
+	if ($row['link_type'] == 'DUO' || $row['link_type'] == 'USER' || (isset($row['category_id']) && substr($row['category_id'], 0, 5) == "USER/"))
+		echo $row['charge'].'&nbsp;%';
 	echo '</td>';
 
-	echo '<td style="text-align: center;"><span class="ui-icon ui-icon-trash" onclick="if (confirm(\''.$translator->getTranslation('Etes-vous sûr de vouloir supprimer cette entrée ?').'\')) { DeleteRecord(\''.$row['record_id'].'\'); }"></span></td>';
+	// Trash bin
+	echo "<td style='text-align: center;'><span class='ui-icon ui-icon-trash' onclick='if (confirm(\"".$translator->getTranslation('Etes-vous sûr de vouloir supprimer cette entrée ?')."\")) { DeleteRecord(\"".$row['record_id']."\"); }'></span></td>";
+
 	echo '</tr>';
 }
 
@@ -173,7 +221,10 @@ function AddSubTotalRow($index, $row, $subtotal)
 
 	echo '<td></td><td></td>';
 	if ($activeAccount->getType() != 1) { echo '<td></td>'; }
-
+	if ($activeAccount->getType() != 1) {
+		echo '<td></td>';
+	}
+	
 	echo "<td></td>";
 
 	echo '<td style="text-align: right;">';
@@ -186,7 +237,7 @@ function AddSubTotalRow($index, $row, $subtotal)
 	echo '</font>';
 	echo '</td>';
 
-	if ($activeAccount->getType() != 1 && $activeAccount->getType() != 4) echo '<td></td><td></td><td></td><td></td>';
+	if ($activeAccount->getType() != 1 && $activeAccount->getType() != 4) echo '<td></td><td></td>';
 
 	echo '<td style="text-align: center;"><span class="ui-icon ui-icon-trash" onclick="if (confirm(\''.$translator->getTranslation('Etes-vous sûr de vouloir supprimer cette entrée ?').'\')) { DeleteRecord(\''.$row['record_id'].'\'); }"></span></td>';
 	echo '</tr>';
@@ -210,7 +261,7 @@ while ($row = $result->fetch())
 		continue;
 
 	// ------ Merging of rows if similar group
-	if ($row['record_group_id'] == '' || $previousRow == null || $previousRow['record_group_id'] != $row['record_group_id'])
+	if ($row['record_group_id'] == '' || $previousRow == null || $previousRow['record_group_id'] != $row['record_group_id'] || $previousRow['record_type'] != $row['record_type'])
 	{
 		if ($mergeRow)
 		{

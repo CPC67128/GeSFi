@@ -50,7 +50,15 @@ class AccountsManager
 
 		if ($_SESSION['account_id'] == 'dashboard')
 		{
+			$newAccount->setType(-50);
+		}
+			elseif ($_SESSION['account_id'] == 'all_accounts')
+		{
 			$newAccount->setType(0);
+		}
+		elseif ($_SESSION['account_id'] == 'configuration')
+		{
+			$newAccount->setType(-100);
 		}
 		else
 		{
@@ -101,7 +109,7 @@ class AccountsManager
 		$query = 'select *
 			from {TABLEPREFIX}account
 			where owner_user_id = \'{USERID}\'
-			and type = 1';
+			and (type = 1 or type = 4)';
 		$result = $db->Select($query);
 		while ($row = $result->fetch())
 		{
@@ -223,9 +231,27 @@ class AccountsManager
 	{
 		$db = new DB();
 
+		$query = sprintf("update {TABLEPREFIX}account set name = '%s', opening_balance = %s, expected_minimum_balance = %s where account_id = '%s'",
+				$name,
+				$openingBalance,
+				$expectedMinimumBalance,
+				$accountId);
+		
+		$result = $db->Execute($query);
+
+		$result = $this->UpdateAccountSortOrder($accountId, $sortOrder);
+
+		return $result;
+	}
+
+	
+	function UpdateAccountSortOrder($accountId, $sortOrder)
+	{
+		$db = new DB();
+	
 		$originalSortOrder = $sortOrder;
 		$continue = true;
-		
+	
 		$updateQueries = array();
 		while ($continue)
 		{
@@ -233,7 +259,7 @@ class AccountsManager
 					$sortOrder,
 					$accountId);
 			$row = $db->SelectRow($query);
-		
+	
 			if ($row['total'] == 0)
 				$continue = false;
 			else
@@ -245,28 +271,23 @@ class AccountsManager
 			}
 			$sortOrder++;
 		}
-		
+	
 		for ($i = (count($updateQueries) - 1); $i >= 0; $i--)
 		{
-			$db->Execute($updateQueries[$i]);
+		$db->Execute($updateQueries[$i]);
 		}
-		
+	
 		$sortOrder = $originalSortOrder;
 
-		$query = sprintf("update {TABLEPREFIX}account set name = '%s', opening_balance = %s, expected_minimum_balance = %s where account_id = '%s'",
-				$name,
-				$openingBalance,
-				$expectedMinimumBalance,
+		$query = sprintf("delete from {TABLEPREFIX}account_user_preference where account_id = '%s' and user_id = '{USERID}'",
 				$accountId);
-		
 		$result = $db->Execute($query);
-		
-		$query = sprintf("update {TABLEPREFIX}account_user_preference set sort_order = %s where account_id = '%s' and user_id = '{USERID}'",
+
+		$query = sprintf("insert into {TABLEPREFIX}account_user_preference (sort_order, account_id, user_id) values (%s, '%s', '{USERID}')",
 				$sortOrder,
 				$accountId);
-
 		$result = $db->Execute($query);
-	
+
 		return $result;
 	}
 }

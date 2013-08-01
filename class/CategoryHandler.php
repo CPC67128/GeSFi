@@ -76,18 +76,18 @@ class CategoryHandler
 		$db = new DB();
 	
 		$query = "select category_id as CategoryId,
-			link_type as LinkType,
-			link_id as LinkId,
-			type,
-			category,
-			active_from as ActiveFrom,
-			sort_order as SortOrder
-		from {TABLEPREFIX}category
-		where link_type = 'USER'
-		and link_id = '".$userId."'
-		and type = 1
-		and marked_as_deleted = 0
-		order by sort_order, category";
+				link_type as LinkType,
+				link_id as LinkId,
+				type,
+				category,
+				active_from as ActiveFrom,
+				sort_order as SortOrder
+			from {TABLEPREFIX}category
+			where link_type = 'USER'
+			and link_id = '".$userId."'
+			and type = 1
+			and marked_as_deleted = 0
+			order by sort_order, category";
 		$result = $db->Select($query);
 		while ($row = $result->fetch())
 		{

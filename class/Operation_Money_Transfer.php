@@ -80,12 +80,24 @@ class Operation_Money_Transfer extends Operation_Money
 		$amountIncome = $this->_amount;
 
 		$accountsManager = new AccountsManager();
-		$fromAccount = $accountsManager->GetAccount($this->_fromAccount);
 
-		if ($fromAccount->getType() == 2) // Particular to account type DUO R+V (2) TODO
+		$usersHandler = new UsersHandler();
+		$user = $usersHandler->GetCurrentUser();
+		
+		$fromAccountId = $this->_fromAccount;
+		$fromUserId = $user->getUserId();
+		if (substr($fromAccountId, 0, 5) == "USER/")
 		{
-			$amountOutcome = -1 * $amountOutcome;
-			$recordTypeOutcome = 10;
+			$fromUserId = substr($fromAccountId, 5, 36);
+			$fromAccountId = '';
+		}
+
+		$toAccountId = $this->_toAccount;
+		$toUserId = $user->getUserId();
+		if (substr($toAccountId, 0, 5) == "USER/")
+		{
+			$toUserId = substr($toAccountId, 5);
+			$toAccountId = '';
 		}
 
 		for ($currentMonth = 0; $currentMonth < $monthly_months; $currentMonth++)
@@ -94,8 +106,9 @@ class Operation_Money_Transfer extends Operation_Money
 			$uuid = $db->GenerateUUID();
 
 			$db->InsertRecord(
-				$this->_fromAccount,
-				1,
+				$fromAccountId,
+				$fromUserId,
+				0,
 				$currentDate,
 				$amountOutcome,
 				$this->_designation,
@@ -105,8 +118,9 @@ class Operation_Money_Transfer extends Operation_Money
 				$uuid);
 
 			$db->InsertRecord(
-				$this->_toAccount,
-				1,
+				$toAccountId,
+				$toUserId,
+				0,
 				$currentDate,
 				$amountIncome,
 				$this->_designation,

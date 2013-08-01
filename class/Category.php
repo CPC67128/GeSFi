@@ -118,7 +118,7 @@ class Category
 
 		$query = "select sum(amount) as total
 			from {TABLEPREFIX}record
-			where record_type in (12)
+			where record_type = 12
 			and marked_as_deleted = 0
 			and record_date <= curdate()
 			and record_date_month = ".$month."

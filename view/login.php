@@ -63,45 +63,32 @@ Redirection vers le <a href="index.php">menu principal</a> en cours.
 // Auto login mode
 if (isset($_GET['autologin']) && strlen($_GET['autologin']) > 0)
 {
-	if ($userHandler->IsPasswordCorrect($_GET["autologin"], "d41d8cd98f00b204e9800998ecf8427e"))
+	$user = $userHandler->GetUser($_GET["autologin"]);
+
+	if (!$user->IsNull())
 	{
-		$user = $userHandler->GetUserByEmail($_GET["autologin"]);
-		
-		$_SESSION['email'] = $user->get('email');
-		$_SESSION['user_id'] = $user->getUserId();
-		$_SESSION['full_name'] = $user->getName();
-		$_SESSION['read_only'] = $user->get('readOnly');
-
-		$userHandler->RecordUserConnection($user->getUserId(), $_SERVER['REMOTE_ADDR'], $_SERVER['HTTP_USER_AGENT']);
-
-		SendEmailToAdministrator("Nouvelle connection à guest", "Nouvelle connection d'un utilisateur au lien de démonstration");
+		if ($user->IsPasswordCorrect("d41d8cd98f00b204e9800998ecf8427e"))
+		{
+			$_SESSION['email'] = $user->get('email');
+			$_SESSION['user_id'] = $user->getUserId();
+			$_SESSION['full_name'] = $user->getName();
+			$_SESSION['read_only'] = $user->get('readOnly');
+	
+			$user->RecordConnection($_SERVER['REMOTE_ADDR'], $_SERVER['HTTP_USER_AGENT']);
+	
+			SendEmailToAdministrator("Nouvelle connection", "Nouvelle connection en autlogin de ".$user->getName());
+		}
 	}
-?>
-<html>
-<header>
-<meta charset="utf-8">
-<meta http-equiv="expires" content="0">
-<meta http-equiv="pragma" content="no-cache">
-<meta http-equiv="cache-control" content="no-cache, must-revalidate">
-<script type="text/javascript">
-window.location = 'index.php';
-</script>
-</header>
-<body>
-Vous êtes déjà connecté en tant que <?php echo $_SESSION['full_name']; ?>.
-<br />
-Redirection vers le <a href="index.php">menu principal</a> en cours.
-</body>
-</html>
-<?php
-exit();
+
+	header("Location: index.php");
+	exit();
 }
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<title>Steve Fuchs AppZone - Applications en ligne</title>
+<title>Steve Fuchs - BudgetFox</title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <meta http-equiv="expires" content="0">
 <meta http-equiv="pragma" content="no-cache">

@@ -6,6 +6,8 @@ $DB_PASSWORD = "";
 
 $DB_TABLE_PREFIX = "bf_"; // Can be for example demo_ ...
 
+$READ_ONLY = false;
+
 $EMAIL_ACTIVE = false;
 
 $EMAIL_FROM = "do-not-respond@nowhere.nowhere";

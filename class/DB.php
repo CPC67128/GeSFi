@@ -36,6 +36,8 @@ class DB
 			$this->_connection = new PDO( $dns, $utilisateur, $motDePasse );
 			$this->_connection->exec("SET CHARACTER SET utf8");
 			$this->_dbTablePrefix = $DB_TABLE_PREFIX;
+
+			$this->_isReadOnly = $READ_ONLY;
 		}
 		catch ( Exception $e )
 		{
@@ -44,14 +46,15 @@ class DB
 		}
 	}
 
-	function InsertRecord($accountId, $actor, $date, $amount, $designation, $charge, $category, $recordType, $recordGroupId)
+	function InsertRecord($accountId, $userId, $actor, $date, $amount, $designation, $charge, $category, $recordType, $recordGroupId)
 	{
 		if ($this->_isReadOnly)
 			return 0;
 
-		$query = sprintf("insert into ".$this->_dbTablePrefix."record (account_id, record_date, marked_as_deleted, designation, record_type, amount, actor, charge, category_id, record_group_id, record_id)
-				values ('%s', '%s', 0, '%s', %s, %s, %s, %s, '%s', '%s', uuid())",
+		$query = sprintf("insert into ".$this->_dbTablePrefix."record (account_id, user_id, record_date, marked_as_deleted, designation, record_type, amount, actor, charge, category_id, record_group_id, record_id)
+				values ('%s', '%s', '%s', 0, '%s', %s, %s, %s, %s, '%s', '%s', uuid())",
 				$accountId,
+				$userId,
 				$date,
 				$designation,
 				$recordType,
@@ -60,7 +63,6 @@ class DB
 				$charge,
 				$category,
 				$recordGroupId);
-		//throw new Exception($query);
 		$result = $this->_connection->exec($query) or die('Erreur SQL ! '.$query.'<br />'.mysql_error());
 	
 		$queryMonthYearFill = "update ".$this->_dbTablePrefix."record set record_date_month = month(record_date), record_date_year = year(record_date) where record_date_month = -1";
@@ -104,6 +106,9 @@ class DB
 
 	function Execute($query)
 	{
+		if ($this->_isReadOnly)
+			return 0;
+
 		$query = str_replace('{USERID}', $this->_userId, $query);
 		$query = str_replace('{ACCOUNTID}', $this->_accountId, $query);
 		$query = str_replace('{TABLEPREFIX}', $this->_dbTablePrefix, $query);
@@ -133,6 +138,9 @@ class DB
 
 	function ReverseCategory($category1, $category2)
 	{
+		if ($this->_isReadOnly)
+			return 0;
+
 		$query = 'select category'.$category1.' from '.$this->_dbTablePrefix.'configuration where user_id = \''.$this->_userId.'\'';
 		$result = $this->_connection->query($query) or die('Erreur SQL ! '.$query.'<br />'.mysql_error());
 		$row = $result->fetch();

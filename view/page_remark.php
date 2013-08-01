@@ -6,7 +6,8 @@
   <td style="vertical-align: middle;">
 <?php
 $accountsManager = new AccountsManager();
-$fromAccount = $accountsManager->GetAccount($_SESSION['account_id']);
+$fromAccount = $accountsManager->GetCurrentActiveAccount();
+
 if ($fromAccount->getType() == 2)
 {
 ?>

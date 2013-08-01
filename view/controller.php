@@ -10,28 +10,13 @@ try
 {
 	switch ($_GET['action'])
 	{
-		case 'expense_duo_virtual_account':
-			$newExpense = new Operation_Money_Expense_Duo_Virtual_Account();
+		case 'expense':
+			$newExpense = new Operation_Money_Expense();
 			$newExpense->hydrate($_POST);
 			$newExpense->Save();
 			break;
-		case 'expense_duo_account':
-			$newExpense = new Operation_Money_Expense_Duo_Account();
-			$newExpense->hydrate($_POST);
-			$newExpense->Save();
-			break;
-		case 'expense_private':
-			$newExpense = new Operation_Money_Expense_Private();
-			$newExpense->hydrate($_POST);
-			$newExpense->Save();
-			break;
-		case 'income_duo':
-			$newIncome = new Operation_Money_Income_Duo();
-			$newIncome->hydrate($_POST);
-			$newIncome->Save();
-			break;
-		case 'income_private':
-			$newIncome = new Operation_Money_Income_Private();
+		case 'income':
+			$newIncome = new Operation_Money_Income();
 			$newIncome->hydrate($_POST);
 			$newIncome->Save();
 			break;
@@ -44,11 +29,6 @@ try
 			$newRemark = new Operation_Remark();
 			$newRemark->hydrate($_POST);
 			$newRemark->Save();
-			break;
-		case 'configuration':
-			$newConfiguration = new Configuration();
-			$newConfiguration->hydrate($_POST);
-			$newConfiguration->Save();
 			break;
 		case 'reverseCategory':
 			$newAction = new Action_ReverseCategory();
@@ -93,6 +73,11 @@ try
 		case 'dashboard':
 			$newAction = new Action_ChangeAccount();
 			$newAction->setAccountId('dashboard');
+			$newAction->Execute();
+			break;
+		case 'configuration':
+			$newAction = new Action_ChangeAccount();
+			$newAction->setAccountId('configuration');
 			$newAction->Execute();
 			break;
 		case 'deleteRecord':

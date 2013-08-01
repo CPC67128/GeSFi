@@ -84,10 +84,21 @@ class Action_AccountModification extends Action
 		}
 		else
 		{
-			if ($this->_delete == 'on')
-				$handler->DeleteAccount($this->_accountId);
+			$account = $handler->GetAccount($this->_accountId);
+			if ($account->getOwnerUserId() == $_SESSION["user_id"]) // Current user is account first owner
+			{
+				if ($this->_delete == 'on')
+					$handler->DeleteAccount($this->_accountId);
+				else
+					$handler->UpdateAccount($this->_accountId, $this->_name, $this->_openingBalance, $this->_expectedMinimumBalance, $this->_sortOrder);
+			}
 			else
-				$handler->UpdateAccount($this->_accountId, $this->_name, $this->_openingBalance, $this->_expectedMinimumBalance, $this->_sortOrder);
+			{
+				if ($this->_delete == 'on')
+					throw new Exception("Vous n'êtes pas le titulaire principal de ce compte, vous ne pouvez pas le supprimer.");
+				else
+					$handler->UpdateAccountSortOrder($this->_accountId, $this->_sortOrder);
+			}
 		}
 	}
 }

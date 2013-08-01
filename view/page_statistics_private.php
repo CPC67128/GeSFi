@@ -125,6 +125,8 @@ for ($month = 0; $month < 24; $month++)
 	}
 
 	echo '<td style="text-align: right;">';
+	if (!isset($monthTotalIncome[$month]))
+		$monthTotalIncome[$month] = 0;
 	$total += $monthTotalIncome[$month];
 	echo $translator->getCurrencyValuePresentation($monthTotalIncome[$month]);
 	echo '</td>';
@@ -226,6 +228,8 @@ for ($month = 0; $month < 24; $month++)
 	}
 
 	echo '<td style="text-align: right;">';
+	if (!isset($monthTotalExpense[$month]))
+		$monthTotalExpense[$month] = 0;
 	$total += $monthTotalExpense[$month];
 	echo $translator->getCurrencyValuePresentation($monthTotalExpense[$month]);
 	echo '</td>';
@@ -292,7 +296,10 @@ echo '</td>';
 echo '<td style="text-align: right;">';
 if ($total > 0)
 {
-	$average = $category->GetAverageExpenseByMonth();
+	if (!isset($category))
+		$average = 0;
+	else
+		$average = $category->GetAverageExpenseByMonth();
 	$totalAverage += $average;
 	echo $translator->getCurrencyValuePresentation($average);
 }

@@ -10,6 +10,8 @@ class User
 	protected $_readOnly;
 	protected $_duoId;
 
+	protected $_isNull = true;
+
 	public function setUserId($userId)
 	{
 		$this->_userId = $userId;
@@ -27,7 +29,7 @@ class User
 	
 	public function getName()
 	{
-		return $this->_email;
+		return $this->_name;
 	}
 	
 	public function setPassword($password)
@@ -81,10 +83,17 @@ class User
 				default: $key = $key; break;
 			}
 			$this->set('_'.$key, $value);
+
+			$this->_isNull = false;
 		}
 	}
 
 	// -------------------------------------------------------------------------------------------------------------------
+
+	public function IsNull()
+	{
+		return $this->_isNull;
+	}
 
 	public function GetTotalIncome()
 	{
@@ -340,7 +349,26 @@ class User
 	
 		return '';
 	}
-
+	
+	function GetPartnerName()
+	{
+		$db = new DB();
+	
+		$query = "select name
+		from {TABLEPREFIX}user
+		where duo_id != ''
+		and duo_id = '".$this->_duoId."'
+		and user_id != '".$this->_userId."'";
+		$row = $db->SelectRow($query);
+	
+		if ($row)
+		{
+			return $row['name'];
+		}
+	
+		return '';
+	}
+	
 	function GetLastConections()
 	{
 		$db = new DB();
@@ -351,5 +379,31 @@ class User
 		$result = $db->Select($query);
 	
 		return $result;
+	}
+	
+	function IsPasswordCorrect($hashedPassword)
+	{
+		$are_passwords_matching = false;
+	
+		if ($this->_password == $hashedPassword)
+			$are_passwords_matching = true;
+	
+		return $are_passwords_matching;
+	}
+
+	function RecordConnection($Ip, $Browser)
+	{
+		$db = new DB();
+
+		$escaped_browser = String2StringForSprintfQueryBuilder($Browser);
+	
+		$query = sprintf("insert into {TABLEPREFIX}user_connection (user_id, connection_date_time, ip_address, browser) values('%s', now(), '%s', '%s')",
+				$this->_userId,
+				$Ip,
+				$escaped_browser);
+
+		$result = $db->Execute($query);
+	
+		return true;
 	}
 }

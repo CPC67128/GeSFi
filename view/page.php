@@ -15,12 +15,18 @@ $accountsManager = new AccountsManager();
 $activeAccount = $accountsManager->GetCurrentActiveAccount();
 $accountType = $activeAccount->getType();
 
-if ($accountType == 0 && $pageName == 'records')
-	$pageName = 'dashboard';
+if ($accountType == -50 && $pageName == 'records')
+	$pageName = 'home';
+
+if ($accountType == -100 && $pageName == 'records')
+	$pageName = '';
 
 $categoryHandler = new CategoryHandler();
 
 $recordsManager = new RecordsManager();
+
+$usersHandler = new UsersHandler();
+$activeUser = $usersHandler->GetCurrentUser();
 
 switch ($pageName)
 {
@@ -31,31 +37,11 @@ switch ($pageName)
 		break;
 
 	case 'expense';
-		if ($activeAccount->getType() == 1)
-		{
-			$pageName = $pageName.'_private';
-			include 'page_'.$pageName.'.php';
-		}
-		else if ($activeAccount->getType() == 3)
-		{
-			include 'page_'.$pageName.'_duo.php';
-			$pageName = $pageName.'_duo_account';
-		}
-		else
-		{
-			include 'page_'.$pageName.'_duo.php';
-			$pageName = $pageName.'_duo_virtual_account';
-		}
+		include 'page_'.$pageName.'.php';
 		AddFormManagementEnd($pageName);
 		break;
 
 	case 'income';
-		if ($activeAccount->getType() == 1)
-			$pageName = $pageName.'_private';
-		else if ($activeAccount->getType() == 2)
-			$pageName = $pageName.'_duo_virtual';
-		else if ($activeAccount->getType() == 3)
-			$pageName = $pageName.'_duo';
 		include 'page_'.$pageName.'.php';
 		AddFormManagementEnd($pageName);
 		break;
@@ -74,7 +60,7 @@ switch ($pageName)
 		break;
 
 	case 'statistics';
-		if ($activeAccount->getType() == 0)
+		if ($activeAccount->getType() == -50 || $activeAccount->getType() == 0)
 			include 'page_'.$pageName.'_global.php';
 		else if ($activeAccount->getType() == 1)
 			include 'page_'.$pageName.'_private.php';
@@ -86,7 +72,8 @@ switch ($pageName)
 	case 'configuration_accounts';
 	case 'configuration_user';
 	case 'configuration_category';
-	case 'dashboard';
+	case 'connection';
+	case 'home';
 		include 'page_'.$pageName.'.php';
 		break;
 }

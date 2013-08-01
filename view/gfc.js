@@ -187,7 +187,17 @@ function ChangeAccount(id)
 				'controller.php?action=dashboard',
 				function(response, status) {
 					LoadTopMenu();
-					LoadPage('dashboard');
+					LoadPage('home');
+				}
+		);
+	}
+	else if (id == 'configuration')
+	{
+		$.post (
+				'controller.php?action=configuration',
+				function(response, status) {
+					LoadTopMenu();
+					LoadPage('');
 				}
 		);
 	}

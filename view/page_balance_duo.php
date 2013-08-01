@@ -8,29 +8,32 @@ $activeAccount = $accounts[0];
 $statistics = new Statistics();
 $translator = new Translator();
 
-$totalPrivateExpenseByActor1 = $statistics->GetTotalPrivateExpenseByActor(1);
-$totalPrivateExpenseByActor2 = $statistics->GetTotalPrivateExpenseByActor(2);
+$usersHandler = new UsersHandler();
+$user = $usersHandler->GetCurrentUser();
+
+$totalPrivateExpenseByActor1 = $statistics->GetTotalPrivateExpenseByActor($user->getUserId());
+$totalPrivateExpenseByActor2 = $statistics->GetTotalPrivateExpenseByActor($user->GetPartnerId());
 $totalExpenseJointAccount = $statistics->GetTotalExpenseJointAccount();
 
-$totalExpenseChargedPartByActor1 = $statistics->GetTotalExpenseChargedPartByActor(1);
-$totalExpenseChargedPartByActor2 = $statistics->GetTotalExpenseChargedPartByActor(2);
+$totalExpenseChargedPartByActor1 = $statistics->GetTotalExpenseChargedPartByActor($user->getUserId());
+$totalExpenseChargedPartByActor2 = $statistics->GetTotalExpenseChargedPartByActor($user->GetPartnerId());
 
 // Private account
-$totalRepaymentByActor1 = $statistics->GetTotalRepaymentByActor(1);
-$totalRepaymentByActor2 = $statistics->GetTotalRepaymentByActor(2);
+$totalRepaymentByActor1 = $statistics->GetTotalRepaymentByActor($user->getUserId());
+$totalRepaymentByActor2 = $statistics->GetTotalRepaymentByActor($user->GetPartnerId());
 
-$totalPrivateExpenseChargedPartByActor1 = $statistics->GetTotalExpenseFromPrivateAccountChargedPartByActor(1);
-$totalPrivateExpenseChargedPartByActor2 = $statistics->GetTotalExpenseFromPrivateAccountChargedPartByActor(2);
+$totalPrivateExpenseChargedPartByActor1 = $statistics->GetTotalExpenseFromPrivateAccountChargedPartByActor($user->getUserId());
+$totalPrivateExpenseChargedPartByActor2 = $statistics->GetTotalExpenseFromPrivateAccountChargedPartByActor($user->GetPartnerId());
 
 $totalAmountGivenByActor1 = $totalPrivateExpenseByActor1 + $totalRepaymentByActor1 - $totalRepaymentByActor2;
 $totalAmountGivenByActor2 = $totalPrivateExpenseByActor2 + $totalRepaymentByActor2 - $totalRepaymentByActor1;
 
 // Joint account
-$totalIncomeJointAccountByActor1 = $statistics->GetTotalIncomeJointAccountByActor(1);
-$totalIncomeJointAccountByActor2 = $statistics->GetTotalIncomeJointAccountByActor(2);
+$totalIncomeJointAccountByActor1 = $statistics->GetTotalIncomeJointAccountByActor($user->getUserId());
+$totalIncomeJointAccountByActor2 = $statistics->GetTotalIncomeJointAccountByActor($user->GetPartnerId());
 
-$totalJointAccountExpenseByActor1 = $statistics->GetTotalJointAccountExpenseByActor(1);
-$totalJointAccountExpenseByActor2 = $statistics->GetTotalJointAccountExpenseByActor(2);
+$totalJointAccountExpenseByActor1 = $statistics->GetTotalJointAccountExpenseByActor($user->getUserId());
+$totalJointAccountExpenseByActor2 = $statistics->GetTotalJointAccountExpenseByActor($user->getUserId());
 
 $totalJointAccountExpenseChargedByActor1 = $statistics->GetTotalJointAccountExpenseChargedPartByActor(1);
 $totalJointAccountExpenseChargedByActor2 = $statistics->GetTotalJointAccountExpenseChargedPartByActor(2);

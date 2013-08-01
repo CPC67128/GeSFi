@@ -6,10 +6,10 @@ function __autoload($class_name)
 	include '../class/'.$class_name . '.php';
 }
 
-if ($_SESSION['account_id'] != 'dashboard')
-	echo '<a href="#" onclick="javascript:ChangeAccount(\'dashboard\'); return false;">';
-echo 'Tableau de bord';
-if ($_SESSION['account_id'] != 'dashboard')
+if ($_SESSION['account_id'] != 'all_accounts')
+	echo '<a href="#" onclick="javascript:ChangeAccount(\'all_accounts\'); return false;">';
+echo 'Vue globale';
+if ($_SESSION['account_id'] != 'all_accounts')
 	echo '</a>';
 echo ' / ';
 
@@ -25,5 +25,12 @@ foreach ($accounts as $account)
 		echo '</a>';
 	echo ' / ';
 }
+
+if ($_SESSION['account_id'] != 'configuration')
+	echo '<a href="#" onclick="javascript:ChangeAccount(\'configuration\'); return false;">';
+echo 'Configuration';
+if ($_SESSION['account_id'] != 'configuration')
+	echo '</a>';
+
 
 ?>

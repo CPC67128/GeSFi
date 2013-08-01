@@ -9,8 +9,17 @@ function __autoload($class_name)
 $accountsManager = new AccountsManager();
 $account = $accountsManager->GetCurrentActiveAccount();
 ?>
-<?php if ($account->getType() != 0) { ?>
-<img id='recordsMenuIcon' class='menuIcon' src="../media/recordsMenuIcon.jpg" />
+
+<?php if ($account->getType() == -50) { ?>
+<img id='dashboardMenuIcon' class='menuIcon' src="../media/homeMenuIcon.png" />
+<br />
+Accueil
+<br />
+<br />
+<?php } ?>
+
+<?php if ($account->getType() >= 0) { ?>
+<img id='recordsMenuIcon' class='menuIcon' src="../media/recordsMenuIcon.png" />
 <br />
 Lignes
 <br />
@@ -35,26 +44,27 @@ Virement
 Remarque
 <br />
 <br />
-<?php } else { ?>
-<img id='dashboardMenuIcon' class='menuIcon' src="../media/dashboardMenuIcon.png" />
-<br />
-Tableau de bord
-<br />
-<br />
 <?php } ?>
-<?php if ($account->getType() == 2 || $account->getType() == 3 || $account->getType() == 0) { ?>
+
+<?php if ($account->getType() == 0 || $account->getType() == 2 || $account->getType() == 3 || $account->getType() == -50) { ?>
 <img id='balanceMenuIcon' class='menuIcon' src="../media/balanceMenuIcon.png" />
 <br />
 Balance
 <br />
 <br />
-<?php } ?>
 <img id='statisticsMenuIcon' class='menuIcon' src="../media/statsMenuIcon.png" />
 <br />
 Statistiques
 <br />
 <br />
-<?php if ($account->getType() == 0) { ?>
+<?php } ?>
+
+<?php if ($account->getType() == -100) { ?>
+<img id='connectionMenuIcon' class='menuIcon' src="../media/connectionMenuIcon.jpg" />
+<br />
+Connections
+<br />
+<br />
 <img id='accountsMenuIcon' class='menuIcon' src="../media/accountsMenuIcon.png" />
 <br />
 Comptes
@@ -76,7 +86,6 @@ Utilisateur
 <a href="../view/disconnection.php">Déconnection</a>
 
 <script type="text/javascript">
-<?php if ($_SESSION['account_id'] != 'dashboard') { ?>
 $("#recordsMenuIcon").click(function() {
 	LoadRecords();
 });
@@ -117,18 +126,16 @@ $("#remarkMenuIcon").click(function() {
         }
     });
 });
-<?php } else { ?>
-$("#dashboardMenuIcon").click(function() {
+$("#connectionMenuIcon").click(function() {
 	$.ajax({
         type : 'POST',
-        url : 'page.php?name=dashboard',
+        url : 'page.php?name=connection',
         dataType: 'html',
         success : function(data) {
             $('#content').html(data);
         }
     });
 });
-<?php } ?>
 
 $("#balanceMenuIcon").click(function() {
 	$('#content').html('<img src="../media/loading.gif" />');

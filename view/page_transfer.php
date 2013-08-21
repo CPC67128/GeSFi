@@ -47,7 +47,7 @@ foreach ($accounts as $account)
 
 <?= $translator->getTranslation('Date') ?> <input title="aaaa-mm-jj hh:mm:ss" size="10" id="datePicker" name="date" value="<?php echo date("Y-m-d") ?>"><br/>
 <?= $translator->getTranslation('Montant') ?> <input type="text" name="amount" size="6">&nbsp;&euro;<br/>
-<?= $translator->getTranslation('Désignation') ?> <input type="text" name="designation" size="30" value="<?= $translator->getTranslation('TEST') ?>">
+<?= $translator->getTranslation('Désignation') ?> <input type="text" name="designation" size="30" value="<?= $translator->getTranslation('Virement bancaire') ?>">
 
 </td>
 <td style="vertical-align: middle;">

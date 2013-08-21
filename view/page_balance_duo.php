@@ -32,11 +32,12 @@ $totalAmountGivenByActor2 = $totalPrivateExpenseByActor2 + $totalRepaymentByActo
 $totalIncomeJointAccountByActor1 = $statistics->GetTotalIncomeJointAccountByActor($user->getUserId());
 $totalIncomeJointAccountByActor2 = $statistics->GetTotalIncomeJointAccountByActor($user->GetPartnerId());
 
-$totalJointAccountExpenseByActor1 = $statistics->GetTotalJointAccountExpenseByActor($user->getUserId());
-$totalJointAccountExpenseByActor2 = $statistics->GetTotalJointAccountExpenseByActor($user->getUserId());
+$totalJointAccountExpenseChargedByActor1 = $statistics->GetTotalJointAccountExpenseChargedPartByActor($user->getUserId());
+$totalJointAccountExpenseChargedByActor2 = $statistics->GetTotalJointAccountExpenseChargedPartByActor($user->GetPartnerId());
 
-$totalJointAccountExpenseChargedByActor1 = $statistics->GetTotalJointAccountExpenseChargedPartByActor(1);
-$totalJointAccountExpenseChargedByActor2 = $statistics->GetTotalJointAccountExpenseChargedPartByActor(2);
+
+
+
 
 $differenceIncomeChargeActor1 = $totalAmountGivenByActor1 - $totalPrivateExpenseChargedPartByActor1;
 $differenceIncomeChargeActor2 = $totalAmountGivenByActor2 - $totalPrivateExpenseChargedPartByActor2;

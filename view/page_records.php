@@ -125,8 +125,8 @@ function AddRow($index, $row, $mergeRow)
 	{
 		echo '<td></td>';
 		echo '<td></td>';
-		if ($activeAccount->getType() != 1) echo '<td></td>';
-		if ($activeAccount->getType() != 1) echo '<td></td>';
+		echo '<td></td>';
+		echo '<td></td>';
 	}
 
 	if (!$mergeRow && !($row['record_date'] > $now))
@@ -220,11 +220,8 @@ function AddSubTotalRow($index, $row, $subtotal)
 	if ($index % 2 == 0) echo '0">'; else echo '1">';
 
 	echo '<td></td><td></td>';
-	if ($activeAccount->getType() != 1) { echo '<td></td>'; }
-	if ($activeAccount->getType() != 1) {
-		echo '<td></td>';
-	}
-	
+	echo '<td></td>';
+	echo '<td></td>';	
 	echo "<td></td>";
 
 	echo '<td style="text-align: right;">';
@@ -237,7 +234,7 @@ function AddSubTotalRow($index, $row, $subtotal)
 	echo '</font>';
 	echo '</td>';
 
-	if ($activeAccount->getType() != 1 && $activeAccount->getType() != 4) echo '<td></td><td></td>';
+	echo '<td></td><td></td>';
 
 	echo '<td style="text-align: center;"><span class="ui-icon ui-icon-trash" onclick="if (confirm(\''.$translator->getTranslation('Etes-vous sûr de vouloir supprimer cette entrée ?').'\')) { DeleteRecord(\''.$row['record_id'].'\'); }"></span></td>';
 	echo '</tr>';

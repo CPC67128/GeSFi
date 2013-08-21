@@ -91,12 +91,95 @@ while ($row = $categories->fetch())
 <input type='button' value='<?= $translator->getTranslation('Annuler') ?>' onclick='LoadRecords();' />
 <div id="formResult"></div>
 </form>
-<script type="text/javascript">
-function onDestinationChange(destination)
-{
-	if (destination == 'duo')
-		document.getElementById("designation").value = '<?= $translator->getTranslation('Versement sur compte commun') ?>';
-	else
-		document.getElementById("designation").value = '<?= $translator->getTranslation('Versement au partenaire') ?>';
+
+<script type='text/javascript'>
+function GetDecimalValue(text) {
+	var value = 0; 
+	if (!isNaN(parseFloat(text))) {
+		text = text.replace(',','.');
+		value = parseFloat(text);
+	}
+	return value;
 }
+
+function InterpretMinusFormula(text) {
+	var value = 0;
+
+	if (text.length == 0)
+		return 0;
+
+	var splits = text.split("-");
+	if (splits.length > 0)
+		value = GetDecimalValue(splits[0]);
+	for (var i = 1; i < splits.length; i++)
+		value -= GetDecimalValue(splits[i]);
+
+	return value;
+}
+
+function InterpretPlusFormula(text) {
+	var value = 0;
+
+	if (text.length == 0)
+		return 0;
+
+	var splits = text.split("+");
+	for (var i = 0; i < splits.length; i++)
+		value += InterpretMinusFormula(splits[i]);
+	return value;
+}
+
+function InterpretInlineFormula(text) {
+	var value = 0;
+
+	if (text.match("--" + "$") == "--") // this will be processed later
+		return value;
+
+	value = InterpretPlusFormula(text);
+	return value;
+}
+
+function InterpretGlobalFormula(text, total) {
+	var value = 0;
+
+	if (text.match("--" + "$") == "--")
+	{
+		var splits = text.split("-");
+		if (splits.length > 0)
+			value = GetDecimalValue(splits[0]);
+		value -= total;
+	}
+
+	return value;
+}
+
+function CalculateAllAmounts() {
+	var value = 0;
+	var total = 0;
+
+	for (var i=1;i<<?= $i ?>;i++) {
+		if (document.getElementsByName('category'+i+'Formula').length > 0) {
+			value = InterpretInlineFormula($("input[name='category"+i+"Formula']").val());
+			total += value;
+	
+			if (value != 0)
+				$("input[name='category"+i+"Amount']").val( value );
+			else
+				$("input[name='category"+i+"Amount']").val('');
+		}
+	}
+
+	for (i=1;i<<?= $i ?>;i++) {
+		if (document.getElementsByName('category'+i+'Formula').length > 0) {
+			value = InterpretGlobalFormula($("input[name='category"+i+"Formula']").val(), total);
+			total += value;
+	
+			if (value != 0)
+				$("input[name='category"+i+"Amount']").val( value );
+		}
+	}
+
+	$("input[name='totalAmount']").val(total);
+};
+
 </script>

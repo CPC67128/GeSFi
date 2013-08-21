@@ -100,6 +100,15 @@ class Operation_Money_Transfer extends Operation_Money
 			$toAccountId = '';
 		}
 
+		if ($toAccountId != '')
+		{
+			$account = $accountsManager->GetAccount($toAccountId);
+			if ($account->getType() == 3) // Duo account
+			{
+				$toUserId = $fromUserId;
+			}
+		}
+
 		for ($currentMonth = 0; $currentMonth < $monthly_months; $currentMonth++)
 		{
 			$currentDate = Date('Y-m-d', strtotime($this->_date." +".$currentMonth." month"));

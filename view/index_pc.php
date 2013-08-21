@@ -25,10 +25,10 @@ $common_acount_actor2_charge = 50;
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <meta name="Description" content="Application en ligne gratuite de gestion financière du couple (compatibilité de couple ou comptabilité commune) écrite par Steve Fuchs">
 <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
-<link type="text/css" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" rel="stylesheet" />	
+<link type="text/css" href="../3rd_party/jquery-ui-1.10.3.custom/css/smoothness/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" />	
 <link type="text/css" href="gfc.css" rel="stylesheet" />
-<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
-<script type="text/javascript" src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<script type="text/javascript" src="../3rd_party/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="../3rd_party/jquery-ui-1.10.3.custom/js/jquery-ui-1.10.3.custom.min.js"></script>
 <script type="text/javascript" src="gfc.js"></script>
 </head>
 <body>

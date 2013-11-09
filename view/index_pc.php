@@ -34,6 +34,8 @@ $common_acount_actor2_charge = 50;
 <body>
 <div id='topMenu' class='topMenu'>
 </div>
+<div id='topSecondLineMenu' class='topSecondLineMenu'>
+</div>
 <div id='leftMenu' class='leftMenu' align='center'>
 </div>
 

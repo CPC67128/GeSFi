@@ -71,6 +71,59 @@ class DB
 		return $result;
 	}
 
+	function InsertInvestmentValue($accountId, $date, $designation, $value)
+	{
+		if ($this->_isReadOnly)
+			return 0;
+
+		$query = sprintf("insert into ".$this->_dbTablePrefix."investment_record (account_id, record_date, designation, payment, payment_invested, fee, value, investment_record_id)
+				values ('%s', '%s', '%s', null, null, null, %s, uuid())",
+				$accountId,
+				$date,
+				$designation,
+				$value);
+
+		$result = $this->_connection->exec($query) or die('Erreur SQL ! '.$query.'<br />'.mysql_error());
+	
+		return $result;
+	}
+
+	function InsertInvestmentRemark($accountId, $date, $designation)
+	{
+		if ($this->_isReadOnly)
+			return 0;
+
+		$query = sprintf("insert into ".$this->_dbTablePrefix."investment_record (account_id, record_date, designation, payment, payment_invested, fee, value, investment_record_id, record_type)
+				values ('%s', '%s', '%s', null, null, null, null, uuid(), 2)",
+				$accountId,
+				$date,
+				$designation,
+				$value);
+
+		$result = $this->_connection->exec($query) or die('Erreur SQL ! '.$query.'<br />'.mysql_error());
+	
+		return $result;
+	}
+
+	function InsertInvestmentIncome($accountId, $date, $designation, $payment, $paymentInvested, $value)
+	{
+		if ($this->_isReadOnly)
+			return 0;
+
+		$query = sprintf("insert into ".$this->_dbTablePrefix."investment_record (account_id, record_date, designation, payment, payment_invested, fee, value, investment_record_id)
+				values ('%s', '%s', '%s', %s, %s, null, %s, uuid())",
+				$accountId,
+				$date,
+				$designation,
+				$payment,
+				$paymentInvested,
+				$value);
+
+		$result = $this->_connection->exec($query) or die('Erreur SQL ! '.$query.'<br />'.mysql_error());
+	
+		return $result;
+	}
+
 	function UpdateConfigurationField($fieldName, $fieldValue)
 	{
 		if ($this->_isReadOnly)

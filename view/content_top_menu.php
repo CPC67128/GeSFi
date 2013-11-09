@@ -8,13 +8,13 @@ function __autoload($class_name)
 
 if ($_SESSION['account_id'] != 'all_accounts')
 	echo '<a href="#" onclick="javascript:ChangeAccount(\'all_accounts\'); return false;">';
-echo 'Vue globale';
+echo 'Gestion courante';
 if ($_SESSION['account_id'] != 'all_accounts')
 	echo '</a>';
 echo ' / ';
 
 $accountsManager = new AccountsManager();
-$accounts = $accountsManager->GetAllAccounts();
+$accounts = $accountsManager->GetAllOrdinaryAccounts();
 
 foreach ($accounts as $account)
 {
@@ -31,6 +31,4 @@ if ($_SESSION['account_id'] != 'configuration')
 echo 'Configuration';
 if ($_SESSION['account_id'] != 'configuration')
 	echo '</a>';
-
-
 ?>

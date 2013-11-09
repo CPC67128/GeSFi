@@ -18,6 +18,17 @@ function DeleteRecord(recordIdToDelete)
 		);
 }
 
+function DeleteRecordInvestment(recordIdToDelete)
+{
+	$.post (
+			'controller.php?action=deleteRecordInvestment',
+			{ recordId: recordIdToDelete },
+			function(response, status) {
+				LoadRecords();
+			}
+		);
+}
+
 function ConfirmRecord(recordIdToConfirm, sender)
 {
 	if (sender.checked)
@@ -75,6 +86,15 @@ function LoadTopMenu()
         dataType: 'html',
         success : function(data) {
             $('#topMenu').html(data);
+        }
+    });
+
+	$.ajax({
+        type : 'POST',
+        url : 'content_top_second_line_menu.php',
+        dataType: 'html',
+        success : function(data) {
+            $('#topSecondLineMenu').html(data);
         }
     });
 }

@@ -217,7 +217,7 @@ function CalculateAllAmounts() {
 	var value = 0;
 	var total = 0;
 
-	for (var i=1;i<<?= $i-1 ?>;i++) {
+	for (var i=1;i<=<?= $i-1 ?>;i++) {
 		if (document.getElementsByName('category'+i+'Formula').length > 0) {
 			value = InterpretInlineFormula($("input[name='category"+i+"Formula']").val());
 			total += value;
@@ -229,7 +229,7 @@ function CalculateAllAmounts() {
 		}
 	}
 
-	for (i=1;i<<?= $i-1 ?>;i++) {
+	for (i=1;i<=<?= $i-1 ?>;i++) {
 		if (document.getElementsByName('category'+i+'Formula').length > 0) {
 			value = InterpretGlobalFormula($("input[name='category"+i+"Formula']").val(), total);
 			total += value;

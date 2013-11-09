@@ -4,7 +4,7 @@
 <table class="summaryTable">
 <?php
 $accountsManager = new AccountsManager();
-$accounts = $accountsManager->GetAllAccounts();
+$accounts = $accountsManager->GetAllOrdinaryAccounts();
 
 foreach ($accounts as $account)
 {

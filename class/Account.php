@@ -3,11 +3,13 @@ class Account
 {
 	protected $_accountId;
 	protected $_name;
+	protected $_description;
 	protected $_type;
 	protected $_ownerUserId;
 	protected $_coownerUserId;
 	protected $_openingBalance;
 	protected $_expectedMinimumBalance;
+	protected $_information;
 	protected $_creationDate;
 
 	protected $_sortOrder;
@@ -46,10 +48,11 @@ class Account
 	{
 		switch ($this->_type)
 		{
-			case 1: return 'Compte privé';
-			case 2: return 'Compte duo virtuel';
-			case 3: return 'Compte duo';
-			case 4: return 'Compte d\'optimisation financière';
+			case 1: return 'Compte privé'; break;
+			case 2: return 'Compte duo virtuel'; break;
+			case 3: return 'Compte duo'; break;
+			case 4: return 'Compte d\'optimisation financière'; break;
+			case 10: return 'Placement privé'; break;
 		}
 	}
 
@@ -111,6 +114,26 @@ class Account
 	public function getSortOrder()
 	{
 		return $this->_sortOrder;
+	}
+
+	public function setDescription($description)
+	{
+		$this->_description = $description;
+	}
+	
+	public function getDescription()
+	{
+		return $this->_description;
+	}
+
+	public function setInformation($information)
+	{
+		$this->_information = $information;
+	}
+	
+	public function getInformation()
+	{
+		return $this->_information;
 	}
 
 	public function hydrate(array $data)
@@ -376,4 +399,21 @@ class Account
 	
 		return $row['total'];
 	}
+
+	public function GetInvestmentLastValue()
+	{
+		$db = new DB();
+	
+		$query = 'select value
+			from {TABLEPREFIX}investment_record
+			where account_id = \''.$this->_accountId.'\'
+			and value is not null
+			order by record_date desc
+			limit 1';
+		$row = $db->SelectRow($query);
+	
+		return $row['value'];
+	}
+
+	
 }

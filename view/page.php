@@ -21,6 +21,9 @@ if ($accountType == -50 && $pageName == 'records')
 if ($accountType == -100 && $pageName == 'records')
 	$pageName = '';
 
+if ($accountType == 100 && $pageName == 'records')
+	$pageName = 'asset_management';
+
 $categoryHandler = new CategoryHandler();
 
 $recordsManager = new RecordsManager();
@@ -42,6 +45,8 @@ switch ($pageName)
 		break;
 
 	case 'income';
+		if ($activeAccount->getType() == 10)
+			$pageName = 'income_investment';
 		include 'page_'.$pageName.'.php';
 		AddFormManagementEnd($pageName);
 		break;
@@ -56,7 +61,9 @@ switch ($pageName)
 		break;
 
 	case 'records';
-		include 'page_'.$pageName.'.php';;
+		if ($activeAccount->getType() == 10)
+			$pageName = 'records_investment';
+		include 'page_'.$pageName.'.php';
 		break;
 
 	case 'statistics';
@@ -64,16 +71,38 @@ switch ($pageName)
 			include 'page_'.$pageName.'_global.php';
 		else if ($activeAccount->getType() == 1)
 			include 'page_'.$pageName.'_private.php';
+		else if ($activeAccount->getType() == 10)
+			include 'page_'.$pageName.'_investment.php';
+		else if ($activeAccount->getType() == 100)
+			include 'page_'.$pageName.'_investment_global.php';
 		else
 			include 'page_'.$pageName.'_duo.php';
 		break;
 
+	case 'value_investment':
+		include 'page_'.$pageName.'.php';
+		AddFormManagementEnd('valueInvestment');
+		break;
+
+	case 'income_investment';
+		include 'page_'.$pageName.'.php';
+		AddFormManagementEnd('incomeInvestment');
+		break;
+		
+	case 'remark_investment';
+		include 'page_'.$pageName.'.php';
+		AddFormManagementEnd('remarkInvestment');
+		break;
+
+	case 'investments_statistics';
 	case 'configuration';
 	case 'configuration_accounts';
 	case 'configuration_user';
 	case 'configuration_category';
 	case 'connection';
 	case 'home';
+	case 'investment';
+	case 'asset_management';
 		include 'page_'.$pageName.'.php';
 		break;
 }
@@ -82,7 +111,7 @@ switch ($pageName)
 
 function AddFormManagementEnd($pageName)
 {
-	?>
+?>
 <script type='text/javascript'>
 $("#form").submit( function () {
 	document.getElementById("submitForm").disabled = true;

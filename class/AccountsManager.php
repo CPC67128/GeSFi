@@ -10,8 +10,56 @@ class AccountsManager
 		$query = 'select ACC.*, PRF.sort_order
 			from {TABLEPREFIX}account as ACC
 			left join {TABLEPREFIX}account_user_preference as PRF on ACC.account_id = PRF.account_id and PRF.user_id = \'{USERID}\' 
-			where ACC.owner_user_id = \'{USERID}\'
-			or ACC.coowner_user_id = \'{USERID}\'
+			where (ACC.owner_user_id = \'{USERID}\'
+			or ACC.coowner_user_id = \'{USERID}\')
+			order by PRF.sort_order';
+		$result = $db->Select($query);
+		while ($row = $result->fetch())
+		{
+			$newAccount = new Account();
+			$newAccount->hydrate($row);
+			array_push($accounts, $newAccount);
+		}
+
+		return $accounts;
+	}
+
+	function GetAllOrdinaryAccounts()
+	{
+		$accounts = array();
+
+		$db = new DB();
+	
+		$query = 'select ACC.*, PRF.sort_order
+			from {TABLEPREFIX}account as ACC
+			left join {TABLEPREFIX}account_user_preference as PRF on ACC.account_id = PRF.account_id and PRF.user_id = \'{USERID}\' 
+			where (ACC.owner_user_id = \'{USERID}\'
+			or ACC.coowner_user_id = \'{USERID}\')
+			and ACC.type < 10 
+			order by PRF.sort_order';
+		$result = $db->Select($query);
+		while ($row = $result->fetch())
+		{
+			$newAccount = new Account();
+			$newAccount->hydrate($row);
+			array_push($accounts, $newAccount);
+		}
+
+		return $accounts;
+	}
+
+	function GetAllInvestmentAccounts()
+	{
+		$accounts = array();
+
+		$db = new DB();
+	
+		$query = 'select ACC.*, PRF.sort_order
+			from {TABLEPREFIX}account as ACC
+			left join {TABLEPREFIX}account_user_preference as PRF on ACC.account_id = PRF.account_id and PRF.user_id = \'{USERID}\' 
+			where (ACC.owner_user_id = \'{USERID}\'
+			or ACC.coowner_user_id = \'{USERID}\')
+			and ACC.type = 10 
 			order by PRF.sort_order';
 		$result = $db->Select($query);
 		while ($row = $result->fetch())
@@ -56,9 +104,13 @@ class AccountsManager
 		{
 			$newAccount->setType(0);
 		}
-		elseif ($_SESSION['account_id'] == 'configuration')
+			elseif ($_SESSION['account_id'] == 'configuration')
 		{
 			$newAccount->setType(-100);
+		}
+		elseif ($_SESSION['account_id'] == 'asset_management')
+		{
+			$newAccount->setType(100);
 		}
 		else
 		{

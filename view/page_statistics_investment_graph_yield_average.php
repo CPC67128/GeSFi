@@ -53,7 +53,7 @@ $graph->SetMargin(40,40,30,30);
 
 // Fix the Y-scale to go between [0,100] and use date for the x-axis
 $graph->SetScale('datlin');
-$graph->title->Set($translator->getTranslation("Evolution du rendement"));
+$graph->title->Set($translator->getTranslation("Rendement moyen"));
 
 // Set the angle for the labels to 90 degrees
 $graph->xaxis->SetLabelAngle(0);
@@ -65,7 +65,7 @@ $lineYieldAverage = new LinePlot($yieldAverageYArray, $yieldAverageXArray);
 $graph->Add($lineYieldAverage);
 
 $lineYieldAverage->SetColor('lightred');
-$lineYieldAverage->SetFillColor('lightred@0.5');
+$lineYieldAverage->SetFillColor('lightred@0.8');
 $lineYieldAverage->SetWeight(2);
 $lineYieldAverage->SetStyle("solid");
 

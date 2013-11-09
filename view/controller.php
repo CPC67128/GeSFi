@@ -30,6 +30,11 @@ try
 			$newRemark->hydrate($_POST);
 			$newRemark->Save();
 			break;
+		case 'remarkInvestment':
+			$newRemark = new Operation_Remark_Investment();
+			$newRemark->hydrate($_POST);
+			$newRemark->Save();
+			break;
 		case 'reverseCategory':
 			$newAction = new Action_ReverseCategory();
 			$newAction->hydrate($_POST);
@@ -85,10 +90,25 @@ try
 			$newAction->hydrate($_POST);
 			$newAction->Execute();
 			break;
+		case 'deleteRecordInvestment':
+			$newAction = new Action_DeleteRecordInvestment();
+			$newAction->hydrate($_POST);
+			$newAction->Execute();
+			break;
 		case 'confirmRecord':
 			$newAction = new Action_ConfirmRecord();
 			$newAction->hydrate($_POST);
 			$newAction->Execute();
+			break;
+		case 'valueInvestment':
+			$newAction = new Action_AddInvestmentValue();
+			$newAction->hydrate($_POST);
+			$newAction->Save();
+			break;
+		case 'incomeInvestment':
+			$newAction = new Action_AddInvestmentIncome();
+			$newAction->hydrate($_POST);
+			$newAction->Save();
 			break;
 	}
 }

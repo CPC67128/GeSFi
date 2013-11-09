@@ -18,7 +18,50 @@ Accueil
 <br />
 <?php } ?>
 
-<?php if ($account->getType() >= 0) { ?>
+<?php if ($account->getType() == 100) { ?>
+<img id='recordsMenuIcon' class='menuIcon' src="../media/assetManagementMenuIcon.png" />
+<br />
+Situation
+<br />
+<br />
+<img id='investmentsStatisticsMenuIcon' class='menuIcon' src="../media/statsMenuIcon.png" />
+<br />
+Statistiques
+<br />
+<br />
+<?php
+}
+?>
+
+<?php if ($account->getType() == 10) { ?>
+<img id='recordsMenuIcon' class='menuIcon' src="../media/recordsMenuIcon.png" />
+<br />
+Lignes
+<br />
+<br />
+<img id='investmentValueMenuIcon' class='menuIcon' src="../media/valueMenuIcon.png" />
+<br />
+Valorisation
+<br />
+<br />
+<img id='investmentIncomeMenuIcon' class='menuIcon' src="../media/incomeMenuIcon.gif" />
+<br />
+Enregistrement
+<br />
+<br />
+<img id='remarkInvestmentMenuIcon' class='menuIcon' src="../media/remarkMenuIcon.png" />
+<br />
+Remarque
+<br />
+<br />
+<img id='statisticsMenuIcon' class='menuIcon' src="../media/statsMenuIcon.png" />
+<br />
+Statistiques
+<br />
+<br />
+<?php } ?>
+
+<?php if ($account->getType() >= 0 && $account->getType() < 10) { ?>
 <img id='recordsMenuIcon' class='menuIcon' src="../media/recordsMenuIcon.png" />
 <br />
 Lignes
@@ -152,6 +195,27 @@ $("#balanceMenuIcon").click(function() {
 $("#statisticsMenuIcon").click(function() {
 	$('#content').html('<img src="../media/loading.gif" />');
 	LoadPage('statistics');
+});
+
+$("#remarkInvestmentMenuIcon").click(function() {
+	$('#content').html('<img src="../media/loading.gif" />');
+	LoadPage('remark_investment');
+});
+
+$("#investmentsStatisticsMenuIcon").click(function() {
+	$('#content').html('<img src="../media/loading.gif" />');
+	LoadPage('statistics');
+});
+
+$("#investmentValueMenuIcon").click(function() {
+	$('#content').html('<img src="../media/loading.gif" />');
+	LoadPage('value_investment');
+});
+
+
+$("#investmentIncomeMenuIcon").click(function() {
+	$('#content').html('<img src="../media/loading.gif" />');
+	LoadPage('income_investment');
 });
 
 $("#configurationMenuIcon").click(function() {

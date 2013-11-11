@@ -41,7 +41,6 @@ class Action_AddInvestmentIncome extends Action
 				$this->_date,
 				$this->_designation,
 				$this->_payment,
-				$this->_paymentInvested,
-				$this->_value);
+				$this->_paymentInvested);
 	}
 }

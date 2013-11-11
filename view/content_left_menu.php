@@ -39,7 +39,7 @@ Statistiques
 Lignes
 <br />
 <br />
-<img id='investmentValueMenuIcon' class='menuIcon' src="../media/valueMenuIcon.png" />
+<img id='investmentValueMenuIcon' class='menuIcon' src="../media/valueMenuIcon.gif" />
 <br />
 Valorisation
 <br />

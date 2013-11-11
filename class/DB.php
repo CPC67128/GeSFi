@@ -105,19 +105,18 @@ class DB
 		return $result;
 	}
 
-	function InsertInvestmentIncome($accountId, $date, $designation, $payment, $paymentInvested, $value)
+	function InsertInvestmentIncome($accountId, $date, $designation, $payment, $paymentInvested)
 	{
 		if ($this->_isReadOnly)
 			return 0;
 
-		$query = sprintf("insert into ".$this->_dbTablePrefix."investment_record (account_id, record_date, designation, payment, payment_invested, fee, value, investment_record_id)
-				values ('%s', '%s', '%s', %s, %s, null, %s, uuid())",
+		$query = sprintf("insert into ".$this->_dbTablePrefix."investment_record (account_id, record_date, designation, payment, payment_invested, fee, investment_record_id)
+				values ('%s', '%s', '%s', %s, %s, null, uuid())",
 				$accountId,
 				$date,
 				$designation,
 				$payment,
-				$paymentInvested,
-				$value);
+				$paymentInvested);
 
 		$result = $this->_connection->exec($query) or die('Erreur SQL ! '.$query.'<br />'.mysql_error());
 	

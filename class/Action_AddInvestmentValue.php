@@ -32,12 +32,17 @@ class Action_AddInvestmentValue extends Action
 
 	public function Save()
 	{
+		$value = $this->_value;
+		$value = str_replace(' ' ,'', $value); 
+		$value = str_replace(',' ,'.', $value);
+		$value = str_replace('€' ,'', $value);
+
 		$db = new DB();
 
 		$db->InsertInvestmentValue(
 				$_SESSION['account_id'],
 				$this->_date,
 				$this->_designation,
-				$this->_value);
+				$value);
 	}
 }

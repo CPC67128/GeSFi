@@ -412,8 +412,63 @@ class Account
 			limit 1';
 		$row = $db->SelectRow($query);
 	
-		return $row['value'];
+		if (isset($row['value']))
+			return $row['value'];
+
+		$query = 'select CALC_payment_invested_accumulated
+			from {TABLEPREFIX}investment_record
+			where account_id = \''.$this->_accountId.'\'
+			and value is null
+			order by record_date desc
+			limit 1';
+		$row = $db->SelectRow($query);
+
+		return $row['CALC_payment_invested_accumulated'];
+	}
+
+	public function GetInvestmentLastYield()
+	{
+		$db = new DB();
+	
+		$query = 'select CALC_yield
+			from {TABLEPREFIX}investment_record
+			where account_id = \''.$this->_accountId.'\'
+			and CALC_yield is not null
+			order by record_date desc
+			limit 1';
+		$row = $db->SelectRow($query);
+
+		return $row['CALC_yield'];
+	}
+
+	public function GetInvestmentLastYieldAverage()
+	{
+		$db = new DB();
+	
+		$query = 'select CALC_yield_average
+			from {TABLEPREFIX}investment_record
+			where account_id = \''.$this->_accountId.'\'
+			and CALC_yield is not null
+			order by record_date desc
+			limit 1';
+		$row = $db->SelectRow($query);
+
+		return $row['CALC_yield_average'];
 	}
 
 	
+	public function GetInvestmentLastValueDate()
+	{
+		$db = new DB();
+	
+		$query = 'select record_date
+			from {TABLEPREFIX}investment_record
+			where account_id = \''.$this->_accountId.'\'
+			and value is not null
+			order by record_date desc
+			limit 1';
+		$row = $db->SelectRow($query);
+	
+		return $row['record_date'];
+	}
 }

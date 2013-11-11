@@ -62,6 +62,7 @@ class InvestmentsRecordsManager
 		{
 			$paymentAccumulated += $record['payment'];
 			$paymentInvestedAccumulated += $record['payment_invested'];
+			$daysSinceCreation = (int) (strtotime($record['record_date']) - strtotime($creationDate)) / 86400;
 
 			unset($gain);
 			unset($yield);
@@ -71,7 +72,6 @@ class InvestmentsRecordsManager
 				$gain = $record['value'] - $paymentAccumulated;
 				$yield = (($record['value'] / $paymentAccumulated) - 1) * 100;
 
-				$daysSinceCreation = (int) (strtotime($record['record_date']) - strtotime($creationDate)) / 86400;
 				$yearsSinceCreation = (float) $daysSinceCreation / 365.25;
 
 				if ($yearsSinceCreation != 0)

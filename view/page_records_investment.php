@@ -28,7 +28,7 @@ function AddTitleRow()
 	<!-- <td style="vertical-align: top; text-align: center; font-style: italic;"><?= $translator->getTranslation('Frais') ?></td> -->
 	<td style="vertical-align: top; text-align: center; font-style: italic;"><?= $translator->getTranslation('Valorisation') ?></td>
 	<td style="vertical-align: top; text-align: center; font-style: italic;"><?= $translator->getTranslation('Rendement') ?></td>
-	<td style="vertical-align: top; text-align: center; font-style: italic;"><?= $translator->getTranslation('Rendement X') ?></td>
+	<td style="vertical-align: top; text-align: center; font-style: italic;"><?= $translator->getTranslation('Rendement annuel') ?></td>
 	<td style="vertical-align: top; text-align: center; font-style: italic;"></td>
 	</tr>
 	<?php

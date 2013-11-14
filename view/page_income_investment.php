@@ -5,10 +5,20 @@
 <tr>
   <td style="vertical-align: middle;">
 
-<?= $translator->getTranslation('Vers le placement :') ?><br/>
-
+<?= $translator->getTranslation('Depuis le compte') ?> :<br/>
+<input type="radio" name="fromAccount" value=""><i>Compte inconnu</i><br />
+<?php
+$accounts = $accountsManager->GetAllPrivateAccounts();
+foreach ($accounts as $account)
+{ ?>
+<input type="radio" name="fromAccount" <?= $account->getAccountId() == $_SESSION['account_id'] ? 'checked' : '' ?> value="<?= $account->getAccountId() ?>"><?= $account->getName() ?><br />
+<?php } ?>
 <br/>
 
+<?= $translator->getTranslation('Date du prélèvement') ?> <input title="aaaa-mm-jj hh:mm:ss" size="10" class="datePicker" name="fromDate" value="<?php echo date("Y-m-d") ?>"><br/>
+<br/>
+
+<?= $translator->getTranslation('Vers le placement :') ?><br/>
 <?php
 $accountsManager = new AccountsManager();
 $accounts = $accountsManager->GetAllInvestmentAccounts();
@@ -16,20 +26,18 @@ $accounts = $accountsManager->GetAllInvestmentAccounts();
 foreach ($accounts as $account)
 {
 ?>
-<input type="radio" name="accountId" <?= $account->getAccountId() == $_SESSION['account_id'] ? 'checked' : '' ?> value="<?= $account->getAccountId() ?>"><?= $account->getName() ?><?= strlen($account->getDescription()) > 0 ? ' ('.$account->getDescription().')' : ''  ?><br />
+<input type="radio" name="toAccount" <?= $account->getAccountId() == $_SESSION['account_id'] ? 'checked' : '' ?> value="<?= $account->getAccountId() ?>"><?= $account->getName() ?><?= strlen($account->getDescription()) > 0 ? ' ('.$account->getDescription().')' : ''  ?><br />
 <?php
 }
 ?>
 
 <br/>
-
-
+<?= $translator->getTranslation('Date de prise en compte') ?> <input title="aaaa-mm-jj hh:mm:ss" size="10" class="datePicker" name="toDate" value="<?php echo date("Y-m-d") ?>"><br/>
 <br/>
-<?= $translator->getTranslation('Date') ?> <input title="aaaa-mm-jj hh:mm:ss" size="10" id="datePicker" name="date" value="<?php echo date("Y-m-d") ?>"><br/>
-<?= $translator->getTranslation('Versement') ?> <input type="text" name="payment" tabindex="-1" size="6">&nbsp;&euro;<br/>
-<?= $translator->getTranslation('Montant investi') ?> <input type="text" name="paymentInvested" tabindex="-1" size="6">&nbsp;&euro;<br/>
-<!-- <?= $translator->getTranslation('Valorisation') ?> <input type="text" name="value" tabindex="-1" size="6">&nbsp;&euro;<br/> -->
-<?= $translator->getTranslation('Désignation') ?> <input type="text" name="designation" id="designation" size="30" value="<?= $translator->getTranslation('Versement') ?>">
+<?= $translator->getTranslation('Versement') ?> <input type="text" name="payment" size="6">&nbsp;&euro;<br/>
+<?= $translator->getTranslation('Montant investi') ?> <input type="text" name="paymentInvested" size="6">&nbsp;&euro;<br/>
+<!-- <?= $translator->getTranslation('Valorisation') ?> <input type="text" name="value" size="6">&nbsp;&euro;<br/> -->
+<?= $translator->getTranslation('Désignation') ?> <input type="text" name="designation" id="designation" size="30" value="<?= $translator->getTranslation('Versement vers placement') ?>">
 </td>
 
 <td style="vertical-align: middle;">

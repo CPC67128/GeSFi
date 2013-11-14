@@ -28,7 +28,22 @@ class Action_DeleteRecordInvestment extends Action
 	{
 		$db = new DB();
 
-		$query = 'delete from {TABLEPREFIX}investment_record where investment_record_id = \''.$this->_recordId.'\' and account_id = \'{ACCOUNTID}\'';
-		$row = $db->Execute($query);
+		$query = 'select record_group_id from {TABLEPREFIX}investment_record where investment_record_id = \''.$this->_recordId.'\' and account_id = \'{ACCOUNTID}\'';
+		$row = $db->SelectRow($query);
+		if (strlen($row['record_group_id']) > 0)
+		{
+			$query = 'update {TABLEPREFIX}investment_record set marked_as_deleted = 1 where record_group_id = \''.$row['record_group_id'].'\'';
+		}
+		else
+		{
+			$query = 'update {TABLEPREFIX}investment_record set marked_as_deleted = 1 where investment_record_id = \''.$this->_recordId.'\' and account_id = \'{ACCOUNTID}\'';
+		}
+		$result = $db->Execute($query);
+		
+		if (strlen($row['record_group_id']) > 0)
+		{
+			$query = 'update {TABLEPREFIX}record set marked_as_deleted = 1 where record_group_id = \''.$row['record_group_id'].'\'';
+		}
+		$result = $db->Execute($query);
 	}
 }

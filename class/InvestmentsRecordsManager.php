@@ -8,6 +8,7 @@ class InvestmentsRecordsManager
 			from {TABLEPREFIX}investment_record INR
 			inner join {TABLEPREFIX}account ACC on ACC.account_id = INR.account_id
 			where ACC.owner_user_id = '{USERID}'
+			and marked_as_deleted = 0
 			and INR.account_id = '{ACCOUNTID}'
 			order by record_date";
 		$result = $db->Select($query);
@@ -21,6 +22,7 @@ class InvestmentsRecordsManager
 			from {TABLEPREFIX}investment_record INR
 			inner join {TABLEPREFIX}account ACC on ACC.account_id = INR.account_id
 			where ACC.owner_user_id = '{USERID}'
+			and marked_as_deleted = 0
 			order by ACC.account_id, INR.record_date";
 		$result = $db->Select($query);
 		return $result;
@@ -40,6 +42,7 @@ class InvestmentsRecordsManager
 			from {TABLEPREFIX}investment_record INR
 			inner join {TABLEPREFIX}account ACC on ACC.account_id = INR.account_id
 			where ACC.owner_user_id = '{USERID}'
+			and marked_as_deleted = 0
 			and INR.account_id = '".$account->getAccountId()."'
 			order by record_date";
 		$records = $db->Select($query);
@@ -58,8 +61,12 @@ class InvestmentsRecordsManager
 			CALC_yield_average = %s
 			where investment_record_id = '%s'";
 
+		unset($creationDate);
 		while ($record = $records->fetch())
 		{
+			if (!isset($creationDate))
+				$creationDate = $record['record_date'];
+
 			$paymentAccumulated += $record['payment'];
 			$paymentInvestedAccumulated += $record['payment_invested'];
 			$daysSinceCreation = (int) (strtotime($record['record_date']) - strtotime($creationDate)) / 86400;

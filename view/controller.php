@@ -110,6 +110,11 @@ try
 			$newAction->hydrate($_POST);
 			$newAction->Save();
 			break;
+		case 'debit_investment':
+			$newAction = new Action_AddInvestmentDebit();
+			$newAction->hydrate($_POST);
+			$newAction->Save();
+			break;
 	}
 }
 catch (Exception $e)

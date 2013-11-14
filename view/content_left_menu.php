@@ -49,6 +49,11 @@ Valorisation
 Enregistrement
 <br />
 <br />
+<img id='investmentDebitMenuIcon' class='menuIcon' src="../media/expenseMenuIcon.png" />
+<br />
+Dépense
+<br />
+<br />
 <img id='remarkInvestmentMenuIcon' class='menuIcon' src="../media/remarkMenuIcon.png" />
 <br />
 Remarque
@@ -217,6 +222,12 @@ $("#investmentIncomeMenuIcon").click(function() {
 	$('#content').html('<img src="../media/loading.gif" />');
 	LoadPage('income_investment');
 });
+
+$("#investmentDebitMenuIcon").click(function() {
+	$('#content').html('<img src="../media/loading.gif" />');
+	LoadPage('debit_investment');
+});
+
 
 $("#configurationMenuIcon").click(function() {
 	LoadConfigurationPage();

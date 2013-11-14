@@ -1,12 +1,11 @@
 <?php
-class Action_AddInvestmentIncome
+class Action_AddInvestmentDebit
 {
 	protected $_fromAccount;
 	protected $_fromDate;
 	protected $_toAccount;
 	protected $_toDate;
-	protected $_payment;
-	protected $_paymentInvested;
+	protected $_paymentDisinvested;
 	protected $_designation;
 
 	protected $_periodicity;
@@ -51,7 +50,7 @@ class Action_AddInvestmentIncome
 
 		$db = new DB();
 
-		$recordTypeOutcome = 20;
+		$recordTypeIncome = 10;
 
 		$usersHandler = new UsersHandler();
 		$user = $usersHandler->GetCurrentUser();
@@ -63,30 +62,29 @@ class Action_AddInvestmentIncome
 
 			$uuid = $db->GenerateUUID();
 	
-			// Outcome
-			if ($this->_fromAccount != '')
+			$db->InsertInvestmentRecord(
+					$this->_fromAccount,
+					$uuid,
+					$fromDate,
+					$this->_designation,
+					'null',
+					-1 * $this->_paymentDisinvested,
+					'null');
+
+			if ($this->_toAccount != '')
 			{
 				$db->InsertRecord(
-						$this->_fromAccount,
+						$this->_toAccount,
 						$user->getUserId(),
 						0,
-						$fromDate,
-						$this->_payment,
+						$toDate,
+						$this->_paymentDisinvested,
 						$this->_designation,
 						0,
 						'',
-						$recordTypeOutcome,
+						$recordTypeIncome,
 						$uuid);
 			}
-	
-			$db->InsertInvestmentRecord(
-					$this->_toAccount,
-					$uuid,
-					$toDate,
-					$this->_designation,
-					$this->_payment,
-					$this->_paymentInvested,
-					'null');
 		}
 	}
 }

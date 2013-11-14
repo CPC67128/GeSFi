@@ -71,6 +71,27 @@ class DB
 		return $result;
 	}
 
+	function InsertInvestmentRecord($accountId, $recordGroupId, $date, $designation, $payment, $paymentInvested, $value)
+	{
+		if ($this->_isReadOnly)
+			return 0;
+	
+		$query = sprintf("insert into ".$this->_dbTablePrefix."investment_record (account_id, record_group_id, record_date, designation, payment, payment_invested, value, investment_record_id)
+				values ('%s', '%s', '%s', '%s', %s, %s, %s, uuid())",
+				$accountId,
+				$recordGroupId,
+				$date,
+				$designation,
+				$payment == "null" ? "null" : $value,
+				$paymentInvested,
+				$value == "null" ? "null" : $value);
+		//throw new Exception($query);
+	
+		$result = $this->_connection->exec($query) or die('Erreur SQL ! '.$query.'<br />'.mysql_error());
+	
+		return $result;
+	}
+
 	function InsertInvestmentValue($accountId, $date, $designation, $value)
 	{
 		if ($this->_isReadOnly)

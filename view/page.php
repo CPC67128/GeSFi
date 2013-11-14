@@ -89,6 +89,11 @@ switch ($pageName)
 		AddFormManagementEnd('incomeInvestment');
 		break;
 		
+	case 'debit_investment';
+		include 'page_'.$pageName.'.php';
+		AddFormManagementEnd('debit_investment');
+		break;
+		
 	case 'remark_investment';
 		include 'page_'.$pageName.'.php';
 		AddFormManagementEnd('remarkInvestment');
@@ -144,6 +149,18 @@ $("#form").submit( function () {
 });
 
 $( "#datePicker" ).datepicker({
+	showOn: "both",
+	buttonImage: "../media/calendar.gif",
+	buttonImageOnly: true,
+	dateFormat: "yy-mm-dd",
+	firstDay: 1,
+	dayNamesShort: [ "Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam" ],
+	dayNamesMin: [ "Di", "Lu", "Ma", "Me", "Je", "Ve", "Sa" ],
+	dayNames: [ "Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi" ],
+	monthNames: [ "Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre" ]
+});
+
+$( ".datePicker" ).datepicker({
 	showOn: "both",
 	buttonImage: "../media/calendar.gif",
 	buttonImageOnly: true,

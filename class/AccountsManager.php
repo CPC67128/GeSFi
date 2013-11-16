@@ -12,6 +12,7 @@ class AccountsManager
 			left join {TABLEPREFIX}account_user_preference as PRF on ACC.account_id = PRF.account_id and PRF.user_id = \'{USERID}\' 
 			where (ACC.owner_user_id = \'{USERID}\'
 			or ACC.coowner_user_id = \'{USERID}\')
+			and marked_as_closed = 0
 			order by PRF.sort_order';
 		$result = $db->Select($query);
 		while ($row = $result->fetch())
@@ -36,6 +37,7 @@ class AccountsManager
 			where (ACC.owner_user_id = \'{USERID}\'
 			or ACC.coowner_user_id = \'{USERID}\')
 			and ACC.type < 10 
+			and marked_as_closed = 0
 			order by PRF.sort_order';
 		$result = $db->Select($query);
 		while ($row = $result->fetch())
@@ -60,6 +62,7 @@ class AccountsManager
 			where (ACC.owner_user_id = \'{USERID}\'
 			or ACC.coowner_user_id = \'{USERID}\')
 			and ACC.type = 10 
+			and marked_as_closed = 0
 			order by PRF.sort_order';
 		$result = $db->Select($query);
 		while ($row = $result->fetch())
@@ -80,8 +83,9 @@ class AccountsManager
 
 		$query = 'select *
 			from {TABLEPREFIX}account
-			where owner_user_id = \'{USERID}\'
-			or coowner_user_id = \'{USERID}\'';
+			where (owner_user_id = \'{USERID}\'
+			or coowner_user_id = \'{USERID}\')
+			and marked_as_closed = 0';
 		$result = $db->Select($query);
 		if ($row = $result->fetch())
 		{
@@ -119,7 +123,8 @@ class AccountsManager
 			$query = 'select *
 				from {TABLEPREFIX}account
 				where (owner_user_id = \'{USERID}\' or coowner_user_id = \'{USERID}\')
-				and account_id = \'{ACCOUNTID}\'';
+				and account_id = \'{ACCOUNTID}\'
+				and marked_as_closed = 0';
 			$row = $db->SelectRow($query);
 			$newAccount->hydrate($row);
 		}
@@ -140,6 +145,7 @@ class AccountsManager
 			or
 			owner_user_id = (select coowner_user_id from {TABLEPREFIX}account where account_id = \''.$idDuoAccount.'\')
 			)
+			and marked_as_closed = 0
 			and type = 1';
 		$result = $db->Select($query);
 		while ($row = $result->fetch())
@@ -161,6 +167,7 @@ class AccountsManager
 		$query = 'select *
 			from {TABLEPREFIX}account
 			where owner_user_id = \'{USERID}\'
+			and marked_as_closed = 0
 			and (type = 1 or type = 4)';
 		$result = $db->Select($query);
 		while ($row = $result->fetch())
@@ -182,6 +189,7 @@ class AccountsManager
 		$query = 'select *
 		from {TABLEPREFIX}account
 		where (owner_user_id = \'{USERID}\' or coowner_user_id = \'{USERID}\')
+		and marked_as_closed = 0
 		and type = 3';
 		$result = $db->Select($query);
 		while ($row = $result->fetch())
@@ -203,7 +211,8 @@ class AccountsManager
 		$query = 'select ACC.*, PRF.sort_order
 			from {TABLEPREFIX}account as ACC
 			left join {TABLEPREFIX}account_user_preference as PRF on ACC.account_id = PRF.account_id and PRF.user_id = \'{USERID}\'
-			where ACC.account_id = \''.$id.'\'';
+			where ACC.account_id = \''.$id.'\'
+			and marked_as_closed = 0';
 		$row = $db->SelectRow($query);
 		$newAccount->hydrate($row);
 
@@ -268,7 +277,7 @@ class AccountsManager
 	{
 		$db = new DB();
 	
-		$query = sprintf("delete from {TABLEPREFIX}account where account_id = '%s'",
+		$query = sprintf("update {TABLEPREFIX}account set marked_as_closed = 1 where account_id = '%s'",
 				$accountId);
 		$result = $db->Execute($query);
 		

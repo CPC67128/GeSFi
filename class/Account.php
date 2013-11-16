@@ -11,7 +11,8 @@ class Account
 	protected $_expectedMinimumBalance;
 	protected $_information;
 	protected $_creationDate;
-
+	protected $_closingDate;
+	
 	protected $_sortOrder;
 
 	public function setAccountId($accountId)
@@ -106,6 +107,16 @@ class Account
 		return $this->_creationDate;
 	}
 	
+	public function setClosingDate($closingDate)
+	{
+		$this->_closingDate = $closingDate;
+	}
+
+	public function getClosingDate()
+	{
+		return $this->_closingDate;
+	}
+	
 	public function setSortOrder($sortOrder)
 	{
 		$this->_sortOrder = $sortOrder;
@@ -148,6 +159,7 @@ class Account
 				case 'owner_user_id': $key = 'OwnerUserId'; break;
 				case 'coowner_user_id': $key = 'CoownerUserId'; break;
 				case 'creation_date': $key = 'CreationDate'; break;
+				case 'closing_date': $key = 'ClosingDate'; break;
 				case 'sort_order': $key = 'SortOrder'; break;
 				default: $key = ucfirst($key); break;
 			}

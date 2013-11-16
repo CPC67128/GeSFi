@@ -11,8 +11,8 @@ $translator = new Translator();
 $categoryHandler = new CategoryHandler();
 $categories = $categoryHandler->GetCategoriesForDuo($_SESSION['user_id']);
 ?>
-<select name="accountsList" size="<?= count($categories) + 1 ?>" onChange="changeFormDuo(this)">
-<option value="AddCategory">Ajouter une nouvelle catégorie...</option>
+<select id="accountsListDuo" name="accountsListDuo" size="<?= count($categories) + 1 ?>" onChange="changeFormDuo(this)">
+<option value="AddCategory" selected>Ajouter une nouvelle catégorie...</option>
 <?php
 foreach ($categories as $category)
 {

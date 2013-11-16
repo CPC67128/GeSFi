@@ -3,309 +3,301 @@ $accountsManager = new AccountsManager();
 $accounts = $accountsManager->GetAllDuoAccounts();
 $activeAccount = $accounts[0];
 
-?>	
-<?php
+$usersHandler = new UsersHandler();
+$user = $usersHandler->GetCurrentUser();
+$partner = $usersHandler->GetUser($user->GetPartnerId());
+
 $statistics = new Statistics();
 $translator = new Translator();
 
-$usersHandler = new UsersHandler();
-$user = $usersHandler->GetCurrentUser();
 
-$totalPrivateExpenseByActor1 = $statistics->GetTotalPrivateExpenseByActor($user->getUserId());
-$totalPrivateExpenseByActor2 = $statistics->GetTotalPrivateExpenseByActor($user->GetPartnerId());
-$totalExpenseJointAccount = $statistics->GetTotalExpenseJointAccount();
+$totalIncomeDuoAccountsByUser = $statistics->GetTotalIncomeDuoAccountsByUser($user->getUserId());
+$totalIncomeDuoAccountsByPartner = $statistics->GetTotalIncomeDuoAccountsByUser($user->GetPartnerId());
+$totalIncomeDuoAccounts = $totalIncomeDuoAccountsByUser + $totalIncomeDuoAccountsByPartner;
 
-$totalExpenseChargedPartByActor1 = $statistics->GetTotalExpenseChargedPartByActor($user->getUserId());
-$totalExpenseChargedPartByActor2 = $statistics->GetTotalExpenseChargedPartByActor($user->GetPartnerId());
+$totalExpenseDuoAccountsChargedForUser = $statistics->GetTotalExpenseDuoAccountsChargedForUser($user->getUserId());
+$totalExpenseDuoAccountsChargedForPartner = $statistics->GetTotalExpenseDuoAccountsChargedForUser($partner->getUserId());
+$totalExpenseDuoAccounts = $statistics->GetTotalExpenseDuoAccounts();
 
-// Private account
-$totalRepaymentByActor1 = $statistics->GetTotalRepaymentByActor($user->getUserId());
-$totalRepaymentByActor2 = $statistics->GetTotalRepaymentByActor($user->GetPartnerId());
+$totalValueDuoAccountsGivenByUser = $totalIncomeDuoAccountsByUser - $totalExpenseDuoAccountsChargedForUser;
+$totalValueDuoAccountsGivenByPartner = $totalIncomeDuoAccountsByPartner - $totalExpenseDuoAccountsChargedForPartner;
+$totalValueDuoAccountsGivenDifference = $totalValueDuoAccountsGivenByUser - $totalValueDuoAccountsGivenByPartner;
 
-$totalPrivateExpenseChargedPartByActor1 = $statistics->GetTotalExpenseFromPrivateAccountChargedPartByActor($user->getUserId());
-$totalPrivateExpenseChargedPartByActor2 = $statistics->GetTotalExpenseFromPrivateAccountChargedPartByActor($user->GetPartnerId());
+?>
+Situation des comptes entre <?= $user->get('name') ?> et <?= $partner->get('name') ?>
 
-$totalAmountGivenByActor1 = $totalPrivateExpenseByActor1 + $totalRepaymentByActor1 - $totalRepaymentByActor2;
-$totalAmountGivenByActor2 = $totalPrivateExpenseByActor2 + $totalRepaymentByActor2 - $totalRepaymentByActor1;
+<h1><?= $translator->getTranslation('Situation comptes duo') ?></h1>
+<table class="blankTable">
+<thead>
+<th>Versements</th>
+<th>Dépenses</th>
+<th>Valeurs</th>
+</thead>
+<tr>
 
-// Joint account
-$totalIncomeJointAccountByActor1 = $statistics->GetTotalIncomeJointAccountByActor($user->getUserId());
-$totalIncomeJointAccountByActor2 = $statistics->GetTotalIncomeJointAccountByActor($user->GetPartnerId());
+<td>
+<table class="summaryTable">
+<tr>
+<td>Versements <?= $user->get('name') ?></td>
+<td><?= $translator->getCurrencyValuePresentation($totalIncomeDuoAccountsByUser) ?></td>
+</tr>
+<tr>
+<td>Versements <?= $partner->get('name') ?></td>
+<td><?= $translator->getCurrencyValuePresentation($totalIncomeDuoAccountsByPartner) ?></td>
+</tr>
+<tr>
+<td><i>Total versements</i></td>
+<td><?= $translator->getCurrencyValuePresentation($totalIncomeDuoAccounts) ?></td>
+</tr>
+</table>
+</td>
 
-$totalJointAccountExpenseChargedByActor1 = $statistics->GetTotalJointAccountExpenseChargedPartByActor($user->getUserId());
-$totalJointAccountExpenseChargedByActor2 = $statistics->GetTotalJointAccountExpenseChargedPartByActor($user->GetPartnerId());
+<td>
+<table class="summaryTable">
+<tr>
+<td>Prise en charge <?= $user->get('name') ?></td>
+<td><?= $translator->getCurrencyValuePresentation($totalExpenseDuoAccountsChargedForUser) ?></td>
+</tr>
+<tr>
+<td>Prise en charge <?= $partner->get('name') ?></td>
+<td><?= $translator->getCurrencyValuePresentation($totalExpenseDuoAccountsChargedForPartner) ?></td>
+</tr>
+<tr>
+<td><i>Total dépenses</i></td>
+<td><?= $translator->getCurrencyValuePresentation($totalExpenseDuoAccounts) ?></td>
+</tr>
+</table>
+</td>
+
+<td>
+<table class="summaryTable">
+<tr>
+<td>Valeur apportée par <?= $user->get('name') ?></td>
+<td><?= $translator->getCurrencyValuePresentation($totalValueDuoAccountsGivenByUser) ?></td>
+</tr>
+<tr>
+<td>Valeur apportée par <?= $partner->get('name') ?></td>
+<td><?= $translator->getCurrencyValuePresentation($totalValueDuoAccountsGivenByPartner) ?></td>
+</tr>
+</table>
+</td>
+
+</tr>
+</table>
+
+<?= $translator->getTranslation('Conclusion : ')?>
+<?php
+if ($totalValueDuoAccountsGivenDifference > 0)
+	echo $user->getName()
+		.$translator->getTranslation(' a crédité ')
+		.$translator->getCurrencyValuePresentation(abs($totalValueDuoAccountsGivenDifference))
+		.$translator->getTranslation(' de plus par rapport à ')
+		.$partner->getName()
+		.'. '
+		.$partner->getName()
+		.$translator->getTranslation(' doit donc virer ce montant sur un compte du couple.');
+else if ($totalValueDuoAccountsGivenDifference < 0)
+	echo $partner->getName()
+		.$translator->getTranslation(' a crédité ')
+		.$translator->getCurrencyValuePresentation(abs($totalValueDuoAccountsGivenDifference))
+		.$translator->getTranslation(' de plus par rapport à ')
+		.$user->getName()
+		.'. '
+		.$user->getName()
+		.$translator->getTranslation(' doit donc virer ce montant sur un compte du couple.');
+else
+	echo $translator->getTranslation('Equilibre entre les partenaires')
+?>
+
+<br /><br />
+
+<?php
+
+$totalExpensePrivateAccountsForDuoCategoriesMadeByUser = $statistics->GetTotalExpensePrivateAccountsForDuoCategoriesMadeByUser($user->getUserId());
+$totalExpensePrivateAccountsForDuoCategoriesMadeByPartner = $statistics->GetTotalExpensePrivateAccountsForDuoCategoriesMadeByUser($partner->getUserId());
+
+$totalExpensePrivateAccountsForPartnerCategoriesMadeByUser = $statistics->GetTotalExpensePrivateAccountsForPartnerCategoriesMadeByUser($user->getUserId());
+$totalExpensePrivateAccountsForPartnerCategoriesMadeByPartner = $statistics->GetTotalExpensePrivateAccountsForPartnerCategoriesMadeByUser($user->GetPartnerId());
+
+$totalExpensePrivateAccountsMadeByUser = $totalExpensePrivateAccountsForDuoCategoriesMadeByUser + $totalExpensePrivateAccountsForPartnerCategoriesMadeByUser;
+$totalExpensePrivateAccountsMadeByPartner = $totalExpensePrivateAccountsForDuoCategoriesMadeByPartner + $totalExpensePrivateAccountsForPartnerCategoriesMadeByPartner;
 
 
+$totalExpensePrivateAccountsForDuoCategoriesChargedForUser = $statistics->GetTotalExpensePrivateAccountsForDuoCategoriesChargedForUser($user->getUserId());
+$totalExpensePrivateAccountsForDuoCategoriesChargedForPartner = $statistics->GetTotalExpensePrivateAccountsForDuoCategoriesChargedForUser($partner->getUserId());
+
+$totalExpensePrivateAccountsForPartnerCategoriesChargedForUser = $statistics->GetTotalExpensePrivateAccountsForPartnerCategoriesChargedForUser($user->getUserId());
+$totalExpensePrivateAccountsForPartnerCategoriesChargedForPartner = $statistics->GetTotalExpensePrivateAccountsForPartnerCategoriesChargedForUser($user->GetPartnerId());
+
+$totalExpensePrivateAccountsChargedForUser = $totalExpensePrivateAccountsForDuoCategoriesChargedForUser + $totalExpensePrivateAccountsForPartnerCategoriesChargedForUser;
+$totalExpensePrivateAccountsChargedForPartner = $totalExpensePrivateAccountsForDuoCategoriesChargedForPartner + $totalExpensePrivateAccountsForPartnerCategoriesChargedForPartner;
 
 
+$totalRepaymentNeedByUser = $totalExpensePrivateAccountsMadeByUser - $totalExpensePrivateAccountsChargedForUser;
+$totalRepaymentNeedByPartner = $totalExpensePrivateAccountsMadeByPartner - $totalExpensePrivateAccountsChargedForPartner;
+$totalRepaymentNeedDifference = $totalRepaymentNeedByUser - $totalRepaymentNeedByPartner;
 
-$differenceIncomeChargeActor1 = $totalAmountGivenByActor1 - $totalPrivateExpenseChargedPartByActor1;
-$differenceIncomeChargeActor2 = $totalAmountGivenByActor2 - $totalPrivateExpenseChargedPartByActor2;
+$totalRepaymentFromUserToPartner = $statistics->GetTotalRepaymentFromUserToPartner($user->getUserId(), $user->getPartnerId());
+$totalRepaymentFromPartnerToUser = $statistics->GetTotalRepaymentFromUserToPartner($user->getPartnerId(), $user->getUserId());
+$totalRepaymentDifference = $totalRepaymentFromUserToPartner - $totalRepaymentFromPartnerToUser;
 
-$totalJointAccountValueGivenByActor1 = $totalIncomeJointAccountByActor1 - $totalJointAccountExpenseChargedByActor1;
-$totalJointAccountValueGivenByActor2 = $totalIncomeJointAccountByActor2 - $totalJointAccountExpenseChargedByActor2;
-
-$differenceJointAccountContribution = $totalJointAccountValueGivenByActor1 - $totalJointAccountValueGivenByActor2;
-
-$totalUnrepayedAmountGivenByActor1 = $totalPrivateExpenseByActor1 + $totalRepaymentByActor1 - $totalRepaymentByActor2 - $totalPrivateExpenseChargedPartByActor1;
-
-$difference = $differenceJointAccountContribution + $totalUnrepayedAmountGivenByActor1;
-
-$totalIncomeJointAccount = $totalIncomeJointAccountByActor1 + $totalIncomeJointAccountByActor2;
-$balanceJointAccount = $totalIncomeJointAccount - $totalExpenseJointAccount;
-$jointAccountExpectedMinimumBalance = $activeAccount->getExpectedMinimumBalance();
-$jointAccountPlannedDebit = $statistics->GetJointAccountPlannedDebit(10);
+$totalRepaymentRequest = $totalRepaymentNeedDifference + $totalRepaymentDifference;
 
 ?>
 
-<h1><?= $translator->getTranslation('Dépenses') ?></h1>
-
-<table style="border-spacing: 0px; cellpadding:0px; border:0px;">
+<h1><?= $translator->getTranslation('Situation comptes privées') ?></h1>
+<table class="blankTable">
+<thead>
+<th>Dépenses</th>
+<th>Prise en charge</th>
+<th>Remboursement nécéssaire</th>
+<th>Remboursements</th>
+</thead>
 <tr>
-<td style="border-top: 1px solid; border-bottom: 1px solid; border-left: 1px solid; padding: 5px; text-align:center; font-style: italic;">
-<?= $translator->getTranslation('Total des dépenses') ?><br />
-<?= $translator->getCurrencyValuePresentation($totalPrivateExpenseByActor1 + $totalPrivateExpenseByActor2 + $totalExpenseJointAccount) ?>
+
+<td>
+<table class="summaryTable">
+<tr>
+<td>Dépenses <?= $user->get('name') ?> > catégories duo</td>
+<td><?= $translator->getCurrencyValuePresentation($totalExpensePrivateAccountsForDuoCategoriesMadeByUser) ?></td>
+</tr>
+<tr>
+<td>Dépenses <?= $user->get('name') ?> > catégories <?= $partner->get('name') ?></td>
+<td><?= $translator->getCurrencyValuePresentation($totalExpensePrivateAccountsForPartnerCategoriesMadeByUser) ?></td>
+</tr>
+<tr>
+<td><i>Total <?= $user->get('name') ?></i></td>
+<td><?= $translator->getCurrencyValuePresentation($totalExpensePrivateAccountsMadeByUser) ?></td>
+</tr>
+<tr>
+<td>Dépenses <?= $partner->get('name') ?> > catégories duo</td>
+<td><?= $translator->getCurrencyValuePresentation($totalExpensePrivateAccountsForDuoCategoriesMadeByPartner) ?></td>
+</tr>
+<tr>
+<td>Dépenses <?= $partner->get('name') ?> > catégories <?= $user->get('name') ?></td>
+<td><?= $translator->getCurrencyValuePresentation($totalExpensePrivateAccountsForPartnerCategoriesMadeByPartner) ?></td>
+</tr>
+<tr>
+<td><i>Total <?= $partner->get('name') ?></i></td>
+<td><?= $translator->getCurrencyValuePresentation($totalExpensePrivateAccountsMadeByPartner) ?></td>
+</tr>
+</table>
 </td>
-<td style="border-top: 1px solid; border-bottom: 1px solid; border-left: 1px solid; padding: 5px; background:#AAAAFF; text-align:center;">
-<?= $activeAccount->GetOwnerName() ?><br />
-<?= $translator->getCurrencyValuePresentation($totalPrivateExpenseByActor1) ?>
+
+<td>
+<table class="summaryTable">
+<tr>
+<td>Prise en charge <?= $user->get('name') ?></td>
+<td><?= $translator->getCurrencyValuePresentation($totalExpensePrivateAccountsForDuoCategoriesChargedForUser) ?></td>
+</tr>
+<tr>
+<td>Prise en charge <?= $user->get('name') ?></td>
+<td><?= $translator->getCurrencyValuePresentation($totalExpensePrivateAccountsForPartnerCategoriesChargedForUser) ?></td>
+</tr>
+<tr>
+<td><i>Total <?= $user->get('name') ?></i></td>
+<td><?= $translator->getCurrencyValuePresentation($totalExpensePrivateAccountsChargedForUser) ?></td>
+</tr>
+<tr>
+<td>Prise en charge <?= $partner->get('name') ?></td>
+<td><?= $translator->getCurrencyValuePresentation($totalExpensePrivateAccountsForDuoCategoriesChargedForPartner) ?></td>
+</tr>
+<tr>
+<td>Prise en charge <?= $partner->get('name') ?></td>
+<td><?= $translator->getCurrencyValuePresentation($totalExpensePrivateAccountsForPartnerCategoriesChargedForPartner) ?></td>
+</tr>
+<tr>
+<td><i>Total <?= $partner->get('name') ?></i></td>
+<td><?= $translator->getCurrencyValuePresentation($totalExpensePrivateAccountsChargedForPartner) ?></td>
+</tr>
+</table>
 </td>
-<td style="border-top: 1px solid; border-bottom: 1px solid; padding: 5px; background:#FFFFAA; text-align:center;">
-<?= $translator->getTranslation('Compte commun') ?><br />
-<?= $translator->getCurrencyValuePresentation($totalExpenseJointAccount) ?>
+
+<td>
+<table class="summaryTable">
+<tr>
+<td>De <?= $partner->get('name') ?> à <?= $user->get('name') ?></td>
+<td><?= $translator->getCurrencyValuePresentation($totalRepaymentNeedByUser) ?></td>
+</tr>
+<tr>
+<td>De <?= $user->get('name') ?> à <?= $partner->get('name') ?></td>
+<td><?= $translator->getCurrencyValuePresentation($totalRepaymentNeedByPartner) ?></td>
+</tr>
+<tr>
+<td><i>Différence</i></td>
+<td><?= $translator->getCurrencyValuePresentation($totalRepaymentNeedDifference) ?></td>
+</tr>
+</table>
 </td>
-<td style="border-top: 1px solid; border-bottom: 1px solid; border-right: 1px solid; padding: 5px; background:#FFAAFF; text-align:center;">
-<?= $activeAccount->GetCoownerName() ?><br />
-<?= $translator->getCurrencyValuePresentation($totalPrivateExpenseByActor2) ?>
+
+<td>
+<table class="summaryTable">
+<tr>
+<td>De <?= $partner->get('name') ?> à <?= $user->get('name') ?></td>
+<td><?= $translator->getCurrencyValuePresentation($totalRepaymentFromPartnerToUser) ?></td>
+</tr>
+<tr>
+<td>De <?= $user->get('name') ?> à <?= $partner->get('name') ?></td>
+<td><?= $translator->getCurrencyValuePresentation($totalRepaymentFromUserToPartner) ?></td>
+</tr>
+<tr>
+<td><i>Différence</i></td>
+<td><?= $translator->getCurrencyValuePresentation($totalRepaymentDifference) ?></td>
+</tr>
+</table>
 </td>
+
 </tr>
 </table>
 
-<br />
-
-<table style="border-spacing: 0px; cellpadding:0px; border:0px;">
-<tr>
-<td style="border-top: 1px solid; border-bottom: 1px solid; border-left: 1px solid; padding: 5px; text-align:center; font-style: italic;">
-<?= $translator->getTranslation('Prise en charge des dépenses') ?><br />
-<?= $translator->getCurrencyValuePresentation($totalPrivateExpenseByActor1 + $totalPrivateExpenseByActor2 + $totalExpenseJointAccount) ?>
-</td>
-<td style="border-top: 1px solid; border-bottom: 1px solid; border-left: 1px solid; padding: 5px; background:#AAAAFF; text-align:center;">
-<?= $activeAccount->GetOwnerName() ?><br />
-<?= $translator->getCurrencyValuePresentation($totalExpenseChargedPartByActor1) ?>
-</td>
-<td style="border-top: 1px solid; border-bottom: 1px solid; border-right: 1px solid; padding: 5px; background:#FFAAFF; text-align:center;">
-<?= $activeAccount->GetCoownerName() ?><br />
-<?= $translator->getCurrencyValuePresentation($totalExpenseChargedPartByActor2) ?>
-</td>
-</tr>
-</table>
-
-<br />
-
-<h1><?= $translator->getTranslation('Etat des lieux entre partenaires') ?></h1>
-
-<table style="border-spacing: 0px; cellpadding:0px; border:0px;">
-<tr>
-<td style="border-top: 1px solid; border-left: 1px solid; padding: 5px; text-align:center; font-style: italic;">
-<?= $translator->getTranslation('Somme engagée par ') ?><?= $activeAccount->GetOwnerName() ?><br />
-<?= $translator->getCurrencyValuePresentation($totalAmountGivenByActor1) ?>
-</td>
-<td style="border-top: 1px solid; padding: 5px; border-left: 1px solid; background:#FFFFAA; text-align:center;">
-<?= $translator->getTranslation('Dépenses depuis compte privé') ?><br />
-<?= $translator->getCurrencyValuePresentation($totalPrivateExpenseChargedPartByActor1) ?>
-</td>
-<td style="border-top: 1px solid; border-right: 1px solid; padding: 5px; background:#FFAAFF; text-align:center;">
-<?= $translator->getTranslation('Versement à ') ?><?= $activeAccount->GetCoownerName() ?><br />
-<?= $translator->getCurrencyValuePresentation($totalRepaymentByActor1) ?>
-</td>
-<td style="border-top: 1px solid; border-right: 1px solid; padding: 5px; background:#AAAAFF; text-align:center;">
-<?= $translator->getTranslation('- Versement de ') ?><?= $activeAccount->GetCoownerName() ?><br />
-<?= $translator->getCurrencyValuePresentation($totalRepaymentByActor2) ?>
-</td>
-</tr>
-<tr>
-<td style="border-top: 1px solid; border-bottom: 1px solid; border-left: 1px solid; padding: 5px; text-align:center; font-style: italic;">
-<?= $translator->getTranslation('Somme engagée par ') ?><?= $activeAccount->GetCoownerName() ?><br />
-<?= $translator->getCurrencyValuePresentation($totalAmountGivenByActor2) ?>
-</td>
-<td style="border-top: 1px solid; border-bottom: 1px solid; border-left: 1px solid; padding: 5px; background:#FFFFAA; text-align:center;">
-<?= $translator->getTranslation('Dépenses depuis compte privé') ?><br />
-<?= $translator->getCurrencyValuePresentation($totalPrivateExpenseChargedPartByActor2) ?>
-</td>
-<td style="border-top: 1px solid; border-bottom: 1px solid; border-right: 1px solid; padding: 5px; background:#AAAAFF; text-align:center;">
-<?= $translator->getTranslation('Versement à ') ?><?= $activeAccount->GetOwnerName() ?><br />
-<?= $translator->getCurrencyValuePresentation($totalRepaymentByActor2) ?>
-</td>
-<td style="border-top: 1px solid; border-bottom: 1px solid; border-right: 1px solid; padding: 5px; background:#FFAAFF; text-align:center;">
-<?= $translator->getTranslation('- Versement de ') ?><?= $activeAccount->GetOwnerName() ?><br />
-<?= $translator->getCurrencyValuePresentation($totalRepaymentByActor1) ?>
-</td>
-</tr>
-</table>
-
-<br />
-
-<table style="border-spacing: 0px; cellpadding:0px; border:0px;">
-<tr>
-<td style="border-top: 1px solid; border-left: 1px solid; padding: 5px; background:#AAAAFF; text-align:center;">
-<?= $translator->getTranslation('Somme engagée') ?><br />
-<?= $translator->getCurrencyValuePresentation($totalAmountGivenByActor1) ?>
-</td>
-<td style="border-top: 1px solid; border-right: 1px solid; padding: 5px; background:#FFFFAA; text-align:center;">
-<?= $translator->getTranslation('Prise en charge des dépenses') ?><br />
-<?= $translator->getCurrencyValuePresentation($totalPrivateExpenseChargedPartByActor1) ?>
-</td>
-<td style="border-top: 1px solid; border-right: 1px solid; padding: 5px; text-align:center; font-style: italic;">
-<?= $translator->getTranslation('Différence ') ?><?= $activeAccount->GetOwnerName() ?><br />
-<?= $translator->getCurrencyValuePresentation($differenceIncomeChargeActor1) ?>
-</td>
-</tr>
-<tr>
-<td style="border-top: 1px solid; border-bottom: 1px solid; border-left: 1px solid; padding: 5px; background:#FFAAFF; text-align:center;">
-<?= $translator->getTranslation('Somme engagée') ?><br />
-<?= $translator->getCurrencyValuePresentation($totalAmountGivenByActor2) ?>
-</td>
-<td style="border-top: 1px solid; border-bottom: 1px solid; border-right: 1px solid; padding: 5px; background:#FFFFAA; text-align:center;">
-<?= $translator->getTranslation('Prise en charge des dépenses') ?><br />
-<?= $translator->getCurrencyValuePresentation($totalPrivateExpenseChargedPartByActor2) ?>
-</td>
-<td style="border-top: 1px solid; border-bottom: 1px solid; border-right: 1px solid; padding: 5px; text-align:center; font-style: italic;">
-<?= $translator->getTranslation('Différence ') ?><?= $activeAccount->GetCoownerName() ?><br />
-<?= $translator->getCurrencyValuePresentation($differenceIncomeChargeActor2) ?>
-</td>
-</tr>
-</table>
-
-<br />
+<?= $translator->getTranslation('Conclusion : ')?>
 <?php
-if ($differenceIncomeChargeActor1 > 0)
-	echo $activeAccount->GetCoownerName().$translator->getTranslation(' doit à ').$activeAccount->GetOwnerName();
+if ($totalRepaymentRequest > 0)
+	echo $user->getName()
+		.$translator->getTranslation(' a dépensé ')
+		.$translator->getCurrencyValuePresentation(abs($totalRepaymentRequest))
+		.$translator->getTranslation(' de plus par rapport à ')
+		.$partner->getName()
+		.'. '
+		.$partner->getName()
+		.$translator->getTranslation(' doit donc cette somme à ')
+		.$user->getName();
+else if ($totalRepaymentRequest < 0)
+	echo $partner->getName()
+		.$translator->getTranslation(' a dépensé ')
+		.$translator->getCurrencyValuePresentation(abs($totalRepaymentRequest))
+		.$translator->getTranslation(' de plus par rapport à ')
+		.$user->getName()
+		.'. '
+		.$user->getName()
+		.$translator->getTranslation(' doit donc cette somme à ')
+		.$partner->getName();
 else
-	echo $activeAccount->GetOwnerName().$translator->getTranslation(' doit à ').$activeAccount->GetCoownerName();
-?>&nbsp;<?= $translator->getCurrencyValuePresentation(abs($differenceIncomeChargeActor1)) ?>
-<br />
-
-<h1><?= $translator->getTranslation('Etat des lieux du compte commun'); ?></h1>
-
-<table style="border-spacing: 0px; cellpadding:0px; border:0px;">
-<?php
-$criticalJointAccountBalance = false;
-if ($jointAccountExpectedMinimumBalance >= ($balanceJointAccount + $jointAccountPlannedDebit))
-	$criticalJointAccountBalance = true;
+	echo $translator->getTranslation('Equilibre entre les partenaires')
 ?>
-<tr>
-<td style="border-top: 1px solid; border-bottom: 1px solid; border-left: 1px solid; padding: 5px; background:#AAFFAA; text-align:center;">
-<?= $translator->getTranslation('Total crédit') ?><br />
-<?= $translator->getCurrencyValuePresentation($totalIncomeJointAccount) ?>
-</td>
-<td style="border-top: 1px solid; border-bottom: 1px solid; padding: 5px; background:#AAAAFF; text-align:center;">
-<?= $translator->getTranslation('Total crédit ') ?><?= $activeAccount->GetOwnerName() ?><br />
-<?= $translator->getCurrencyValuePresentation($totalIncomeJointAccountByActor1) ?>
-</td>
-<td style="border-top: 1px solid; border-bottom: 1px solid; padding: 5px; background:#FFAAFF; text-align:center;">
-<?= $translator->getTranslation('Total crédit ') ?><?= $activeAccount->GetCoownerName() ?><br />
-<?= $translator->getCurrencyValuePresentation($totalIncomeJointAccountByActor2) ?>
-</td>
-<td style="border-top: 1px solid; border-bottom: 1px solid; border-left: 1px solid; padding: 5px; background:#FFFFAA; text-align:center;">
-<?= $translator->getTranslation('Total débit') ?><br />
-<?= $translator->getCurrencyValuePresentation($totalExpenseJointAccount) ?>
-</td>
-<td style="border-top: 1px solid; border-bottom: 1px solid; padding: 5px; background:#AAAAFF; text-align:center;">
-<?= $translator->getTranslation('Dépense charge ') ?><?= $activeAccount->GetOwnerName() ?><br />
-<?= $translator->getCurrencyValuePresentation($totalJointAccountExpenseChargedByActor1) ?>
-</td>
-<td style="border-top: 1px solid; border-bottom: 1px solid; border-right: 1px solid; padding: 5px; background:#FFAAFF; text-align:center;">
-<?= $translator->getTranslation('Dépense charge ') ?><?= $activeAccount->GetCoownerName() ?><br />
-<?= $translator->getCurrencyValuePresentation($totalJointAccountExpenseChargedByActor2) ?>
-</td>
-</tr>
-</table>
 
-<br />
+<h1><?= $translator->getTranslation('Conclusion globale') ?></h1>
 
 <?php
-if ($differenceJointAccountContribution > 0)
-	echo $activeAccount->GetOwnerName().$translator->getTranslation(' a crédité de plus par rapport à ').$activeAccount->GetCoownerName();
-else
-	echo $activeAccount->GetCoownerName().$translator->getTranslation(' a crédité de plus par rapport à ').$activeAccount->GetOwnerName();
-?>&nbsp;<?= $translator->getCurrencyValuePresentation(abs($differenceJointAccountContribution)) ?>
 
-<br />
+$globalRepaymentRequest = $totalValueDuoAccountsGivenDifference + $totalRepaymentRequest;
 
-<h1><?= $translator->getTranslation('Etat des lieux global du couple'); ?></h1>
-<?php
-if ($difference > 0)
-	echo $activeAccount->GetCoownerName().$translator->getTranslation(' doit à ').$activeAccount->GetOwnerName();
-else
-	echo $activeAccount->GetOwnerName().$translator->getTranslation(' doit à ').$activeAccount->GetCoownerName();
-?>&nbsp;<?= $translator->getCurrencyValuePresentation(abs($difference)) ?>
-
-<h1><?= $translator->getTranslation('Appel à versement sur le compte commun') ?></h1>
-
-<form action="/" id="form">
-<?php
-$expectedTotalIncome = 0;
-if ($balanceJointAccount <= $jointAccountExpectedMinimumBalance)
-{
-	$expectedTotalIncome += $jointAccountExpectedMinimumBalance - $balanceJointAccount;
-}
-
-if ($expectedTotalIncome < 150) //getJointAccountExpectedMinimumCredit())
-	$expectedTotalIncome = 150;
-
-$expectedIncomeFromActor1 = $expectedTotalIncome / 2;
-$expectedIncomeFromActor2 = $expectedTotalIncome / 2;
-
-$expectedIncomeDueToEngagmentDifference = abs($difference);
-if ($expectedIncomeDueToEngagmentDifference > 500)
-	$expectedIncomeDueToEngagmentDifference = 500;
-
-if ($difference)
-	$expectedIncomeFromActor2 += $expectedIncomeDueToEngagmentDifference;
-else
-	$expectedIncomeFromActor1 += $expectedIncomeDueToEngagmentDifference;
 ?>
-<ul>
-<li><?= $activeAccount->GetOwnerName() ?> : <input type='text' name='actor1AskedIncome' size="6" value='<?= number_format($expectedIncomeFromActor1, 2) ?>' /><?= $translator->getCurrencyPresentation() ?>
- / <?= $translator->getTranslation('Email') ?> <input name="actor1Email" size="40" type="text" value="<?= $activeAccount->GetOwnerEmail() ?>" />
-</li>
-<li><?= $activeAccount->GetCoownerName() ?> : <input type='text' name='actor2AskedIncome' size="6" value='<?= number_format($expectedIncomeFromActor2, 2) ?>' /><?= $translator->getCurrencyPresentation() ?>
- / <?= $translator->getTranslation('Email') ?> <input name="actor2Email" size="40" type="text" value="<?= $activeAccount->GetCoownerEmail() ?>" />
-</li>
-</ul>
-<input type="submit" id='submitForm' value="Envoyer" />
-<div id='formResult'></div>
-</form>
-
-<script type='text/javascript'>
-$("#form").submit( function () {
-	document.getElementById("submitForm").disabled = true;
-	$.post (
-		'controller.php?action=sendIncomeRequest',
-		$(this).serialize(),
-		function(response, status) {
-			$("#formResult").stop().show();
-			if (status == 'success') {
-				if (response.indexOf("<!-- ERROR -->") >= 0) {
-					$("#formResult").html(response);
-				}
-				else {
-					$("#formResult").html(response);
-					//LoadRecords();
-				}
-			}
-			else {
-				$("#formResult").html(CreateUnexpectedErrorWeb("Status = " + status));
-			}
-			document.getElementById("submitForm").disabled = false;
-
-			setTimeout(function() {
-				$("#formResult").fadeOut("slow", function () {
-					$('#formResult').empty();
-				})
-			}, 4000);
-		}
-	);
-	return false;
-});
-</script>
+<?php
+if ($globalRepaymentRequest < 0)
+	echo $user->getName()
+		.$translator->getTranslation(' doit verser ')
+		.$translator->getCurrencyValuePresentation(abs($globalRepaymentRequest))
+		.$translator->getTranslation(' sur un compte commun ou rembourser ')
+		.$partner->getName()
+		.$translator->getTranslation(' directement de cette somme.');
+else if ($globalRepaymentRequest > 0)
+	echo $partner->getName()
+		.$translator->getTranslation(' doit verser ')
+		.$translator->getCurrencyValuePresentation(abs($globalRepaymentRequest))
+		.$translator->getTranslation(' sur un compte commun ou rembourser ')
+		.$user->getName()
+		.$translator->getTranslation(' directement de cette somme.');
+else
+	echo $translator->getTranslation('Equilibre entre les partenaires')
+?>

@@ -42,6 +42,7 @@ function listCategories()
 	    dataType: 'html',
 	    success : function(data) {
 	        $('#categoryList').html(data);
+	        changeForm(document.getElementById("accountsList"));
 	    }
 	});
 }
@@ -54,6 +55,7 @@ function listCategoriesDuo()
 	    dataType: 'html',
 	    success : function(data) {
 	        $('#categoryDuoList').html(data);
+	        changeFormDuo(document.getElementById("accountsListDuo"));
 	    }
 	});
 }

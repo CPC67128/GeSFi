@@ -99,6 +99,13 @@ foreach ($categories as $category)
 	$i++;
 }
 ?>
+<tr>
+<td><i><?= $translator->getTranslation('(Inconnue)') ?></i></td>
+<td><input type="text" name="category<?= $i ?>Formula" tabindex="<?= ($i * 2) ?>" size="12" onkeyup="javascript: CalculateAllAmounts();">&nbsp;=&nbsp;</td>
+<td><input type="text" name="category<?= $i ?>Amount"  tabindex="-1" size="6" readonly> &euro;<input type="hidden" name="category<?= $i ?>CategoryId" tabindex="-1" size="6" readonly value='USER/<?= $activeUser->getUserId() ?>'></td>
+<td align="center"><input type="text" name="category<?= $i ?>ChargeLevel" tabindex="<?= (($i * 2) + 1) ?>" value="100" size="2"> %</td>
+<?php $i++; ?>
+</tr>
 
 <td colspan=4><b><i><?= $translator->getTranslation('Catégories privées de ') ?><?= $activeUser->GetPartnerName() ?></i></b></td>
 </tr>
@@ -115,12 +122,19 @@ foreach ($categories as $category)
 <td><?= $category ?></td>
 <td><input type="text" name="category<?= $i ?>Formula" tabindex="<?= ($i * 2) ?>" size="12" onkeyup="javascript: CalculateAllAmounts();">&nbsp;=&nbsp;</td>
 <td><input type="text" name="category<?= $i ?>Amount"  tabindex="-1" size="6" readonly> &euro;<input type="hidden" name="category<?= $i ?>CategoryId" tabindex="-1" size="6" readonly value='<?= $categoryId ?>'></td>
-<td align="center"><input type="text" name="category<?= $i ?>ChargeLevel" tabindex="<?= (($i * 2) + 1) ?>" value="100" size="2"> %</td>
+<td align="center"><input type="text" name="category<?= $i ?>ChargeLevel" tabindex="<?= (($i * 2) + 1) ?>" value="0" size="2"> %</td>
 </tr>
 <?php
 	$i++;
 }
 ?>
+<tr>
+<td><i><?= $translator->getTranslation('(Inconnue)') ?></i></td>
+<td><input type="text" name="category<?= $i ?>Formula" tabindex="<?= ($i * 2) ?>" size="12" onkeyup="javascript: CalculateAllAmounts();">&nbsp;=&nbsp;</td>
+<td><input type="text" name="category<?= $i ?>Amount"  tabindex="-1" size="6" readonly> &euro;<input type="hidden" name="category<?= $i ?>CategoryId" tabindex="-1" size="6" readonly value='USER/<?= $activeUser->GetPartnerId() ?>'></td>
+<td align="center"><input type="text" name="category<?= $i ?>ChargeLevel" tabindex="<?= (($i * 2) + 1) ?>" value="0" size="2"> %</td>
+<?php $i++; ?>
+</tr>
 
 </table>
 
@@ -140,6 +154,7 @@ foreach ($categories as $category)
 <div id="formResult"></div>
 </form>
 <script type='text/javascript'>
+/**
 $("input[name='actor']").click(function() {
 	if ($("input[name='actor']:checked").val() == 1) {
 		for (var i=1;i<=<?= $i-1 ?>;i++) {
@@ -152,7 +167,7 @@ $("input[name='actor']").click(function() {
 		}
 	}
 });
-
+*/
 function GetDecimalValue(text) {
 	var value = 0; 
 	if (!isNaN(parseFloat(text))) {

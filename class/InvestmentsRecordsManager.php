@@ -28,6 +28,20 @@ class InvestmentsRecordsManager
 		return $result;
 	}
 
+	function GetAllRecordsForSomeInvestments($accountsId)
+	{
+		$db = new DB();
+		$query = "select ACC.name, INR.*
+			from {TABLEPREFIX}investment_record INR
+			inner join {TABLEPREFIX}account ACC on ACC.account_id = INR.account_id
+			where ACC.owner_user_id = '{USERID}'
+			and ACC.account_id in (".$accountsId.")
+			and marked_as_deleted = 0
+			order by ACC.account_id, INR.record_date";
+		$result = $db->Select($query);
+		return $result;
+	}
+	
 	function CalculateIndicators()
 	{
 		$db = new DB();

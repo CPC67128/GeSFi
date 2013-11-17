@@ -9,7 +9,14 @@ function __autoload($class_name)
 $translator = new Translator();
 
 $investmentsRecordsManager = new InvestmentsRecordsManager();
-$result = $investmentsRecordsManager->GetAllRecordsForAllInvestments();
+if (isset($_GET['accounts']))
+{
+	$result = $investmentsRecordsManager->GetAllRecordsForSomeInvestments("'".str_replace(',', '\',\'', $_GET['accounts'])."'");
+}
+else
+{
+	$result = $investmentsRecordsManager->GetAllRecordsForAllInvestments();
+}
 
 // content="text/plain; charset=utf-8"
 require_once ('../3rd_party/jpgraph-3.5.0b1/src/jpgraph.php');

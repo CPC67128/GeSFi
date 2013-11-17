@@ -112,7 +112,6 @@ else
 <br /><br />
 
 <?php
-
 $totalExpensePrivateAccountsForDuoCategoriesMadeByUser = $statistics->GetTotalExpensePrivateAccountsForDuoCategoriesMadeByUser($user->getUserId());
 $totalExpensePrivateAccountsForDuoCategoriesMadeByPartner = $statistics->GetTotalExpensePrivateAccountsForDuoCategoriesMadeByUser($partner->getUserId());
 

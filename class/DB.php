@@ -56,7 +56,7 @@ class DB
 				$accountId,
 				$userId,
 				$date,
-				$designation,
+				$this->ConvertStringForSqlInjection($designation),
 				$recordType,
 				$amount,
 				$actor,
@@ -71,6 +71,17 @@ class DB
 		return $result;
 	}
 
+	function ConvertStringForSqlInjection($data)
+	{
+		if (get_magic_quotes_gpc())
+		{
+			$data = stripslashes($data); // Removes magic_quotes_gpc slashes
+		}
+		$data = mysql_real_escape_string($data);
+
+		return $data;
+	}
+
 	function InsertInvestmentRecord($accountId, $recordGroupId, $date, $designation, $payment, $paymentInvested, $value)
 	{
 		if ($this->_isReadOnly)
@@ -81,7 +92,7 @@ class DB
 				$accountId,
 				$recordGroupId,
 				$date,
-				$designation,
+				$this->ConvertStringForSqlInjection($designation),
 				$payment == "null" ? "null" : $value,
 				$paymentInvested,
 				$value == "null" ? "null" : $value);
@@ -101,7 +112,7 @@ class DB
 				values ('%s', '%s', '%s', null, null, null, %s, uuid())",
 				$accountId,
 				$date,
-				$designation,
+				$this->ConvertStringForSqlInjection($designation),
 				$value);
 
 		$result = $this->_connection->exec($query) or die('Erreur SQL ! '.$query.'<br />'.mysql_error());
@@ -118,7 +129,7 @@ class DB
 				values ('%s', '%s', '%s', null, null, null, null, uuid(), 2)",
 				$accountId,
 				$date,
-				$designation,
+				$this->ConvertStringForSqlInjection($designation),
 				$value);
 
 		$result = $this->_connection->exec($query) or die('Erreur SQL ! '.$query.'<br />'.mysql_error());
@@ -135,7 +146,7 @@ class DB
 				values ('%s', '%s', '%s', %s, %s, null, uuid())",
 				$accountId,
 				$date,
-				$designation,
+				$this->ConvertStringForSqlInjection($designation),
 				$payment,
 				$paymentInvested);
 

@@ -131,7 +131,7 @@ class UsersHandler
 	
 		$escaped_browser = String2StringForSprintfQueryBuilder($Browser);
 	
-		$query = sprintf("insert into {TABLEPREFIX}user_connection (user_id, connection_date_time, ip_address, browser) values('%s', now(), '%s', '%s')",
+		$query = sprintf("insert into {TABLEPREFIX}prm_user_connection (user_id, connection_date_time, ip_address, browser) values('%s', now(), '%s', '%s')",
 				$User_id,
 				$Ip,
 				$escaped_browser);

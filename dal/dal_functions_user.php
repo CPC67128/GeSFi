@@ -96,7 +96,7 @@ function security_GetLastConections($User_id)
 {
 	include 'database_use_start.php';
 
-	$query = sprintf("select * from ".$DB_TABLE_PREFIX."sf_user_connection where user_id = '%s' order by connection_date_time desc limit 1,10", 
+	$query = sprintf("select * from ".$DB_TABLE_PREFIX."prm_user_connection where user_id = '%s' order by connection_date_time desc limit 1,10", 
 		$User_id);
 
 	$result = mysql_query($query) or die('Erreur SQL ! '.$query.'<br />'.mysql_error());
@@ -111,7 +111,7 @@ function security_GetLastConection($User_id)
 {
 	include 'database_use_start.php';
 
-	$query = sprintf("select * from ".$DB_TABLE_PREFIX."sf_user_connection where user_id = '%s' order by connection_date_time desc limit 1,1", 
+	$query = sprintf("select * from ".$DB_TABLE_PREFIX."prm_user_connection where user_id = '%s' order by connection_date_time desc limit 1,1", 
 		$User_id);
 
 	$result = mysql_query($query) or die('Erreur SQL ! '.$query.'<br />'.mysql_error());

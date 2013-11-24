@@ -373,7 +373,7 @@ class User
 	{
 		$db = new DB();
 
-		$query = sprintf("select * from {TABLEPREFIX}user_connection where user_id = '%s' order by connection_date_time desc limit 1,10",
+		$query = sprintf("select * from {TABLEPREFIX}prm_user_connection where user_id = '%s' order by connection_date_time desc limit 1,10",
 				$this->_userId);
 	
 		$result = $db->Select($query);
@@ -397,7 +397,7 @@ class User
 
 		$escaped_browser = String2StringForSprintfQueryBuilder($Browser);
 	
-		$query = sprintf("insert into {TABLEPREFIX}user_connection (user_id, connection_date_time, ip_address, browser) values('%s', now(), '%s', '%s')",
+		$query = sprintf("insert into {TABLEPREFIX}prm_user_connection (user_id, connection_date_time, ip_address, browser) values('%s', now(), '%s', '%s')",
 				$this->_userId,
 				$Ip,
 				$escaped_browser);

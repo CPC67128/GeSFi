@@ -82,79 +82,6 @@ class DB
 		return $data;
 	}
 
-	function InsertInvestmentRecord($accountId, $recordGroupId, $date, $designation, $payment, $paymentInvested, $value)
-	{
-		if ($this->_isReadOnly)
-			return 0;
-	
-		$query = sprintf("insert into ".$this->_dbTablePrefix."investment_record (account_id, record_group_id, record_date, designation, payment, payment_invested, value, investment_record_id)
-				values ('%s', '%s', '%s', '%s', %s, %s, %s, uuid())",
-				$accountId,
-				$recordGroupId,
-				$date,
-				$this->ConvertStringForSqlInjection($designation),
-				$payment == "null" ? "null" : $value,
-				$paymentInvested,
-				$value == "null" ? "null" : $value);
-		//throw new Exception($query);
-	
-		$result = $this->_connection->exec($query) or die('Erreur SQL ! '.$query.'<br />'.mysql_error());
-	
-		return $result;
-	}
-
-	function InsertInvestmentValue($accountId, $date, $designation, $value)
-	{
-		if ($this->_isReadOnly)
-			return 0;
-
-		$query = sprintf("insert into ".$this->_dbTablePrefix."investment_record (account_id, record_date, designation, payment, payment_invested, fee, value, investment_record_id)
-				values ('%s', '%s', '%s', null, null, null, %s, uuid())",
-				$accountId,
-				$date,
-				$this->ConvertStringForSqlInjection($designation),
-				$value);
-
-		$result = $this->_connection->exec($query) or die('Erreur SQL ! '.$query.'<br />'.mysql_error());
-	
-		return $result;
-	}
-
-	function InsertInvestmentRemark($accountId, $date, $designation)
-	{
-		if ($this->_isReadOnly)
-			return 0;
-
-		$query = sprintf("insert into ".$this->_dbTablePrefix."investment_record (account_id, record_date, designation, payment, payment_invested, fee, value, investment_record_id, record_type)
-				values ('%s', '%s', '%s', null, null, null, null, uuid(), 2)",
-				$accountId,
-				$date,
-				$this->ConvertStringForSqlInjection($designation),
-				$value);
-
-		$result = $this->_connection->exec($query) or die('Erreur SQL ! '.$query.'<br />'.mysql_error());
-	
-		return $result;
-	}
-
-	function InsertInvestmentIncome($accountId, $date, $designation, $payment, $paymentInvested)
-	{
-		if ($this->_isReadOnly)
-			return 0;
-
-		$query = sprintf("insert into ".$this->_dbTablePrefix."investment_record (account_id, record_date, designation, payment, payment_invested, fee, investment_record_id)
-				values ('%s', '%s', '%s', %s, %s, null, uuid())",
-				$accountId,
-				$date,
-				$this->ConvertStringForSqlInjection($designation),
-				$payment,
-				$paymentInvested);
-
-		$result = $this->_connection->exec($query) or die('Erreur SQL ! '.$query.'<br />'.mysql_error());
-	
-		return $result;
-	}
-
 	function UpdateConfigurationField($fieldName, $fieldValue)
 	{
 		if ($this->_isReadOnly)
@@ -246,5 +173,74 @@ class DB
 		$result = $this->_connection->exec($query);
 
 		return $result;
+	}
+
+	/*************************************************************************************************/
+
+	/***** investment_record *****/
+
+	function InsertInvestmentRecord($accountId,
+									$recordGroupId,
+									$recordDate,
+									$designation,
+									$payment,
+									$paymentInvested,
+									$value,
+									$recordType)
+	{
+		if ($this->_isReadOnly)
+			return 0;
+	
+		$query = sprintf("insert into ".$this->_dbTablePrefix."investment_record (account_id, record_group_id, record_date, designation, payment, payment_invested, value, investment_record_id, record_type)
+				values ('%s', '%s', '%s', '%s', %s, %s, %s, uuid(), %s)",
+				$accountId,
+				$recordGroupId == null ? "" : $recordGroupId,
+				$recordDate,
+				$this->ConvertStringForSqlInjection($designation),
+				$payment == null ? "null" : $payment,
+				$paymentInvested == null ? "null" : $paymentInvested,
+				$value == null ? "null" : $value,
+				$recordType == null ? "0" : $recordType);
+		//throw new Exception($query);
+	
+		$result = $this->_connection->exec($query) or die('Erreur SQL ! '.$query.'<br />'.mysql_error());
+	
+		return $result;
+	}
+
+	function InsertInvestmentRecord_Remark($accountId, $recordDate, $designation)
+	{
+		return $this->InsertInvestmentRecord($accountId,
+											 null,
+											 $recordDate,
+											 $designation,
+											 null,
+											 null,
+											 null,
+											 2);
+	}
+	
+	function InsertInvestmentRecord_Income($accountId, $recordGroupId, $recordDate, $designation, $payment, $paymentInvested)
+	{
+		return $this->InsertInvestmentRecord($accountId,
+									 		 $recordGroupId,
+											 $recordDate,
+											 $designation,
+											 $payment,
+											 $paymentInvested,
+											 null,
+											 null);
+	}
+
+	function InsertInvestmentRecord_Value($accountId, $recordDate, $designation, $value)
+	{
+		return $this->InsertInvestmentRecord($accountId,
+											 null,
+											 $recordDate,
+											 $designation,
+											 null,
+											 null,
+											 $value,
+											 null);
 	}
 }

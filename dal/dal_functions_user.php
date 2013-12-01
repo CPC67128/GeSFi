@@ -8,7 +8,7 @@ function security_IsEmailExisting($Email)
 
 	$escaped_email = String2StringForSprintfQueryBuilder($Email);
 
-	$query = sprintf("select email from ".$DB_TABLE_PREFIX."sf_user where lower(email) = '%s'",
+	$query = sprintf("select email from ".$DB_TABLE_PREFIX."user where lower(email) = '%s'",
 		strtolower($escaped_email));
 
 	$result = mysql_query($query) or die('Erreur SQL ! '.$query.'<br />'.mysql_error());
@@ -33,7 +33,7 @@ function security_CreateUser($Email, $Full_name, $Password)
     $escaped_full_name = String2StringForSprintfQueryBuilder($Full_name);
     $escaped_password = String2StringForSprintfQueryBuilder($Password);
     
-    $query = sprintf("insert into ".$DB_TABLE_PREFIX."sf_user (email, full_name, password, subscription_date, user_id) values('%s', '%s', '%s', curdate(), uuid())",
+    $query = sprintf("insert into ".$DB_TABLE_PREFIX."user (email, full_name, password, subscription_date, user_id) values('%s', '%s', '%s', curdate(), uuid())",
         strtolower($escaped_email),
     	$escaped_full_name,
     	$escaped_password);
@@ -55,7 +55,7 @@ function security_UpdateUser($User_id, $Email, $Full_name, $Password)
 
     if ($Password != '') // Password has been changed by the user
     {
-        $query = sprintf("update ".$DB_TABLE_PREFIX."sf_user set email = '%s', full_name = '%s', password = '%s' where user_id = '%s'",
+        $query = sprintf("update ".$DB_TABLE_PREFIX."user set email = '%s', full_name = '%s', password = '%s' where user_id = '%s'",
             $escaped_email,
             $escaped_full_name,
             $escaped_password,
@@ -63,7 +63,7 @@ function security_UpdateUser($User_id, $Email, $Full_name, $Password)
     }
     else
     {
-        $query = sprintf("update ".$DB_TABLE_PREFIX."sf_user set email = '%s', full_name = '%s' where user_id = '%s'",
+        $query = sprintf("update ".$DB_TABLE_PREFIX."user set email = '%s', full_name = '%s' where user_id = '%s'",
             $escaped_email,
             $escaped_full_name,
             $User_id);
@@ -96,7 +96,7 @@ function security_GetLastConections($User_id)
 {
 	include 'database_use_start.php';
 
-	$query = sprintf("select * from ".$DB_TABLE_PREFIX."prm_user_connection where user_id = '%s' order by connection_date_time desc limit 1,10", 
+	$query = sprintf("select * from ".$DB_TABLE_PREFIX."user_connection where user_id = '%s' order by connection_date_time desc limit 1,10", 
 		$User_id);
 
 	$result = mysql_query($query) or die('Erreur SQL ! '.$query.'<br />'.mysql_error());
@@ -111,7 +111,7 @@ function security_GetLastConection($User_id)
 {
 	include 'database_use_start.php';
 
-	$query = sprintf("select * from ".$DB_TABLE_PREFIX."prm_user_connection where user_id = '%s' order by connection_date_time desc limit 1,1", 
+	$query = sprintf("select * from ".$DB_TABLE_PREFIX."user_connection where user_id = '%s' order by connection_date_time desc limit 1,1", 
 		$User_id);
 
 	$result = mysql_query($query) or die('Erreur SQL ! '.$query.'<br />'.mysql_error());

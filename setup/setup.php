@@ -1,8 +1,7 @@
-<?php include 'dal.php'; ?>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE html>
 <html>
 <head>
-<title>Steve Fuchs AppZone setup wizard</title>
+<title>Web Application - Upgrade Wizard / (C) Steve Fuchs</title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <link rel="shortcut icon" type="image/ico" href="http://www.datatables.net/media/images/favicon.ico" />
 <style type="text/css" title="currentStyle">
@@ -10,45 +9,48 @@
 </style>
 </head>
 <body id="prm_body">
-<h1>Private Relationship Manager setup wizard</h1>
+<h1>Web Application - Upgrade Wizard / (C) Steve Fuchs</h1>
+<h2>Database Upgrade</h2>
 <?php
 
-$upgradeAvailable = false;
-$globalAreaExists = true;
-
-function AnalyseApplicationStatus($Application_name)
+function __autoload($className)
 {
-	global $upgradeAvailable;
-	global $globalAreaExists;
-
-	?>
-	<h2>Database upgrade / <?php if ($Application_name == '') echo 'global for all AppZone'; else echo strtoupper($Application_name); ?></h2>
-	Current database version:
-	<?php
-	$current_database_version = get_current_database_version($Application_name);
-	if ($current_database_version == -100)
-		echo 'unexisting';
-	else
-		echo $current_database_version;
-	?>
-	<br />
-	Expected database version: <?php $expected_database_version = get_expected_database_version($Application_name); echo $expected_database_version; ?>
-	<?php if ($current_database_version != $expected_database_version) $upgradeAvailable = true; ?>
-	<?php if ($Application_name == '' && $current_database_version == -100) $globalAreaExists = false; ?>
-	<br />
-	<?php
+	include $className.'.php';
 }
 
-AnalyseApplicationStatus('');
-AnalyseApplicationStatus('prm');
-AnalyseApplicationStatus('gfc');
-AnalyseApplicationStatus('unp');
+try
+{
+	$db = new DB();
+}
+catch (Exception $e)
+{
+	$db = null;
+
+	echo 'Connexion à la base de données impossible.<br />';
+	echo $e->getMessage().'<br />';
+}
+
+$scriptsFolder = new ScriptsFolder();
+
+if ($db != null)
+{
+
+$currentDatabaseVersion = $db->GetCurrentDatabaseVersion();
+$expectedDatabaseVersion = $scriptsFolder->GetExpectedDatabaseVersion();
+$upgradeDatabaseVersion = $currentDatabaseVersion != $expectedDatabaseVersion;
 
 ?>
+Current database version: <?= $currentDatabaseVersion < 0 ? 'n/a' : $currentDatabaseVersion ?>
 <br />
-<button onclick="window.location='setup_upgrade_database.php';" <?php if (!$upgradeAvailable) echo 'disabled="disabled"'; ?>>Upgrade database</button>
+Expected database version: <?= $expectedDatabaseVersion ?>
 <br />
 <br />
-<button onclick="window.location='../index.php';">Back to AppZone</button>
+<button onclick="window.location='action_database.php';" <?php if (!$upgradeDatabaseVersion) echo 'disabled="disabled"'; ?>>Upgrade database</button>
+<br />
+<?php
+}
+?>
+<br />
+<button onclick="window.location='../index.php';">Back to Application</button>
 </body>
 </html>

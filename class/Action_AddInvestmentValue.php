@@ -39,10 +39,9 @@ class Action_AddInvestmentValue extends Action
 
 		$db = new DB();
 
-		$db->InsertInvestmentValue(
-				$_SESSION['account_id'],
-				$this->_date,
-				$this->_designation,
-				$value);
+		$db->InsertInvestmentRecord_Value($_SESSION['account_id'],
+									$this->_date,
+									$this->_designation,
+									$value);
 	}
 }

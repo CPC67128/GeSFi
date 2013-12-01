@@ -431,7 +431,7 @@ class Account
 			from {TABLEPREFIX}investment_record
 			where account_id = \''.$this->_accountId.'\'
 			and value is null
-			order by record_date desc
+			order by record_date desc, creation_date desc
 			limit 1';
 		$row = $db->SelectRow($query);
 

@@ -19,9 +19,7 @@ class Operation_Remark_Investment extends Operation
 	{
 		$db = new DB();
 
-		$uuid = $db->GenerateUUID();
-
-		$db->InsertInvestmentRemark(
+		$db->InsertInvestmentRecord_Remark(
 				$_SESSION['account_id'],
 				$this->_date,
 				$this->_designation);

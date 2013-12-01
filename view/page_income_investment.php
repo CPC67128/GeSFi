@@ -13,6 +13,13 @@ foreach ($accounts as $account)
 { ?>
 <input type="radio" name="fromAccount" <?= $account->getAccountId() == $_SESSION['account_id'] ? 'checked' : '' ?> value="<?= $account->getAccountId() ?>"><?= $account->getName() ?><br />
 <?php } ?>
+<?php
+$accounts = $accountsManager->GetAllDuoAccounts();
+foreach ($accounts as $account)
+{ ?>
+<input type="radio" name="fromAccount" <?= $account->getAccountId() == $_SESSION['account_id'] ? 'checked' : '' ?> value="<?= $account->getAccountId() ?>"><?= $account->getName() ?><br />
+<?php } ?>
+<br/>
 <br/>
 
 <?= $translator->getTranslation('Date du prélèvement') ?> <input title="aaaa-mm-jj hh:mm:ss" size="10" class="datePicker" name="fromDate" value="<?php echo date("Y-m-d") ?>"><br/>

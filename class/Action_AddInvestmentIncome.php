@@ -79,14 +79,13 @@ class Action_AddInvestmentIncome
 						$uuid);
 			}
 	
-			$db->InsertInvestmentRecord(
+			$db->InsertInvestmentRecord_Income(
 					$this->_toAccount,
 					$uuid,
 					$toDate,
 					$this->_designation,
 					$this->_payment,
-					$this->_paymentInvested,
-					'null');
+					$this->_paymentInvested);
 		}
 	}
 }

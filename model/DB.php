@@ -46,30 +46,7 @@ class DB
 		}
 	}
 
-	function InsertRecord($accountId, $userId, $actor, $date, $amount, $designation, $charge, $category, $recordType, $recordGroupId)
-	{
-		if ($this->_isReadOnly)
-			return 0;
 
-		$query = sprintf("insert into ".$this->_dbTablePrefix."record (account_id, user_id, record_date, marked_as_deleted, designation, record_type, amount, actor, charge, category_id, record_group_id, record_id)
-				values ('%s', '%s', '%s', 0, '%s', %s, %s, %s, %s, '%s', '%s', uuid())",
-				$accountId,
-				$userId,
-				$date,
-				$this->ConvertStringForSqlInjection($designation),
-				$recordType,
-				$amount,
-				$actor,
-				$charge,
-				$category,
-				$recordGroupId);
-		$result = $this->_connection->exec($query) or die('Erreur SQL ! '.$query.'<br />'.mysql_error());
-	
-		$queryMonthYearFill = "update ".$this->_dbTablePrefix."record set record_date_month = month(record_date), record_date_year = year(record_date) where record_date_month = -1";
-		$resultMonthYearFill = $this->_connection->exec($queryMonthYearFill) or die('Erreur SQL ! '.$query.'<br />'.mysql_error());
-
-		return $result;
-	}
 
 	function ConvertStringForSqlInjection($data)
 	{
@@ -177,6 +154,112 @@ class DB
 
 	/*************************************************************************************************/
 
+	/***** record *****/
+
+	function InsertRecord($accountId,
+						  $userId,
+					      $actor,
+						  $recordDate,
+						  $amount,
+						  $designation,
+						  $charge,
+						  $category,
+						  $recordType,
+						  $recordGroupId)
+	{
+		if ($this->_isReadOnly)
+			return 0;
+	
+		$query = sprintf("insert into ".$this->_dbTablePrefix."record (account_id, user_id, record_date, marked_as_deleted, designation, record_type, amount, actor, charge, category_id, record_group_id, record_id)
+				values ('%s', '%s', '%s', 0, '%s', %s, %s, %s, %s, '%s', '%s', uuid())",
+				$accountId,
+				$userId,
+				$recordDate,
+				$this->ConvertStringForSqlInjection($designation),
+				$recordType,
+				$amount,
+				$actor == null ? 0 : $actor,
+				$charge,
+				$category == null ? "" : $category,
+				$recordGroupId == null ? "" : $recordGroupId);
+		//throw new Exception($query);
+		$result = $this->_connection->exec($query);
+	
+		$queryMonthYearFill = "update ".$this->_dbTablePrefix."record set record_date_month = month(record_date), record_date_year = year(record_date) where record_date_month = -1";
+		$resultMonthYearFill = $this->_connection->exec($queryMonthYearFill);
+	
+		return $result;
+	}
+
+	function InsertRecord_Remark($accountId, $userId, $recordDate, $designation)
+	{
+		return $this->InsertRecord($accountId,
+								   $userId,
+								   null,
+								   $recordDate,
+								   0,
+								   $designation,
+								   0,
+								   null,
+								   2,
+								   null);
+	}
+
+	function InsertRecord_AmountTransfer($accountId, $userId, $recordDate, $amount, $designation, $recordType, $recordGroupId)
+	{
+		return $this->InsertRecord($accountId,
+				$userId,
+				null,
+				$recordDate,
+				$amount,
+				$designation,
+				0,
+				null,
+				$recordType,
+				$recordGroupId);
+	}
+	
+	function InsertRecord_AmountUse($accountId, $userId, $recordDate, $amount, $designation, $charge, $category, $recordType, $recordGroupId)
+	{
+		return $this->InsertRecord(
+				$accountId,
+				$userId,
+				null,
+				$recordDate,
+				$amount,
+				$designation,
+				$charge,
+				$category,
+				$recordType,
+				$recordGroupId);
+	}
+
+	function DeleteRecord($recordId)
+	{
+		if ($this->_isReadOnly)
+			return 0;
+
+		$sql = "select record_group_id from {TABLEPREFIX}record where record_id = '".$recordId."'";
+		$row = $this->SelectRow($sql);
+		if (strlen($row['record_group_id']) > 0)
+		{
+			$sql = "update {TABLEPREFIX}record set marked_as_deleted = 1 where record_group_id = '".$row['record_group_id']."'";
+		}
+		else
+		{
+			$sql = "update {TABLEPREFIX}record set marked_as_deleted = 1 where record_id = '".$recordId."' and account_id = '{ACCOUNTID}'";
+		}
+		$result = $this->Execute($sql);
+		
+		if (strlen($row['record_group_id']) > 0)
+		{
+			$sql = "update {TABLEPREFIX}investment_record set marked_as_deleted = 1 where record_group_id = '".$row['record_group_id']."'";
+		}
+		$result = $this->Execute($sql);
+
+		return $result;
+	}
+
 	/***** investment_record *****/
 
 	function InsertInvestmentRecord($accountId,
@@ -203,7 +286,7 @@ class DB
 				$recordType == null ? "0" : $recordType);
 		//throw new Exception($query);
 	
-		$result = $this->_connection->exec($query) or die('Erreur SQL ! '.$query.'<br />'.mysql_error());
+		$result = $this->_connection->exec($query);
 	
 		return $result;
 	}

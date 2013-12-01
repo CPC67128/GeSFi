@@ -3,8 +3,12 @@ include_once '../security/security_manager.php';
 
 function __autoload($class_name)
 {
-	include '../class/'.$class_name . '.php';
+	$file = '../controller/'.$class_name . '.php';
+	if (!file_exists($file))
+		$file = '../model/'.$class_name . '.php';
+	include $file;
 }
+
 
 if ($_SESSION['account_id'] != 'all_accounts')
 	echo '<a href="#" onclick="javascript:ChangeAccount(\'all_accounts\'); return false;">';

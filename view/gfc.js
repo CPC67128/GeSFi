@@ -10,7 +10,7 @@ $(function() {
 function DeleteRecord(recordIdToDelete)
 {
 	$.post (
-			'controller.php?action=deleteRecord',
+			'../controller/controller.php?action=record_delete',
 			{ recordId: recordIdToDelete },
 			function(response, status) {
 				LoadRecords();
@@ -21,7 +21,7 @@ function DeleteRecord(recordIdToDelete)
 function DeleteRecordInvestment(recordIdToDelete)
 {
 	$.post (
-			'controller.php?action=deleteRecordInvestment',
+			'../controller/controller.php?action=deleteRecordInvestment',
 			{ recordId: recordIdToDelete },
 			function(response, status) {
 				LoadRecords();
@@ -38,7 +38,7 @@ function ConfirmRecord(recordIdToConfirm, sender)
 
 	sender.disabled = true;
 	$.post (
-			'controller.php?action=confirmRecord',
+			'../controller/controller.php?action=confirmRecord',
 			{ recordId: recordIdToConfirm , confirmed: confirmation },
 			function(response, status) {
 				sender.disabled = false;
@@ -204,7 +204,7 @@ function ChangeAccount(id)
 	if (id == 'dashboard')
 	{
 		$.post (
-				'controller.php?action=dashboard',
+				'../controller/controller.php?action=dashboard',
 				function(response, status) {
 					LoadTopMenu();
 					LoadPage('home');
@@ -214,7 +214,7 @@ function ChangeAccount(id)
 	else if (id == 'configuration')
 	{
 		$.post (
-				'controller.php?action=configuration',
+				'../controller/controller.php?action=configuration',
 				function(response, status) {
 					LoadTopMenu();
 					LoadPage('');
@@ -224,7 +224,7 @@ function ChangeAccount(id)
 	else
 	{
 		$.post (
-				'controller.php?action=changeAccount',
+				'../controller/controller.php?action=account_change',
 				{ accountId: id },
 				function(response, status) {
 					LoadTopMenu();

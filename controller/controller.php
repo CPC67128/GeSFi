@@ -3,38 +3,42 @@ include_once '../security/security_manager.php';
 
 function __autoload($class_name)
 {
-	include '../class/'.$class_name . '.php';
+	$file = '../controller/'.$class_name . '.php';
+	if (!file_exists($file))
+		$file = '../model/'.$class_name . '.php';
+	include $file;
 }
 
 try
 {
+	$operation = null;
+
 	switch ($_GET['action'])
 	{
-		case 'expense':
-			$newExpense = new Operation_Money_Expense();
-			$newExpense->hydrate($_POST);
-			$newExpense->Save();
+		case 'record_remark':
+			$operation = new Operation_Record_Remark();
 			break;
-		case 'income':
-			$newIncome = new Operation_Money_Income();
-			$newIncome->hydrate($_POST);
-			$newIncome->Save();
+		case 'record_delete':
+			$operation = new Operation_Record_Delete();
 			break;
-		case 'transfer':
-			$newAction = new Operation_Money_Transfer();
-			$newAction->hydrate($_POST);
-			$newAction->Save();
+		case 'record_transfer':
+			$operation = new Operation_Record_Transfer();
 			break;
-		case 'remark':
-			$newRemark = new Operation_Remark();
-			$newRemark->hydrate($_POST);
-			$newRemark->Save();
+		case 'record_income':
+			$operation = new Operation_Record_Income();
 			break;
-		case 'remarkInvestment':
-			$newRemark = new Operation_Remark_Investment();
-			$newRemark->hydrate($_POST);
-			$newRemark->Save();
+		case 'record_expense':
+			$operation = new Operation_Record_Expense();
 			break;
+				
+		case 'account_change':
+			$operation = new Operation_Account_Change();
+			break;
+
+/*		case 'remarkInvestment':
+			$operation = new Operation_InvestmentRecord_Remark();
+			break;
+
 		case 'reverseCategory':
 			$newAction = new Action_ReverseCategory();
 			$newAction->hydrate($_POST);
@@ -42,11 +46,6 @@ try
 			break;
 		case 'sendIncomeRequest':
 			$newAction = new Action_SendIncomeRequest();
-			$newAction->hydrate($_POST);
-			$newAction->Execute();
-			break;
-		case 'changeAccount':
-			$newAction = new Action_ChangeAccount();
 			$newAction->hydrate($_POST);
 			$newAction->Execute();
 			break;
@@ -114,8 +113,14 @@ try
 			$newAction = new Action_AddInvestmentDebit();
 			$newAction->hydrate($_POST);
 			$newAction->Save();
-			break;
+			break;*/
 	}
+
+	if ($operation == null)
+		throw new Exception("Aucune opération associée");
+
+	$operation->hydrate($_POST);
+	$operation->Execute();
 }
 catch (Exception $e)
 {

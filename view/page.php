@@ -3,7 +3,10 @@ include '../security/security_manager.php';
 
 function __autoload($class_name)
 {
-	include '../class/'.$class_name . '.php';
+	$file = '../controller/'.$class_name . '.php';
+	if (!file_exists($file))
+		$file = '../model/'.$class_name . '.php';
+	include $file;
 }
 
 $translator = new Translator();
@@ -33,18 +36,19 @@ $activeUser = $usersHandler->GetCurrentUser();
 
 switch ($pageName)
 {
-	case 'remark';
-	case 'transfer';
+	case 'record_remark';
+	case 'record_transfer';
 		include 'page_'.$pageName.'.php';
 		AddFormManagementEnd($pageName);
 		break;
 
-	case 'expense';
+	case 'record_expense';
 		include 'page_'.$pageName.'.php';
 		AddFormManagementEnd($pageName);
 		break;
 
 	case 'income';
+	case 'record_income';
 		if ($activeAccount->getType() == 10)
 			$pageName = 'income_investment';
 		include 'page_'.$pageName.'.php';
@@ -121,7 +125,7 @@ function AddFormManagementEnd($pageName)
 $("#form").submit( function () {
 	document.getElementById("submitForm").disabled = true;
 	$.post (
-		'controller.php?action=<?php echo $pageName; ?>',
+		'../controller/controller.php?action=<?php echo $pageName; ?>',
 		$(this).serialize(),
 		function(response, status) {
 			$("#formResult").stop().show();

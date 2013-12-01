@@ -3,8 +3,12 @@ include_once '../security/security_manager.php';
 
 function __autoload($class_name)
 {
-	include '../class/'.$class_name . '.php';
+	$file = '../controller/'.$class_name . '.php';
+	if (!file_exists($file))
+		$file = '../model/'.$class_name . '.php';
+	include $file;
 }
+
 
 $accountsManager = new AccountsManager();
 $account = $accountsManager->GetCurrentActiveAccount();
@@ -139,41 +143,21 @@ $("#recordsMenuIcon").click(function() {
 });
 
 $("#expenseMenuIcon").click(function() {
-	LoadPage('expense');
+	LoadPage('record_expense');
 });
 
 $("#incomeMenuIcon").click(function() {
-	$.ajax({
-        type : 'POST',
-        url : 'page.php?name=income',
-        dataType: 'html',
-        success : function(data) {
-            $('#content').html(data);
-        }
-    });
+	LoadPage('record_income');
 });
 
 $("#transferMenuIcon").click(function() {
-	$.ajax({
-        type : 'POST',
-        url : 'page.php?name=transfer',
-        dataType: 'html',
-        success : function(data) {
-            $('#content').html(data);
-        }
-    });
+	LoadPage('record_transfer');
 });
 
 $("#remarkMenuIcon").click(function() {
-	$.ajax({
-        type : 'POST',
-        url : 'page.php?name=remark',
-        dataType: 'html',
-        success : function(data) {
-            $('#content').html(data);
-        }
-    });
+	LoadPage('record_remark');
 });
+
 $("#connectionMenuIcon").click(function() {
 	$.ajax({
         type : 'POST',

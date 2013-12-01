@@ -35,7 +35,7 @@ foreach ($accounts as $account)
 <br/>
 
 <?= $translator->getTranslation('Date') ?> <input title="aaaa-mm-jj hh:mm:ss" size="10" id="datePicker" name="date" value="<?php echo date("Y-m-d") ?>"><br/>
-Montant <input type="text" name="totalAmount" tabindex="-1" size="6" style='background-color : #d1d1d1;' readonly>&nbsp;&euro;<br />
+Montant <input type="text" name="amount" tabindex="-1" size="6" style='background-color : #d1d1d1;' readonly>&nbsp;&euro;<br />
 <?= $translator->getTranslation('Désignation') ?> <input type="text" name="designation" size="30">
 </td>
 
@@ -254,7 +254,7 @@ function CalculateAllAmounts() {
 		}
 	}
 
-	$("input[name='totalAmount']").val(total);
+	$("input[name='amount']").val(total);
 };
 
 </script>

@@ -49,7 +49,7 @@ class InvestmentsRecordsManager
 		// Search for account data
 		$accountsManager = new AccountsManager();
 		$account = $accountsManager->GetCurrentActiveAccount();
-		$creationDate = $account->getCreationDate();
+		$creationDate = $account->get('creationDate');
 
 		// Search for investment records
 		$query = "select INR.*
@@ -57,7 +57,7 @@ class InvestmentsRecordsManager
 			inner join {TABLEPREFIX}account ACC on ACC.account_id = INR.account_id
 			where ACC.owner_user_id = '{USERID}'
 			and marked_as_deleted = 0
-			and INR.account_id = '".$account->getAccountId()."'
+			and INR.account_id = '".$account->get('accountId')."'
 			order by record_date";
 		$records = $db->Select($query);
 

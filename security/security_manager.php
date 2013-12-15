@@ -1,6 +1,6 @@
 <?php
 session_start();
-include_once '../dal/dal_appzone.php';
+//include_once '../dal/dal_appzone.php';
 include_once('mailing.php');
 
 function RedirectToLoginPage()

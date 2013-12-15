@@ -17,7 +17,7 @@ class RecordsManager
 			inner join {TABLEPREFIX}user u on r.user_id = u.user_id
 			left join {TABLEPREFIX}account a on r.account_id = a.account_id
 			where record_date < adddate(curdate(), interval 2 month) ".
-			($activeAccount->getType() > 0 ? "and r.account_id = '{ACCOUNTID}'" : "")." 
+			($activeAccount->get('type') > 0 ? "and r.account_id = '{ACCOUNTID}'" : "")." 
 			and r.user_id = '".$user->getUserId()."'
 			and record_type in (1, 4, 22)
 			and
@@ -36,7 +36,7 @@ class RecordsManager
 			inner join {TABLEPREFIX}user u on r.user_id = u.user_id
 			left join {TABLEPREFIX}account a on r.account_id = a.account_id
 			where record_date < adddate(curdate(), interval 2 month) ".
-			($activeAccount->getType() > 0 ? "and r.account_id = '{ACCOUNTID}'" : "")." 
+			($activeAccount->get('type') > 0 ? "and r.account_id = '{ACCOUNTID}'" : "")." 
 			and r.user_id = '".$user->GetPartnerId()."'
 			and record_type in (1, 4, 22)
 			and
@@ -55,7 +55,7 @@ class RecordsManager
 			inner join {TABLEPREFIX}user u on r.user_id = u.user_id
 			left join {TABLEPREFIX}account a on r.account_id = a.account_id
 			where record_date < adddate(curdate(), interval 2 month) ".
-			($activeAccount->getType() > 0 ? "and r.account_id = '{ACCOUNTID}'" : "")." 
+			($activeAccount->get('type') > 0 ? "and r.account_id = '{ACCOUNTID}'" : "")." 
 			and record_type not in (1, 4, 22)
 			and record_date > adddate((select max(record_date) from {TABLEPREFIX}record where record_date <= curdate() and user_id = '{USERID}'), interval -".$month." month)
 			and

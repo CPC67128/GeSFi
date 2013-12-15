@@ -14,7 +14,7 @@ $accountsManager = new AccountsManager();
 $account = $accountsManager->GetCurrentActiveAccount();
 ?>
 
-<?php if ($account->getType() == -50) { ?>
+<?php if ($account->get('type') == -50) { ?>
 <img id='dashboardMenuIcon' class='menuIcon' src="../media/homeMenuIcon.png" />
 <br />
 Accueil
@@ -22,7 +22,7 @@ Accueil
 <br />
 <?php } ?>
 
-<?php if ($account->getType() == 100) { ?>
+<?php if ($account->get('type') == 100) { ?>
 <img id='recordsMenuIcon' class='menuIcon' src="../media/assetManagementMenuIcon.png" />
 <br />
 Situation
@@ -37,7 +37,7 @@ Statistiques
 }
 ?>
 
-<?php if ($account->getType() == 10) { ?>
+<?php if ($account->get('type') == 10) { ?>
 <img id='recordsMenuIcon' class='menuIcon' src="../media/recordsMenuIcon.png" />
 <br />
 Lignes
@@ -70,7 +70,7 @@ Statistiques
 <br />
 <?php } ?>
 
-<?php if ($account->getType() >= 0 && $account->getType() < 10) { ?>
+<?php if ($account->get('type') >= 0 && $account->get('type') < 10) { ?>
 <img id='recordsMenuIcon' class='menuIcon' src="../media/recordsMenuIcon.png" />
 <br />
 Lignes
@@ -98,7 +98,7 @@ Remarque
 <br />
 <?php } ?>
 
-<?php if ($account->getType() == 0 || $account->getType() == 2 || $account->getType() == 3 || $account->getType() == -50) { ?>
+<?php if ($account->get('type') == 0 || $account->get('type') == 2 || $account->get('type') == 3 || $account->get('type') == -50) { ?>
 <img id='balanceMenuIcon' class='menuIcon' src="../media/balanceMenuIcon.png" />
 <br />
 Balance
@@ -111,7 +111,7 @@ Statistiques
 <br />
 <?php } ?>
 
-<?php if ($account->getType() == -100) { ?>
+<?php if ($account->get('type') == -100) { ?>
 <img id='connectionMenuIcon' class='menuIcon' src="../media/connectionMenuIcon.jpg" />
 <br />
 Connections
@@ -197,19 +197,16 @@ $("#investmentsStatisticsMenuIcon").click(function() {
 });
 
 $("#investmentValueMenuIcon").click(function() {
-	$('#content').html('<img src="../media/loading.gif" />');
-	LoadPage('value_investment');
+	LoadPage('investmentrecord_value');
 });
 
 
 $("#investmentIncomeMenuIcon").click(function() {
-	$('#content').html('<img src="../media/loading.gif" />');
-	LoadPage('income_investment');
+	LoadPage('investmentrecord_income');
 });
 
 $("#investmentDebitMenuIcon").click(function() {
-	$('#content').html('<img src="../media/loading.gif" />');
-	LoadPage('debit_investment');
+	LoadPage('investmentrecord_debit');
 });
 
 

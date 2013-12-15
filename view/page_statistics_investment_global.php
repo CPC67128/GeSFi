@@ -9,7 +9,7 @@ $i = 0;
 foreach ($accounts as $account)
 {
 ?>
-<input type="checkbox" name="account<?= $i ?>" value="<?= $account->getAccountId() ?>"><?= $account->getName() ?><?= strlen($account->getDescription()) > 0 ? ' ('.$account->getDescription().')' : ''  ?>
+<input type="checkbox" name="account<?= $i ?>" value="<?= $account->get('accountId') ?>"><?= $account->get('name') ?><?= strlen($account->get('description')) > 0 ? ' ('.$account->get('description').')' : ''  ?>
 <br />
 <?php
 	$i++;

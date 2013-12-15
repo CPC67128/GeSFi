@@ -13,7 +13,7 @@ $accounts = $accountsManager->GetAllInvestmentAccounts();
 foreach ($accounts as $account)
 {
 ?>
-<input type="radio" name="fromAccount" <?= $account->getAccountId() == $_SESSION['account_id'] ? 'checked' : '' ?> value="<?= $account->getAccountId() ?>"><?= $account->getName() ?><?= strlen($account->getDescription()) > 0 ? ' ('.$account->getDescription().')' : ''  ?><br />
+<input type="radio" name="fromAccount" <?= $account->get('accountId') == $_SESSION['account_id'] ? 'checked' : '' ?> value="<?= $account->get('accountId') ?>"><?= $account->get('name') ?><?= strlen($account->get('description')) > 0 ? ' ('.$account->get('description').')' : ''  ?><br />
 <?php
 }
 ?>
@@ -28,7 +28,7 @@ foreach ($accounts as $account)
 $accounts = $accountsManager->GetAllPrivateAccounts();
 foreach ($accounts as $account)
 { ?>
-<input type="radio" name="toAccount" <?= $account->getAccountId() == $_SESSION['account_id'] ? 'checked' : '' ?> value="<?= $account->getAccountId() ?>"><?= $account->getName() ?><br />
+<input type="radio" name="toAccount" <?= $account->get('accountId') == $_SESSION['account_id'] ? 'checked' : '' ?> value="<?= $account->get('accountId') ?>"><?= $account->get('name') ?><br />
 <?php } ?>
 
 <br/>

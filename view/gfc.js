@@ -21,7 +21,7 @@ function DeleteRecord(recordIdToDelete)
 function DeleteRecordInvestment(recordIdToDelete)
 {
 	$.post (
-			'../controller/controller.php?action=deleteRecordInvestment',
+			'../controller/controller.php?action=investmentrecord_delete',
 			{ recordId: recordIdToDelete },
 			function(response, status) {
 				LoadRecords();
@@ -38,7 +38,7 @@ function ConfirmRecord(recordIdToConfirm, sender)
 
 	sender.disabled = true;
 	$.post (
-			'../controller/controller.php?action=confirmRecord',
+			'../controller/controller.php?action=record_confirm',
 			{ recordId: recordIdToConfirm , confirmed: confirmation },
 			function(response, status) {
 				sender.disabled = false;

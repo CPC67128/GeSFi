@@ -145,8 +145,12 @@ body {
 }
 
 #recordsTable td {
-	vertical-align: top; text-align: center;
+	vertical-align: top; text-align: left;
 }
+
+#recordsTable td.amount {
+	text-align: right;
+} 
 
 .tableRowTitle    { font-style: italic }
 
@@ -162,7 +166,6 @@ body {
 .tableRowRemark0    { background-color: #AAFFAA; font-style:italic; }
 .tableRowRemark1    { background-color: #88FF88; font-style:italic; }
 
-#recordsTable td { padding-left:10px; padding-right:10px; }
 
 h1 {
 	font-weight: bold;

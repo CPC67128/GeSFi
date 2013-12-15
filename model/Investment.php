@@ -1,63 +1,9 @@
 <?php
-class Investment
+class Investment extends Entity
 {
 	protected $_investmentId;
 	protected $_userId;
 	protected $_name;
-
-	public function set($member, $value)
-	{
-		$this->$member = $value;
-	}
-	
-	public function get($member)
-	{
-		$member = '_'.$member;
-		if (isset($this->$member))
-			return $this->$member;
-		else
-			throw new Exception('Unknow attribute '.$member);
-	}
-	
-	public function hydrate(array $data)
-	{
-		foreach ($data as $key => $value)
-		{
-			switch ($key)
-			{
-				case 'user_id': $key = 'userId'; break;
-				case 'investment_id': $key = 'investmentId'; break;
-				default: $key = $key; break;
-			}
-			$this->set('_'.$key, $value);
-	
-			$this->_isNull = false;
-		}
-	}
-
-
-	public function AAAAAAAAAhydrate(array $data)
-	{
-		foreach ($data as $key => $value)
-		{
-			switch ($key)
-			{
-				case 'account_id': $key = 'AccountId'; break;
-				case 'opening_balance': $key = 'OpeningBalance'; break;
-				case 'expected_minimum_balance': $key = 'ExpectedMinimumBalance'; break;
-				case 'owner_user_id': $key = 'OwnerUserId'; break;
-				case 'coowner_user_id': $key = 'CoownerUserId'; break;
-				case 'creation_date': $key = 'CreationDate'; break;
-				case 'sort_order': $key = 'SortOrder'; break;
-				default: $key = ucfirst($key); break;
-			}
-			$method = 'set'.$key;
-			if (method_exists($this, $method))
-			{
-				$this->$method($value);
-			}
-		}
-	}
 
 	// -------------------------------------------------------------------------------------------------------------------
 

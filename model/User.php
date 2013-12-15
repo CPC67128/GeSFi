@@ -1,5 +1,5 @@
 <?php
-class User
+class User extends Entity
 {
 	protected $_userId;
 	protected $_email;
@@ -395,7 +395,7 @@ class User
 	{
 		$db = new DB();
 
-		$escaped_browser = String2StringForSprintfQueryBuilder($Browser);
+		//$escaped_browser = String2StringForSprintfQueryBuilder($Browser);
 	
 		$query = sprintf("insert into {TABLEPREFIX}user_connection (user_id, connection_date_time, ip_address, browser) values('%s', now(), '%s', '%s')",
 				$this->_userId,

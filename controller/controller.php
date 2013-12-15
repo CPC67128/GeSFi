@@ -30,30 +30,52 @@ try
 		case 'record_expense':
 			$operation = new Operation_Record_Expense();
 			break;
+		case 'record_confirm':
+			$operation = new Operation_Record_Confirm();
+			break;
 				
 		case 'account_change':
 			$operation = new Operation_Account_Change();
 			break;
-
-/*		case 'remarkInvestment':
-			$operation = new Operation_InvestmentRecord_Remark();
+		case 'account_modification':
+			$operation = new Operation_Account_Modification();
 			break;
 
-		case 'reverseCategory':
-			$newAction = new Action_ReverseCategory();
-			$newAction->hydrate($_POST);
-			$newAction->Execute();
+		case 'investmentrecord_value':
+			$operation = new Operation_InvestmentRecord_Value();
 			break;
-		case 'sendIncomeRequest':
-			$newAction = new Action_SendIncomeRequest();
-			$newAction->hydrate($_POST);
-			$newAction->Execute();
+		case 'investmentrecord_delete':
+			$operation = new Operation_InvestmentRecord_Delete();
 			break;
-		case 'accountModification':
-			$newAction = new Action_AccountModification();
-			$newAction->hydrate($_POST);
-			$newAction->Execute();
+		case 'investmentrecord_income':
+			$operation = new Operation_InvestmentRecord_Income();
 			break;
+		case 'investmentrecord_debit':
+			$operation = new Operation_InvestmentRecord_Debit();
+			break;
+
+		case 'user_subscription':
+			$operation = new Operation_User_Subscription();
+			break;
+		case 'user_duo':
+			$operation = new Operation_User_Duo();
+			break;
+		case 'user_modification':
+			$operation = new Operation_User_Modification();
+			break;
+
+		case 'configuration':
+			$operation = new Operation_Account_Change();
+			$operation->set('accountId', 'configuration');
+			break;
+
+		case 'category_modification_duo':
+			$operation = new Operation_Category_Modification_Duo();
+			break;
+		case 'category_modification_user':
+			$operation = new Operation_Category_Modification_User();
+			break;
+/*
 		case 'userCategoryModification':
 			$newAction = new Action_UserCategoryModification();
 			$newAction->hydrate($_POST);
@@ -64,56 +86,12 @@ try
 			$newAction->hydrate($_POST);
 			$newAction->Execute();
 			break;
-		case 'userModification':
-			$newAction = new Action_UserModification();
-			$newAction->hydrate($_POST);
-			$newAction->Execute();
-			break;
-		case 'duoModification':
-			$newAction = new Action_DuoModification();
-			$newAction->hydrate($_POST);
-			$newAction->Execute();
-			break;
 		case 'dashboard':
 			$newAction = new Action_ChangeAccount();
 			$newAction->setAccountId('dashboard');
 			$newAction->Execute();
 			break;
-		case 'configuration':
-			$newAction = new Action_ChangeAccount();
-			$newAction->setAccountId('configuration');
-			$newAction->Execute();
-			break;
-		case 'deleteRecord':
-			$newAction = new Action_DeleteRecord();
-			$newAction->hydrate($_POST);
-			$newAction->Execute();
-			break;
-		case 'deleteRecordInvestment':
-			$newAction = new Action_DeleteRecordInvestment();
-			$newAction->hydrate($_POST);
-			$newAction->Execute();
-			break;
-		case 'confirmRecord':
-			$newAction = new Action_ConfirmRecord();
-			$newAction->hydrate($_POST);
-			$newAction->Execute();
-			break;
-		case 'valueInvestment':
-			$newAction = new Action_AddInvestmentValue();
-			$newAction->hydrate($_POST);
-			$newAction->Save();
-			break;
-		case 'incomeInvestment':
-			$newAction = new Action_AddInvestmentIncome();
-			$newAction->hydrate($_POST);
-			$newAction->Save();
-			break;
-		case 'debit_investment':
-			$newAction = new Action_AddInvestmentDebit();
-			$newAction->hydrate($_POST);
-			$newAction->Save();
-			break;*/
+		*/
 	}
 
 	if ($operation == null)

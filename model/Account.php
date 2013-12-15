@@ -1,49 +1,20 @@
 <?php
-class Account
+class Account extends Entity
 {
 	protected $_accountId;
 	protected $_name;
 	protected $_description;
+	protected $_information;
 	protected $_type;
 	protected $_ownerUserId;
 	protected $_coownerUserId;
 	protected $_openingBalance;
 	protected $_expectedMinimumBalance;
-	protected $_information;
 	protected $_creationDate;
 	protected $_closingDate;
-	
+	protected $_markedAsClosed;
+
 	protected $_sortOrder;
-
-	public function setAccountId($accountId)
-	{
-		$this->_accountId = $accountId;
-	}
-	
-	public function getAccountId()
-	{
-		return $this->_accountId;
-	}
-	
-	public function setName($accountName)
-	{
-		$this->_name = $accountName;
-	}
-
-	public function getName()
-	{
-		return $this->_name;
-	}
-
-	public function setType($type)
-	{
-		$this->_type = $type;
-	}
-
-	public function getType()
-	{
-		return $this->_type;
-	}
 
 	public function getTypeDescription()
 	{
@@ -54,120 +25,6 @@ class Account
 			case 3: return 'Compte duo'; break;
 			case 4: return 'Compte d\'optimisation financière'; break;
 			case 10: return 'Placement privé'; break;
-		}
-	}
-
-	public function setOpeningBalance($openingBalance)
-	{
-		$this->_openingBalance = $openingBalance;
-	}
-	
-	public function getOpeningBalance()
-	{
-		return $this->_openingBalance;
-	}
-	
-	public function setExpectedMinimumBalance($expectedMinimumBalance)
-	{
-		$this->_expectedMinimumBalance = $expectedMinimumBalance;
-	}
-	
-	public function getExpectedMinimumBalance()
-	{
-		return $this->_expectedMinimumBalance;
-	}
-	
-	public function setOwnerUserId($ownerUserId)
-	{
-		$this->_ownerUserId = $ownerUserId;
-	}
-	
-	public function getOwnerUserId()
-	{
-		return $this->_ownerUserId;
-	}
-	
-	public function setCoownerUserId($coownerUserId)
-	{
-		$this->_coownerUserId = $coownerUserId;
-	}
-	
-	public function getCoownerUserId()
-	{
-		return $this->_coownerUserId;
-	}
-	
-	public function setCreationDate($creationDate)
-	{
-		$this->_creationDate = $creationDate;
-	}
-
-	public function getCreationDate()
-	{
-		return $this->_creationDate;
-	}
-	
-	public function setClosingDate($closingDate)
-	{
-		$this->_closingDate = $closingDate;
-	}
-
-	public function getClosingDate()
-	{
-		return $this->_closingDate;
-	}
-	
-	public function setSortOrder($sortOrder)
-	{
-		$this->_sortOrder = $sortOrder;
-	}
-	
-	public function getSortOrder()
-	{
-		return $this->_sortOrder;
-	}
-
-	public function setDescription($description)
-	{
-		$this->_description = $description;
-	}
-	
-	public function getDescription()
-	{
-		return $this->_description;
-	}
-
-	public function setInformation($information)
-	{
-		$this->_information = $information;
-	}
-	
-	public function getInformation()
-	{
-		return $this->_information;
-	}
-
-	public function hydrate(array $data)
-	{
-		foreach ($data as $key => $value)
-		{
-			switch ($key)
-			{
-				case 'account_id': $key = 'AccountId'; break;
-				case 'opening_balance': $key = 'OpeningBalance'; break;
-				case 'expected_minimum_balance': $key = 'ExpectedMinimumBalance'; break;
-				case 'owner_user_id': $key = 'OwnerUserId'; break;
-				case 'coowner_user_id': $key = 'CoownerUserId'; break;
-				case 'creation_date': $key = 'CreationDate'; break;
-				case 'closing_date': $key = 'ClosingDate'; break;
-				case 'sort_order': $key = 'SortOrder'; break;
-				default: $key = ucfirst($key); break;
-			}
-			$method = 'set'.$key;
-			if (method_exists($this, $method))
-			{
-				$this->$method($value);
-			}
 		}
 	}
 
@@ -205,7 +62,7 @@ class Account
 
 	public function GetBalance()
 	{
-		$balance = $this->getOpeningBalance() + $this->GetTotalIncome() - $this->GetTotalOutcome();
+		$balance = $this->get('openingBalance') + $this->GetTotalIncome() - $this->GetTotalOutcome();
 		return $balance;
 	}
 	
@@ -316,7 +173,7 @@ class Account
 		return $result;
 	}
 
-	public function GetTotalCreditByActorAndMonthAndYear($actor, $month, $year)
+	public function OBS_GetTotalCreditByActorAndMonthAndYear($actor, $month, $year) // OBSOLETE?
 	{
 		$db = new DB();
 	
@@ -364,7 +221,7 @@ class Account
 		return $row['total'];
 	}
 
-	public function GetTotalDebitByMonthAndYear($month, $year)
+	public function OBS_GetTotalDebitByMonthAndYear($month, $year) // OBSOLETE
 	{
 		$db = new DB();
 	

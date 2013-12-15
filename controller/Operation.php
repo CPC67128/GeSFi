@@ -8,8 +8,10 @@ class Operation
 	function __construct()
 	{
 		$this->_db = new DB();
-		$this->_currentAccountId = $_SESSION['account_id'];
-		$this->_currentUserId = $_SESSION['user_id'];
+		if (isset($_SESSION['account_id']))
+			$this->_urrentAccountId = $_SESSION['account_id'];
+		if (isset($_SESSION['user_id']))
+			$this->_currentUserId = $_SESSION['user_id'];
 	}
 
 	// -------------------------------------------------------------------------------------------------------------------
@@ -25,13 +27,14 @@ class Operation
 			}
 			else
 			{
-				$this->set('_'.$key, $value);
+				$this->set($key, $value);
 			}
 		}
 	}
 
 	public function set($member, $value)
 	{
+		$member = '_'.$member;
 		$this->$member = $value;
 	}
 	
@@ -56,5 +59,14 @@ class Operation
 
 	public function Save()
 	{
+	}
+
+	public function ParseAmount($amount)
+	{
+		$amount = str_replace(' ' ,'', $amount);
+		$amount = str_replace(',' ,'.', $amount);
+		$amount = str_replace('€' ,'', $amount);
+
+		return $amount;
 	}
 }

@@ -326,4 +326,52 @@ class DB
 											 $value,
 											 null);
 	}
+	
+	function DeleteInvestmentRecord($recordId)
+	{
+		if ($this->_isReadOnly)
+			return 0;
+	
+		$sql = "select record_group_id from {TABLEPREFIX}investment_record where investment_record_id = '".$recordId."'";
+		$row = $this->SelectRow($sql);
+		if (strlen($row['record_group_id']) > 0)
+		{
+			$sql = "update {TABLEPREFIX}investment_record set marked_as_deleted = 1 where record_group_id = '".$row['record_group_id']."'";
+		}
+		else
+		{
+			$sql = "update {TABLEPREFIX}investment_record set marked_as_deleted = 1 where investment_record_id = '".$recordId."' and account_id = '{ACCOUNTID}'";
+		}
+		$result = $this->Execute($sql);
+	
+		if (strlen($row['record_group_id']) > 0)
+		{
+			$sql = "update {TABLEPREFIX}record set marked_as_deleted = 1 where record_group_id = '".$row['record_group_id']."'";
+		}
+		$result = $this->Execute($sql);
+	
+		return $result;
+	}
+	
+	/***** user *****/
+	
+	function InsertUser(
+			$email,
+			$name,
+			$passwordHash)
+	{
+		if ($this->_isReadOnly)
+			return 0;
+	
+		$query = sprintf("insert into ".$this->_dbTablePrefix."user (email, name, password, subscription_date, user_id)
+				values ('%s', '%s', '%s', now(), uuid())",
+				$this->ConvertStringForSqlInjection($email),
+				$this->ConvertStringForSqlInjection($name),
+				$this->ConvertStringForSqlInjection($passwordHash));
+		//throw new Exception($query);
+	
+		$result = $this->_connection->exec($query);
+	
+		return $result;
+	}
 }

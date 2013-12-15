@@ -3,7 +3,10 @@ include '../security/security_manager.php';
 
 function __autoload($class_name)
 {
-	include '../class/'.$class_name . '.php';
+	$file = '../controller/'.$class_name . '.php';
+	if (!file_exists($file))
+		$file = '../model/'.$class_name . '.php';
+	include $file;
 }
 
 $translator = new Translator();
@@ -47,7 +50,7 @@ else
 $("#formDuo").submit( function () {
 	document.getElementById("submitFormDuo").disabled = true;
 	$.post (
-		'controller.php?action=duoCategoryModification',
+		'../controller/controller.php?action=category_modification_duo',
 		$(this).serialize(),
 		function(response, status) {
 			$("#formResultDuo").stop().show();

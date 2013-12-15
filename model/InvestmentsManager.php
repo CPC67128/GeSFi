@@ -1,5 +1,5 @@
 <?php
-class InvestmentsManager
+class InvestmentsManager extends Handler
 {
 	function GetAllInvestments()
 	{

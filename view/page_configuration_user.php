@@ -19,7 +19,7 @@ $user = $usersHandler->GetUser($_SESSION['user_id']);
 $("#formUser").submit( function () {
 	document.getElementById("submitFormUser").disabled = true;
 	$.post (
-		'controller.php?action=userModification',
+		'../controller/controller.php?action=user_modification',
 		$(this).serialize(),
 		function(response, status) {
 			$("#formUserResult").stop().show();
@@ -62,7 +62,7 @@ $("#formUser").submit( function () {
 $("#formDuo").submit( function () {
 	document.getElementById("submitFormDuo").disabled = true;
 	$.post (
-		'controller.php?action=duoModification',
+		'../controller/controller.php?action=user_duo',
 		$(this).serialize(),
 		function(response, status) {
 			$("#formUserDuo").stop().show();

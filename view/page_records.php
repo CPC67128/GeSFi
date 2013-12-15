@@ -8,14 +8,15 @@ $accounts = $accountsManager->GetAllOrdinaryAccounts();
 
 foreach ($accounts as $account)
 {
-	if ($account->getType() != 2 && $account->getType() != 4)
+	
+	if ($account->get('type') != 2 && $account->get('type') != 4)
 	{
 		$balance = $account->GetBalance();
 ?>
 <tr>
-<td><a href="#" onclick="javascript:ChangeAccount('<?= $account->getAccountId() ?>'); return false;"><?= $account->getName() ?></a></td>
+<td><a href="#" onclick="javascript:ChangeAccount('<?= $account->get('accountId') ?>'); return false;"><?= $account->get('name') ?></a></td>
 <td style='text-align: right;<?php 
-if ($balance <= $account->getExpectedMinimumBalance())
+if ($balance <= $account->get('expectedMinimumBalance'))
 	echo 'background-color: #FF0000';
 else
 	echo 'background-color: #00FF00';
@@ -43,7 +44,7 @@ Epargne : <?= $translator->getCurrencyValuePresentation($balance) ?>
 }
 else if ($accountType != 2 && $accountType != 0)
 {
-	$accountExpectedMinimumBalance = $activeAccount->getExpectedMinimumBalance();
+	$accountExpectedMinimumBalance = $activeAccount->get('expectedMinimumBalance');
 	$balance = $activeAccount->GetBalance();
 
 	$criticalAccountBalance = false;

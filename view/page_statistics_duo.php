@@ -143,7 +143,7 @@ $accounts = $accountsManager->GetAllDuoAccounts();
 foreach ($accounts as $account)
 {
 ?>
-<td colspan='3'><?= $account->getName() ?></td>
+<td colspan='3'><?= $account->get('name') ?></td>
 <?php
 }
 ?>

@@ -102,19 +102,19 @@ class AccountsManager
 
 		if ($_SESSION['account_id'] == 'dashboard')
 		{
-			$newAccount->setType(-50);
+			$newAccount->set('type', -50);
 		}
-			elseif ($_SESSION['account_id'] == 'all_accounts')
+		elseif ($_SESSION['account_id'] == 'all_accounts')
 		{
-			$newAccount->setType(0);
+			$newAccount->set('type', 0);
 		}
-			elseif ($_SESSION['account_id'] == 'configuration')
+		elseif ($_SESSION['account_id'] == 'configuration')
 		{
-			$newAccount->setType(-100);
+			$newAccount->set('type', -100);
 		}
 		elseif ($_SESSION['account_id'] == 'asset_management')
 		{
-			$newAccount->setType(100);
+			$newAccount->set('type', 100);
 		}
 		else
 		{

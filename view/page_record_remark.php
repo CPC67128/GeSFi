@@ -8,7 +8,7 @@
 $accountsManager = new AccountsManager();
 $fromAccount = $accountsManager->GetCurrentActiveAccount();
 
-if ($fromAccount->getType() == 2)
+if ($fromAccount->get('type') == 2)
 {
 ?>
 	  <?= $translator->getTranslation('Effectuée par') ?><input type="radio" name="actor" value="1" checked><?= $activeAccount->GetOwnerName() ?> </input><?= $translator->getTranslation('ou'); ?> <input type="radio" name="actor" value="2"><?= $activeAccount->GetCoownerName() ?></input>

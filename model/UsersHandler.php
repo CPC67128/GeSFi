@@ -7,9 +7,9 @@ class UsersHandler
 
 		$db = new DB();
 	
-		$query = 'select *
+		$query = "select *
 			from {TABLEPREFIX}user
-			where user_id = \''.$id.'\'';
+			where user_id = '".$id."'";
 		$result = $db->Select($query);
 		if ($row = $result->fetch())
 		{
@@ -21,7 +21,7 @@ class UsersHandler
 	
 	function GetUserByEmail($email)
 	{
-		$newUser = new User();
+		$newUser = null;
 	
 		$db = new DB();
 
@@ -31,6 +31,7 @@ class UsersHandler
 		$result = $db->Select($query);
 		if ($row = $result->fetch())
 		{
+			$newUser = new User();
 			$newUser->hydrate($row);
 		}
 	

@@ -22,10 +22,10 @@ $accounts = $accountsManager->GetAllOrdinaryAccounts();
 
 foreach ($accounts as $account)
 {
-	if ($account->getAccountId() != $_SESSION['account_id'])
-		echo '<a href="#" onclick="javascript:ChangeAccount(\''.$account->getAccountId().'\'); return false;">';
-	echo $account->getName();
-	if ($account->getAccountId() != $_SESSION['account_id'])
+	if ($account->get('accountId') != $_SESSION['account_id'])
+		echo '<a href="#" onclick="javascript:ChangeAccount(\''.$account->get('accountId').'\'); return false;">';
+	echo $account->get('name');
+	if ($account->get('accountId') != $_SESSION['account_id'])
 		echo '</a>';
 	echo ' / ';
 }

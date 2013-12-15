@@ -16,7 +16,7 @@ $pageName = $_GET['name'];
 $accountsManager = new AccountsManager();
 
 $activeAccount = $accountsManager->GetCurrentActiveAccount();
-$accountType = $activeAccount->getType();
+$accountType = $activeAccount->get('type');
 
 if ($accountType == -50 && $pageName == 'records')
 	$pageName = 'home';
@@ -49,14 +49,14 @@ switch ($pageName)
 
 	case 'income';
 	case 'record_income';
-		if ($activeAccount->getType() == 10)
+		if ($accountType == 10)
 			$pageName = 'income_investment';
 		include 'page_'.$pageName.'.php';
 		AddFormManagementEnd($pageName);
 		break;
 
 	case 'balance';
-		if ($activeAccount->getType() == 1)
+		if ($accountType == 1)
 			$pageName = $pageName.'_private';
 		else
 			$pageName = $pageName.'_duo';
@@ -65,37 +65,36 @@ switch ($pageName)
 		break;
 
 	case 'records';
-		if ($activeAccount->getType() == 10)
+		if ($accountType == 10)
 			$pageName = 'records_investment';
 		include 'page_'.$pageName.'.php';
 		break;
 
 	case 'statistics';
-		if ($activeAccount->getType() == -50 || $activeAccount->getType() == 0)
+		if ($accountType == -50 || $accountType == 0)
 			include 'page_'.$pageName.'_global.php';
-		else if ($activeAccount->getType() == 1)
+		else if ($accountType == 1)
 			include 'page_'.$pageName.'_private.php';
-		else if ($activeAccount->getType() == 10)
+		else if ($accountType == 10)
 			include 'page_'.$pageName.'_investment.php';
-		else if ($activeAccount->getType() == 100)
+		else if ($accountType == 100)
 			include 'page_'.$pageName.'_investment_global.php';
 		else
 			include 'page_'.$pageName.'_duo.php';
 		break;
-
-	case 'value_investment':
+	case 'investmentrecord_value':
 		include 'page_'.$pageName.'.php';
-		AddFormManagementEnd('valueInvestment');
+		AddFormManagementEnd('investmentrecord_value');
 		break;
 
-	case 'income_investment';
+	case 'investmentrecord_income';
 		include 'page_'.$pageName.'.php';
-		AddFormManagementEnd('incomeInvestment');
+		AddFormManagementEnd('investmentrecord_income');
 		break;
 		
-	case 'debit_investment';
+	case 'investmentrecord_debit';
 		include 'page_'.$pageName.'.php';
-		AddFormManagementEnd('debit_investment');
+		AddFormManagementEnd('investmentrecord_debit');
 		break;
 		
 	case 'remark_investment';

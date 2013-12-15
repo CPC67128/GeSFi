@@ -10,7 +10,7 @@
 $accounts = $accountsManager->GetAllDuoAccounts();
 foreach ($accounts as $account)
 { ?>
-<input type="radio" name="fromAccount" <?= $account->getAccountId() == $_SESSION['account_id'] ? 'checked' : '' ?> value="<?= $account->getAccountId() ?>"><?= $account->getName() ?><br />
+<input type="radio" name="fromAccount" <?= $account->get('accountId') == $_SESSION['account_id'] ? 'checked' : '' ?> value="<?= $account->get('accountId') ?>"><?= $account->get('name') ?><br />
 <?php } ?>
 
 <input type="radio" name="fromAccount" value="USER/<?= $activeUser->getUserId() ?>"><i><?= $activeUser->getName() ?> / Compte inconnu</i><br />
@@ -18,7 +18,7 @@ foreach ($accounts as $account)
 $accounts = $accountsManager->GetAllPrivateAccounts();
 foreach ($accounts as $account)
 { ?>
-<input type="radio" name="fromAccount" <?= $account->getAccountId() == $_SESSION['account_id'] ? 'checked' : '' ?> value="<?= $account->getAccountId() ?>"><?= $activeUser->getName() ?> / <?= $account->getName() ?><br />
+<input type="radio" name="fromAccount" <?= $account->get('accountId') == $_SESSION['account_id'] ? 'checked' : '' ?> value="<?= $account->get('accountId') ?>"><?= $activeUser->get('name') ?> / <?= $account->get('name') ?><br />
 <?php } ?>
 
 <input type="radio" name="fromAccount" value="USER/<?= $activeUser->GetPartnerId() ?>"><i><?= $activeUser->GetPartnerName() ?> / Compte inconnu</i><br />
@@ -30,15 +30,15 @@ foreach ($accounts as $account)
 $accounts = $accountsManager->GetAllDuoAccounts();
 foreach ($accounts as $account)
 { ?>
-<input type="radio" name="toAccount" value="<?= $account->getAccountId() ?>"><?= $account->getName() ?><br />
+<input type="radio" name="toAccount" value="<?= $account->get('accountId') ?>"><?= $account->get('name') ?><br />
 <?php } ?>
 
-<input type="radio" name="toAccount" value="USER/<?= $activeUser->getUserId() ?>"><i><?= $activeUser->getName() ?> / Compte inconnu</i><br />
+<input type="radio" name="toAccount" value="USER/<?= $activeUser->get('userId') ?>"><i><?= $activeUser->get('name') ?> / Compte inconnu</i><br />
 <?php
 $accounts = $accountsManager->GetAllPrivateAccounts();
 foreach ($accounts as $account)
 { ?>
-<input type="radio" name="toAccount" value="<?= $account->getAccountId() ?>"><?= $activeUser->getName() ?> / <?= $account->getName() ?><br />
+<input type="radio" name="toAccount" value="<?= $account->get('accountId') ?>"><?= $activeUser->get('name') ?> / <?= $account->get('name') ?><br />
 <?php } ?>
 
 <input type="radio" name="toAccount" value="USER/<?= $activeUser->GetPartnerId() ?>"><i><?= $activeUser->GetPartnerName() ?> / Compte inconnu</i><br />

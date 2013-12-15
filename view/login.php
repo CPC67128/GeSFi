@@ -1,20 +1,29 @@
 <?php
-include_once('../dal/dal_appzone.php');
+//include_once('../dal/dal_appzone.php');
 include_once('../security/mailing.php');
 
 function __autoload($class_name)
 {
-	include '../class/'.$class_name . '.php';
+	$file = '../controller/'.$class_name . '.php';
+	if (!file_exists($file))
+		$file = '../model/'.$class_name . '.php';
+	if (!file_exists($file))
+		$file = '../security/'.$class_name . '.php';
+	include $file;
 }
 
-$userHandler = new UsersHandler();
+$usersHandler = new UsersHandler();
+$securityHandler = new SecurityHandler();
 
-if ($SECURITY_SINGLE_USER_MODE)
+/***** Single User Security Mode *****/
+// In this mode, the user is automaticaly loged in using the user id configured in the configuration
+
+if ($securityHandler->IsSingleUserMode())
 {
 	session_start();
 
-	$user_id = $SECURITY_SINGLE_USER_MODE_USER_ID;
-	$user = $userHandler->GetUser($user_id);
+	$user_id = $securityHandler->GetSingleUserModeUserId();
+	$user = $usersHandler->GetUser($user_id);
 	$_SESSION['email'] = $user->get('email');
 	$_SESSION['user_id'] = $user->getUserId();
 	$_SESSION['full_name'] = $user->get('name');
@@ -30,40 +39,29 @@ if ($SECURITY_SINGLE_USER_MODE)
 	}
 	else
 		header("Location: index.php");
+
 	exit();
 }
 
+/***** Multiple User Security Mode *****/
+
 session_start();
+
+/*** User already connected ***/
 
 if (isset($_SESSION['user_id']) && $_SESSION['user_id'] > 0)
 {
-    // If the user is already connected, we display the information and redirect him to index.php
-?>
-<html>
-<header>
-<meta charset="utf-8">
-<meta http-equiv="expires" content="0">
-<meta http-equiv="pragma" content="no-cache">
-<meta http-equiv="cache-control" content="no-cache, must-revalidate">
-<script type="text/javascript">
-window.location = 'index.php';
-</script>
-</header>
-<body>
-Vous êtes déjà connecté en tant que <?php echo $_SESSION['full_name']; ?>.
-<br />
-Redirection vers le <a href="index.php">menu principal</a> en cours.
-</body>
-</html>
-<?php
+	header("HTTP/1.1 301 Moved Permanently");
+	header("Location: index.php");
+
     exit();
 }
 
-// ================================================================================================================================================
-// Auto login mode
+/*** Auto login mode ***/
+// In this mode, the user id is given as a GET parameter, the password must be set to ''
 if (isset($_GET['autologin']) && strlen($_GET['autologin']) > 0)
 {
-	$user = $userHandler->GetUser($_GET["autologin"]);
+	$user = $usersHandler->GetUser($_GET["autologin"]);
 
 	if (!$user->IsNull())
 	{
@@ -78,24 +76,22 @@ if (isset($_GET['autologin']) && strlen($_GET['autologin']) > 0)
 	
 			SendEmailToAdministrator("Nouvelle connection", "Nouvelle connection en autlogin de ".$user->getName());
 		}
-	}
 
-	header("Location: index.php");
-	exit();
+		header("Location: index.php");
+		exit();
+	}
 }
 
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <head>
-<title>Steve Fuchs - BudgetFox</title>
+<title>BudgetFox</title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <meta http-equiv="expires" content="0">
 <meta http-equiv="pragma" content="no-cache">
 <meta http-equiv="cache-control" content="no-cache, must-revalidate">
-<meta name="Description" content="Applications conçues par Steve Fuchs (gestion financière du couple, gestionnaire de relations personnelles ou privées, générateur de mots de passe, bloc-notes en ligne)">
 <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
-<link type="text/css" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" rel="stylesheet" />	
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
 <script type="text/javascript" src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 <script language="javascript" src="../3rd_party/md5.js"></script>
@@ -144,7 +140,7 @@ $(function() {
         $("#password").val('');
 
         $.post(
-          'login_action.php',
+          '../controller/controller_login.php?action=user_login',
           $(this).serialize(),
           function(response, status){
         	  $("#saasLoginFormResult").stop().show();

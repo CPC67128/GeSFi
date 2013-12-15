@@ -10,7 +10,7 @@ $lastKnownValue = null;
 $paymentAccumulated = 0;
 $paymentInvestedAccumulated = 0;
 
-$creationDate = $activeAccount->getCreationDate();
+$creationDate = $activeAccount->get('creationDate');
 
 // ------ Display a title row
 function AddTitleRow()

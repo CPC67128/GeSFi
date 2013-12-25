@@ -1,35 +1,45 @@
-<?php if ($accountType == 0) { ?>
-<h1><?= $translator->getTranslation('Situation des comptes') ?></h1>
-
-<table class="summaryTable">
 <?php
-$accountsManager = new AccountsManager();
-$accounts = $accountsManager->GetAllOrdinaryAccounts();
-
-foreach ($accounts as $account)
+if ($accountType == 0)
 {
+	?>
+	<h1><?= $translator->getTranslation('Situation des comptes') ?></h1>
+
+	<table class="summaryTable">
+	<?php
+	$accountsManager = new AccountsManager();
+	$accounts = $accountsManager->GetAllOrdinaryAccounts();
 	
-	if ($account->get('type') != 2 && $account->get('type') != 4)
+	foreach ($accounts as $account)
 	{
-		$balance = $account->GetBalance();
-?>
-<tr>
-<td><a href="#" onclick="javascript:ChangeAccount('<?= $account->get('accountId') ?>'); return false;"><?= $account->get('name') ?></a></td>
-<td style='text-align: right;<?php 
-if ($balance <= $account->get('expectedMinimumBalance'))
-	echo 'background-color: #FF0000';
-else
-	echo 'background-color: #00FF00';
-?>'><?= $translator->getCurrencyValuePresentation($balance) ?></td>
-<td style='text-align: right; font-style:italic;'><?= $translator->getTranslation($account->getTypeDescription()) ?></td>
-</tr>
-<?php
+		
+		if ($account->get('type') != 2 && $account->get('type') != 4)
+		{
+			$balance = $account->GetBalance();
+			?>
+	
+			<tr>
+			<td><a href="#" onclick="javascript:ChangeAccount('<?= $account->get('accountId') ?>'); return false;"><?= $account->get('name') ?></a></td>
+			<td style='text-align: right;<?php 
+			if ($account->get('type') != 5)
+			{
+				if ($balance <= $account->get('expectedMinimumBalance'))
+					echo 'background-color: #FF0000';
+				else
+					echo 'background-color: #00FF00';
+			}
+			?>'><?= $translator->getCurrencyValuePresentation($balance) ?></td>
+			<td style='text-align: right; font-style:italic;'><?= $translator->getTranslation($account->getTypeDescription()) ?></td>
+			</tr>
+	
+			<?php
+		}
 	}
+	?>
+	</table>
+	<br />
+<?php
 }
 ?>
-</table>
-<br />
-<?php } ?>
 
 <?php
 $accountPlannedDebit = $activeAccount->GetPlannedOutcome(10);

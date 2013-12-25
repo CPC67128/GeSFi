@@ -51,7 +51,7 @@ class Statistics
 			and marked_as_deleted = 0
 			and category_id in (select category_id from {TABLEPREFIX}category where link_type = 'DUO' and link_id = '".$user->getDuoId()."')
 			and record_date <= curdate()
-			and account_id not in (select account_id from {TABLEPREFIX}account where type in (2, 3, 4, 10))
+			and account_id not in (select account_id from {TABLEPREFIX}account where type in (2, 3, 4, 5, 10))
 			and user_id = '".$userId."'";
 		$row = $db->SelectRow($query);
 		$total += $row['total'];
@@ -288,7 +288,7 @@ class Statistics
 			and marked_as_deleted = 0
 			and category_id in (select category_id from {TABLEPREFIX}category where link_type = 'DUO' and link_id = '".$user->getDuoId()."')
 			and record_date <= curdate()
-			and account_id not in (select account_id from {TABLEPREFIX}account where type in (3))
+			and account_id not in (select account_id from {TABLEPREFIX}account where type in (3, 5))
 			and user_id = '".$userId."'";
 		$row = $db->SelectRow($query);
 		$total = $row['total'];

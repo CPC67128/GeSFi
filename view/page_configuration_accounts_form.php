@@ -26,6 +26,7 @@ if ($_POST['accountId'] == 'AddAccount')
 <option value="2">Compte duo virtuel</option>
 <option value="3">Compte duo</option>
 <option value="4">Compte d'optimisation financière</option>
+<option value="5">Prêt</option>
 <option value="10">Placement privé</option>
 </select><br />
 <?= $translator->getTranslation('Titulaire') ?> <input name='owner' type='text' size='41' style='background-color : #d1d1d1;' readonly="readonly" value="<?= $_SESSION['user_id'] ?>" /> <i>(vous-même)</i><br />
@@ -42,19 +43,19 @@ else
 	$accountsManager = new AccountsManager();
 	$account = $accountsManager->GetAccount($_POST['accountId']);
 ?>
-<?= $translator->getTranslation('Identifiant') ?> <input type='text' name='accountId' size='41' style='background-color : #d1d1d1;' readonly="readonly" value="<?= $account->getAccountId() ?>" /><br /> 
-<?= $translator->getTranslation('Nom') ?> <input type='text' name='name' size='41' value="<?= $account->getName() ?>" /><br />
-<?= $translator->getTranslation('Description') ?> <input name='description' type='text' size='41' value="<?= $account->getDescription() ?>" /><br /> 
-<?= $translator->getTranslation('Information') ?> <input name='information' type='text' size='41' value="<?= $account->getInformation() ?>" /><br /> 
+<?= $translator->getTranslation('Identifiant') ?> <input type='text' name='accountId' size='41' style='background-color : #d1d1d1;' readonly="readonly" value="<?= $account->get('accountId') ?>" /><br /> 
+<?= $translator->getTranslation('Nom') ?> <input type='text' name='name' size='41' value="<?= $account->get('name') ?>" /><br />
+<?= $translator->getTranslation('Description') ?> <input name='description' type='text' size='41' value="<?= $account->get('description') ?>" /><br /> 
+<?= $translator->getTranslation('Information') ?> <input name='information' type='text' size='41' value="<?= $account->get('information') ?>" /><br /> 
 <?= $translator->getTranslation('Type') ?> <input name="typeDescription" type='text' size='41' style='background-color : #d1d1d1;' readonly="readonly" value="<?= $account->getTypeDescription() ?>" /><br />
-<?= $translator->getTranslation('Titulaire') ?> <input name='owner' type='text' size='41' style='background-color : #d1d1d1;' readonly="readonly" value="<?= $account->getOwnerUserId() ?>" /> / <input type='text' size='40' style='background-color : #d1d1d1;' readonly="readonly" value="<?= $account->GetOwnerName() ?>" /><br />
-<?= $translator->getTranslation('Co-titulaire') ?> <input name='coowner' type='text' size='41' style='background-color : #d1d1d1;' readonly="readonly" value="<?= $account->getCoownerUserId() ?>" /> / <input type='text' size='40' style='background-color : #d1d1d1;' readonly="readonly" value="<?= $account->GetCoownerName() ?>" /><br />
-<?= $translator->getTranslation('Date de création') ?> <input type='text' size='41' style='background-color : #d1d1d1;' readonly="readonly" value="<?= $account->getCreationDate() ?>" /><br />
-<?= $translator->getTranslation('Solde initial') ?> <input name='openingBalance' type='text' size='7' value="<?= $account->getOpeningBalance() ?>" /><?= $translator->getCurrencyPresentation() ?><br />
-<?= $translator->getTranslation('Solde minimum') ?> <input name='expectedMinimumBalance' type='text' size='7' value="<?= $account->getExpectedMinimumBalance() ?>" /><?= $translator->getCurrencyPresentation() ?><br />
-<?= $translator->getTranslation('Date de creation') ?> <input title="aaaa-mm-jj" size="10" class="datePicker" name="creationDate" value="<?php echo $account->getCreationDate() ?>"><br/>
-<?= $translator->getTranslation('Date de clôture') ?> <input title="aaaa-mm-jj" size="10" class="datePicker" name="closingDate" value="<?php echo $account->getClosingDate() ?>"><br/>
-<?= $translator->getTranslation('Ordre') ?> <input name='sortOrder' type='text' size='5' value="<?= $account->getSortOrder() ?>" /><br />
+<?= $translator->getTranslation('Titulaire') ?> <input name='owner' type='text' size='41' style='background-color : #d1d1d1;' readonly="readonly" value="<?= $account->get('ownerUserId') ?>" /> / <input type='text' size='40' style='background-color : #d1d1d1;' readonly="readonly" value="<?= $account->GetOwnerName() ?>" /><br />
+<?= $translator->getTranslation('Co-titulaire') ?> <input name='coowner' type='text' size='41' style='background-color : #d1d1d1;' readonly="readonly" value="<?= $account->get('coownerUserId') ?>" /> / <input type='text' size='40' style='background-color : #d1d1d1;' readonly="readonly" value="<?= $account->GetCoownerName() ?>" /><br />
+<?= $translator->getTranslation('Date de création') ?> <input type='text' size='41' style='background-color : #d1d1d1;' readonly="readonly" value="<?= $account->get('creationDate') ?>" /><br />
+<?= $translator->getTranslation('Solde initial') ?> <input name='openingBalance' type='text' size='7' value="<?= $account->get('openingBalance') ?>" /><?= $translator->getCurrencyPresentation() ?><br />
+<?= $translator->getTranslation('Solde minimum') ?> <input name='expectedMinimumBalance' type='text' size='7' value="<?= $account->get('expectedMinimumBalance') ?>" /><?= $translator->getCurrencyPresentation() ?><br />
+<?= $translator->getTranslation('Date de creation') ?> <input title="aaaa-mm-jj" size="10" class="datePicker" name="creationDate" value="<?php echo $account->get('creationDate') ?>"><br/>
+<?= $translator->getTranslation('Date de clôture') ?> <input title="aaaa-mm-jj" size="10" class="datePicker" name="closingDate" value="<?php echo $account->get('closingDate') ?>"><br/>
+<?= $translator->getTranslation('Ordre') ?> <input name='sortOrder' type='text' size='5' value="<?= $account->get('sortOrder') ?>" /><br />
 <br />
 <font color='red'><?= $translator->getTranslation('Supprimer') ?> <input name='delete' type='checkbox' /></font> <i>Cocher pour clôturer le compte</i><br /><br />
 <?php

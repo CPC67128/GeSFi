@@ -20,7 +20,7 @@ $accounts = $accountsManager->GetAllAccounts();
 foreach ($accounts as $account)
 {
 ?>
-<option value="<?= $account->getAccountId() ?>"><?= $account->getName() ?> (<?= $account->getSortOrder() ?>)</option>
+<option value="<?= $account->get('accountId') ?>"><?= $account->get('name') ?> (<?= $account->get('sortOrder') ?>)</option>
 <?php
 }
 ?>

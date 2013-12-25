@@ -5,7 +5,7 @@ $translator = new Translator();
 $categoryHandler = new CategoryHandler();
 $categories = $categoryHandler->GetOutcomeCategoriesForDuo($_SESSION['user_id']);
 ?>
-<h1><?= $translator->getTranslation('Dépenses par catégories duo') ?></h1>
+<h1>aa<?= $translator->getTranslation('Dépenses par catégories duo') ?></h1>
 <table id="recordsTable">
 <thead>
 <tr class="tableRowTitle">

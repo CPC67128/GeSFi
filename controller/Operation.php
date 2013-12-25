@@ -9,7 +9,7 @@ class Operation
 	{
 		$this->_db = new DB();
 		if (isset($_SESSION['account_id']))
-			$this->_urrentAccountId = $_SESSION['account_id'];
+			$this->_currentAccountId = $_SESSION['account_id'];
 		if (isset($_SESSION['user_id']))
 			$this->_currentUserId = $_SESSION['user_id'];
 	}

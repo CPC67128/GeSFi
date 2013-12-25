@@ -190,7 +190,7 @@ class AccountsManager
 		from {TABLEPREFIX}account
 		where (owner_user_id = \'{USERID}\' or coowner_user_id = \'{USERID}\')
 		and marked_as_closed = 0
-		and type = 3';
+		and type in (3, 5)';
 		$result = $db->Select($query);
 		while ($row = $result->fetch())
 		{

@@ -44,7 +44,7 @@ class Operation_Record_Transfer extends Operation_Record
 		if ($toAccountId != '')
 		{
 			$account = $accountsManager->GetAccount($toAccountId);
-			if ($account->getType() == 3) // Duo account
+			if ($account->get('type') == 3) // Duo account
 			{
 				$toUserId = $fromUserId;
 			}

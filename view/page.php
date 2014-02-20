@@ -1,6 +1,23 @@
 <?php
 include '../security/security_manager.php';
 
+$page = '';
+if (isset($_GET['page']))
+	$page = $_GET['page'];
+
+$id = '';
+if (isset($_GET['id']))
+	$id = $_GET['id'];
+
+$data = '';
+if (isset($_GET['data']))
+	$data = $_GET['data'];
+
+$windowTitle = '';
+
+$_SESSION['account_id'] = $id;
+$_SESSION['page'] = $page;
+
 function __autoload($class_name)
 {
 	$file = '../controller/'.$class_name . '.php';
@@ -11,12 +28,15 @@ function __autoload($class_name)
 
 $translator = new Translator();
 
-$pageName = $_GET['name'];
-
 $accountsManager = new AccountsManager();
 
 $activeAccount = $accountsManager->GetCurrentActiveAccount();
 $accountType = $activeAccount->get('type');
+
+$pageName = $page;
+
+if ($pageName == '-')
+	$pageName = 'dashboard';
 
 if ($accountType == -50 && $pageName == 'records')
 	$pageName = 'home';
@@ -33,6 +53,9 @@ $recordsManager = new RecordsManager();
 
 $usersHandler = new UsersHandler();
 $activeUser = $usersHandler->GetCurrentUser();
+
+if ($accountType >= 1 && $accountType <= 10)
+	$windowTitle .= $activeAccount->get('name');
 
 switch ($pageName)
 {
@@ -102,13 +125,16 @@ switch ($pageName)
 		AddFormManagementEnd('remarkInvestment');
 		break;
 
-	case 'investments_statistics';
 	case 'configuration';
+		break;
+
+	case 'investments_statistics';
 	case 'configuration_accounts';
 	case 'configuration_user';
 	case 'configuration_category';
 	case 'connection';
 	case 'home';
+	case 'dashboard';
 	case 'investment';
 	case 'asset_management';
 		include 'page_'.$pageName.'.php';
@@ -177,3 +203,7 @@ $( ".datePicker" ).datepicker({
 </script>
 <?php
 }
+?>
+<script type="text/javascript">
+SetTitle('<?php echo $windowTitle; ?>');
+</script>

@@ -22,8 +22,6 @@ class Entity
 		{
 			$key = $this->GetMemberNameFromFieldName($key);
 			$this->set($key, $value);
-	
-			//$this->_isNull = false;
 		}
 	}
 

@@ -10,7 +10,7 @@ class InvestmentsRecordsManager
 			where ACC.owner_user_id = '{USERID}'
 			and marked_as_deleted = 0
 			and INR.account_id = '{ACCOUNTID}'
-			order by record_date";
+			order by record_date desc, creation_date desc";
 		$result = $db->Select($query);
 		return $result;
 	}
@@ -58,7 +58,7 @@ class InvestmentsRecordsManager
 			where ACC.owner_user_id = '{USERID}'
 			and marked_as_deleted = 0
 			and INR.account_id = '".$account->get('accountId')."'
-			order by record_date";
+			order by record_date, creation_date";
 		$records = $db->Select($query);
 
 		// Calculate

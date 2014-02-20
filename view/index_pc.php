@@ -9,11 +9,6 @@ function __autoload($class_name)
 	include $file;
 }
 
-if (!isset($_SESSION['account_id']))
-{
-	$_SESSION['account_id'] = 'all_accounts';
-}
-
 $translator = new Translator();
 
 $actor_default = 1;

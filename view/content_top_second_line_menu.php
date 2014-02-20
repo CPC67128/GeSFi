@@ -11,10 +11,10 @@ function __autoload($class_name)
 
 $accountsManager = new AccountsManager();
 
-if ($_SESSION['account_id'] != 'asset_management')
-	echo '<a href="#" onclick="javascript:ChangeAccount(\'asset_management\'); return false;">';
+if ($_SESSION['page'] != 'asset_management')
+	echo '<a href="#" onclick="javascript:ChangeContext(\'asset_management\',\'\',\'\'); return false;">';
 echo 'Gestion patrimoniale';
-if ($_SESSION['account_id'] != 'asset_management')
+if ($_SESSION['page'] != 'asset_management')
 	echo '</a>';
 echo ' / ';
 
@@ -23,11 +23,10 @@ $accounts = $accountsManager->GetAllInvestmentAccounts();
 foreach ($accounts as $account)
 {
 	if ($account->get('accountId') != $_SESSION['account_id'])
-		echo '<a href="#" onclick="javascript:ChangeAccount(\''.$account->get('accountId').'\'); return false;">';
+		echo '<a href="#" onclick="javascript:ChangeContext(\'records\',\''.$account->get('accountId').'\',\'\'); return false;">';
 	echo $account->get('name');
 	if ($account->get('accountId') != $_SESSION['account_id'])
 		echo '</a>';
 	echo ' / ';
 }
 
-?>

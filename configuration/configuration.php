@@ -1,6 +1,6 @@
 <?php
 $DB_HOST = "localhost";
-$DB_NAME = "budgetfox";
+$DB_NAME = "budgetfox_fix";
 $DB_USER = "root";
 $DB_PASSWORD = "";
 

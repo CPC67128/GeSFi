@@ -11,7 +11,7 @@ $("#form").submit( function () {
 					$("#formResult").html(response);
 				}
 				else {
-					LoadRecords();
+					ChangeContext_Page('records');
 				}
 			}
 			else {

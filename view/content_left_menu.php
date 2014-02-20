@@ -70,12 +70,15 @@ Statistiques
 <br />
 <?php } ?>
 
+<?php if ($account->get('type') == 0) { ?>
+<img id='dashboardMenuIcon' class='menuIcon' src="../media/recordsMenuIcon.png" /><br />Situation<br /><br />
+<?php } ?>
+
+<?php if ($account->get('type') > 0 && $account->get('type') < 10) { ?>
+<img id='recordsMenuIcon' class='menuIcon' src="../media/recordsMenuIcon.png" /><br />Lignes<br /><br />
+<?php } ?>
+
 <?php if ($account->get('type') >= 0 && $account->get('type') < 10) { ?>
-<img id='recordsMenuIcon' class='menuIcon' src="../media/recordsMenuIcon.png" />
-<br />
-Lignes
-<br />
-<br />
 <img id='expenseMenuIcon' class='menuIcon' src="../media/expenseMenuIcon.png" />
 <br />
 Dépense
@@ -138,24 +141,29 @@ Utilisateur
 <a href="../view/disconnection.php">Déconnection</a>
 
 <script type="text/javascript">
+
+$("#dashboardMenuIcon").click(function() {
+	ChangeContext_Page('dashboard');
+});
+
 $("#recordsMenuIcon").click(function() {
-	LoadRecords();
+	ChangeContext_Page('records');
 });
 
 $("#expenseMenuIcon").click(function() {
-	LoadPage('record_expense');
+	ChangeContext_Page('record_expense');
 });
 
 $("#incomeMenuIcon").click(function() {
-	LoadPage('record_income');
+	ChangeContext_Page('record_income');
 });
 
 $("#transferMenuIcon").click(function() {
-	LoadPage('record_transfer');
+	ChangeContext_Page('record_transfer');
 });
 
 $("#remarkMenuIcon").click(function() {
-	LoadPage('record_remark');
+	ChangeContext_Page('record_remark');
 });
 
 $("#connectionMenuIcon").click(function() {
@@ -193,20 +201,20 @@ $("#remarkInvestmentMenuIcon").click(function() {
 
 $("#investmentsStatisticsMenuIcon").click(function() {
 	$('#content').html('<img src="../media/loading.gif" />');
-	LoadPage('statistics');
+	ChangeContext_Page('statistics');
 });
 
 $("#investmentValueMenuIcon").click(function() {
-	LoadPage('investmentrecord_value');
+	ChangeContext_Page('investmentrecord_value');
 });
 
 
 $("#investmentIncomeMenuIcon").click(function() {
-	LoadPage('investmentrecord_income');
+	ChangeContext_Page('investmentrecord_income');
 });
 
 $("#investmentDebitMenuIcon").click(function() {
-	LoadPage('investmentrecord_debit');
+	ChangeContext_Page('investmentrecord_debit');
 });
 
 
@@ -215,14 +223,14 @@ $("#configurationMenuIcon").click(function() {
 });
 
 $("#accountsMenuIcon").click(function() {
-	LoadPage('configuration_accounts');
+	ChangeContext_Page('configuration_accounts');
 });
 
 $("#userMenuIcon").click(function() {
-	LoadPage('configuration_user');
+	ChangeContext_Page('configuration_user');
 });
 
 $("#categoriesMenuIcon").click(function() {
-	LoadPage('configuration_category');
+	ChangeContext_Page('configuration_category');
 });
 </script>

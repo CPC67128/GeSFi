@@ -100,9 +100,17 @@ class AccountsManager
 	{
 		$newAccount = new Account();
 
-		if ($_SESSION['account_id'] == 'dashboard')
+		if (!isset($_SESSION['account_id']))
 		{
-			$newAccount->set('type', -50);
+			$newAccount->set('type', 0);
+		}
+		elseif ($_SESSION['page'] == 'dashboard')
+		{
+			$newAccount->set('type', 0);
+		}
+		elseif ($_SESSION['account_id'] == '')
+		{
+			$newAccount->set('type', 0);
 		}
 		elseif ($_SESSION['account_id'] == 'all_accounts')
 		{
@@ -126,7 +134,11 @@ class AccountsManager
 				and account_id = \'{ACCOUNTID}\'
 				and marked_as_closed = 0';
 			$row = $db->SelectRow($query);
-			$newAccount->hydrate($row);
+
+			if (is_array($row))
+				$newAccount->hydrate($row);
+			else
+				throw new Exception("Unknown active account, account_id = ".$_SESSION['account_id']);
 		}
 		return $newAccount;
 	}
@@ -164,11 +176,15 @@ class AccountsManager
 	
 		$db = new DB();
 	
-		$query = 'select *
+		$query = "select ACC.*, PRF.sort_order
 			from {TABLEPREFIX}account
-			where owner_user_id = \'{USERID}\'
+			 as ACC
+			left join {TABLEPREFIX}account_user_preference as PRF on ACC.account_id = PRF.account_id and PRF.user_id = '{USERID}'
+			where ACC.owner_user_id = '{USERID}'
 			and marked_as_closed = 0
-			and (type = 1 or type = 4)';
+			and (type = 1 or type = 4)
+			order by PRF.sort_order";
+
 		$result = $db->Select($query);
 		while ($row = $result->fetch())
 		{
@@ -186,11 +202,14 @@ class AccountsManager
 	
 		$db = new DB();
 	
-		$query = 'select *
-		from {TABLEPREFIX}account
-		where (owner_user_id = \'{USERID}\' or coowner_user_id = \'{USERID}\')
+		$query = "select ACC.*, PRF.sort_order
+		from {TABLEPREFIX}account as ACC
+		left join {TABLEPREFIX}account_user_preference as PRF on ACC.account_id = PRF.account_id and PRF.user_id = '{USERID}'
+		where (ACC.owner_user_id = '{USERID}' or ACC.coowner_user_id = '{USERID}')
 		and marked_as_closed = 0
-		and type in (3, 5)';
+		and type in (3, 5)
+		order by PRF.sort_order";
+
 		$result = $db->Select($query);
 		while ($row = $result->fetch())
 		{

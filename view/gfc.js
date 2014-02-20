@@ -1,11 +1,108 @@
 $.fx.speeds._default = 200;
 
-$(function() {
-	LoadTopMenu();
-	LoadLeftMenu();
+var PAGE_UNDEFINED = 'dashboard';
+var ID_UNDEFINED = '';
+var DATA_UNDEFINED = '';
 
-	LoadRecords();
+function Context(page, id, data) {
+	this.page = page;
+	this.id = id;
+	this.data = data;
+}
+
+var currentContext = new Context(PAGE_UNDEFINED, ID_UNDEFINED, DATA_UNDEFINED);
+
+function ManageHash() {
+	var hash = document.location.hash.replace("#", "");
+	var hashSplit = hash.split("/");
+
+	if (hashSplit.length == 3) {
+		currentContext.page = hashSplit[0];
+		currentContext.id = hashSplit[1];
+		currentContext.data = hashSplit[2];
+		return true;
+	}
+
+	return false;
+}
+
+if (!ManageHash()) {
+	UpdateUrl();
+}
+
+function UpdateUrl() {
+	var hash = currentContext.page;
+	hash += "/" + currentContext.id;
+	hash += "/" + currentContext.data;
+
+	document.location.hash = hash;
+
+	setFavicon(); // Bug firefox: favicon disappears http://kilianvalkhof.com/2010/javascript/the-case-of-the-disappearing-favicon/
+}
+
+function setFavicon() {
+	  var link = $('link[type="image/ico"]').remove().attr("href");
+	  $('<link href="' + link + '" rel="shortcut icon" type="image/ico" />').appendTo('head');
+}
+
+function SetTitle(title) {
+	var currentTitle = 'BudgetFox';
+	if (title != '') {
+		currentTitle = "BudgetFox - " + title;
+	}
+
+	document.title = currentTitle;
+}
+
+/*** Executed at page refresh ***/
+$(function() {
+	//DEBUG alert('function()');
+	LoadPage();
 })
+
+/*** Action on hash change  ***/
+$(window).bind('hashchange', function() {
+	if (ManageHash()) {
+		//DEBUG alert('HashChange event : page=' + currentContext.page + ", id=" + currentContext.id + ", data=" + currentContext.data);
+
+		LoadPage();
+	}
+});
+
+/*** Change context of the application ***/
+function ChangeContext(page, id, data) {
+	//DEBUG alert('ChangeContext(' + page + ', ' + id + ', ' + data + ')');
+
+	currentContext.page = page;
+	currentContext.id = id;
+	currentContext.data = data;
+
+	UpdateUrl();
+}
+
+function ChangeContext_Page(page) {
+	//DEBUG alert('ChangeContext_Page(' + page + ')');
+
+	currentContext.page = page;
+
+	UpdateUrl();
+}
+
+/*** Load page according to the current context ***/
+function LoadPage() {
+	//DEBUG alert('LoadPage() : ' + 'page=' + currentContext.page + ', id=' + currentContext.id + ', data=' + currentContext.data);
+
+	$.ajax({
+        type : 'POST',
+        url : 'page.php?page=' + currentContext.page + '&id=' + currentContext.id + '&data=' + currentContext.data,
+        dataType: 'html',
+        success : function(data) {
+            $('#content').html(data);
+            LoadTopMenu();
+            LoadLeftMenu();
+        }
+    });
+}
 
 function DeleteRecord(recordIdToDelete)
 {
@@ -46,30 +143,35 @@ function ConfirmRecord(recordIdToConfirm, sender)
 		);
 }
 
+/*
 function LoadPage(pageName)
 {
+	return;
+	
+	alert('LoadPage(' + pageName + ')');
+	
 	$.ajax({
         type : 'POST',
-        url : 'page.php?name='+pageName,
+        url : 'page.php?name=' + pageName,
         dataType: 'html',
         success : function(data) {
             $('#content').html(data);
             LoadLeftMenu();
+
+            SetContext(pageName);
         }
     });
 }
+*/
 
+function SetContext(pageName) {
+	currentContext.page = pageName;
+	UpdateUrl();	
+}
 
 function LoadConfigurationPage()
 {
-	$.ajax({
-        type : 'POST',
-        url : 'page_configuration.php',
-        dataType: 'html',
-        success : function(data) {
-            $('#content').html(data);
-        }
-    });
+	LoadPage('configuration');
 }
 
 function LoadRecords()
@@ -217,12 +319,14 @@ function ChangeAccount(id)
 				'../controller/controller.php?action=configuration',
 				function(response, status) {
 					LoadTopMenu();
-					LoadPage('');
+					LoadPage('configuration');
 				}
 		);
 	}
 	else
 	{
+		currentContext.id = id;
+
 		$.post (
 				'../controller/controller.php?action=account_change',
 				{ accountId: id },

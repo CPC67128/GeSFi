@@ -31,7 +31,7 @@ foreach ($accounts as $account)
 	$balance = $account->GetBalance();
 	?>
 <tr>
-<td><?= $account->get('name') ?></td>
+<td><a href="#" onclick="javascript:ChangeAccount('<?= $account->get('accountId') ?>'); return false;"><?= $account->get('name') ?></a></td>
 <td style='text-align: right;'><?= $translator->getCurrencyValuePresentation($balance) ?></td>
 </tr>
 <?php
@@ -59,7 +59,7 @@ foreach ($accounts as $account)
 	global $sum;
 ?>
 <tr>
-<td><?= $account->get('name') ?></td>
+<td><a href="#" onclick="javascript:ChangeAccount('<?= $account->get('accountId') ?>'); return false;"><?= $account->get('name') ?></a></td>
 <td style='text-align: right;'><?= $translator->getCurrencyValuePresentation($account->GetInvestmentLastValue()) ?></td>
 <td style='text-align: right;' <?= $account->GetInvestmentLastYield() < 0 ? 'bgcolor="red"' : '' ?>><?= $translator->getPercentagePresentation($account->GetInvestmentLastYield()) ?></td>
 <td style='text-align: right;' <?= $account->GetInvestmentLastYieldAverage() < 0 ? 'bgcolor="red"' : '' ?>><?= $translator->getPercentagePresentation($account->GetInvestmentLastYieldAverage()) ?></td>
@@ -103,7 +103,7 @@ foreach ($accounts as $account)
 	$balance = $account->GetBalance();
 	?>
 <tr>
-<td><?= $account->get('name') ?></td>
+<td><a href="#" onclick="javascript:ChangeAccount('<?= $account->get('accountId') ?>'); return false;"><?= $account->get('name') ?></a></td>
 <td style='text-align: right;'><?= $translator->getCurrencyValuePresentation($balance) ?></td>
 </tr>
 <?php

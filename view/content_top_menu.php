@@ -9,21 +9,18 @@ function __autoload($class_name)
 	include $file;
 }
 
+?>
 
-if ($_SESSION['account_id'] != 'all_accounts')
-	echo '<a href="#" onclick="javascript:ChangeAccount(\'all_accounts\'); return false;">';
-echo 'Gestion courante';
-if ($_SESSION['account_id'] != 'all_accounts')
-	echo '</a>';
-echo ' / ';
-
+<?php if ($_SESSION['page'] != 'dashboard') { ?><a href="#" onclick="javascript:ChangeContext('dashboard','',''); return false;"><?php } ?>Gestion courante<?php if ($_SESSION['page'] != 'dashboard') { ?></a><?php } ?>
+ / 
+<?php
 $accountsManager = new AccountsManager();
 $accounts = $accountsManager->GetAllOrdinaryAccounts();
 
 foreach ($accounts as $account)
 {
 	if ($account->get('accountId') != $_SESSION['account_id'])
-		echo '<a href="#" onclick="javascript:ChangeAccount(\''.$account->get('accountId').'\'); return false;">';
+		echo '<a href="#" onclick="javascript:ChangeContext(\'records\', \''.$account->get('accountId').'\',\'\'); return false;">';
 	echo $account->get('name');
 	if ($account->get('accountId') != $_SESSION['account_id'])
 		echo '</a>';

@@ -274,25 +274,26 @@ class Account extends Entity
 	{
 		$db = new DB();
 	
-		$query = 'select value
+		$query = "select value
 			from {TABLEPREFIX}investment_record
-			where account_id = \''.$this->_accountId.'\'
+			where account_id = '".$this->_accountId."'
 			and value is not null
-			order by record_date desc
-			limit 1';
+			and marked_as_deleted = 0
+			order by record_date desc, creation_date desc
+			limit 1";
 		$row = $db->SelectRow($query);
-	
+
 		if (isset($row['value']))
 			return $row['value'];
 
-		$query = 'select CALC_payment_invested_accumulated
+		$query = "select CALC_payment_invested_accumulated
 			from {TABLEPREFIX}investment_record
-			where account_id = \''.$this->_accountId.'\'
+			where account_id = '".$this->_accountId."'
 			and value is null
+			and marked_as_deleted = 0
 			order by record_date desc, creation_date desc
-			limit 1';
+			limit 1";
 		$row = $db->SelectRow($query);
-
 		return $row['CALC_payment_invested_accumulated'];
 	}
 

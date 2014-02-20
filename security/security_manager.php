@@ -26,6 +26,7 @@ if (!isset($_SESSION['user_id']))
 		$_SESSION['user_id'] = $user_id;
 		$_SESSION['full_name'] = $row['full_name'];
 		$_SESSION["read_only"] = $row['read_only'];
+
 		security_RecordUserConnection($user_id, $_SERVER['REMOTE_ADDR'], $_SERVER['HTTP_USER_AGENT']);
 
 		SendEmailToAdministrator("Nouvelle connection à guest", "Nouvelle connection d'un utilisateur au lien de démonstration");

@@ -18,15 +18,9 @@ class Account extends Entity
 
 	public function getTypeDescription()
 	{
-		switch ($this->_type)
-		{
-			case 1: return 'Compte privé'; break;
-			case 2: return 'Compte duo virtuel'; break;
-			case 3: return 'Compte duo'; break;
-			case 4: return 'Compte d\'optimisation financière'; break;
-			case 5: return 'Prêt'; break;
-			case 10: return 'Placement privé'; break;
-		}
+		$accountsManager = new AccountsManager();
+		$types = $accountsManager->GetAccountTypes();
+		return $types[$this->_type];
 	}
 
 	// -------------------------------------------------------------------------------------------------------------------

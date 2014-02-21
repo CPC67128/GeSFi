@@ -13,7 +13,7 @@
 $accounts = $accountsManager->GetAllDuoAccounts();
 foreach ($accounts as $account)
 { ?>
-<input type="radio" name="fromAccount" <?= $account->get('type') == $_SESSION['account_id'] ? 'checked' : '' ?> value="<?= $account->get('accountId') ?>"><?= $account->get('name') ?><br />
+<input type="radio" name="fromAccount" <?= $account->get('accountId') == $activeAccount->get('accountId') ? 'checked' : '' ?> value="<?= $account->get('accountId') ?>"><?= $account->get('name') ?><br />
 <?php } ?>
 
 &nbsp;&nbsp;<?= $translator->getTranslation('effectuée par') ?><input type="radio" name="userId" value="<?= $activeUser->get('userId') ?>" checked><?= $activeUser->get('name') ?> </input><?= $translator->getTranslation('ou'); ?> <input type="radio" name="userId" value="<?= $activeUser->GetPartnerId() ?>"><?= $activeUser->GetPartnerName() ?></input><br/>
@@ -25,7 +25,7 @@ foreach ($accounts as $account)
 $accounts = $accountsManager->GetAllPrivateAccounts();
 foreach ($accounts as $account)
 { ?>
-<input type="radio" name="fromAccount" <?= $account->get('accountId') == $_SESSION['account_id'] ? 'checked' : '' ?> value="<?= $account->get('accountId') ?>"><?= $activeUser->get('name') ?> / <?= $account->get('name') ?><br />
+<input type="radio" name="fromAccount" <?= $account->get('accountId') == $activeAccount->get('accountId') ? 'checked' : '' ?> value="<?= $account->get('accountId') ?>"><?= $activeUser->get('name') ?> / <?= $account->get('name') ?><br />
 <?php } ?>
 
 <br/>

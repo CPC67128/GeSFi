@@ -1,14 +1,6 @@
 <?php
 include_once '../security/security_manager.php';
 
-function __autoload($class_name)
-{
-	$file = '../controller/'.$class_name . '.php';
-	if (!file_exists($file))
-		$file = '../model/'.$class_name . '.php';
-	include $file;
-}
-
 ?>
 
 <?php if ($_SESSION['page'] != 'dashboard') { ?><a href="#" onclick="javascript:ChangeContext('dashboard','',''); return false;"><?php } ?>Gestion courante<?php if ($_SESSION['page'] != 'dashboard') { ?></a><?php } ?>
@@ -27,9 +19,9 @@ foreach ($accounts as $account)
 	echo ' / ';
 }
 
-if ($_SESSION['account_id'] != 'configuration')
-	echo '<a href="#" onclick="javascript:ChangeAccount(\'configuration\'); return false;">';
+if ($_SESSION['page'] != 'configuration')
+	echo '<a href="#" onclick="javascript:ChangeContext(\'configuration\', \'\',\'configuration\'); return false;">';
 echo 'Configuration';
-if ($_SESSION['account_id'] != 'configuration')
+if ($_SESSION['page'] != 'configuration')
 	echo '</a>';
 ?>

@@ -1,14 +1,6 @@
 <?php
 include '../security/security_manager.php';
 
-function __autoload($class_name)
-{
-	$file = '../controller/'.$class_name . '.php';
-	if (!file_exists($file))
-		$file = '../model/'.$class_name . '.php';
-	include $file;
-}
-
 $translator = new Translator();
 ?>
 <div id='formPlaceHolder'>
@@ -22,12 +14,14 @@ if ($_POST['accountId'] == 'AddAccount')
 <?= $translator->getTranslation('Description') ?> <input name='description' type='text' size='41' value="" /><br /> 
 <?= $translator->getTranslation('Information') ?> <input name='information' type='text' size='41' value="" /><br /> 
 <?= $translator->getTranslation('Type') ?> <select name="type">
-<option value="1">Compte privé</option>
-<option value="2">Compte duo virtuel</option>
-<option value="3">Compte duo</option>
-<option value="4">Compte d'optimisation financière</option>
-<option value="5">Prêt</option>
-<option value="10">Placement privé</option>
+<?php
+$accountsManager = new AccountsManager();
+$types = $accountsManager->GetAccountTypes();
+foreach ($types as $key => $value)
+{
+	?><option value="<?= $key ?>"><?=  $value ?></option><?php
+}
+?>
 </select><br />
 <?= $translator->getTranslation('Titulaire') ?> <input name='owner' type='text' size='41' style='background-color : #d1d1d1;' readonly="readonly" value="<?= $_SESSION['user_id'] ?>" /> <i>(vous-même)</i><br />
 <?= $translator->getTranslation('Co-titulaire') ?> <input name='coowner' type='text' size='41' /> <i>(l'identifiant de votre partenaire)</i><br />

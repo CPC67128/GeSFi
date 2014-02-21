@@ -91,7 +91,8 @@ class InvestmentsRecordsManager
 			if (isset($record['value']))
 			{
 				$gain = $record['value'] - $paymentAccumulated;
-				$yield = (($record['value'] / $paymentAccumulated) - 1) * 100;
+				if ($paymentAccumulated != 0)
+					$yield = (($record['value'] / $paymentAccumulated) - 1) * 100;
 
 				$yearsSinceCreation = (float) $daysSinceCreation / 365.25;
 

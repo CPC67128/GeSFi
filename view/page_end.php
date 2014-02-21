@@ -1,20 +1,24 @@
 <script type='text/javascript'>
 $("#form").submit( function () {
 	document.getElementById("submitForm").disabled = true;
+	alert('yes');
 	$.post (
-		'controller.php?action=<?php echo $page_name; ?>',
+		'../controller/controller.php?action=<?php echo $page_name; ?>',
 		$(this).serialize(),
 		function(response, status) {
 			$("#formResult").stop().show();
 			if (status == 'success') {
 				if (response.indexOf("<!-- ERROR -->") >= 0) {
+					alert('no error');
 					$("#formResult").html(response);
 				}
 				else {
+					alert('change context');
 					ChangeContext_Page('records');
 				}
 			}
 			else {
+				alert('else');
 				$("#formResult").html(CreateUnexpectedErrorWeb("Status = " + status));
 			}
 			document.getElementById("submitForm").disabled = false;

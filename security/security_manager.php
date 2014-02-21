@@ -57,3 +57,11 @@ define('EMAIL', $EMAIL);
 define('USER_ID', $USER_ID);
 define('FULL_NAME', $FULL_NAME);
 define('READ_ONLY', $READ_ONLY);
+
+function __autoload($class_name)
+{
+	$file = '../controller/'.$class_name . '.php';
+	if (!file_exists($file))
+		$file = '../model/'.$class_name . '.php';
+	include $file;
+}

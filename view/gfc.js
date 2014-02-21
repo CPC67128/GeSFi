@@ -92,14 +92,15 @@ function ChangeContext_Page(page) {
 function LoadPage() {
 	//DEBUG alert('LoadPage() : ' + 'page=' + currentContext.page + ', id=' + currentContext.id + ', data=' + currentContext.data);
 
+	$('#content').html('<img src="../media/loading.gif" />');
 	$.ajax({
         type : 'POST',
         url : 'page.php?page=' + currentContext.page + '&id=' + currentContext.id + '&data=' + currentContext.data,
         dataType: 'html',
         success : function(data) {
-            $('#content').html(data);
             LoadTopMenu();
             LoadLeftMenu();
+            $('#content').html(data);
         }
     });
 }

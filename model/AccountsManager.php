@@ -1,6 +1,23 @@
 <?php
 class AccountsManager
 {
+	function GetAccountTypes()
+	{
+		$types = array
+		(
+			1 => 'Compte privé',
+			2 => 'Compte duo virtuel',
+			3 => 'Compte duo',
+			4 => 'Compte d\'optimisation financière',
+			5 => 'Prêt',
+			10 => 'Placement bancaire',
+			11 => 'Immobilier',
+			12 => 'Immobilier en indivision'
+		);
+
+		return $types;
+	}
+
 	function GetAllAccounts()
 	{
 		$accounts = array();
@@ -61,7 +78,57 @@ class AccountsManager
 			left join {TABLEPREFIX}account_user_preference as PRF on ACC.account_id = PRF.account_id and PRF.user_id = \'{USERID}\' 
 			where (ACC.owner_user_id = \'{USERID}\'
 			or ACC.coowner_user_id = \'{USERID}\')
-			and ACC.type = 10 
+			and ACC.type >= 10 and ACC.type <= 19
+			and marked_as_closed = 0
+			order by PRF.sort_order';
+		$result = $db->Select($query);
+		while ($row = $result->fetch())
+		{
+			$newAccount = new Account();
+			$newAccount->hydrate($row);
+			array_push($accounts, $newAccount);
+		}
+
+		return $accounts;
+	}
+
+	function GetAllPrivateInvestmentAccounts()
+	{
+		$accounts = array();
+	
+		$db = new DB();
+	
+		$query = 'select ACC.*, PRF.sort_order
+		from {TABLEPREFIX}account as ACC
+		left join {TABLEPREFIX}account_user_preference as PRF on ACC.account_id = PRF.account_id and PRF.user_id = \'{USERID}\'
+		where (ACC.owner_user_id = \'{USERID}\'
+		or ACC.coowner_user_id = \'{USERID}\')
+		and ACC.type >= 10 and ACC.type <= 11
+		and marked_as_closed = 0
+		order by PRF.sort_order';
+		$result = $db->Select($query);
+		while ($row = $result->fetch())
+		{
+			$newAccount = new Account();
+			$newAccount->hydrate($row);
+			array_push($accounts, $newAccount);
+		}
+	
+		return $accounts;
+	}
+
+	function GetAllSharedInvestmentAccounts()
+	{
+		$accounts = array();
+
+		$db = new DB();
+	
+		$query = 'select ACC.*, PRF.sort_order
+			from {TABLEPREFIX}account as ACC
+			left join {TABLEPREFIX}account_user_preference as PRF on ACC.account_id = PRF.account_id and PRF.user_id = \'{USERID}\' 
+			where (ACC.owner_user_id = \'{USERID}\'
+			or ACC.coowner_user_id = \'{USERID}\')
+			and ACC.type in (12)
 			and marked_as_closed = 0
 			order by PRF.sort_order';
 		$result = $db->Select($query);
@@ -104,6 +171,10 @@ class AccountsManager
 		{
 			$newAccount->set('type', 0);
 		}
+		elseif ($_SESSION['data'] == 'configuration')
+		{
+			$newAccount->set('type', -100);
+		}
 		elseif ($_SESSION['page'] == 'dashboard')
 		{
 			$newAccount->set('type', 0);
@@ -115,10 +186,6 @@ class AccountsManager
 		elseif ($_SESSION['account_id'] == 'all_accounts')
 		{
 			$newAccount->set('type', 0);
-		}
-		elseif ($_SESSION['account_id'] == 'configuration')
-		{
-			$newAccount->set('type', -100);
 		}
 		elseif ($_SESSION['account_id'] == 'asset_management')
 		{
@@ -207,7 +274,32 @@ class AccountsManager
 		left join {TABLEPREFIX}account_user_preference as PRF on ACC.account_id = PRF.account_id and PRF.user_id = '{USERID}'
 		where (ACC.owner_user_id = '{USERID}' or ACC.coowner_user_id = '{USERID}')
 		and marked_as_closed = 0
-		and type in (3, 5)
+		and type in (3)
+		order by PRF.sort_order";
+
+		$result = $db->Select($query);
+		while ($row = $result->fetch())
+		{
+			$newAccount = new Account();
+			$newAccount->hydrate($row);
+			array_push($accounts, $newAccount);
+		}
+	
+		return $accounts;
+	}
+	
+	function GetAllSharedLoans()
+	{
+		$accounts = array();
+	
+		$db = new DB();
+	
+		$query = "select ACC.*, PRF.sort_order
+		from {TABLEPREFIX}account as ACC
+		left join {TABLEPREFIX}account_user_preference as PRF on ACC.account_id = PRF.account_id and PRF.user_id = '{USERID}'
+		where (ACC.owner_user_id = '{USERID}' or ACC.coowner_user_id = '{USERID}')
+		and marked_as_closed = 0
+		and type in (5)
 		order by PRF.sort_order";
 
 		$result = $db->Select($query);
@@ -307,12 +399,13 @@ class AccountsManager
 		return $result;
 	}
 
-	function UpdateAccount($accountId, $name, $openingBalance, $expectedMinimumBalance, $sortOrder)
+	function UpdateAccount($accountId, $name, $description, $openingBalance, $expectedMinimumBalance, $sortOrder)
 	{
 		$db = new DB();
 
-		$query = sprintf("update {TABLEPREFIX}account set name = '%s', opening_balance = %s, expected_minimum_balance = %s where account_id = '%s'",
-				$name,
+		$query = sprintf("update {TABLEPREFIX}account set name = '%s', description='%s', opening_balance = %s, expected_minimum_balance = %s where account_id = '%s'",
+				$db->ConvertStringForSqlInjection($name),
+				$db->ConvertStringForSqlInjection($description),
 				$openingBalance,
 				$expectedMinimumBalance,
 				$accountId);

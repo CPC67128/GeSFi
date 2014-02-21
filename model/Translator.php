@@ -8,7 +8,7 @@ class Translator
 
 	public function getCurrencyValuePresentation($amount)
 	{
-		return number_format($amount,2).'&nbsp;&euro;';
+		return number_format($amount,2, ',', ' ').'&nbsp;&euro;';
 	}
 
 	public function getCurrencyPresentation()

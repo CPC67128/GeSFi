@@ -17,20 +17,16 @@ $windowTitle = '';
 
 $_SESSION['account_id'] = $id;
 $_SESSION['page'] = $page;
-
-function __autoload($class_name)
-{
-	$file = '../controller/'.$class_name . '.php';
-	if (!file_exists($file))
-		$file = '../model/'.$class_name . '.php';
-	include $file;
-}
+$_SESSION['data'] = $data;
 
 $translator = new Translator();
 
 $accountsManager = new AccountsManager();
 
-$activeAccount = $accountsManager->GetCurrentActiveAccount();
+if ($id != '')
+	$activeAccount = $accountsManager->GetAccount($id);
+else
+	$activeAccount = $accountsManager->GetCurrentActiveAccount();
 $accountType = $activeAccount->get('type');
 
 $pageName = $page;
@@ -72,7 +68,7 @@ switch ($pageName)
 
 	case 'income';
 	case 'record_income';
-		if ($accountType == 10)
+		if ($accountType >= 10 && $accountType <= 19)
 			$pageName = 'income_investment';
 		include 'page_'.$pageName.'.php';
 		AddFormManagementEnd($pageName);
@@ -88,7 +84,7 @@ switch ($pageName)
 		break;
 
 	case 'records';
-		if ($accountType == 10)
+		if ($accountType >= 10 && $accountType <= 19)
 			$pageName = 'records_investment';
 		include 'page_'.$pageName.'.php';
 		break;
@@ -159,7 +155,7 @@ $("#form").submit( function () {
 					$("#formResult").html(response);
 				}
 				else {
-					LoadRecords();
+					ChangeContext_Page('records');
 				}
 			}
 			else {

@@ -29,6 +29,7 @@ foreach ($types as $key => $value)
 <?= $translator->getTranslation('Solde minimum') ?> <input name='expectedMinimumBalance' type='text' size='7' value="0.00" /><?= $translator->getCurrencyPresentation() ?><br />
 <?= $translator->getTranslation('Date de creation') ?> <input title="aaaa-mm-jj" size="10" class="datePicker" name="creationDate" value="<?php echo date("Y-m-d") ?>"><br/>
 <?= $translator->getTranslation('Date de clôture') ?> <input title="aaaa-mm-jj" size="10" class="datePicker" name="closingDate" value="<?php //echo date("Y-m-d",strtotime("+20 years")) ?>"><br/>
+<?= $translator->getTranslation('Période de vérification minimale') ?> <input name="minimumCheckPeriod" type="text" size="4" value="30"><br/>
 <?= $translator->getTranslation('Ordre') ?> <input name='sortOrder' type='text' size='5' /><br />
 <?php
 }
@@ -49,6 +50,7 @@ else
 <?= $translator->getTranslation('Solde minimum') ?> <input name='expectedMinimumBalance' type='text' size='7' value="<?= $account->get('expectedMinimumBalance') ?>" /><?= $translator->getCurrencyPresentation() ?><br />
 <?= $translator->getTranslation('Date de creation') ?> <input title="aaaa-mm-jj" size="10" class="datePicker" name="creationDate" value="<?php echo $account->get('creationDate') ?>"><br/>
 <?= $translator->getTranslation('Date de clôture') ?> <input title="aaaa-mm-jj" size="10" class="datePicker" name="closingDate" value="<?php echo $account->get('closingDate') ?>"><br/>
+<?= $translator->getTranslation('Période de vérification minimale') ?> <input name="minimumCheckPeriod" type="text" size="4" value="<?php echo $account->get('minimumCheckPeriod') ?>"><br/>
 <?= $translator->getTranslation('Ordre') ?> <input name='sortOrder' type='text' size='5' value="<?= $account->get('sortOrder') ?>" /><br />
 <br />
 <font color='red'><?= $translator->getTranslation('Supprimer') ?> <input name='delete' type='checkbox' /></font> <i>Cocher pour clôturer le compte</i><br /><br />

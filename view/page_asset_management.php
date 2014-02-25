@@ -15,7 +15,7 @@
 
 <table class="summaryTable">
 <tr>
-<td colspan="5"><b><?= $translator->getTranslation('Gestion courante') ?></b></td>
+<td colspan="6"><b><?= $translator->getTranslation('Gestion courante') ?></b></td>
 </tr>
 <?php
 $accountsManager = new AccountsManager();
@@ -31,7 +31,7 @@ foreach ($accounts as $account)
 	$balance = $account->GetBalance();
 	?>
 <tr>
-<td><a href="#" onclick="javascript:ChangeAccount('<?= $account->get('accountId') ?>'); return false;"><?= $account->get('name') ?></a></td>
+<td><a href="#" onclick="javascript:ChangeContext('records','<?= $account->get('accountId')?>',''); return false;"><?= $account->get('name') ?></a></td>
 <td style='text-align: right;'><?= $translator->getCurrencyValuePresentation($balance) ?></td>
 </tr>
 <?php
@@ -45,9 +45,7 @@ foreach ($accounts as $account)
 
 
 
-<tr>
-<td colspan="5"><b><?= $translator->getTranslation('Placements') ?></b></td>
-</tr>
+<tr><td colspan="6"><b><?= $translator->getTranslation('Placements') ?></b></td></tr>
 <?php
 $accounts = $accountsManager->GetAllPrivateInvestmentAccounts();
 
@@ -59,12 +57,12 @@ foreach ($accounts as $account)
 	global $sum;
 ?>
 <tr>
-<td><a href="#" onclick="javascript:ChangeAccount('<?= $account->get('accountId') ?>'); return false;"><?= $account->get('name') ?></a></td>
+<td><a href="#" onclick="javascript:ChangeContext('records','<?= $account->get('accountId')?>',''); return false;"><?= $account->get('name') ?></a></td>
 <td style='text-align: right;'><?= $translator->getCurrencyValuePresentation($account->GetInvestmentLastValue()) ?></td>
 <td><?= $account->get('description') ?></td>
 <td style='text-align: right;' <?= $account->GetInvestmentLastYield() < 0 ? 'bgcolor="red"' : '' ?>><?= $translator->getPercentagePresentation($account->GetInvestmentLastYield()) ?></td>
 <td style='text-align: right;' <?= $account->GetInvestmentLastYieldAverage() < 0 ? 'bgcolor="red"' : '' ?>><?= $translator->getPercentagePresentation($account->GetInvestmentLastYieldAverage()) ?></td>
-<td style='text-align: right;' <?= ($account->GetInvestmentLastValueDate() != '' && strtotime($account->GetInvestmentLastValueDate()) < strtotime("-1 month")) ? 'bgcolor="red"' : '' ?>><?= $account->GetInvestmentLastValueDate() != '' ? $account->GetInvestmentLastValueDate() : '' ?></td>
+<td style='text-align: right;' <?= ($account->GetInvestmentLastValueDate() != '' && strtotime($account->GetInvestmentLastValueDate()) < strtotime("-".$account->get('minimumCheckPeriod')." days")) ? 'bgcolor="red"' : '' ?>><?= $account->GetInvestmentLastValueDate() != '' ? $account->GetInvestmentLastValueDate() : '' ?></td>
 </tr>
 <?php
 	$sum += $account->GetInvestmentLastValue();
@@ -103,7 +101,7 @@ foreach ($accounts as $account)
 	$balance = $account->GetBalance();
 	?>
 	<tr>
-	<td><a href="#" onclick="javascript:ChangeAccount('<?= $account->get('accountId') ?>'); return false;"><?= $account->get('name') ?></a></td>
+	<td><a href="#" onclick="javascript:ChangeContext('records','<?= $account->get('accountId')?>',''); return false;"><?= $account->get('name') ?></a></td>
 	<td style='text-align: right;'><?= $translator->getCurrencyValuePresentation($balance) ?></td>
 	</tr>
 	<?php
@@ -117,9 +115,7 @@ $sumGlobal = $sum;
 <td style='text-align: right;'><i><?= $translator->getCurrencyValuePresentation($sum) ?></i></td>
 </tr>
 
-<tr>
-<td colspan="5"><b><?= $translator->getTranslation('Placements') ?></b></td>
-</tr>
+<tr><td colspan="5"><b><?= $translator->getTranslation('Placements') ?></b></td></tr>
 <?php
 $accounts = $accountsManager->GetAllSharedInvestmentAccounts();
 
@@ -129,7 +125,7 @@ foreach ($accounts as $account)
 {
 	?>
 	<tr>
-	<td><a href="#" onclick="javascript:ChangeAccount('<?= $account->get('accountId') ?>'); return false;"><?= $account->get('name') ?></a></td>
+	<td><a href="#" onclick="javascript:ChangeContext('records','<?= $account->get('accountId')?>',''); return false;"><?= $account->get('name') ?></a></td>
 	<td style='text-align: right;'><?= $translator->getCurrencyValuePresentation($account->GetInvestmentLastValue()) ?></td>
 	</tr>
 	<?php
@@ -155,7 +151,7 @@ foreach ($accounts as $account)
 	$balance = $account->GetBalance();
 	?>
 	<tr>
-	<td><a href="#" onclick="javascript:ChangeAccount('<?= $account->get('accountId') ?>'); return false;"><?= $account->get('name') ?></a></td>
+	<td><a href="#" onclick="javascript:ChangeContext('records','<?= $account->get('accountId')?>',''); return false;"><?= $account->get('name') ?></a></td>
 	<td style='text-align: right;'><?= $translator->getCurrencyValuePresentation($balance) ?></td>
 	</tr>
 	<?php

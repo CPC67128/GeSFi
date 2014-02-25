@@ -51,6 +51,8 @@ class InvestmentsRecordsManager
 		$account = $accountsManager->GetCurrentActiveAccount();
 		$creationDate = $account->get('creationDate');
 
+		$yearsSinceAccountCreation = (int) ((strtotime(date("Y-m-d")) - strtotime($creationDate)) / 86400) / 365.25;
+
 		// Search for investment records
 		$query = "select INR.*
 			from {TABLEPREFIX}investment_record INR
@@ -100,12 +102,18 @@ class InvestmentsRecordsManager
 				{
 					if ($yearsSinceCreation >= 1)
 					{
-						$yieldAverage = pow((float) abs($yield), (1 / $yearsSinceCreation)) * ($yield < 0 ? -1 : 1);
+						if ($yearsSinceAccountCreation >= 1)
+							$yieldAverage = pow((float) abs($yield), (1 / $yearsSinceCreation)) * ($yield < 0 ? -1 : 1);
+						else
+							unset($yieldAverage);
 					}
 					else
 					{
 						$gainOver1Year = (float) ($gain / $yearsSinceCreation);
-						$yieldAverage = ((($paymentAccumulated + $gainOver1Year) / $paymentAccumulated) - 1);
+						if ($yearsSinceAccountCreation >= 1)
+							$yieldAverage = ((($paymentAccumulated + $gainOver1Year) / $paymentAccumulated) - 1);
+						else
+							unset($yieldAverage);
 					}
 				}
 				else

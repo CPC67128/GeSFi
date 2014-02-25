@@ -116,9 +116,9 @@ switch ($pageName)
 		AddFormManagementEnd('investmentrecord_debit');
 		break;
 		
-	case 'remark_investment';
+	case 'investmentrecord_remark';
 		include 'page_'.$pageName.'.php';
-		AddFormManagementEnd('remarkInvestment');
+		AddFormManagementEnd('investmentrecord_remark');
 		break;
 
 	case 'configuration';

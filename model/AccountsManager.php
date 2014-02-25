@@ -182,6 +182,7 @@ class AccountsManager
 		elseif ($_SESSION['account_id'] == '')
 		{
 			$newAccount->set('type', 0);
+			$newAccount->set('accountId', '');
 		}
 		elseif ($_SESSION['account_id'] == 'all_accounts')
 		{
@@ -330,7 +331,7 @@ class AccountsManager
 		return $newAccount;
 	}
 
-	function InsertAccount($name, $owner, $coowner, $type, $openingBalance, $expectedMinimumBalance, $sortOrder)
+	function InsertAccount($name, $owner, $coowner, $type, $openingBalance, $expectedMinimumBalance, $sortOrder, $minimumCheckPeriod)
 	{
 		$db = new DB();
 
@@ -364,15 +365,16 @@ class AccountsManager
 		
 		$sortOrder = $originalSortOrder;
 		
-		$query = sprintf("insert into {TABLEPREFIX}account (account_id, name, type, owner_user_id, coowner_user_id, opening_balance, expected_minimum_balance, creation_date)
-				values ('%s', '%s', %s, '%s', '%s', %s, %s, CURRENT_TIMESTAMP())",
+		$query = sprintf("insert into {TABLEPREFIX}account (account_id, name, type, owner_user_id, coowner_user_id, opening_balance, expected_minimum_balance, minimum_check_period, creation_date)
+				values ('%s', '%s', %s, '%s', '%s', %s, %s, %s, CURRENT_TIMESTAMP())",
 				$uuid,
 				$name,
 				$type,
 				$owner,
 				$coowner,
 				$openingBalance,
-				$expectedMinimumBalance);
+				$expectedMinimumBalance,
+				$minimumCheckPeriod);
 		$result = $db->Execute($query);
 
 		$query = sprintf("insert into {TABLEPREFIX}account_user_preference (user_id, account_id, sort_order)
@@ -399,15 +401,16 @@ class AccountsManager
 		return $result;
 	}
 
-	function UpdateAccount($accountId, $name, $description, $openingBalance, $expectedMinimumBalance, $sortOrder)
+	function UpdateAccount($accountId, $name, $description, $openingBalance, $expectedMinimumBalance, $sortOrder, $minimumCheckPeriod)
 	{
 		$db = new DB();
 
-		$query = sprintf("update {TABLEPREFIX}account set name = '%s', description='%s', opening_balance = %s, expected_minimum_balance = %s where account_id = '%s'",
+		$query = sprintf("update {TABLEPREFIX}account set name = '%s', description='%s', opening_balance = %s, expected_minimum_balance = %s, minimum_check_period = %s where account_id = '%s'",
 				$db->ConvertStringForSqlInjection($name),
 				$db->ConvertStringForSqlInjection($description),
 				$openingBalance,
 				$expectedMinimumBalance,
+				$minimumCheckPeriod,
 				$accountId);
 		
 		$result = $db->Execute($query);

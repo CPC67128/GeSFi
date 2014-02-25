@@ -121,6 +121,14 @@ class Operation_InvestmentRecord extends Operation
 			throw new Exception('Merci de renseigner correctement le compte de destination');
 	}
 
+	public function ValidateToAccountAllowingUnknownAccount()
+	{
+		if (!isset($this->_toAccount))
+			throw new Exception('Merci de renseigner le compte de destination');
+		if ($this->_toAccount == $this->_fromAccount)
+			throw new Exception('Merci de renseigner correctement le compte de destination');
+	}
+
 	public function ValidateFromDate()
 	{
 		if (!isset($this->_fromDate))

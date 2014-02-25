@@ -36,7 +36,7 @@ if ($account->get('type') >= 10 && $account->get('type') <= 12)
 	AddMenuEntry("investmentrecord_value", "valueMenuIcon.gif", "Valorisation");
 	AddMenuEntry("investmentrecord_income", "incomeMenuIcon.gif", "Enregistrement");
 	AddMenuEntry("investmentrecord_debit", "expenseMenuIcon.png", "Dépense");
-	AddMenuEntry("remark_investment", "remarkMenuIcon.png", "Remarque");
+	AddMenuEntry("investmentrecord_remark", "remarkMenuIcon.png", "Remarque");
 	AddMenuEntry("statistics", "statsMenuIcon.png", "Statistiques");
 }
 

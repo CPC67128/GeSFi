@@ -12,6 +12,7 @@ class Account extends Entity
 	protected $_expectedMinimumBalance;
 	protected $_creationDate;
 	protected $_closingDate;
+	protected $_minimumCheckPeriod;
 	protected $_markedAsClosed;
 
 	protected $_sortOrder;
@@ -295,12 +296,13 @@ class Account extends Entity
 	{
 		$db = new DB();
 	
-		$query = 'select CALC_yield
+		$query = "select CALC_yield
 			from {TABLEPREFIX}investment_record
-			where account_id = \''.$this->_accountId.'\'
+			where account_id = '".$this->_accountId."'
 			and CALC_yield is not null
+			and marked_as_deleted = 0
 			order by record_date desc
-			limit 1';
+			limit 1";
 		$row = $db->SelectRow($query);
 
 		return $row['CALC_yield'];
@@ -310,12 +312,13 @@ class Account extends Entity
 	{
 		$db = new DB();
 	
-		$query = 'select CALC_yield_average
+		$query = "select CALC_yield_average
 			from {TABLEPREFIX}investment_record
-			where account_id = \''.$this->_accountId.'\'
+			where account_id = '".$this->_accountId."'
 			and CALC_yield is not null
+			and marked_as_deleted = 0
 			order by record_date desc
-			limit 1';
+			limit 1";
 		$row = $db->SelectRow($query);
 
 		return $row['CALC_yield_average'];
@@ -326,12 +329,13 @@ class Account extends Entity
 	{
 		$db = new DB();
 	
-		$query = 'select record_date
+		$query = "select record_date
 			from {TABLEPREFIX}investment_record
-			where account_id = \''.$this->_accountId.'\'
+			where account_id = '".$this->_accountId."'
 			and value is not null
+			and marked_as_deleted = 0
 			order by record_date desc
-			limit 1';
+			limit 1";
 		$row = $db->SelectRow($query);
 	
 		return $row['record_date'];

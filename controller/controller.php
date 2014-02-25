@@ -45,7 +45,10 @@ try
 		case 'investmentrecord_debit':
 			$operation = new Operation_InvestmentRecord_Debit();
 			break;
-
+		case 'investmentrecord_remark':
+			$operation = new Operation_InvestmentRecord_Remark();
+			break;
+				
 		case 'user_subscription':
 			$operation = new Operation_User_Subscription();
 			break;

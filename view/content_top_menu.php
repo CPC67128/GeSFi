@@ -3,7 +3,7 @@ include_once '../security/security_manager.php';
 
 ?>
 
-<?php if ($_SESSION['page'] != 'dashboard') { ?><a href="#" onclick="javascript:ChangeContext('dashboard','',''); return false;"><?php } ?>Gestion courante<?php if ($_SESSION['page'] != 'dashboard') { ?></a><?php } ?>
+<?php if (!($_SESSION['page'] == 'dashboard' || ($_SESSION['page'] == 'records' && $_SESSION['account_id'] == ''))) { ?><a href="#" onclick="javascript:ChangeContext('dashboard','',''); return false;"><?php } ?>Gestion courante<?php if (!($_SESSION['page'] == 'dashboard' || ($_SESSION['page'] == 'records' && $_SESSION['account_id'] == ''))) { ?></a><?php } ?>
  / 
 <?php
 $accountsManager = new AccountsManager();

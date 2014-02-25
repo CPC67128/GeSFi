@@ -4,7 +4,7 @@ class Operation_InvestmentRecord_Debit extends Operation_InvestmentRecord
 	public function Validate()
 	{
 		$this->ValidateFromDate();
-		$this->ValidateToAccount();
+		$this->ValidateToAccountAllowingUnknownAccount();
 		$this->ValidateToDate();
 		$this->ValidatePaymentDisinvested();
 		$this->ValidateDesignation();

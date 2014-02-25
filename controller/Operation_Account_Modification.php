@@ -12,6 +12,7 @@ class Operation_Account_Modification extends Operation_Account
 	protected $_expectedMinimumBalance;
 	protected $_creationDate;
 	protected $_closingDate;
+	protected $_minimumCheckPeriod;
 
 	protected $_delete;
 
@@ -23,7 +24,7 @@ class Operation_Account_Modification extends Operation_Account
 
 		if ($this->_accountId == '')
 		{
-			$handler->InsertAccount($this->_name, $this->_owner, $this->_coowner, $this->_type, $this->_openingBalance, $this->_expectedMinimumBalance, $this->_sortOrder);
+			$handler->InsertAccount($this->_name, $this->_owner, $this->_coowner, $this->_type, $this->_openingBalance, $this->_expectedMinimumBalance, $this->_sortOrder, $this->_minimumCheckPeriod);
 		}
 		else
 		{
@@ -33,7 +34,7 @@ class Operation_Account_Modification extends Operation_Account
 				if ($this->_delete == 'on')
 					$handler->DeleteAccount($this->_accountId);
 				else
-					$handler->UpdateAccount($this->_accountId, $this->_name, $this->_description, $this->_openingBalance, $this->_expectedMinimumBalance, $this->_sortOrder);
+					$handler->UpdateAccount($this->_accountId, $this->_name, $this->_description, $this->_openingBalance, $this->_expectedMinimumBalance, $this->_sortOrder, $this->_minimumCheckPeriod);
 			}
 			else
 			{

@@ -93,7 +93,7 @@ class InvestmentsRecordsManager
 			if (isset($record['value']))
 			{
 				$gain = $record['value'] - $paymentAccumulated;
-				if ($paymentAccumulated != 0)
+				if ($paymentAccumulated != 0 && $paymentInvestedAccumulated > 0)
 					$yield = (($record['value'] / $paymentAccumulated) - 1) * 100;
 
 				$yearsSinceCreation = (float) $daysSinceCreation / 365.25;
@@ -102,7 +102,7 @@ class InvestmentsRecordsManager
 				{
 					if ($yearsSinceCreation >= 1)
 					{
-						if ($yearsSinceAccountCreation >= 1)
+						if ($yearsSinceAccountCreation >= 1 && $paymentInvestedAccumulated > 0)
 							$yieldAverage = pow((float) abs($yield), (1 / $yearsSinceCreation)) * ($yield < 0 ? -1 : 1);
 						else
 							unset($yieldAverage);
@@ -110,7 +110,7 @@ class InvestmentsRecordsManager
 					else
 					{
 						$gainOver1Year = (float) ($gain / $yearsSinceCreation);
-						if ($yearsSinceAccountCreation >= 1)
+						if ($yearsSinceAccountCreation >= 1 && $paymentInvestedAccumulated > 0)
 							$yieldAverage = ((($paymentAccumulated + $gainOver1Year) / $paymentAccumulated) - 1);
 						else
 							unset($yieldAverage);
@@ -118,7 +118,7 @@ class InvestmentsRecordsManager
 				}
 				else
 				{
-					$yieldAverage = 0;
+					unset($yieldAverage);
 				}
 			}
 

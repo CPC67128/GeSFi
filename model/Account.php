@@ -11,6 +11,7 @@ class Account extends Entity
 	protected $_openingBalance;
 	protected $_expectedMinimumBalance;
 	protected $_creationDate;
+	protected $_availabilityDate;
 	protected $_closingDate;
 	protected $_minimumCheckPeriod;
 	protected $_markedAsClosed;

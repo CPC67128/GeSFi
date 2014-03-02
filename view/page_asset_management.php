@@ -55,14 +55,19 @@ $sum = 0;
 foreach ($accounts as $account)
 {
 	global $sum;
+
+	$valueToUpdate = ($account->GetInvestmentLastValueDate() != '' && strtotime($account->GetInvestmentLastValueDate()) < strtotime("-".$account->get('minimumCheckPeriod')." days"));
+	$availabilityYear = date("Y", strtotime($account->get('availabilityDate')));
+	$availabilityDateToDisplay = ($account->get('availabilityDate') != '' && $availabilityYear > date("Y"));
+
 ?>
 <tr>
 <td><a href="#" onclick="javascript:ChangeContext('records','<?= $account->get('accountId')?>',''); return false;"><?= $account->get('name') ?></a></td>
-<td style='text-align: right;'><?= $translator->getCurrencyValuePresentation($account->GetInvestmentLastValue()) ?></td>
+<td style='text-align: right;'><?= $valueToUpdate ? '<i>' : '' ?><?= $translator->getCurrencyValuePresentation($account->GetInvestmentLastValue()) ?><?= $valueToUpdate ? '</i>' : '' ?></td>
 <td><?= $account->get('description') ?></td>
 <td style='text-align: right;' <?= $account->GetInvestmentLastYield() < 0 ? 'bgcolor="red"' : '' ?>><?= $translator->getPercentagePresentation($account->GetInvestmentLastYield()) ?></td>
 <td style='text-align: right;' <?= $account->GetInvestmentLastYieldAverage() < 0 ? 'bgcolor="red"' : '' ?>><?= $translator->getPercentagePresentation($account->GetInvestmentLastYieldAverage()) ?></td>
-<td style='text-align: right;' <?= ($account->GetInvestmentLastValueDate() != '' && strtotime($account->GetInvestmentLastValueDate()) < strtotime("-".$account->get('minimumCheckPeriod')." days")) ? 'bgcolor="red"' : '' ?>><?= $account->GetInvestmentLastValueDate() != '' ? $account->GetInvestmentLastValueDate() : '' ?></td>
+<td style='text-align: right;'><?= $availabilityDateToDisplay ? $availabilityYear : '' ?></td>
 </tr>
 <?php
 	$sum += $account->GetInvestmentLastValue();

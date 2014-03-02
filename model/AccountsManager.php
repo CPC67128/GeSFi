@@ -401,16 +401,17 @@ class AccountsManager
 		return $result;
 	}
 
-	function UpdateAccount($accountId, $name, $description, $openingBalance, $expectedMinimumBalance, $sortOrder, $minimumCheckPeriod)
+	function UpdateAccount($accountId, $name, $description, $openingBalance, $expectedMinimumBalance, $sortOrder, $minimumCheckPeriod, $availabilityDate)
 	{
 		$db = new DB();
 
-		$query = sprintf("update {TABLEPREFIX}account set name = '%s', description='%s', opening_balance = %s, expected_minimum_balance = %s, minimum_check_period = %s where account_id = '%s'",
+		$query = sprintf("update {TABLEPREFIX}account set name = '%s', description='%s', opening_balance = %s, expected_minimum_balance = %s, minimum_check_period = %s, availability_date = '%s' where account_id = '%s'",
 				$db->ConvertStringForSqlInjection($name),
 				$db->ConvertStringForSqlInjection($description),
 				$openingBalance,
 				$expectedMinimumBalance,
 				$minimumCheckPeriod,
+				$availabilityDate,
 				$accountId);
 		
 		$result = $db->Execute($query);

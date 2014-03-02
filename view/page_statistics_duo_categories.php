@@ -46,7 +46,7 @@ for ($month = 0; $month < 20; $month++)
 		$currentYear = Date('Y', strtotime("-".$month." month"));
 	}
 
-	echo '<td style="text-align: right;">';
+	echo '<td style="text-align: right; white-space: nowrap;">';
 	echo $translator->getMonthYearPresentation($currentMonth, $currentYear);
 	echo '</td>';
 
@@ -60,7 +60,7 @@ for ($month = 0; $month < 20; $month++)
 		$category_total[$indexCategory] = $category_total[$indexCategory] + $value;
 		$total += $value;
 
-		echo '<td style="text-align: right;">';
+		echo '<td style="text-align: right; white-space: nowrap;">';
 		if ($value > 0)
 		{
 			if (!isset($category_non_empty_months[$indexCategory]))
@@ -73,7 +73,7 @@ for ($month = 0; $month < 20; $month++)
 		$indexCategory++;
 	}
 
-	echo '<td style="text-align: right;">';
+	echo '<td style="text-align: right; white-space: nowrap;">';
 	if ($total > 0)
 	{
 		if (!isset($category_total[$indexCategory]))
@@ -95,13 +95,13 @@ echo '<td style="text-align: right;">Moyenne</td>';
 $index = 0;
 foreach ($categories as $category)
 {
-	echo '<td style="text-align: right;">';
+	echo '<td style="text-align: right; white-space: nowrap;">';
 	if (isset($category_non_empty_months[$index]) && $category_non_empty_months[$index] > 0)
 		echo $translator->getCurrencyValuePresentation($category_total[$index] / $category_non_empty_months[$index]);
 	echo '</td>';
 	$index++;
 }
-echo '<td style="text-align: right;">';
+echo '<td style="text-align: right; white-space: nowrap;">';
 if (isset($category_non_empty_months[$index]) && $category_non_empty_months[$index] > 0)
 	echo $translator->getCurrencyValuePresentation($category_total[$index] / $category_non_empty_months[$index]);
 echo '</td>';
@@ -109,17 +109,17 @@ echo '</tr>';
 
 echo '<tr class="tableRowTitle">';
 
-echo '<td style="text-align: right;">(Cumul)</td>';
+echo '<td style="text-align: right; white-space: nowrap;">(Cumul)</td>';
 $total = 0;
 foreach ($categories as $category)
 {
-	echo '<td style="text-align: right;">';
+	echo '<td style="text-align: right; white-space: nowrap;">';
 	if (isset($category_non_empty_months[$index]) && $category_non_empty_months[$index] > 0)
 		$total = $total + ($category_total[$index] / $category_non_empty_months[$index]);
 	echo $translator->getCurrencyValuePresentation($total);
 	echo '</td>';
 }
-echo '<td style="text-align: right;">';
+echo '<td style="text-align: right; white-space: nowrap;">';
 echo '</td>';
 echo '</tr>';
 ?>

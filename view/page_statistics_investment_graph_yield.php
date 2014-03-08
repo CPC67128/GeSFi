@@ -1,18 +1,10 @@
 <?php
 include '../security/security_manager.php';
 
-function __autoload($class_name)
-{
-	$file = '../controller/'.$class_name . '.php';
-	if (!file_exists($file))
-		$file = '../model/'.$class_name . '.php';
-	include $file;
-}
-
 $translator = new Translator();
 
 $investmentsRecordsManager = new InvestmentsRecordsManager();
-$result = $investmentsRecordsManager->GetAllRecords(12 * 10);
+$result = $investmentsRecordsManager->GetAllRecords();
 
 $yieldXArray = array();
 $yieldYArray = array();
@@ -73,5 +65,4 @@ $lineYieldAverage->SetWeight(2);
 $lineYieldAverage->SetStyle("solid");
 
 $graph->Stroke();
-?>
 ?>

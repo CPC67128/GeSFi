@@ -56,6 +56,7 @@ else if ($accountType != 2 && $accountType != 0)
 {
 	$accountExpectedMinimumBalance = $activeAccount->get('expectedMinimumBalance');
 	$balance = $activeAccount->GetBalance();
+	$balanceConfirmed = $activeAccount->GetBalanceConfirmed();
 
 	$criticalAccountBalance = false;
 	if ($accountExpectedMinimumBalance >= ($balance + $accountPlannedDebit))
@@ -67,13 +68,7 @@ else if ($accountType != 2 && $accountType != 0)
 		echo "<font color='green'>";
 ?>
 Solde : <?= $translator->getCurrencyValuePresentation($balance) ?>
-</font> (Débit prévus pour les 10 prochains jours : <?= $translator->getCurrencyValuePresentation($accountPlannedDebit) ?>)
-<?php
-}
-else
-{
-?>
-Débit prévus pour les 10 prochains jours : <?= $translator->getCurrencyValuePresentation($accountPlannedDebit) ?>
+</font> / <?= $translator->getCurrencyValuePresentation($balanceConfirmed) ?> confirmé (Débit prévus pour les 10 prochains jours : <?= $translator->getCurrencyValuePresentation($accountPlannedDebit) ?>)
 <?php
 }
 ?>

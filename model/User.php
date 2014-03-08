@@ -377,7 +377,7 @@ class User extends Entity
 				$this->_userId);
 	
 		$result = $db->Select($query);
-	
+
 		return $result;
 	}
 	
@@ -395,12 +395,10 @@ class User extends Entity
 	{
 		$db = new DB();
 
-		//$escaped_browser = String2StringForSprintfQueryBuilder($Browser);
-	
 		$query = sprintf("insert into {TABLEPREFIX}user_connection (user_id, connection_date_time, ip_address, browser) values('%s', now(), '%s', '%s')",
 				$this->_userId,
 				$Ip,
-				$escaped_browser);
+				$db->ConvertStringForSqlInjection($Browser));
 
 		$result = $db->Execute($query);
 	

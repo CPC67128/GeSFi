@@ -28,6 +28,7 @@ foreach ($types as $key => $value)
 <?= $translator->getTranslation('Solde initial') ?> <input name='openingBalance' type='text' size='7' value="0.00" /><?= $translator->getCurrencyPresentation() ?><br />
 <?= $translator->getTranslation('Solde minimum') ?> <input name='expectedMinimumBalance' type='text' size='7' value="0.00" /><?= $translator->getCurrencyPresentation() ?><br />
 <?= $translator->getTranslation('Date de creation') ?> <input title="aaaa-mm-jj" size="10" class="datePicker" name="creationDate" value="<?php echo date("Y-m-d") ?>"><br/>
+
 <?= $translator->getTranslation('Date de disponibilité') ?> <input title="aaaa-mm-jj" size="10" class="datePicker" name="availabilityDate"><br/>
 <?= $translator->getTranslation('Date de clôture') ?> <input title="aaaa-mm-jj" size="10" class="datePicker" name="closingDate"><br/>
 <?= $translator->getTranslation('Période de vérification minimale') ?> <input name="minimumCheckPeriod" type="text" size="4" value="30"><br/>

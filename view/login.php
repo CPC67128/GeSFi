@@ -29,7 +29,7 @@ if ($securityHandler->IsSingleUserMode())
 	$_SESSION['full_name'] = $user->get('name');
 	$_SESSION['read_only'] = $user->get('readOnly');
 
-	$userHandler->RecordUserConnection($user->getUserId(), $_SERVER['REMOTE_ADDR'], $_SERVER['HTTP_USER_AGENT']);
+	$usersHandler->RecordUserConnection($user->getUserId(), $_SERVER['REMOTE_ADDR'], $_SERVER['HTTP_USER_AGENT']);
 
 	header("HTTP/1.1 301 Moved Permanently");
 	if (isset($_SESSION['go_to']) && $_SESSION['go_to'] != '')

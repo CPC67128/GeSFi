@@ -110,7 +110,7 @@ class UsersHandler
 
 		$are_passwords_matching = false;
 	
-		$escaped_email = String2StringForSprintfQueryBuilder($Email);
+		$escaped_email = $db->ConvertStringForSqlInjection($Email);
 	
 		$query = sprintf("select password from {TABLEPREFIX}user where lower(email) = '%s'",
 				strtolower($escaped_email));
@@ -130,7 +130,7 @@ class UsersHandler
 	{
 		$db = new DB();
 	
-		$escaped_browser = String2StringForSprintfQueryBuilder($Browser);
+		$escaped_browser = $db->ConvertStringForSqlInjection($Browser);
 	
 		$query = sprintf("insert into {TABLEPREFIX}user_connection (user_id, connection_date_time, ip_address, browser) values('%s', now(), '%s', '%s')",
 				$User_id,

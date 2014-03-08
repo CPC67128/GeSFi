@@ -1,7 +1,7 @@
 <?php
 class InvestmentsRecordsManager
 {
-	function GetAllRecords($month)
+	function GetAllRecords()
 	{
 		$db = new DB();
 		$query = "select INR.*

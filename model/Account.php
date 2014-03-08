@@ -57,21 +57,59 @@ class Account extends Entity
 		return $row['total'];
 	}
 
+	public function GetTotalIncomeConfirmed()
+	{
+		$db = new DB();
+	
+		$query = 'select sum(amount) as total
+		from {TABLEPREFIX}record
+		where record_type between 10 and 19
+		and marked_as_deleted = 0
+		and account_id = \''.$this->_accountId.'\'
+		and record_date <= curdate()
+		and confirmed = 1';
+		$row = $db->SelectRow($query);
+	
+		return $row['total'];
+	}
+	
+	public function GetTotalOutcomeConfirmed()
+	{
+		$db = new DB();
+	
+		$query = 'select sum(amount) as total
+		from {TABLEPREFIX}record
+		where record_type between 20 and 29
+		and marked_as_deleted = 0
+		and account_id = \''.$this->_accountId.'\'
+		and record_date <= curdate()
+		and confirmed = 1';
+		$row = $db->SelectRow($query);
+	
+		return $row['total'];
+	}
+
 	public function GetBalance()
 	{
 		$balance = $this->get('openingBalance') + $this->GetTotalIncome() - $this->GetTotalOutcome();
 		return $balance;
 	}
-	
+
+	public function GetBalanceConfirmed()
+	{
+		$balance = $this->get('openingBalance') + $this->GetTotalIncomeConfirmed() - $this->GetTotalOutcomeConfirmed();
+		return $balance;
+	}
+
 	public function GetPlannedOutcome($numberOfDays)
 	{
 		$db = new DB();
 	
 		$query = 'select sum(amount) as total
 			from {TABLEPREFIX}record
-			where record_type = 1
+			where record_type = 22
 			and marked_as_deleted = 0
-			and creation_date > curdate()
+			and record_date > curdate()
 			and account_id = \''.$this->_accountId.'\'
 			and record_date < adddate(curdate(), interval +'.$numberOfDays.' day)';
 		$row = $db->SelectRow($query);

@@ -23,10 +23,10 @@ $translator = new Translator();
 
 $accountsManager = new AccountsManager();
 
-if ($id != '')
-	$activeAccount = $accountsManager->GetAccount($id);
-else
-	$activeAccount = $accountsManager->GetCurrentActiveAccount();
+//if ($id != '')
+//	$activeAccount = $accountsManager->GetAccount($id);
+//else
+$activeAccount = $accountsManager->GetCurrentActiveAccount();
 $accountType = $activeAccount->get('type');
 
 $pageName = $page;
@@ -89,6 +89,19 @@ switch ($pageName)
 		include 'page_'.$pageName.'.php';
 		break;
 
+	case 'investmentrecord_statistics';
+		if ($accountType == -50 || $accountType == 0)
+			include 'page_'.$pageName.'_global.php';
+		else if ($accountType == 1)
+			include 'page_'.$pageName.'_private.php';
+		else if ($accountType == 10)
+			include 'page_'.$pageName.'_investment.php';
+		else if ($accountType == 100)
+			include 'page_'.$pageName.'_investment_global.php';
+		else
+			include 'page_'.$pageName.'_duo.php';
+		break;
+
 	case 'statistics';
 		if ($accountType == -50 || $accountType == 0)
 			include 'page_'.$pageName.'_global.php';
@@ -101,6 +114,7 @@ switch ($pageName)
 		else
 			include 'page_'.$pageName.'_duo.php';
 		break;
+
 	case 'investmentrecord_value':
 		include 'page_'.$pageName.'.php';
 		AddFormManagementEnd('investmentrecord_value');

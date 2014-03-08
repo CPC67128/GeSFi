@@ -1,4 +1,5 @@
 <?php
+$totalPlannedDebit = 0;
 if ($accountType == 0)
 {
 	?>
@@ -32,6 +33,8 @@ if ($accountType == 0)
 			</tr>
 	
 			<?php
+
+			$totalPlannedDebit += $account->GetPlannedOutcome(10);
 		}
 	}
 	?>
@@ -73,7 +76,7 @@ Solde : <?= $translator->getCurrencyValuePresentation($balance) ?>
 else
 {
 ?>
-Débit prévus pour les 10 prochains jours : <?= $translator->getCurrencyValuePresentation($accountPlannedDebit) ?>
+Débit prévus pour les 10 prochains jours : <?= $translator->getCurrencyValuePresentation($totalPlannedDebit) ?>
 <?php
 }
 ?>

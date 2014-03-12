@@ -118,7 +118,7 @@ function AddTitleRow()
 // ------ Add a data row
 function AddRow($index, $row, $mergeRow)
 {
-	global $activeAccount, $now, $translator;
+	global $activeAccount, $activeUser, $now, $translator;
 
 	$tr = '<tr class="tableRow';
 	if ($row['marked_as_deleted']) $tr .= 'Deleted';
@@ -131,9 +131,9 @@ function AddRow($index, $row, $mergeRow)
 	if (!$mergeRow)
 	{
 		echo '<td>'.($row['record_date'] == 0 ? '' : $row['record_date']).'</td>';
-		echo '<td style="text-align: left;">'.$row['designation'].'</td>';
-		echo '<td style="text-align: right;">'.$row['user_name'].'</td>';
-		echo '<td style="text-align: right;">'.$row['account_name'].'</td>';
+		echo '<td>'.$row['designation'].'</td>';
+		echo '<td>'.$row['user_name'].'</td>';
+		echo '<td>'.$row['account_name'].'</td>';
 	}
 	else
 	{
@@ -172,7 +172,7 @@ function AddRow($index, $row, $mergeRow)
 		echo "<td style='text-align: left;'>";
 	
 		echo "<img src='../media/information.png' title='";
-		echo $translator->getCurrencyValuePresentation($row['part_actor1'])." / ".$translator->getCurrencyValuePresentation($row['part_actor2']); 
+		echo $activeUser->getName()." : ".$translator->getCurrencyValuePresentation($row['part_actor1'])." / ".$activeUser->GetPartnerName()." : ".$translator->getCurrencyValuePresentation($row['part_actor2']); 
 		echo "'>";
 	
 		echo "&nbsp;";
@@ -190,7 +190,7 @@ function AddRow($index, $row, $mergeRow)
 		echo "<td style='text-align: left;'>";
 	
 		echo "<img src='../media/information.png' title='";
-		echo $translator->getCurrencyValuePresentation($row['part_actor1'])." / ".$translator->getCurrencyValuePresentation($row['part_actor2']); 
+		echo $activeUser->getName()." : ".$translator->getCurrencyValuePresentation($row['part_actor1'])." / ".$activeUser->GetPartnerName()." : ".$translator->getCurrencyValuePresentation($row['part_actor2']);
 		echo "'>";
 
 		echo "&nbsp;";

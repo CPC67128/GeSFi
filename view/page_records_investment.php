@@ -23,10 +23,8 @@ function AddTitleRow()
 	<td style="vertical-align: top; text-align: center; font-style: italic;"><?= $translator->getTranslation('Désignation') ?></td>
 
 	<?php if ($accountType != 11 && $accountType != 12) { ?>
-	<td style="vertical-align: top; text-align: center; font-style: italic;"><?= $translator->getTranslation('Versement') ?></td>
-	<td style="vertical-align: top; text-align: center; font-style: italic;"><small><?= $translator->getTranslation('Cumul') ?></small></td>
-	<td style="vertical-align: top; text-align: center; font-style: italic;"><?= $translator->getTranslation('Versement effectif') ?></td>
-	<td style="vertical-align: top; text-align: center; font-style: italic;"><small><?= $translator->getTranslation('Cumul') ?></small></td>
+	<td style="text-align: right;"><?= $translator->getTranslation('Versement') ?><br /><i><small>(&sum;) <?= $translator->getTranslation('Cumul') ?></small></i></td>
+	<td style="text-align: right;"><?= $translator->getTranslation('Versement effectif') ?><br /><i><small>(&sum;) <?= $translator->getTranslation('Cumul') ?></small></i></td>
 	<!-- <td style="vertical-align: top; text-align: center; font-style: italic;"><?= $translator->getTranslation('Frais') ?></td> -->
 	<?php } ?>
 	<td style="vertical-align: top; text-align: center; font-style: italic;"><?= $translator->getTranslation('Valorisation') ?></td>
@@ -57,12 +55,14 @@ function AddRow($index, $row)
 	echo '<td style="text-align: right;">'.$row['CALC_days_since_creation'].'</td>';
 	echo '<td style="text-align: left;">'.$row['designation'].'</td>';
 	if ($accountType != 11 && $accountType != 12) {
-	echo '<td style="text-align: right;">'.($row['payment'] == null ? '' : $translator->getCurrencyValuePresentation($row['payment'])).'</td>';
-	echo '<td style="text-align: right; font-style: italic;"><small>'.$translator->getCurrencyValuePresentation($row['CALC_payment_accumulated']).'</small></td>';
-	echo '<td style="text-align: right;">'.($row['payment_invested'] == null ? '' : $translator->getCurrencyValuePresentation($row['payment_invested'])).'</td>';
-	echo '<td style="text-align: right; font-style: italic;"><small>'.$translator->getCurrencyValuePresentation($row['CALC_payment_invested_accumulated']).'</small></td>';
+	?>
+	<td style="text-align: right;"><?php if ($row['payment'] != null) { ?><?= $translator->getCurrencyValuePresentation($row['payment']) ?><br /><i><small>(&sum;) <?= $translator->getCurrencyValuePresentation($row['CALC_payment_accumulated'])?></small></i><?php } ?></td>
+	<td style="text-align: right;"><?php if ($row['payment_invested'] != null) { ?><?= $translator->getCurrencyValuePresentation($row['payment_invested']) ?><br /><i><small>(&sum;) <?= $translator->getCurrencyValuePresentation($row['CALC_payment_invested_accumulated'])?></small></i><?php } ?></td>
+	<?php
 	}
-	echo '<td style="text-align: right;">'.(isset($row['value']) ? $translator->getCurrencyValuePresentation($row['value']) : '').'</td>';
+	?>
+	<td style="text-align: right;"><?= (isset($row['value'])) ? $translator->getCurrencyValuePresentation($row['value']) : '' ?></td>
+	<?php
 	if ($accountType != 11 && $accountType != 12) {
 	echo '<td style="text-align: right;">'.$translator->getPercentagePresentation($row['CALC_yield']).'</td>';
 	echo '<td style="text-align: right;">'.$translator->getPercentagePresentation($row['CALC_yield_average']).'</td>';

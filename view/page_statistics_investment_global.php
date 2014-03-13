@@ -1,45 +1,70 @@
-<h1><?= $translator->getTranslation('Graphiques') ?></h1>
+<div id="container" style="min-width: 900px; height: 400px; margin: 0 auto"></div>
 
-<form action="/" id="form">
+<script type="text/javascript">
+$(function () {
+    $('#container').highcharts({
+        chart: {
+            type: 'spline'
+        },
+        title: {
+            text: 'Comparaison des rendements des placements'
+        },
+        xAxis: {
+        },
+        yAxis: {
+            title: {
+                text: 'Rendement'
+            },
+        },
+        tooltip: {
+            formatter: function() {
+                    return this.series.name +': '+this.y+' %';
+            }
+        },
+        
+        series: [
+
 <?php
-$accountsManager = new AccountsManager();
-$accounts = $accountsManager->GetAllInvestmentAccounts();
-$i = 0;
+$investmentsRecordsManager = new InvestmentsRecordsManager();
+$result = $investmentsRecordsManager->GetAllRecordsForAllInvestments();
 
-foreach ($accounts as $account)
+$previousAccountId = '';
+$previousName = '';
+$addComma = true;
+
+while ($row = $result->fetch())
 {
-?>
-<input type="checkbox" name="account<?= $i ?>" value="<?= $account->get('accountId') ?>"><?= $account->get('name') ?><?= strlen($account->get('description')) > 0 ? ' ('.$account->get('description').')' : ''  ?>
-<br />
-<?php
-	$i++;
-}
-?>
-<input type='hidden' name="maximumIndex" value="<?= $i ?>" />
-<input type="submit" id='submitForm' value="Rafraîchir" />
-</form>
-
-<div id='graph'>
-<img src='page_statistics_investment_global_graph_yield.php<?= '?guid='.md5(uniqid(rand(),true)) ?>' />
-</div>
-
-<script type='text/javascript'>
-$("#form").submit( function () {
-	document.getElementById("submitForm").disabled = true;
-	$('#graph').html('<img src="../media/loading.gif" />');
-	$.post (
-		'page_statistics_investment_global_graph_controller.php',
-		$(this).serialize(),
-		function(response, status) {
-			if (status == 'success') {
-				$("#graph").html(response);
-			}
-			else {
-				$("#graph").html(CreateUnexpectedErrorWeb("Status = " + status));
-			}
-			document.getElementById("submitForm").disabled = false;
+	$addComma = true;
+	if ($row['account_id'] != $previousAccountId)
+	{
+		if ($previousAccountId != '')
+		{
+			echo "]},\n\n";
 		}
-	);
-	return false;
+
+		echo "{\n";
+		echo "name: '".$row['name']."',\n";
+		echo "data: [\n";
+
+		$previousAccountId = $row['account_id'];
+		$previousName = $row['name'];
+		$addComma = false;
+	}
+
+	if (isset($row['CALC_yield']))
+	{
+		if ($addComma)
+			echo ",";
+		echo "[".$row['CALC_days_since_creation'].",".$row['CALC_yield']."]";
+	}
+}
+
+echo "]}\n\n";
+
+?>
+		]
+    });
 });
+
+
 </script>

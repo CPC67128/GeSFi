@@ -23,6 +23,7 @@ class InvestmentsRecordsManager
 			inner join {TABLEPREFIX}account ACC on ACC.account_id = INR.account_id
 			where ACC.owner_user_id = '{USERID}'
 			and marked_as_deleted = 0
+			and value is not null
 			order by ACC.account_id, INR.record_date";
 		$result = $db->Select($query);
 		return $result;

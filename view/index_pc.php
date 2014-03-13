@@ -19,6 +19,8 @@ $common_acount_actor2_charge = 50;
 <link type="text/css" href="gfc.css" rel="stylesheet" />
 <script type="text/javascript" src="../3rd_party/jquery-1.10.2.min.js"></script>
 <script type="text/javascript" src="../3rd_party/jquery-ui-1.10.3.custom/js/jquery-ui-1.10.3.custom.min.js"></script>
+<script src="http://code.highcharts.com/highcharts.js"></script>
+<script src="http://code.highcharts.com/modules/exporting.js"></script>
 <script type="text/javascript" src="gfc.js"></script>
 </head>
 <body>

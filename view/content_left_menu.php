@@ -27,7 +27,7 @@ if ($account->get('type') >= 0 && $account->get('type') < 10)
 if ($account->get('type') == 100)
 {
 	AddMenuEntry("records", "assetManagementMenuIcon.png", "Situation");
-	AddMenuEntry("statistics", "statsMenuIcon.png", "Statistiques");
+	AddMenuEntry("statistics", "statsMenuIcon.png", "Graphiques");
 }
 
 if ($account->get('type') >= 10 && $account->get('type') <= 12)

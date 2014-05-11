@@ -36,6 +36,7 @@ class Statistics
 		return $total;
 	}
 
+	// Total expenses made from private accounts for expenses to duo categories
 	function GetTotalExpensePrivateAccountsForDuoCategoriesMadeByUser($userId)
 	{
 		$usersHandler = new UsersHandler();
@@ -51,14 +52,15 @@ class Statistics
 			and marked_as_deleted = 0
 			and category_id in (select category_id from {TABLEPREFIX}category where link_type = 'DUO' and link_id = '".$user->getDuoId()."')
 			and record_date <= curdate()
-			and account_id not in (select account_id from {TABLEPREFIX}account where type in (2, 3, 4, 5, 10))
-			and user_id = '".$userId."'";
+			and account_id not in (select account_id from {TABLEPREFIX}account where type in (2, 3, 5, 12))
+			and user_id = '".$userId."'"; // TODO Liste de comptes à vérifier
 		$row = $db->SelectRow($query);
 		$total += $row['total'];
 	
 		return $total;
 	}
-	
+
+	// Total expenses made from private accounts for expenses to duo categories
 	function GetTotalExpensePrivateAccountsForPartnerCategoriesMadeByUser($userId)
 	{
 		$usersHandler = new UsersHandler();
@@ -79,7 +81,7 @@ class Statistics
 				category_id = 'USER/".$user->GetPartnerId()."'
 			)
 			and record_date <= curdate()
-			and account_id not in (select account_id from {TABLEPREFIX}account where type in (2, 3, 4, 10))
+			and account_id not in (select account_id from {TABLEPREFIX}account where type in (2, 3, 5, 12))
 			and user_id = '".$userId."'";
 		$row = $db->SelectRow($query);
 		$total += $row['total'];
@@ -133,6 +135,7 @@ class Statistics
 		return $total;
 	}
 
+	// Total of expenses made from duo accounts, part charged for user in parameter
 	function GetTotalExpenseDuoAccountsChargedForUser($userId)
 	{
 		$db = new DB();
@@ -141,7 +144,7 @@ class Statistics
 			from {TABLEPREFIX}record
 			where record_type in (22)
 			and marked_as_deleted = 0
-			and account_id in (select account_id from {TABLEPREFIX}account where marked_as_closed = 0 and type in (3) and (owner_user_id = '".$userId."' or coowner_user_id = '".$userId."'))
+			and account_id in (select account_id from {TABLEPREFIX}account where marked_as_closed = 0 and type in (2, 3) and (owner_user_id = '".$userId."' or coowner_user_id = '".$userId."'))
 			and record_date <= curdate()
 			and user_id = '".$userId."'";
 		$row = $db->SelectRow($query);
@@ -151,7 +154,7 @@ class Statistics
 			from {TABLEPREFIX}record
 			where record_type in (22)
 			and marked_as_deleted = 0
-			and account_id in (select account_id from {TABLEPREFIX}account where marked_as_closed = 0 and type in (3) and (owner_user_id = '".$userId."' or coowner_user_id = '".$userId."'))
+			and account_id in (select account_id from {TABLEPREFIX}account where marked_as_closed = 0 and type in (2, 3) and (owner_user_id = '".$userId."' or coowner_user_id = '".$userId."'))
 			and record_date <= curdate()
 			and user_id != '".$userId."'";
 		$row = $db->SelectRow($query);
@@ -160,21 +163,38 @@ class Statistics
 		return $total;
 	}
 
+	// Total of expenses made from duo accounts
 	function GetTotalExpenseDuoAccounts()
 	{
 		$db = new DB();
 	
-		$query = 'select sum(amount) as total
+		$query = "select sum(amount) as total
 			from {TABLEPREFIX}record
 			where record_type = 22
 			and marked_as_deleted = 0
-			and account_id in (select account_id from {TABLEPREFIX}account where marked_as_closed = 0 and type in (3) and (owner_user_id = \'{USERID}\' or coowner_user_id = \'{USERID}\'))
-			and record_date <= curdate()';
+			and account_id in (select account_id from {TABLEPREFIX}account where marked_as_closed = 0 and type in (2, 3) and (owner_user_id = '{USERID}' or coowner_user_id = '{USERID}'))
+			and record_date <= curdate()";
 		$row = $db->SelectRow($query);
 	
 		return $row['total'];
 	}
+
+	// Total of incomes coming from outside for duo accounts
+	function GetTotalIncomeOutsidePartnersDuoAccounts()
+	{
+		$db = new DB();
 	
+		$query = "select sum(amount) as total
+			from {TABLEPREFIX}record
+			where record_type = 12
+			and marked_as_deleted = 0
+			and account_id in (select account_id from {TABLEPREFIX}account where marked_as_closed = 0 and type in (2, 3) and (owner_user_id = '{USERID}' or coowner_user_id = '{USERID}'))
+			and record_date <= curdate()";
+		$row = $db->SelectRow($query);
+	
+		return $row['total'];
+	}
+
 	function GetTotalExpenseJointAccount() // OBSOLETE
 	{
 		$db = new DB();
@@ -288,7 +308,7 @@ class Statistics
 			and marked_as_deleted = 0
 			and category_id in (select category_id from {TABLEPREFIX}category where link_type = 'DUO' and link_id = '".$user->getDuoId()."')
 			and record_date <= curdate()
-			and account_id not in (select account_id from {TABLEPREFIX}account where type in (3, 5))
+			and account_id not in (select account_id from {TABLEPREFIX}account where type in (2, 3, 5, 12))
 			and user_id = '".$userId."'";
 		$row = $db->SelectRow($query);
 		$total = $row['total'];
@@ -317,7 +337,7 @@ class Statistics
 				category_id = 'USER/".$user->getPartnerId()."'
 			)
 			and record_date <= curdate()
-			and account_id not in (select account_id from {TABLEPREFIX}account where type in (2, 3, 4, 10))
+			and account_id not in (select account_id from {TABLEPREFIX}account where type in (2, 3, 5, 12))
 			and user_id = '".$userId."'";
 		$row = $db->SelectRow($query);
 		$total = $row['total'];
@@ -471,25 +491,28 @@ class Statistics
 		return $total;
 	}
 
+	// Total of money brought by one user to duo accounts
 	function GetTotalIncomeDuoAccountsByUser($userId)
 	{
 		$db = new DB();
-	
+
+		// Total in
 		$query = "select sum(amount) as total
 			from {TABLEPREFIX}record
 			where record_type in (10)
 			and marked_as_deleted = 0
-			and account_id in (select account_id from {TABLEPREFIX}account where marked_as_closed = 0 and type in (3) and (owner_user_id = '".$userId."' or coowner_user_id = '".$userId."'))
+			and account_id in (select account_id from {TABLEPREFIX}account where marked_as_closed = 0 and type in (2, 3) and (owner_user_id = '".$userId."' or coowner_user_id = '".$userId."'))
 			and record_date <= curdate()
 			and user_id = '".$userId."'";
 		$row = $db->SelectRow($query);
 		$total = $row['total'];
-	
+
+		// Total out (outside expenses)
 		$query = "select sum(amount) as total
 			from {TABLEPREFIX}record
 			where record_type in (20)
 			and marked_as_deleted = 0
-			and account_id in (select account_id from {TABLEPREFIX}account where marked_as_closed = 0 and type in (3) and (owner_user_id = '".$userId."' or coowner_user_id = '".$userId."'))
+			and account_id in (select account_id from {TABLEPREFIX}account where marked_as_closed = 0 and type in (2, 3) and (owner_user_id = '".$userId."' or coowner_user_id = '".$userId."'))
 			and record_date <= curdate()
 			and user_id = '".$userId."'";
 		$row = $db->SelectRow($query);
@@ -553,6 +576,7 @@ class Statistics
 		return $row['total'];
 	}
 
+	// Total repayment from user to partner
 	function GetTotalRepaymentFromUserToPartner($userId, $partnerId)
 	{
 		$db = new DB();
@@ -562,14 +586,14 @@ class Statistics
 			where record_type in (20)
 			and marked_as_deleted = 0
 			and record_date <= curdate()
-			and account_id not in (select account_id from {TABLEPREFIX}account where type in (3))
+			and account_id not in (select account_id from {TABLEPREFIX}account where type in (2, 3, 5, 12))
 			and user_id = '".$userId."'
 			and record_group_id in (
 				select record_group_id
 				from {TABLEPREFIX}record
 				where record_type in (10)
 				and record_date <= curdate()
-				and account_id not in (select account_id from {TABLEPREFIX}account where type in (3))
+				and account_id not in (select account_id from {TABLEPREFIX}account where type in (2, 3, 5, 12))
 				and user_id = '".$partnerId."'
 			)";
 		$row = $db->SelectRow($query);

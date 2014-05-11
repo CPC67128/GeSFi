@@ -13,7 +13,8 @@ $translator = new Translator();
 
 $totalIncomeDuoAccountsByUser = $statistics->GetTotalIncomeDuoAccountsByUser($user->getUserId());
 $totalIncomeDuoAccountsByPartner = $statistics->GetTotalIncomeDuoAccountsByUser($user->GetPartnerId());
-$totalIncomeDuoAccounts = $totalIncomeDuoAccountsByUser + $totalIncomeDuoAccountsByPartner;
+$totalIncomeOutsidePartners = $statistics->GetTotalIncomeOutsidePartnersDuoAccounts();
+$totalIncomeDuoAccounts = $totalIncomeDuoAccountsByUser + $totalIncomeDuoAccountsByPartner + $totalIncomeOutsidePartners;
 
 $totalExpenseDuoAccountsChargedForUser = $statistics->GetTotalExpenseDuoAccountsChargedForUser($user->getUserId());
 $totalExpenseDuoAccountsChargedForPartner = $statistics->GetTotalExpenseDuoAccountsChargedForUser($partner->getUserId());
@@ -29,9 +30,9 @@ Situation des comptes entre <?= $user->get('name') ?> et <?= $partner->get('name
 <h1><?= $translator->getTranslation('Situation comptes duo') ?></h1>
 <table class="blankTable">
 <thead>
-<th>Versements</th>
+<th>Versements effectifs</th>
 <th>Dépenses</th>
-<th>Valeurs</th>
+<th>Valeurs effectives apportées</th>
 </thead>
 <tr>
 
@@ -46,6 +47,10 @@ Situation des comptes entre <?= $user->get('name') ?> et <?= $partner->get('name
 <td><?= $translator->getCurrencyValuePresentation($totalIncomeDuoAccountsByPartner) ?></td>
 </tr>
 <tr>
+<td>Autres versements (intérêts...)</td>
+<td><?= $translator->getCurrencyValuePresentation($totalIncomeOutsidePartners) ?></td>
+</tr>
+<tr>
 <td><i>Total versements</i></td>
 <td><?= $translator->getCurrencyValuePresentation($totalIncomeDuoAccounts) ?></td>
 </tr>
@@ -55,16 +60,16 @@ Situation des comptes entre <?= $user->get('name') ?> et <?= $partner->get('name
 <td>
 <table class="summaryTable">
 <tr>
+<td><i>Total dépenses</i></td>
+<td><?= $translator->getCurrencyValuePresentation($totalExpenseDuoAccounts) ?></td>
+</tr>
+<tr>
 <td>Prise en charge <?= $user->get('name') ?></td>
 <td><?= $translator->getCurrencyValuePresentation($totalExpenseDuoAccountsChargedForUser) ?></td>
 </tr>
 <tr>
 <td>Prise en charge <?= $partner->get('name') ?></td>
 <td><?= $translator->getCurrencyValuePresentation($totalExpenseDuoAccountsChargedForPartner) ?></td>
-</tr>
-<tr>
-<td><i>Total dépenses</i></td>
-<td><?= $translator->getCurrencyValuePresentation($totalExpenseDuoAccounts) ?></td>
 </tr>
 </table>
 </td>
@@ -79,11 +84,77 @@ Situation des comptes entre <?= $user->get('name') ?> et <?= $partner->get('name
 <td>Valeur apportée par <?= $partner->get('name') ?></td>
 <td><?= $translator->getCurrencyValuePresentation($totalValueDuoAccountsGivenByPartner) ?></td>
 </tr>
+<tr>
+<td>Différence <?= $user->get('name') ?> - <?= $partner->get('name') ?></td>
+<td><?= $translator->getCurrencyValuePresentation($totalValueDuoAccountsGivenByUser - $totalValueDuoAccountsGivenByPartner) ?></td>
+</tr>
 </table>
 </td>
 
 </tr>
 </table>
+
+<?php // ========= ?>
+
+<table class="blankTable">
+<thead>
+<th>Résumé</th>
+<th>Comptes</th>
+</thead>
+
+<tr>
+
+<td>
+<table class="summaryTable">
+<tr>
+<td>Total versements</td>
+<td><?= $translator->getCurrencyValuePresentation($totalIncomeDuoAccounts) ?></td>
+</tr>
+<tr>
+<td>Total dépenses</td>
+<td><?= $translator->getCurrencyValuePresentation($totalExpenseDuoAccounts) ?></td>
+</tr>
+<tr>
+<td><i>Différence</i></td>
+<td><i><?= $translator->getCurrencyValuePresentation($totalIncomeDuoAccounts - $totalExpenseDuoAccounts) ?></i></td>
+</tr>
+</table>
+</td>
+
+<td>
+<table class="summaryTable">
+
+<?php
+$balanceDuoAccounts = 0;
+$accountsManager->GetAllDuoAccounts();
+foreach ($accounts as $account)
+{
+
+	if ($account->get('type') != 2 && $account->get('type') != 4)
+	{
+		$balance = $account->GetBalance();
+		?>
+	
+		<tr>
+		<td><?= $account->get('name') ?></td>
+		<td style='text-align: right;'><?= $translator->getCurrencyValuePresentation($balance) ?></td>
+		</tr>
+
+		<?php
+		$balanceDuoAccounts += $balance;
+	}
+}
+?>
+
+<td><i>Total</i></td>
+<td><i><?= $translator->getCurrencyValuePresentation($balanceDuoAccounts) ?></i></td>
+</table>
+
+</td>
+</tr>
+
+</table>
+
 
 <?= $translator->getTranslation('Conclusion : ')?>
 <?php
@@ -151,6 +222,7 @@ $totalRepaymentRequest = $totalRepaymentNeedDifference + $totalRepaymentDifferen
 <th>Prise en charge</th>
 <th>Remboursement nécéssaire</th>
 <th>Remboursements</th>
+<th>Remboursement nécéssaire restant</th>
 </thead>
 <tr>
 
@@ -246,31 +318,42 @@ $totalRepaymentRequest = $totalRepaymentNeedDifference + $totalRepaymentDifferen
 </table>
 </td>
 
+<td>
+<table class="summaryTable">
+<tr>
+<td>De <?= $partner->get('name') ?> à <?= $user->get('name') ?></td>
+<td><?= $translator->getCurrencyValuePresentation($totalRepaymentNeedByUser - $totalRepaymentFromPartnerToUser) ?></td>
+</tr>
+<tr>
+<td>De <?= $user->get('name') ?> à <?= $partner->get('name') ?></td>
+<td><?= $translator->getCurrencyValuePresentation($totalRepaymentNeedByPartner - $totalRepaymentFromUserToPartner) ?></td>
+</tr>
+<tr>
+<td><i>Différence</i></td>
+<td><?= $translator->getCurrencyValuePresentation(($totalRepaymentNeedByUser - $totalRepaymentFromPartnerToUser) - ($totalRepaymentNeedByPartner - $totalRepaymentFromUserToPartner)) ?></td>
+</tr>
+</table>
+</td>
+
 </tr>
 </table>
 
 <?= $translator->getTranslation('Conclusion : ')?>
 <?php
-if ($totalRepaymentRequest > 0)
+if ($totalRepaymentRequest < 0)
 	echo $user->getName()
-		.$translator->getTranslation(' a dépensé ')
+		.$translator->getTranslation(' doit encore rembourser ')
 		.$translator->getCurrencyValuePresentation(abs($totalRepaymentRequest))
-		.$translator->getTranslation(' de plus par rapport à ')
+		.$translator->getTranslation(' à ')
 		.$partner->getName()
-		.'. '
-		.$partner->getName()
-		.$translator->getTranslation(' doit donc cette somme à ')
-		.$user->getName();
+		.'. ';
 else if ($totalRepaymentRequest < 0)
 	echo $partner->getName()
-		.$translator->getTranslation(' a dépensé ')
+		.$translator->getTranslation(' doit encore rembourser ')
 		.$translator->getCurrencyValuePresentation(abs($totalRepaymentRequest))
-		.$translator->getTranslation(' de plus par rapport à ')
+		.$translator->getTranslation(' à ')
 		.$user->getName()
-		.'. '
-		.$user->getName()
-		.$translator->getTranslation(' doit donc cette somme à ')
-		.$partner->getName();
+		.'. ';
 else
 	echo $translator->getTranslation('Equilibre entre les partenaires')
 ?>

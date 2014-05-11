@@ -19,17 +19,8 @@ if ($accountType == 0)
 			?>
 	
 			<tr>
-			<td><a href="#" onclick="javascript:ChangeAccount('<?= $account->get('accountId') ?>'); return false;"><?= $account->get('name') ?></a></td>
-			<td style='text-align: right;<?php 
-			if ($account->get('type') != 5)
-			{
-				if ($balance <= $account->get('expectedMinimumBalance'))
-					echo 'background-color: #FF0000';
-				else
-					echo 'background-color: #00FF00';
-			}
-			?>'><?= $translator->getCurrencyValuePresentation($balance) ?></td>
-			<td style='text-align: right; font-style:italic;'><?= $translator->getTranslation($account->getTypeDescription()) ?></td>
+			<td><?= $account->get('name') ?></td>
+			<td style='text-align: right;'><?= $translator->getCurrencyValuePresentation($balance) ?></td>
 			</tr>
 	
 			<?php

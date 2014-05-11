@@ -49,6 +49,7 @@ $recordsManager = new RecordsManager();
 
 $usersHandler = new UsersHandler();
 $activeUser = $usersHandler->GetCurrentUser();
+$partnerUser = $usersHandler->GetUser($activeUser->GetPartnerId());
 
 if ($accountType >= 1 && $accountType <= 10)
 	$windowTitle .= $activeAccount->get('name');

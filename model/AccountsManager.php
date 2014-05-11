@@ -9,7 +9,7 @@ class AccountsManager
 			2 => 'Compte duo virtuel',
 			3 => 'Compte duo',
 			4 => 'Compte d\'optimisation financière',
-			5 => 'Prêt',
+			5 => 'Prêt', // TODO : créér distinction entre prêt en indivision
 			10 => 'Placement bancaire',
 			11 => 'Immobilier',
 			12 => 'Immobilier en indivision'
@@ -250,7 +250,7 @@ class AccountsManager
 			left join {TABLEPREFIX}account_user_preference as PRF on ACC.account_id = PRF.account_id and PRF.user_id = '{USERID}'
 			where ACC.owner_user_id = '{USERID}'
 			and marked_as_closed = 0
-			and (type = 1 or type = 4)
+			and type in (1, 4)
 			order by PRF.sort_order";
 
 		$result = $db->Select($query);
@@ -275,8 +275,8 @@ class AccountsManager
 		left join {TABLEPREFIX}account_user_preference as PRF on ACC.account_id = PRF.account_id and PRF.user_id = '{USERID}'
 		where (ACC.owner_user_id = '{USERID}' or ACC.coowner_user_id = '{USERID}')
 		and marked_as_closed = 0
-		and type in (3)
-		order by PRF.sort_order";
+		and type in (2, 3)
+		order by PRF.sort_order"; // todo : put 5 back or not in list of type
 
 		$result = $db->Select($query);
 		while ($row = $result->fetch())

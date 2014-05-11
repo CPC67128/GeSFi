@@ -110,7 +110,7 @@ function AddTitleRow()
 // ------ Add a data row
 function AddRow($index, $row, $mergeRow)
 {
-	global $activeAccount, $now, $translator;
+	global $activeAccount, $now, $translator, $activeUser, $partnerUser;
 
 	$tr = '<tr class="tableRow';
 	if ($row['marked_as_deleted']) $tr .= 'Deleted';
@@ -163,12 +163,6 @@ function AddRow($index, $row, $mergeRow)
 	{
 		echo "<td style='text-align: left;'>";
 	
-		echo "<img src='../media/information.png' title='";
-		echo $translator->getCurrencyValuePresentation($row['part_actor1'])." / ".$translator->getCurrencyValuePresentation($row['part_actor2']); 
-		echo "'>";
-	
-		echo "&nbsp;";
-	
 		if ($row['link_type'] == 'USER') echo "<font color='DarkGreen'>";
 		else if ($row['link_type'] == 'DUO') echo "<font color='MediumVioletRed'>";
 	
@@ -181,12 +175,6 @@ function AddRow($index, $row, $mergeRow)
 	{
 		echo "<td style='text-align: left;'>";
 	
-		echo "<img src='../media/information.png' title='";
-		echo $translator->getCurrencyValuePresentation($row['part_actor1'])." / ".$translator->getCurrencyValuePresentation($row['part_actor2']); 
-		echo "'>";
-
-		echo "&nbsp;";
-
 		$usersHandler = new UsersHandler();
 		$user = $usersHandler->GetUser(substr($row['category_id'], 5, 36));
 
@@ -202,6 +190,16 @@ function AddRow($index, $row, $mergeRow)
 
 	// Charge level
 	echo '<td style="text-align: left;">';
+
+	if (isset($row['category']) || (isset($row['category_id']) && substr($row['category_id'], 0, 5) == "USER/"))
+	{
+		echo "<img src='../media/information.png' title='";
+		echo $activeUser->get('name')."=".$translator->getCurrencyValuePresentation($row['part_actor1'])." / ".$partnerUser->get('name')."=".$translator->getCurrencyValuePresentation($row['part_actor2']);
+		echo "'>";
+	}
+	
+	echo "&nbsp;";
+	
 	if ($row['link_type'] == 'DUO' || $row['link_type'] == 'USER' || (isset($row['category_id']) && substr($row['category_id'], 0, 5) == "USER/"))
 		echo $row['charge'].'&nbsp;%';
 	echo '</td>';

@@ -196,10 +196,9 @@ function AddRow($index, $row, $mergeRow)
 		echo "<img src='../media/information.png' title='";
 		echo $activeUser->get('name')."=".$translator->getCurrencyValuePresentation($row['part_actor1'])." / ".$partnerUser->get('name')."=".$translator->getCurrencyValuePresentation($row['part_actor2']);
 		echo "'>";
+		echo "&nbsp;";
 	}
-	
-	echo "&nbsp;";
-	
+
 	if ($row['link_type'] == 'DUO' || $row['link_type'] == 'USER' || (isset($row['category_id']) && substr($row['category_id'], 0, 5) == "USER/"))
 		echo $row['charge'].'&nbsp;%';
 	echo '</td>';

@@ -16,7 +16,7 @@ function ManageHash() {
 	var hash = document.location.hash.replace("#", "");
 	var hashSplit = hash.split("/");
 
-	if (hashSplit.length == 3) {
+	if (hashSplit.length == 4) {
 		currentContext.page = hashSplit[0];
 		currentContext.id = hashSplit[1];
 		currentContext.data = hashSplit[2];
@@ -31,9 +31,12 @@ if (!ManageHash()) {
 }
 
 function UpdateUrl() {
+	var now = new Date();
+
 	var hash = currentContext.page;
 	hash += "/" + currentContext.id;
 	hash += "/" + currentContext.data;
+	hash += "/" + now.toISOString();
 
 	document.location.hash = hash;
 
@@ -144,6 +147,8 @@ function ConfirmRecord(recordIdToConfirm, sender)
 		);
 }
 
+
+
 /*
 function LoadPage(pageName)
 {
@@ -214,10 +219,16 @@ function LoadLeftMenu()
     });
 }
 
-function LoadAllRecords()
+function LoadRecords_All()
 {
 	$('#content').html('<img src="../media/loading.gif" />');
-	LoadPage('records&fullview');
+	SetContext('records-fullview');
+}
+
+function LoadRecords_Normal()
+{
+	$('#content').html('<img src="../media/loading.gif" />');
+	SetContext('records');
 }
 
 function LoadRepaymentNeeds()
@@ -327,13 +338,13 @@ function ChangeAccount(id)
 	else
 	{
 		currentContext.id = id;
+		currentContext.page = 'records';
 
 		$.post (
 				'../controller/controller.php?action=account_change',
 				{ accountId: id },
 				function(response, status) {
-					LoadTopMenu();
-					LoadRecords();
+					LoadPage();
 				}
 		);
 	}

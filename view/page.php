@@ -31,6 +31,16 @@ $accountType = $activeAccount->get('type');
 
 $pageName = $page;
 
+$fullRecordsView = false;
+
+if ($pageName == 'records-fullview')
+{
+	$pageName = 'records';
+	echo 'FULLVIEW';
+	$fullRecordsView = true;
+	
+}
+
 if ($pageName == '-')
 	$pageName = 'dashboard';
 
@@ -76,12 +86,13 @@ switch ($pageName)
 		break;
 
 	case 'balance';
-		if ($accountType == 1)
-			$pageName = $pageName.'_private';
-		else
-			$pageName = $pageName.'_duo';
+		$pageName = $pageName.'_duo';
 		include 'page_'.$pageName.'.php';
 		AddFormManagementEnd($pageName);
+		break;
+
+	case 'dashboard';
+		include 'page_records.php';
 		break;
 
 	case 'records';
@@ -113,7 +124,7 @@ switch ($pageName)
 		else if ($accountType == 100)
 			include 'page_'.$pageName.'_investment_global.php';
 		else
-			include 'page_'.$pageName.'_duo.php';
+			include 'page_'.$pageName.'_private.php';
 		break;
 
 	case 'investmentrecord_value':
@@ -145,7 +156,6 @@ switch ($pageName)
 	case 'configuration_category';
 	case 'connection';
 	case 'home';
-	case 'dashboard';
 	case 'investment';
 	case 'asset_management';
 		include 'page_'.$pageName.'.php';

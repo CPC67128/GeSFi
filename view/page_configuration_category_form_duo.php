@@ -52,6 +52,7 @@ $("#formDuo").submit( function () {
 				}
 				else {
 					$("#formDuoResult").html(response);
+					alert(response);
 					$("#formDuoPlaceHolder").html('');
 					listCategoriesDuo();
 				}

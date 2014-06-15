@@ -25,6 +25,10 @@ try
 		case 'record_confirm':
 			$operation = new Operation_Record_Confirm();
 			break;
+
+		case 'record_amount_modify':
+			$operation = new Operation_Record_Amount_Modify();
+			break;
 				
 		case 'account_change':
 			$operation = new Operation_Account_Change();

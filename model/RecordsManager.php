@@ -106,24 +106,29 @@ class RecordsManager
 		and record_date <= curdate()
 		and record_date_month = ".$month."
 		and record_date_year = ".$year."
-		and actor = 1
-		and account_id in (select account_id from {TABLEPREFIX}account where type = 3 and owner_user_id = '".$_SESSION['user_id']."')";
-		$row = $db->SelectRow($query);
-		$total += $row['total'];
-		
-		$query = "select sum(amount) as total
-		from {TABLEPREFIX}record
-		where record_type in (10)
-		and marked_as_deleted = 0
-		and record_date <= curdate()
-		and record_date_month = ".$month."
-		and record_date_year = ".$year."
-		and actor = 2
-		and account_id in (select account_id from {TABLEPREFIX}account where type = 3 and coowner_user_id = '".$_SESSION['user_id']."')";
+		and user_id = '".$_SESSION['user_id']."'
+		and account_id in (select account_id from {TABLEPREFIX}account where type in (2, 3) and (owner_user_id = '".$_SESSION['user_id']."' or coowner_user_id = '".$_SESSION['user_id']."'))";
 		$row = $db->SelectRow($query);
 		$total += $row['total'];
 
 		return $total;
+	}
+
+	function ListDesignation($searchString)
+	{
+		$usersHandler = new UsersHandler();
+		$user = $usersHandler->GetCurrentUser();
+
+		$db = new DB();
+
+		$query = "select designation, count(*) as total
+			from {TABLEPREFIX}record
+			where designation like '%".$searchString."%'
+			and account_id in (select account_id from {TABLEPREFIX}account where owner_user_id = '".$user->get('userId')."' or coowner_user_id = '".$user->get('userId')."')
+			group by designation
+			order by count(*) desc";
+		$result = $db->Select($query);
+		return $result;
 	}
 }
 

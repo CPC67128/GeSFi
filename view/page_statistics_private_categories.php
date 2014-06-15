@@ -1,4 +1,4 @@
-<h1>Statistiques par catégories privées</h1>
+<h1><?= $translator->getTranslation('Suivi évolution des catégories privées ') ?></h1>
 <table id="recordsTable">
 <thead>
 <tr class="tableRowTitle">
@@ -13,14 +13,12 @@ for ($month = 12; $month >= 1; $month--)
 {
 	?>
 	<td style="vertical-align: top; text-align: center; font-style: italic;"><?= $month ?><br>
-	<td style="vertical-align: top; text-align: center; font-style: italic;">/<?= $currentYear-1 ?><br>
-	<td style="vertical-align: top; text-align: center; font-style: italic;"><br>
+	<td style="vertical-align: top; text-align: center; font-style: italic; border-right: solid 2px black;">/<?= $currentYear-1 ?><br>
 	<?php
 }
 ?>
 <td style="vertical-align: top; text-align: center; font-style: italic;">Total<br>
-<td style="vertical-align: top; text-align: center; font-style: italic;">/<?= $currentYear-1 ?><br>
-<td style="vertical-align: top; text-align: center; font-style: italic;"><br>
+<td style="vertical-align: top; text-align: center; font-style: italic; border-right: solid 2px black;">/<?= $currentYear-1 ?><br>
 <td style="vertical-align: top; text-align: center; font-style: italic; white-space: nowrap;">Moyenne (/ 30 jours)<br>
 </tr>
 </thead>
@@ -66,15 +64,13 @@ foreach ($categories as $category)
 		$totalYP += $valueYP;
 		?>
 		<td style="text-align: right; white-space: nowrap;"><?= ($valueY > 0) ? $translator->getCurrencyValuePresentation($valueY) : '' ?></td>
-		<td style="text-align: right; white-space: nowrap;"><?= ($valueYP > 0) ? $translator->getCurrencyValuePresentation($valueYP) : '' ?></td>
-		<td></td>
+		<td style="text-align: right; white-space: nowrap; border-right: solid 2px black;"><?= ($valueYP > 0) ? $translator->getCurrencyValuePresentation($valueYP) : '&nbsp;' ?></td>
 		<?php
 	}
 
 	?>
 	<td style="text-align: right; white-space: nowrap;"><?= ($totalY > 0) ? $translator->getCurrencyValuePresentation($totalY) : '' ?></td>
-	<td style="text-align: right; white-space: nowrap;"><?= ($totalYP > 0) ? $translator->getCurrencyValuePresentation($totalYP) : '' ?></td>
-	<td style="text-align: right; white-space: nowrap;"></td>
+	<td style="text-align: right; white-space: nowrap; border-right: solid 2px black;"><?= ($totalYP > 0) ? $translator->getCurrencyValuePresentation($totalYP) : '' ?></td>
 	<?php
 	echo '<td style="text-align: right;">';
 	if ($totalY > 0)
@@ -109,14 +105,12 @@ for ($month = 12; $month >= 1; $month--)
 
 	?>
 	<td style="text-align: right; white-space: nowrap;"><?= ($monthYTotalIncome[$month] > 0) ? $translator->getCurrencyValuePresentation($monthYTotalIncome[$month]) : '' ?></td>
-	<td style="text-align: right; white-space: nowrap;"><?= ($monthYPTotalIncome[$month] > 0) ? $translator->getCurrencyValuePresentation($monthYPTotalIncome[$month]) : '' ?></td>
-	<td></td>
+	<td style="text-align: right; white-space: nowrap; border-right: solid 2px black;"><?= ($monthYPTotalIncome[$month] > 0) ? $translator->getCurrencyValuePresentation($monthYPTotalIncome[$month]) : '' ?></td>
 	<?php
 }
 ?>
 <td style="text-align: right; white-space: nowrap;"><?= ($totalY > 0) ? $translator->getCurrencyValuePresentation($totalY) : '' ?></td>
-<td style="text-align: right; white-space: nowrap;"><?= ($totalYP > 0) ? $translator->getCurrencyValuePresentation($totalYP) : '' ?></td>
-<td style="text-align: right;"></td>
+<td style="text-align: right; white-space: nowrap; border-right: solid 2px black;"><?= ($totalYP > 0) ? $translator->getCurrencyValuePresentation($totalYP) : '' ?></td>
 <td style="text-align: right; white-space: nowrap;"><?= ($totalYP > 0) ? $translator->getCurrencyValuePresentation($totalAverage) : '' ?></td>
 </tr>
 <?php
@@ -160,15 +154,13 @@ foreach ($categories as $category)
 		$totalYP += $valueYP;
 		?>
 		<td style="text-align: right; white-space: nowrap;"><?= ($valueY > 0) ? $translator->getCurrencyValuePresentation($valueY) : '' ?></td>
-		<td style="text-align: right; white-space: nowrap;"><?= ($valueYP > 0) ? $translator->getCurrencyValuePresentation($valueYP) : '' ?></td>
-		<td></td>
+		<td style="text-align: right; white-space: nowrap; border-right: solid 2px black;"><?= ($valueYP > 0) ? $translator->getCurrencyValuePresentation($valueYP) : '' ?></td>
 		<?php
 	}
 
 	?>
 	<td style="text-align: right; white-space: nowrap;"><?= ($totalY > 0) ? $translator->getCurrencyValuePresentation($totalY) : '' ?></td>
-	<td style="text-align: right; white-space: nowrap;"><?= ($totalYP > 0) ? $translator->getCurrencyValuePresentation($totalYP) : '' ?></td>
-	<td style="text-align: right; white-space: nowrap;"></td>
+	<td style="text-align: right; white-space: nowrap; border-right: solid 2px black;"><?= ($totalYP > 0) ? $translator->getCurrencyValuePresentation($totalYP) : '' ?></td>
 	<?php
 	echo '<td style="text-align: right;">';
 	if ($totalY > 0)
@@ -203,14 +195,12 @@ for ($month = 12; $month >= 1; $month--)
 
 	?>
 	<td style="text-align: right; white-space: nowrap;"><?= ($monthYTotalExpense[$month] > 0) ? $translator->getCurrencyValuePresentation($monthYTotalExpense[$month]) : '' ?></td>
-	<td style="text-align: right; white-space: nowrap;"><?= ($monthYPTotalExpense[$month] > 0) ? $translator->getCurrencyValuePresentation($monthYPTotalExpense[$month]) : '' ?></td>
-	<td></td>
+	<td style="text-align: right; white-space: nowrap; border-right: solid 2px black;"><?= ($monthYPTotalExpense[$month] > 0) ? $translator->getCurrencyValuePresentation($monthYPTotalExpense[$month]) : '' ?></td>
 	<?php
 }
 ?>
 <td style="text-align: right; white-space: nowrap;"><?= ($totalY > 0) ? $translator->getCurrencyValuePresentation($totalY) : '' ?></td>
-<td style="text-align: right; white-space: nowrap;"><?= ($totalYP > 0) ? $translator->getCurrencyValuePresentation($totalYP) : '' ?></td>
-<td style="text-align: right; white-space: nowrap;"></td>
+<td style="text-align: right; white-space: nowrap; border-right: solid 2px black;"><?= ($totalYP > 0) ? $translator->getCurrencyValuePresentation($totalYP) : '' ?></td>
 <td style="text-align: right; white-space: nowrap;"><?= ($totalYP > 0) ? $translator->getCurrencyValuePresentation($totalAverage) : '' ?></td>
 </tr>
 
@@ -245,14 +235,12 @@ for ($month = 12; $month >= 1; $month--)
 
 	?>
 	<td style="text-align: right; white-space: nowrap;"><?= ($valueY > 0) ? $translator->getCurrencyValuePresentation($valueY) : '' ?></td>
-	<td style="text-align: right; white-space: nowrap;"><?= ($valueYP > 0) ? $translator->getCurrencyValuePresentation($valueYP) : '' ?></td>
-	<td></td>
+	<td style="text-align: right; white-space: nowrap; border-right: solid 2px black;"><?= ($valueYP > 0) ? $translator->getCurrencyValuePresentation($valueYP) : '' ?></td>
 	<?php
 }
 ?>
 <td style="text-align: right; white-space: nowrap;"><?= ($totalY > 0) ? $translator->getCurrencyValuePresentation($totalY) : '' ?></td>
-<td style="text-align: right; white-space: nowrap;"><?= ($totalYP > 0) ? $translator->getCurrencyValuePresentation($totalYP) : '' ?></td>
-<td style="text-align: right;"></td>
+<td style="text-align: right; white-space: nowrap; border-right: solid 2px black;"><?= ($totalYP > 0) ? $translator->getCurrencyValuePresentation($totalYP) : '' ?></td>
 <td style="text-align: right;"></td>
 </tr>
 
@@ -273,14 +261,12 @@ for ($month = 12; $month >= 1; $month--)
 
 	?>
 	<td style="text-align: right; white-space: nowrap;"><?= $translator->getCurrencyValuePresentation($monthYTotalIncome[$month] - $monthYTotalExpense[$month]) ?></td>
-	<td style="text-align: right; white-space: nowrap;"><?= $translator->getCurrencyValuePresentation($monthYPTotalIncome[$month] - $monthYPTotalExpense[$month]) ?></td>
-	<td></td>
+	<td style="text-align: right; white-space: nowrap; border-right: solid 2px black;"><?= $translator->getCurrencyValuePresentation($monthYPTotalIncome[$month] - $monthYPTotalExpense[$month]) ?></td>
 	<?php
 }
 ?>
 <td style="text-align: right; white-space: nowrap;"><?= ($totalY > 0) ? $translator->getCurrencyValuePresentation($totalY) : '' ?></td>
-<td style="text-align: right; white-space: nowrap;"><?= ($totalYP > 0) ? $translator->getCurrencyValuePresentation($totalYP) : '' ?></td>
-<td style="text-align: right;"></td>
+<td style="text-align: right; white-space: nowrap; border-right: solid 2px black;"><?= ($totalYP > 0) ? $translator->getCurrencyValuePresentation($totalYP) : '' ?></td>
 <td style="text-align: right;"></td>
 </tr>
 

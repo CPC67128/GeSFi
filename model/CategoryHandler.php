@@ -197,7 +197,7 @@ class CategoryHandler
 		$query = sprintf("insert into {TABLEPREFIX}category (category_id, link_type, link_id, type, category, active_from, sort_order)
 				values (uuid(), 'USER', '{USERID}', %s, '%s', CURRENT_TIMESTAMP(), %s)",
 				$type,
-				$category,
+				$db->ConvertStringForSqlInjection($category),
 				$sortOrder);
 
 		$result = $db->Execute($query);

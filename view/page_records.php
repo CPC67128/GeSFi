@@ -1,4 +1,5 @@
 <?php
+$totalPlannedDebit = 0;
 if ($accountType == 0)
 {
 	?>
@@ -30,8 +31,9 @@ if ($accountType == 0)
 			?>'><?= $translator->getCurrencyValuePresentation($balance) ?></td>
 			<td style='text-align: right; font-style:italic;'><?= $translator->getTranslation($account->getTypeDescription()) ?></td>
 			</tr>
-	
+
 			<?php
+			$totalPlannedDebit += $account->GetPlannedOutcome(10);
 		}
 	}
 	?>
@@ -71,17 +73,19 @@ Solde : <?= $translator->getCurrencyValuePresentation($balance) ?>
 </font> / <?= $translator->getCurrencyValuePresentation($balanceConfirmed) ?> confirmé (Débit prévus pour les 10 prochains jours : <?= $translator->getCurrencyValuePresentation($accountPlannedDebit) ?>)
 <?php
 }
+else
+{
+?>
+Débit prévus pour les 10 prochains jours : <?= $translator->getCurrencyValuePresentation($totalPlannedDebit) ?>
+<?php
+}
 ?>
 <br /><br />
 <?php
 
 $recordsManager = new RecordsManager();
-$fullView = false;
 
-if (isset($_GET['fullview']))
-	$fullView = true;
-
-if ($fullView)
+if ($fullRecordsView)
 	$result = $recordsManager->GetAllRecords(12 * 5);
 else
 	$result = $recordsManager->GetAllRecords(3);
@@ -142,7 +146,7 @@ function AddRow($index, $row, $mergeRow)
 	else
 		echo "<td></td>";
 
-	echo '<td style="text-align: right;">';
+	echo '<td style="text-align: right;" ondblclick="ModifyRecord(\''.$row['record_id'].'\', \''.$row['amount'].'\', this);">';
 	if ($row['record_type'] == 0 || $row['record_type'] == 3|| $row['record_type'] == 12)
 		echo '<font color="blue">';
 	else if ($row['record_type'] == 10 || $row['record_type'] == 11)
@@ -257,7 +261,7 @@ $mergeRow = false;
 while ($row = $result->fetch())
 {
 	// Display only deleted rows in full view
-	if ($row['marked_as_deleted'] && !$fullView)
+	if ($row['marked_as_deleted'] && !$fullRecordsView)
 		continue;
 
 	// ------ Merging of rows if similar group
@@ -294,4 +298,70 @@ while ($row = $result->fetch())
 </table>
 
 <br />
-<button onclick="LoadAllRecords();">Voir toutes les lignes</button>
+<?php if (!$fullRecordsView) { ?>
+<button onclick="LoadRecords_All();">Voir toutes les lignes</button>
+<?php } else { ?>
+<button onclick="LoadRecords_Normal();">Revenir à la vue normale</button>
+<?php } ?>
+
+<script type="text/javascript">
+
+$(function() {
+
+	var amount = $( "#amount" );
+	var recordId = $( "#recordId" );
+
+	$( "#dialog-form" ).dialog({
+	    autoOpen: false,
+	    height: 160,
+	    width: 350,
+	    modal: true,
+	    buttons: {
+	      "Modifier": function() {
+	    		$.post (
+	    				'../controller/controller.php?action=record_amount_modify',
+	    				{ recordId: recordId.val() , amount: amount.val() },
+	    				function(response, status) {
+	    					LoadRecords();
+	    					$( "#dialog-form" ).dialog( "close" );
+						}
+	    			);
+				
+	      },
+	      Cancel: function() {
+	        $( this ).dialog( "close" );
+	      }
+	    },
+	    close: function() {
+	    }
+	  });
+
+	$("#dialog-form").keydown(function (event) {
+        if (event.keyCode == 13) {
+            $(this).parent()
+                   .find("button:eq(1)").trigger("click");
+            return false;
+        }
+    });
+
+	$( "#amount" ).focus(function() { $(this).select(); } );
+});
+
+function ModifyRecord(recordIdToModify, amount, sender)
+{
+	$( "#recordId" ).val(recordIdToModify);
+	$( "#amount" ).val(amount);
+	$( "#dialog-form" ).dialog( "open" );
+}
+
+</script>
+
+<div id="dialog-form" title="Modifier un montant">
+  <form>
+  <fieldset>
+    <label for="amount">Nouveau montant</label>
+    <input type="text" name="amount" autocomplete="off" id="amount" class="text ui-widget-content ui-corner-all">
+    <input type="hidden" name="recordId" id="recordId">
+    </fieldset>
+  </form>
+</div>

@@ -36,7 +36,10 @@ foreach ($accounts as $account)
 
 <?= $translator->getTranslation('Date') ?> <input title="aaaa-mm-jj hh:mm:ss" size="10" id="datePicker" name="date" value="<?php echo date("Y-m-d") ?>"><br/>
 Montant <input type="text" name="amount" tabindex="-1" size="6" style='background-color : #d1d1d1;' readonly>&nbsp;&euro;<br />
-<?= $translator->getTranslation('Désignation') ?> <input type="text" name="designation" size="30">
+
+<?= $translator->getTranslation('Désignation') ?> <input type="text" name="designation" id="designation" size="30">
+
+
 </td>
 
 <td style="vertical-align: middle;">
@@ -77,7 +80,6 @@ while ($row = $categories->fetch())
 }
 ?>
 <tr>
-
 <td colspan=4><b><i><?= $translator->getTranslation('Catégories privées de ') ?><?= $activeUser->getName() ?></i></b></td>
 </tr>
 <?php
@@ -168,6 +170,47 @@ $("input[name='actor']").click(function() {
 	}
 });
 */
+
+
+
+$("#designation").addClass('search-textbox-label');
+
+$("#designation").autocomplete({
+	source: function( request, response ) {
+		$.ajax({
+			type: 'GET',
+			url: "search_designation.php",
+			contentType: "application/json; charset=utf-8",
+			dataType: "json",
+			data: {
+					'search_string': request.term
+				},
+			success: function( data ) {
+				response( $.map( data.items, function( item ) {
+					return {
+						label: item
+					}
+				}));
+			},
+
+			error: function(jqXHR, textStatus, errorThrown){
+				alert(errorThrown);
+			}
+
+		});
+	},
+	minLength: 0,
+	select: function( event, ui ) {
+	}
+});
+
+$("#designation").focus(function(){
+    if(this.value == $(this).attr('title')) {
+        this.value = '';
+        $(this).removeClass('search-textbox-label');
+    }
+});
+
 function GetDecimalValue(text) {
 	var value = 0; 
 	if (!isNaN(parseFloat(text))) {

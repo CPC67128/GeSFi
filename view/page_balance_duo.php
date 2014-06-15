@@ -47,7 +47,7 @@ Situation des comptes entre <?= $user->get('name') ?> et <?= $partner->get('name
 <td><?= $translator->getCurrencyValuePresentation($totalIncomeDuoAccountsByPartner) ?></td>
 </tr>
 <tr>
-<td>Autres versements (intérêts...)</td>
+<td>Revenus (intérêts...)</td>
 <td><?= $translator->getCurrencyValuePresentation($totalIncomeOutsidePartners) ?></td>
 </tr>
 <tr>
@@ -347,7 +347,7 @@ if ($totalRepaymentRequest < 0)
 		.$translator->getTranslation(' à ')
 		.$partner->getName()
 		.'. ';
-else if ($totalRepaymentRequest < 0)
+else if ($totalRepaymentRequest > 0)
 	echo $partner->getName()
 		.$translator->getTranslation(' doit encore rembourser ')
 		.$translator->getCurrencyValuePresentation(abs($totalRepaymentRequest))

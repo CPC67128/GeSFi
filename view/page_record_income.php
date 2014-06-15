@@ -45,8 +45,11 @@ foreach ($accounts as $account)
 <td><font size=1>x-- = x - others<br />x+y-z</font></td>
 <td>&nbsp;</td>
 </thead>
+<tr>
+<td colspan=4><b><i><?= $translator->getTranslation('Catégories duo') ?></i></b></td>
+</tr>
 <?php
-$categories = $activeAccount->GetUserCategoriesForIncome();
+$categories = $activeAccount->GetDuoCategoriesForIncome();
 $i = 1;
 while ($row = $categories->fetch())
 {
@@ -66,6 +69,39 @@ while ($row = $categories->fetch())
 	<td>
 	<input type="text" name="category<?php echo $i; ?>Amount"  tabindex="-1" size="6" readonly> &euro;
 	<input type="hidden" name="category<?php echo $i; ?>CategoryId"  tabindex="-1" size="6" readonly value='<?php echo $categoryId; ?>'>
+	<input type="hidden" name="category<?php echo $i; ?>ChargeLevel"  tabindex="-1" size="6" readonly value='50'>
+	</td>
+	<?php
+	}
+
+	$i++;
+}
+?>
+<tr>
+<td colspan=4><b><i><?= $translator->getTranslation('Catégories privées de ') ?><?= $activeUser->getName() ?></i></b></td>
+</tr>
+<?php
+$categories = $activeAccount->GetUserCategoriesForIncome();
+
+while ($row = $categories->fetch())
+{
+	$categoryId = $row['category_id'];
+	$category = $row['category'];
+
+	?><tr><?php
+	if ($category != '')
+	{
+	?>
+	<td>
+	<?php echo $category; ?>
+	</td>
+	<td>
+	<input type="text" name="category<?php echo $i; ?>Formula" tabindex="<?php echo $categoryId; ?>" size="12" onkeyup="javascript: CalculateAllAmounts();">&nbsp;=&nbsp; 
+	</td>
+	<td>
+	<input type="text" name="category<?php echo $i; ?>Amount"  tabindex="-1" size="6" readonly> &euro;
+	<input type="hidden" name="category<?php echo $i; ?>CategoryId"  tabindex="-1" size="6" readonly value='<?php echo $categoryId; ?>'>
+	<input type="hidden" name="category<?php echo $i; ?>ChargeLevel"  tabindex="-1" size="6" readonly value='100'>
 	</td>
 	<?php
 	}

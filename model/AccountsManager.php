@@ -275,7 +275,7 @@ class AccountsManager
 		left join {TABLEPREFIX}account_user_preference as PRF on ACC.account_id = PRF.account_id and PRF.user_id = '{USERID}'
 		where (ACC.owner_user_id = '{USERID}' or ACC.coowner_user_id = '{USERID}')
 		and marked_as_closed = 0
-		and type in (2, 3)
+		and type in (2, 3, 5)
 		order by PRF.sort_order"; // todo : put 5 back or not in list of type
 
 		$result = $db->Select($query);

@@ -37,7 +37,7 @@ class Operation_Record_Income extends Operation_Record
 						$currentDate,
 						$categoryData['amount'],
 						$this->_designation,
-						100,
+						$categoryData['chargeLevel'],
 						$categoryData['categoryId'],
 						12,
 						$uuid);

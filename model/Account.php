@@ -208,6 +208,24 @@ class Account extends Entity
 		return $result;
 	}
 
+	public function GetDuoCategoriesForIncome()
+	{
+		$usersHandler = new UsersHandler();
+		$currentUser = $usersHandler->GetCurrentUser();
+
+		$db = new DB();
+	
+		$query = 'select category, category_id
+			from {TABLEPREFIX}category
+			where link_type = \'DUO\'
+			and link_id = \''.$currentUser->getDuoId().'\'
+			and type = 0
+			and marked_as_deleted = 0
+			order by sort_order';
+		$result = $db->Select($query);
+		return $result;
+	}
+
 	public function OBS_GetTotalCreditByActorAndMonthAndYear($actor, $month, $year) // OBSOLETE?
 	{
 		$db = new DB();

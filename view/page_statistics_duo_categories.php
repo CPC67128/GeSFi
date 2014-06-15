@@ -2,7 +2,7 @@
 $categoryHandler = new CategoryHandler();
 $categories = $categoryHandler->GetOutcomeCategoriesForDuo($_SESSION['user_id']);
 ?>
-<h1><?= $translator->getTranslation('Dépenses par catégories duo') ?></h1>
+<h1><?= $translator->getTranslation('Suivi des dépenses / Catégories duo') ?></h1>
 <table id="recordsTable">
 <thead>
 <tr class="tableRowTitle">
@@ -59,16 +59,9 @@ for ($month = 0; $month < 20; $month++)
 			$category_total[$indexCategory] = 0;
 		$category_total[$indexCategory] = $category_total[$indexCategory] + $value;
 		$total += $value;
-
-		echo '<td style="text-align: right; white-space: nowrap;">';
-		if ($value > 0)
-		{
-			if (!isset($category_non_empty_months[$indexCategory]))
-				$category_non_empty_months[$indexCategory] = 0;
-			$category_non_empty_months[$indexCategory] = $category_non_empty_months[$indexCategory] + 1;
-			echo $translator->getCurrencyValuePresentation($value);
-		}
-		echo '</td>';
+		?>
+		<td style="text-align: right; white-space: nowrap;"><?= $value > 0 ? $translator->getCurrencyValuePresentation($value) : '' ?></td>
+		<?php
 
 		$indexCategory++;
 	}
@@ -79,49 +72,12 @@ for ($month = 0; $month < 20; $month++)
 		if (!isset($category_total[$indexCategory]))
 			$category_total[$indexCategory] = 0;
 		$category_total[$indexCategory] = $category_total[$indexCategory] + $total;
-		if (!isset($category_non_empty_months[$indexCategory]))
-			$category_non_empty_months[$indexCategory] = 0;
-		$category_non_empty_months[$indexCategory] = $category_non_empty_months[$indexCategory] + 1;
 		echo $translator->getCurrencyValuePresentation($total);
 	}
 	echo '</td>';
 
 	echo '</tr>';
 }
-
-echo '<tr class="tableRowTitle">';
-
-echo '<td style="text-align: right;">Moyenne</td>';
-$index = 0;
-foreach ($categories as $category)
-{
-	echo '<td style="text-align: right; white-space: nowrap;">';
-	if (isset($category_non_empty_months[$index]) && $category_non_empty_months[$index] > 0)
-		echo $translator->getCurrencyValuePresentation($category_total[$index] / $category_non_empty_months[$index]);
-	echo '</td>';
-	$index++;
-}
-echo '<td style="text-align: right; white-space: nowrap;">';
-if (isset($category_non_empty_months[$index]) && $category_non_empty_months[$index] > 0)
-	echo $translator->getCurrencyValuePresentation($category_total[$index] / $category_non_empty_months[$index]);
-echo '</td>';
-echo '</tr>';
-
-echo '<tr class="tableRowTitle">';
-
-echo '<td style="text-align: right; white-space: nowrap;">(Cumul)</td>';
-$total = 0;
-foreach ($categories as $category)
-{
-	echo '<td style="text-align: right; white-space: nowrap;">';
-	if (isset($category_non_empty_months[$index]) && $category_non_empty_months[$index] > 0)
-		$total = $total + ($category_total[$index] / $category_non_empty_months[$index]);
-	echo $translator->getCurrencyValuePresentation($total);
-	echo '</td>';
-}
-echo '<td style="text-align: right; white-space: nowrap;">';
-echo '</td>';
-echo '</tr>';
 ?>
 </tbody>
 </table>

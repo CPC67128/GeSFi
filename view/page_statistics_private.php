@@ -1,4 +1,4 @@
-<h1><?= $translator->getTranslation('Dépenses (12 mois glissants)') ?></h1>
+<h1><?= $translator->getTranslation('Revenus / catégories privées (12 mois glissants)') ?></h1>
 <table id="recordsTable">
 <tbody>
 <tr class="tableRowTitle">
@@ -6,10 +6,11 @@
 <td><?= $translator->getTranslation('Montant') ?></td>
 </tr>
 <?php
-$dateEnd = new DateTime(date("Y").'-'.date("m").'-01');
-$dateStart = new DateTime(date("Y-m-d", strtotime($dateEnd->format("Y-m-d") . " -12 months")));
 $total = 0;
 $index = 0;
+
+$dateEnd = new DateTime(date("Y").'-'.date("m").'-01');
+$dateStart = new DateTime(date("Y-m-d", strtotime($dateEnd->format("Y-m-d") . " -12 months")));
 $categories = $categoryHandler->GetIncomeCategoriesForUser($activeUser->get('userId'));
 foreach ($categories as $category)
 {
@@ -31,14 +32,17 @@ foreach ($categories as $category)
 <td><?= $translator->getTranslation('Total revenus') ?></td>
 <td class="amount"><?= $translator->getCurrencyValuePresentation($total) ?></td>
 </tr>
-
 </tbody>
 </table>
+<small><font color="red">* </font> : <?= $translator->getTranslation('données non disponibles sur 12 mois complets') ?></small>
+
 <br />
+
+<h1><?= $translator->getTranslation('Dépenses / catégories privées (12 mois glissants)') ?></h1>
 <table id="recordsTable">
 <tbody>
 <tr class="tableRowTitle">
-<td><?= $translator->getTranslation('Dépenses privées') ?></td>
+<td><?= $translator->getTranslation('Dépenses') ?></td>
 <td><?= $translator->getTranslation('Montant') ?></td>
 </tr>
 <?php
@@ -65,17 +69,17 @@ foreach ($categories as $category)
 <td><?= $translator->getTranslation('Total revenus') ?></td>
 <td class="amount"><?= $translator->getCurrencyValuePresentation($total) ?></td>
 </tr>
-
 </tbody>
 </table>
+<small><font color="red">* </font> : <?= $translator->getTranslation('données non disponibles sur 12 mois complets') ?></small>
 
-</tbody>
-</table>
 <br />
+
+<h1><?= $translator->getTranslation('Dépenses / catégories privées (12 mois glissants)') ?></h1>
 <table id="recordsTable">
 <tbody>
 <tr class="tableRowTitle">
-<td><?= $translator->getTranslation('Dépenses privées') ?></td>
+<td><?= $translator->getTranslation('Dépenses') ?></td>
 <td><?= $translator->getTranslation('Montant') ?></td>
 </tr>
 <?php
@@ -107,8 +111,6 @@ foreach ($categories as $category)
 <td class="amount"><?= $translator->getCurrencyValuePresentation($total) ?></td>
 <td class="amount"><?= $translator->getCurrencyValuePresentation($totalCharged) ?></td>
 </tr>
-
 </tbody>
 </table>
-
-<small><font color="red">* </font> : <?= $translator->getTranslation('données non disponibles sur 12 mois') ?></small>
+<small><font color="red">* </font> : <?= $translator->getTranslation('données non disponibles sur 12 mois complets') ?></small>

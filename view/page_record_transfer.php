@@ -32,6 +32,12 @@ foreach ($accounts as $account)
 { ?>
 <input type="radio" name="toAccount" value="<?= $account->get('accountId') ?>"><?= $account->get('name') ?><br />
 <?php } ?>
+<?php
+$accounts = $accountsManager->GetAllSharedLoans();
+foreach ($accounts as $account)
+{ ?>
+<input type="radio" name="toAccount" value="<?= $account->get('accountId') ?>"><?= $account->get('name') ?><br />
+<?php } ?>
 
 <input type="radio" name="toAccount" value="USER/<?= $activeUser->get('userId') ?>"><i><?= $activeUser->get('name') ?> / Compte inconnu</i><br />
 <?php

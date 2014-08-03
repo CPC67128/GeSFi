@@ -8,13 +8,13 @@
 
 		<td>
 
-
-
 			<table class="summaryTable">
 				<tr>
 					<td colspan="7"><b><?= $translator->getTranslation('Gestion courante') ?></b></td>
 				</tr>
 <?php
+/***** Private Assets *****/
+
 $accountsManager = new AccountsManager();
 $sum = 0;
 $sumGlobal = 0;
@@ -101,7 +101,9 @@ $sumGlobal += $sum;
 					<td colspan="2"><b><?= $translator->getTranslation('Gestion courante') ?></b></td>
 				</tr>
 <?php
-$accountsManager = new AccountsManager();
+
+/******************** Shared Assets ********************/
+
 $sum = 0;
 $sumGlobal = 0;
 
@@ -112,10 +114,9 @@ foreach ($accounts as $account)
 	$balance = $account->GetBalance();
 	?>
 	<tr>
-					<td><a href="#"
-						onclick="javascript:ChangeContext('records','<?= $account->get('accountId')?>',''); return false;"><?= $account->get('name') ?></a></td>
-					<td style='text-align: right;'><?= $translator->getCurrencyValuePresentation($balance) ?></td>
-				</tr>
+		<td><a href="#" onclick="javascript:ChangeContext('records','<?= $account->get('accountId')?>',''); return false;"><?= $account->get('name') ?></a></td>
+		<td style='text-align: right;'><?= $translator->getCurrencyValuePresentation($balance) ?></td>
+	</tr>
 	<?php
 	$sum += $balance;
 }
@@ -123,26 +124,24 @@ foreach ($accounts as $account)
 $sumGlobal = $sum;
 ?>
 <tr>
-					<td><i><?= $translator->getTranslation('Sous-total') ?></i></td>
-					<td style='text-align: right;'><i><?= $translator->getCurrencyValuePresentation($sum) ?></i></td>
-				</tr>
+	<td><i><?= $translator->getTranslation('Sous-total') ?></i></td>
+	<td style='text-align: right;'><i><?= $translator->getCurrencyValuePresentation($sum) ?></i></td>
+</tr>
 
-				<tr>
-					<td colspan="5"><b><?= $translator->getTranslation('Placements') ?></b></td>
-				</tr>
+<tr>
+	<td colspan="5"><b><?= $translator->getTranslation('Placements') ?></b></td>
+</tr>
 <?php
-$accounts = $accountsManager->GetAllSharedInvestmentAccounts();
-
 $sum = 0;
+$accounts = $accountsManager->GetAllSharedInvestmentAccounts();
 
 foreach ($accounts as $account)
 {
 	?>
 	<tr>
-					<td><a href="#"
-						onclick="javascript:ChangeContext('records','<?= $account->get('accountId')?>',''); return false;"><?= $account->get('name') ?></a></td>
-					<td style='text-align: right;'><?= $translator->getCurrencyValuePresentation($account->GetInvestmentLastValue()) ?></td>
-				</tr>
+		<td><a href="#" onclick="javascript:ChangeContext('records','<?= $account->get('accountId')?>',''); return false;"><?= $account->get('name') ?></a></td>
+		<td style='text-align: right;'><?= $translator->getCurrencyValuePresentation($account->GetInvestmentLastValue()) ?></td>
+	</tr>
 	<?php
 	$sum += $account->GetInvestmentLastValue();
 }
@@ -150,43 +149,42 @@ foreach ($accounts as $account)
 $sumGlobal += $sum;
 ?>
 <tr>
-					<td><i><?= $translator->getTranslation('Sous-total') ?></i></td>
-					<td style='text-align: right;'><i><?= $translator->getCurrencyValuePresentation($sum) ?></i></td>
-				</tr>
+	<td><i><?= $translator->getTranslation('Sous-total') ?></i></td>
+	<td style='text-align: right;'><i><?= $translator->getCurrencyValuePresentation($sum) ?></i></td>
+</tr>
 
-				<tr>
-					<td colspan="2"><b><?= $translator->getTranslation('Emprunts') ?></b></td>
-				</tr>
+<tr>
+	<td colspan="2"><b><?= $translator->getTranslation('Emprunts') ?></b></td>
+</tr>
 <?php
-$accountsManager = new AccountsManager();
-$accounts = $accountsManager->GetAllSharedLoans();
 $sum = 0;
+$accounts = $accountsManager->GetAllSharedLoans();
+
 foreach ($accounts as $account)
 {
 	$balance = $account->GetBalance();
 	?>
 	<tr>
-					<td><a href="#"
-						onclick="javascript:ChangeContext('records','<?= $account->get('accountId')?>',''); return false;"><?= $account->get('name') ?></a></td>
-					<td style='text-align: right;'><?= $translator->getCurrencyValuePresentation($balance) ?></td>
-				</tr>
+		<td><a href="#" onclick="javascript:ChangeContext('records','<?= $account->get('accountId')?>',''); return false;"><?= $account->get('name') ?></a></td>
+		<td style='text-align: right;'><?= $translator->getCurrencyValuePresentation($balance) ?></td>
+	</tr>
 	<?php
 	$sum += $balance;
 }
 $sumGlobal += $sum;
 ?>
 <tr>
-					<td><i><?= $translator->getTranslation('Sous-total') ?></i></td>
-					<td style='text-align: right;'><i><?= $translator->getCurrencyValuePresentation($sum) ?></i></td>
-				</tr>
+	<td><i><?= $translator->getTranslation('Sous-total') ?></i></td>
+	<td style='text-align: right;'><i><?= $translator->getCurrencyValuePresentation($sum) ?></i></td>
+</tr>
 
-				<tr>
-					<td><b>Total</b></td>
-					<td style='text-align: right;'><b><?= $translator->getCurrencyValuePresentation($sumGlobal) ?></b></td>
-				</tr>
+<tr>
+	<td><b>Total</b></td>
+	<td style='text-align: right;'><b><?= $translator->getCurrencyValuePresentation($sumGlobal) ?></b></td>
+</tr>
 
-			</table>
+</table>
 
-		</td>
-	</tr>
+</td>
+</tr>
 </table>

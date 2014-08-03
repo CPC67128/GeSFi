@@ -372,7 +372,7 @@ class Account extends Entity
 		$query = "select CALC_yield_average
 			from {TABLEPREFIX}investment_record
 			where account_id = '".$this->_accountId."'
-			and CALC_yield is not null
+			and CALC_yield_average is not null
 			and marked_as_deleted = 0
 			order by record_date desc
 			limit 1";

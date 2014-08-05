@@ -12,7 +12,7 @@ $categories = $categoryHandler->GetOutcomeCategoriesForDuo($_SESSION['user_id'])
 foreach ($categories as $category)
 {
 	?>
-	<td style="vertical-align: top; text-align: center; font-style: italic;"><?= $category->getCategory() ?><br>
+	<td style="vertical-align: top; text-align: center; font-style: italic;"><?= $category->get('category') ?><br>
 	<?php
 }
 ?>

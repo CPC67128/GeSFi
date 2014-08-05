@@ -117,8 +117,8 @@ $categories = $categoriesHandler->GetOutcomeCategoriesForUser($activeUser->GetPa
 
 foreach ($categories as $category)
 {
-	$categoryId = $category->getCategoryId();
-	$category = $category->getCategory();
+	$categoryId = $category->get('categoryId');
+	$category = $category->get('category');
 	?>
 <tr>
 <td><?= $category ?></td>

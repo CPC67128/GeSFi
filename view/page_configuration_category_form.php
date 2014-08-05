@@ -29,8 +29,8 @@ else
 	$category = $categoryHandler->GetCategory($_POST['categoryId']);
 ?>
 <?= $translator->getTranslation('Identifiant') ?> <input type='text' name='categoryId' size='41' style='background-color : #d1d1d1;' readonly="readonly" value="<?= $category->get("categoryId") ?>" /><br /> 
-<?= $translator->getTranslation('Nom') ?> <input type='text' name='category' size='41' value="<?= $category->get("category") ?>" /><br /> 
-<?= $translator->getTranslation('Type') ?> <input name="type" type='hidden' value="<?= $category->get("type") ?>" /><input type='text' size='15' style='background-color : #d1d1d1;' readonly="readonly" value="<?= $category->getType() == 0 ? $translator->getTranslation("Revenu") : $translator->getTranslation("Dépense") ?>" /><br />
+<?= $translator->getTranslation('Nom') ?> <input type='text' name='category' size='41' value="<?= $category->get('category') ?>" /><br /> 
+<?= $translator->getTranslation('Type') ?> <input name="type" type='hidden' value="<?= $category->get('type') ?>" /><input type='text' size='15' style='background-color : #d1d1d1;' readonly="readonly" value="<?= $category->get('type') == 0 ? $translator->getTranslation("Revenu") : $translator->getTranslation("Dépense") ?>" /><br />
 <?= $translator->getTranslation('Active depuis') ?> <input name='activeFrom' type='text' size='20' style='background-color : #d1d1d1;' readonly="readonly" value="<?= $category->get("activeFrom") ?>" /><br />
 <?= $translator->getTranslation('Ordre') ?> <input name='sortOrder' type='text' size='7' value="<?= $category->get("sortOrder") ?>" /><br />
 <br />

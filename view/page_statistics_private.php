@@ -21,7 +21,7 @@ foreach ($categories as $category)
 	{
 		?>
 		<tr class="tableRow<?= (++$index) % 2 ?>">
-		<td><?= $category->getCategory() ?></td>
+		<td><?= $category->get('category') ?></td>
 		<td class="amount"><?= ($category->get('activeFrom') > $dateStart->format("Y-m-d")) ? '<font color="red">* </font>' : '' ?><?= $translator->getCurrencyValuePresentation($value) ?></td>
 		</tr>
 		<?php
@@ -58,7 +58,7 @@ foreach ($categories as $category)
 	{
 		?>
 		<tr class="tableRow<?= (++$index) % 2 ?>">
-		<td><?= $category->getCategory() ?></td>
+		<td><?= $category->get('category') ?></td>
 		<td class="amount"><?= ($category->get('activeFrom') > $dateStart->format("Y-m-d")) ? '<font color="red">* </font>' : '' ?><?= $translator->getCurrencyValuePresentation($value) ?></td>
 		</tr>
 		<?php
@@ -98,7 +98,7 @@ foreach ($categories as $category)
 	{
 		?>
 		<tr class="tableRow<?= (++$index) % 2 ?>">
-		<td><?= $category->getCategory() ?></td>
+		<td><?= $category->get('category') ?></td>
 		<td class="amount"><?= ($category->get('activeFrom') > $dateStart->format("Y-m-d")) ? '<font color="red">* </font>' : '' ?><?= $translator->getCurrencyValuePresentation($value) ?></td>
 		<td class="amount"><?= ($category->get('activeFrom') > $dateStart->format("Y-m-d")) ? '<font color="red">* </font>' : '' ?><?= $translator->getCurrencyValuePresentation($valueCharged) ?></td>
 		</tr>

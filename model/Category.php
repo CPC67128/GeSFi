@@ -8,78 +8,8 @@ class Category extends Entity
 	protected $_category;
 	protected $_activeFrom;
 	protected $_sortOrder;
-	protected $_markedAsDeleted;
+	protected $_markedAsInactive;
 
-	public function setCategoryId($categoryId)
-	{
-		$this->_categoryId = $categoryId;
-	}
-	
-	public function getCategoryId()
-	{
-		return $this->_categoryId;
-	}
-	
-	public function setLinkType($value)
-	{
-		$this->_linkType = $value;
-	}
-	
-	public function getLinkType()
-	{
-		return $this->_linkType;
-	}
-
-	public function setLinkId($value)
-	{
-		$this->_linkId = $value;
-	}
-	
-	public function getLinkId()
-	{
-		return $this->_linkId;
-	}
-	
-	public function setType($value)
-	{
-		$this->_type = $value;
-	}
-	
-	public function getType()
-	{
-		return $this->_type;
-	}
-	
-	public function setCategory($value)
-	{
-		$this->_category = $value;
-	}
-	
-	public function getCategory()
-	{
-		return $this->_category;
-	}
-	
-	public function setActiveFrom($value)
-	{
-		$this->_activeFrom = $value;
-	}
-	
-	public function getActiveFrom()
-	{
-		return $this->_activeFrom;
-	}
-
-	public function setSortOrder($value)
-	{
-		$this->_sortOrder = $value;
-	}
-	
-	public function getSortOrder()
-	{
-		return $this->_sortOrder;
-	}
-	
 	// -------------------------------------------------------------------------------------------------------------------
 
 	public function GetTotalExpenseByMonthAndYear($month, $year) // OBSOLETE ?

@@ -19,9 +19,9 @@ else
 <?php
 foreach ($categories as $category)
 {
-?>
-<option value="<?= $category->getCategoryId() ?>"><?= $category->getType() == 0 ? $translator->getTranslation("Revenu") : $translator->getTranslation("Dépense") ?> | <?= $category->getCategory() ?> (<?= $category->getSortOrder() ?>)</option>
-<?php
+	?>
+	<option value="<?= $category->get('categoryId') ?>"><?= $category->get('type') == 0 ? $translator->getTranslation("Revenu") : $translator->getTranslation("Dépense") ?> | <?= $category->get('category') ?> (<?= $category->get('sortOrder') ?>)</option>
+	<?php
 }
 ?>
 </select>

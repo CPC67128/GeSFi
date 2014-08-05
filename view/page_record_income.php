@@ -49,12 +49,13 @@ foreach ($accounts as $account)
 <td colspan=4><b><i><?= $translator->getTranslation('Catégories duo') ?></i></b></td>
 </tr>
 <?php
-$categories = $activeAccount->GetDuoCategoriesForIncome();
+$categoriesHandler = new CategoryHandler();
+$categories = $categoriesHandler->GetIncomeCategoriesForDuo($activeUser->getUserId());
 $i = 1;
-while ($row = $categories->fetch())
+foreach ($categories as $category)
 {
-	$categoryId = $row['category_id'];
-	$category = $row['category'];
+	$categoryId = $category->get('categoryId');
+	$category = $category->get('category');
 
 	?><tr><?php
 	if ($category != '')
@@ -81,12 +82,12 @@ while ($row = $categories->fetch())
 <td colspan=4><b><i><?= $translator->getTranslation('Catégories privées de ') ?><?= $activeUser->getName() ?></i></b></td>
 </tr>
 <?php
-$categories = $activeAccount->GetUserCategoriesForIncome();
+$categories = $categoriesHandler->GetIncomeCategoriesForUser($activeUser->getUserId());
 
-while ($row = $categories->fetch())
+foreach ($categories as $category)
 {
-	$categoryId = $row['category_id'];
-	$category = $row['category'];
+	$categoryId = $category->get('categoryId');
+	$category = $category->get('category');
 
 	?><tr><?php
 	if ($category != '')

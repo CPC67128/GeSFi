@@ -8,6 +8,7 @@ class Category extends Entity
 	protected $_category;
 	protected $_activeFrom;
 	protected $_sortOrder;
+	protected $_markedAsDeleted;
 
 	public function setCategoryId($categoryId)
 	{
@@ -77,20 +78,6 @@ class Category extends Entity
 	public function getSortOrder()
 	{
 		return $this->_sortOrder;
-	}
-
-	
-	public function hydrate(array $data)
-	{
-		foreach ($data as $key => $value)
-		{
-			$key = ucfirst($key);
-			$method = 'set'.$key;
-			if (method_exists($this, $method))
-			{
-				$this->$method($value);
-			}
-		}
 	}
 	
 	// -------------------------------------------------------------------------------------------------------------------

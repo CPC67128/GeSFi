@@ -38,7 +38,7 @@ function listCategories()
 {
 	$.ajax({
 	    type : 'POST',
-	    url : 'page_configuration_category_list.php',
+	    url : 'page_configuration_category_list.php?type=USER',
 	    dataType: 'html',
 	    success : function(data) {
 	        $('#categoryList').html(data);
@@ -51,7 +51,7 @@ function listCategoriesDuo()
 {
 	$.ajax({
 	    type : 'POST',
-	    url : 'page_configuration_category_list_duo.php',
+	    url : 'page_configuration_category_list.php?type=DUO',
 	    dataType: 'html',
 	    success : function(data) {
 	        $('#categoryDuoList').html(data);
@@ -70,7 +70,7 @@ function changeForm(categoriesList)
   else
 	  $.ajax({
 	      type : 'POST',
-	      url : 'page_configuration_category_form.php',
+	      url : 'page_configuration_category_form.php?type=USER',
 	      data: { categoryId: value }, 
 	      dataType: 'html',
 	      success : function(data) {
@@ -89,7 +89,7 @@ function changeFormDuo(categoriesList)
   else
 	  $.ajax({
 	      type : 'POST',
-	      url : 'page_configuration_category_form_duo.php',
+	      url : 'page_configuration_category_form.php?type=DUO',
 	      data: { categoryId: value }, 
 	      dataType: 'html',
 	      success : function(data) {

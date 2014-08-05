@@ -1,10 +1,15 @@
 <?php
 include '../security/security_manager.php';
 
+$type = 'USER';
+if (isset($_GET['type']))
+if ($_GET['type'] == 'DUO')
+	$type = 'DUO';
+
 $translator = new Translator();
 ?>
-<div id='formPlaceHolder'>
-<form action="/" id="form">
+<div id='form<?= $type == 'DUO' ? 'Duo' : '' ?>PlaceHolder'>
+<form action="/" id="form<?= $type == 'DUO' ? 'Duo' : '' ?>">
 <?php
 if ($_POST['categoryId'] == 'AddCategory')
 {
@@ -23,47 +28,47 @@ else
 	$categoryHandler = new CategoryHandler();
 	$category = $categoryHandler->GetCategory($_POST['categoryId']);
 ?>
-<?= $translator->getTranslation('Identifiant') ?> <input type='text' name='categoryId' size='41' style='background-color : #d1d1d1;' readonly="readonly" value="<?= $category->getCategoryId() ?>" /><br /> 
-<?= $translator->getTranslation('Nom') ?> <input type='text' name='category' size='41' value="<?= $category->getCategory() ?>" /><br /> 
-<?= $translator->getTranslation('Type') ?> <input name="type" type='hidden' value="<?= $category->getType() ?>" /><input type='text' size='15' style='background-color : #d1d1d1;' readonly="readonly" value="<?= $category->getType() == 0 ? $translator->getTranslation("Revenu") : $translator->getTranslation("Dépense") ?>" /><br />
-<?= $translator->getTranslation('Active depuis') ?> <input name='activeFrom' type='text' size='20' style='background-color : #d1d1d1;' readonly="readonly" value="<?= $category->getActiveFrom() ?>" /><br />
-<?= $translator->getTranslation('Ordre') ?> <input name='sortOrder' type='text' size='7' value="<?= $category->getSortOrder() ?>" /><br />
+<?= $translator->getTranslation('Identifiant') ?> <input type='text' name='categoryId' size='41' style='background-color : #d1d1d1;' readonly="readonly" value="<?= $category->get("categoryId") ?>" /><br /> 
+<?= $translator->getTranslation('Nom') ?> <input type='text' name='category' size='41' value="<?= $category->get("category") ?>" /><br /> 
+<?= $translator->getTranslation('Type') ?> <input name="type" type='hidden' value="<?= $category->get("type") ?>" /><input type='text' size='15' style='background-color : #d1d1d1;' readonly="readonly" value="<?= $category->getType() == 0 ? $translator->getTranslation("Revenu") : $translator->getTranslation("Dépense") ?>" /><br />
+<?= $translator->getTranslation('Active depuis') ?> <input name='activeFrom' type='text' size='20' style='background-color : #d1d1d1;' readonly="readonly" value="<?= $category->get("activeFrom") ?>" /><br />
+<?= $translator->getTranslation('Ordre') ?> <input name='sortOrder' type='text' size='7' value="<?= $category->get("sortOrder") ?>" /><br />
 <br />
-<font color='red'><?= $translator->getTranslation('Inactiver') ?> <input name='delete' type='checkbox' /></font> <i>Cocher pour inactiver la catégorie</i><br /><br />
+<font color='red'><?= $translator->getTranslation('Inactiver') ?> <input name='inactive' type='checkbox' <?= $category->get("markedAsInactive") ? "checked" : "" ?> /></font> <i>Cocher pour inactiver la catégorie</i><br /><br />
 <?php
 }
 ?>
-<input type="submit" id='submitForm' value="Envoyer" />
+<input type="submit" id='submitForm<?= $type == 'DUO' ? 'Duo' : '' ?>' value="Envoyer" />
 </div>
-<div id='formResult'></div>
+<div id='form<?= $type == 'DUO' ? 'Duo' : '' ?>Result'></div>
 </form>
 
 <script type='text/javascript'>
-$("#form").submit( function () {
-	document.getElementById("submitForm").disabled = true;
+$("#form<?= $type == 'DUO' ? 'Duo' : '' ?>").submit( function () {
+	document.getElementById("submitForm<?= $type == 'DUO' ? 'Duo' : '' ?>").disabled = true;
 	$.post (
 		'../controller/controller.php?action=category_modification_user',
 		$(this).serialize(),
 		function(response, status) {
-			$("#formResult").stop().show();
+			$("#formResult<?= $type == 'DUO' ? 'Duo' : '' ?>").stop().show();
 			if (status == 'success') {
 				if (response.indexOf("<!-- ERROR -->") >= 0) {
-					$("#formResult").html(response);
+					$("#form<?= $type == 'DUO' ? 'Duo' : '' ?>Result").html(response);
 				}
 				else {
-					$("#formResult").html(response);
-					$("#formPlaceHolder").html('');
+					$("#form<?= $type == 'DUO' ? 'Duo' : '' ?>Result").html(response);
+					$("#form<?= $type == 'DUO' ? 'Duo' : '' ?>PlaceHolder").html('');
 					listCategories();
 				}
 			}
 			else {
-				$("#formResult").html(CreateUnexpectedErrorWeb("Status = " + status));
+				$("#form<?= $type == 'DUO' ? 'Duo' : '' ?>Result").html(CreateUnexpectedErrorWeb("Status = " + status));
 			}
-			document.getElementById("submitForm").disabled = false;
+			document.getElementById("submitForm<?= $type == 'DUO' ? 'Duo' : '' ?>").disabled = false;
 
 			setTimeout(function() {
-				$("#formResult").fadeOut("slow", function () {
-					$('#formResult').empty();
+				$("#form<?= $type == 'DUO' ? 'Duo' : '' ?>Result").fadeOut("slow", function () {
+					$('#form<?= $type == 'DUO' ? 'Duo' : '' ?>Result').empty();
 				})
 			}, 4000);
 		}

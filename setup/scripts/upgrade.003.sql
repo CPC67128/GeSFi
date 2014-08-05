@@ -1,0 +1,1 @@
+alter table `{TABLEPREFIX}category` change marked_as_deleted marked_as_inactive tinyint ;

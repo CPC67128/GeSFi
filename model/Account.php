@@ -161,7 +161,7 @@ class Account extends Entity
 		return $row['email'];
 	}
 
-	public function GetDuoCategoriesForOutcome()
+/*	public function GetDuoCategoriesForOutcome()
 	{
 		$usersHandler = new UsersHandler();
 		$currentUser = $usersHandler->GetCurrentUser();
@@ -225,7 +225,7 @@ class Account extends Entity
 		$result = $db->Select($query);
 		return $result;
 	}
-
+*/
 	public function OBS_GetTotalCreditByActorAndMonthAndYear($actor, $month, $year) // OBSOLETE?
 	{
 		$db = new DB();

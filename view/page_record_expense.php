@@ -62,12 +62,13 @@ Montant <input type="text" name="amount" tabindex="-1" size="6" style='backgroun
 <td colspan=4><b><i><?= $translator->getTranslation('Catégories duo') ?></i></b></td>
 </tr>
 <?php
-$categories = $activeAccount->GetDuoCategoriesForOutcome();
+$categoriesHandler = new CategoryHandler();
+$categories = $categoriesHandler->GetIncomeCategoriesForDuo($activeUser->getUserId());
 $i = 1;
-while ($row = $categories->fetch())
+foreach ($categories as $category)
 {
-	$categoryId = $row['category_id'];
-	$category = $row['category'];
+	$categoryId = $category->get('categoryId');
+	$category = $category->get('category');
 ?>
 <tr>
 <td><?= $category ?></td>
@@ -83,13 +84,12 @@ while ($row = $categories->fetch())
 <td colspan=4><b><i><?= $translator->getTranslation('Catégories privées de ') ?><?= $activeUser->getName() ?></i></b></td>
 </tr>
 <?php
-$categoriesHandler = new CategoryHandler();
 $categories = $categoriesHandler->GetOutcomeCategoriesForUser($activeUser->getUserId());
 
 foreach ($categories as $category)
 {
-	$categoryId = $category->getCategoryId();
-	$category = $category->getCategory();
+	$categoryId = $category->get('categoryId');
+	$category = $category->get('category');
 	?>
 <tr>
 <td><?= $category ?></td>

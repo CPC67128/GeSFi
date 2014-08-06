@@ -15,7 +15,12 @@ foreach ($accounts as $account)
 { ?>
 <input type="radio" name="fromAccount" <?= $account->get('accountId') == $activeAccount->get('accountId') ? 'checked' : '' ?> value="<?= $account->get('accountId') ?>"><?= $account->get('name') ?><br />
 <?php } ?>
-
+<?php
+$accounts = $accountsManager->GetAllSharedLoans();
+foreach ($accounts as $account)
+{ ?>
+<input type="radio" name="fromAccount" <?= $account->get('accountId') == $activeAccount->get('accountId') ? 'checked' : '' ?> value="<?= $account->get('accountId') ?>"><?= $account->get('name') ?><br />
+<?php } ?>
 &nbsp;&nbsp;<?= $translator->getTranslation('effectuée par') ?><input type="radio" name="userId" value="<?= $activeUser->get('userId') ?>" checked><?= $activeUser->get('name') ?> </input><?= $translator->getTranslation('ou'); ?> <input type="radio" name="userId" value="<?= $activeUser->GetPartnerId() ?>"><?= $activeUser->GetPartnerName() ?></input><br/>
 
 <br/>
@@ -63,7 +68,7 @@ Montant <input type="text" name="amount" tabindex="-1" size="6" style='backgroun
 </tr>
 <?php
 $categoriesHandler = new CategoryHandler();
-$categories = $categoriesHandler->GetIncomeCategoriesForDuo($activeUser->getUserId());
+$categories = $categoriesHandler->GetOutcomeCategoriesForDuo($activeUser->getUserId());
 $i = 1;
 foreach ($categories as $category)
 {

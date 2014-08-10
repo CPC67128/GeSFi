@@ -58,7 +58,7 @@ $("#form<?= $type == 'DUO' ? 'Duo' : '' ?>").submit( function () {
 				else {
 					$("#form<?= $type == 'DUO' ? 'Duo' : '' ?>Result").html(response);
 					$("#form<?= $type == 'DUO' ? 'Duo' : '' ?>PlaceHolder").html('');
-					listCategories();
+					listCategories<?= $type == 'DUO' ? 'Duo' : '' ?>();
 				}
 			}
 			else {

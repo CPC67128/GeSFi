@@ -30,7 +30,7 @@ foreach ($accounts as $account)
 <br/>
 <?= $translator->getTranslation('Date') ?> <input title="aaaa-mm-jj hh:mm:ss" size="10" id="datePicker" name="date" value="<?php echo date("Y-m-d") ?>"><br/>
 <?= $translator->getTranslation('Montant') ?> <input type="text" name="amount" style='background-color : #d1d1d1;' tabindex="-1" size="6" readonly>&nbsp;&euro;<br/>
-<?= $translator->getTranslation('Désignation') ?> <input type="text" name="designation" id="designation" size="30" value="<?= $translator->getTranslation('Versement') ?>">
+<?= $translator->getTranslation('Désignation') ?> <input type="text" name="designation" id="designation" size="30" >
 </td>
 
 <td style="vertical-align: middle;">
@@ -130,6 +130,45 @@ foreach ($categories as $category)
 </form>
 
 <script type='text/javascript'>
+$("#designation").addClass('search-textbox-label');
+
+$("#designation").autocomplete({
+	source: function( request, response ) {
+		$.ajax({
+			type: 'GET',
+			url: "search_designation.php",
+			contentType: "application/json; charset=utf-8",
+			dataType: "json",
+			data: {
+					'search_string': request.term,
+					'type': 1
+				},
+			success: function( data ) {
+				response( $.map( data.items, function( item ) {
+					return {
+						label: item
+					}
+				}));
+			},
+
+			error: function(jqXHR, textStatus, errorThrown){
+				alert(errorThrown);
+			}
+
+		});
+	},
+	minLength: 0,
+	select: function( event, ui ) {
+	}
+});
+
+$("#designation").focus(function(){
+    if(this.value == $(this).attr('title')) {
+        this.value = '';
+        $(this).removeClass('search-textbox-label');
+    }
+});
+
 function GetDecimalValue(text) {
 	var value = 0; 
 	if (!isNaN(parseFloat(text))) {

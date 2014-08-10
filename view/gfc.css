@@ -173,3 +173,47 @@ h1 {
 	font-weight: bold;
 	font-size: 1em;
 }
+
+/* =========== Statistics table =========== */
+
+.statsTable {
+  background-color: #ccccff;
+  border: 0px solid;
+  cellspacing: 0px;
+  
+  font-size: 1em;
+}
+
+.statsTable .statsTableRowTitle td {
+	background-color: #bbbbff;
+	font-style: italic;
+	vertical-align: top;
+	text-align: center;
+	white-space: nowrap;
+}
+
+.statsTable .statsTableRowTitle .amount {
+	text-align: right;
+}
+
+.statsTable .statsTableRowHeader {
+	border-right: 1px solid;
+	text-align: left;
+}
+
+.statsTable .statsTableRowSummary {
+	border-left: 1px solid;
+}
+
+.statsTable .statsTableRow0 { background-color: #eeeeff; }
+.statsTable .statsTableRow1 { background-color: #ffffff; }
+
+
+.statsTable td {
+	vertical-align: center;
+	text-align: right;
+	padding-left: 3px;
+	padding-right: 3px;
+	white-space: nowrap;
+}
+

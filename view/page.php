@@ -117,8 +117,8 @@ switch ($pageName)
 	case 'statistics';
 		if ($accountType == -50 || $accountType == 0)
 			include 'page_'.$pageName.'_global.php';
-		else if ($accountType == 1)
-			include 'page_'.$pageName.'_private.php';
+		else if ($accountType == 2 || $accountType == 3)
+			include 'page_'.$pageName.'_duo.php';
 		else if ($accountType == 10)
 			include 'page_'.$pageName.'_investment.php';
 		else if ($accountType == 100)

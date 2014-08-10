@@ -139,7 +139,8 @@ function AddRow($index, $row, $mergeRow)
 		echo '<td></td>';
 	}
 
-	if (!$mergeRow && !($row['record_date'] > $now))
+	//if (!$mergeRow && !($row['record_date'] > $now))
+	if (!$mergeRow)
 	{
 		echo '<td><input type="checkbox" '.($row['confirmed'] == 1 ? 'checked' : '').' onclick="ConfirmRecord(\''.$row['record_id'].'\', this);"></span></td>';
 	}

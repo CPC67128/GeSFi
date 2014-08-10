@@ -114,7 +114,28 @@ class RecordsManager
 		return $total;
 	}
 
-	function ListDesignation($searchString)
+	function GetTotalIncomeFromDuoAccount($month, $year)
+	{
+		$total = 0;
+
+		$db = new DB();
+		
+		$query = "select sum(amount) as total
+		from {TABLEPREFIX}record
+		where record_type in (20)
+		and marked_as_deleted = 0
+		and record_date <= curdate()
+		and record_date_month = ".$month."
+		and record_date_year = ".$year."
+		and user_id = '".$_SESSION['user_id']."'
+		and account_id in (select account_id from {TABLEPREFIX}account where type in (2, 3) and (owner_user_id = '".$_SESSION['user_id']."' or coowner_user_id = '".$_SESSION['user_id']."'))";
+		$row = $db->SelectRow($query);
+		$total += $row['total'];
+
+		return $total;
+	}
+
+	function ListDesignation($searchString, $type)
 	{
 		$usersHandler = new UsersHandler();
 		$user = $usersHandler->GetCurrentUser();
@@ -124,6 +145,7 @@ class RecordsManager
 		$query = "select designation, count(*) as total
 			from {TABLEPREFIX}record
 			where designation like '%".$searchString."%'
+			and record_type >= ".$type."0 and record_type <= ".$type."9
 			and account_id in (select account_id from {TABLEPREFIX}account where owner_user_id = '".$user->get('userId')."' or coowner_user_id = '".$user->get('userId')."')
 			group by designation
 			order by count(*) desc";

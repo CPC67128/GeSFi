@@ -6,7 +6,7 @@ This is my read me file
 record_type:
 - money transfer from an account to another account :
 
-1x = income  
+1x = income
 2x = outcome
 
 0 = between account (money transfer)

@@ -1,13 +1,14 @@
-<h1><?= $translator->getTranslation('Suivi évolution des catégories privées ') ?></h1>
+<?php
+$currentYear = Date('Y');
+?>
+<h1><?= $translator->getTranslation('Tableau de bord privé, année').' '.$currentYear ?></h1>
 <table id="recordsTable">
 <thead>
 <tr class="tableRowTitle">
 <td style="vertical-align: top; text-align: center; font-style: italic;"><?= $translator->getTranslation('Mois') ?><br>
 </td>
 <?php
-
 $currentMonth = 0;
-$currentYear = Date('Y');
 
 for ($month = 12; $month >= 1; $month--)
 {

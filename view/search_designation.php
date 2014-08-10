@@ -8,8 +8,12 @@ $searchString = '';
 if (isset($_GET['search_string']))
 	$searchString = $_GET['search_string'];
 
+$type = 2;
+if (isset($_GET['type']))
+	$type = $_GET['type'];
+
 $recordsManager = new RecordsManager();
-$result = $recordsManager->ListDesignation($searchString);
+$result = $recordsManager->ListDesignation($searchString, $type);
 
 $output = array(
 	"identifier" => "id",

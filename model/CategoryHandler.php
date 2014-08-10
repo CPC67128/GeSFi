@@ -134,13 +134,13 @@ class CategoryHandler
 
 		$db = new DB();
 	
-		$query = sprintf("insert into {TABLEPREFIX}category (category_id, link_type, link_id, type, category, active_from, sort_order)
-				values (uuid(), '%s', '%s', %s, '%s', CURRENT_TIMESTAMP(), %s)",
+		$query = sprintf("insert into {TABLEPREFIX}category (category_id, link_type, link_id, type, category, active_from, sort_order, marked_as_inactive)
+				values (uuid(), '%s', '%s', %s, '%s', CURRENT_TIMESTAMP(), %s, 0)",
 				$linkType,
 				$linkType == 'USER' ? '{USERID}' : $currentUser->get('duoId'),
 				$type,
 				$db->ConvertStringForSqlInjection($category),
-				$sortOrder);
+				$sortOrder == '' ? '0' : $sortOrder);
 
 		$result = $db->Execute($query);
 	
@@ -197,7 +197,7 @@ class CategoryHandler
 		$sortOrder = $originalSortOrder;
 
 		$query = sprintf("update {TABLEPREFIX}category set category = '%s', sort_order = %s, marked_as_inactive = %s where category_id = '%s'",
-				$category,
+				$db->ConvertStringForSqlInjection($category),
 				$sortOrder,
 				$isInactive ? "1" : "0",
 				$categoryId);

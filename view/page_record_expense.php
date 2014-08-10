@@ -161,23 +161,6 @@ foreach ($categories as $category)
 <div id="formResult"></div>
 </form>
 <script type='text/javascript'>
-/**
-$("input[name='actor']").click(function() {
-	if ($("input[name='actor']:checked").val() == 1) {
-		for (var i=1;i<=<?= $i-1 ?>;i++) {
-			$("input[name='category"+i+"ChargeLevel']").val('50');
-		}
-	}
-	else {
-		for (var i=1;i<=<?= $i-1 ?>;i++) {
-			$("input[name='category"+i+"ChargeLevel']").val('50');
-		}
-	}
-});
-*/
-
-
-
 $("#designation").addClass('search-textbox-label');
 
 $("#designation").autocomplete({
@@ -188,7 +171,8 @@ $("#designation").autocomplete({
 			contentType: "application/json; charset=utf-8",
 			dataType: "json",
 			data: {
-					'search_string': request.term
+					'search_string': request.term,
+					'type': 2
 				},
 			success: function( data ) {
 				response( $.map( data.items, function( item ) {

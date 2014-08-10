@@ -3,8 +3,8 @@ include '../security/security_manager.php';
 
 $translator = new Translator();
 
-$investmentsRecordsManager = new InvestmentsRecordsManager();
-$result = $investmentsRecordsManager->GetAllRecords();
+$investmentsRecordsHandler = new InvestmentsRecordsHandler();
+$result = $investmentsRecordsHandler->GetAllRecords();
 
 $yieldXArray = array();
 $yieldYArray = array();

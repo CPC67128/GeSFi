@@ -3,8 +3,8 @@ include '../security/security_manager.php';
 
 $translator = new Translator();
 
-$accountsManager = new AccountsManager();
-$accounts = $accountsManager->GetAllAccounts();
+$accountsHandler = new AccountsHandler();
+$accounts = $accountsHandler->GetAllAccounts();
 ?>
 <select name="accountsList" size="<?= count($accounts) + 1 ?>" onChange="changeAccount(this)">
 <option value="AddAccount">Ajouter un nouveau compte...</option>

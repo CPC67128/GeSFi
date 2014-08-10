@@ -20,13 +20,13 @@ class Operation_Record_Transfer extends Operation_Record
 		$amountOutcome = $this->_amount;
 		$amountIncome = $this->_amount;
 
-		$accountsManager = new AccountsManager();
+		$accountsHandler = new AccountsHandler();
 
 		$usersHandler = new UsersHandler();
 		$user = $usersHandler->GetCurrentUser();
 		
 		$fromAccountId = $this->_fromAccount;
-		$fromUserId = $user->getUserId();
+		$fromUserId = $user->get('userId');
 		if (substr($fromAccountId, 0, 5) == "USER/")
 		{
 			$fromUserId = substr($fromAccountId, 5, 36);
@@ -34,7 +34,7 @@ class Operation_Record_Transfer extends Operation_Record
 		}
 
 		$toAccountId = $this->_toAccount;
-		$toUserId = $user->getUserId();
+		$toUserId = $user->get('userId');
 		if (substr($toAccountId, 0, 5) == "USER/")
 		{
 			$toUserId = substr($toAccountId, 5);
@@ -43,7 +43,7 @@ class Operation_Record_Transfer extends Operation_Record
 
 		if ($toAccountId != '')
 		{
-			$account = $accountsManager->GetAccount($toAccountId);
+			$account = $accountsHandler->GetAccount($toAccountId);
 			if ($account->get('type') == 3) // Duo account
 			{
 				$toUserId = $fromUserId;

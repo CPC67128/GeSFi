@@ -25,11 +25,11 @@ if ($securityHandler->IsSingleUserMode())
 	$user_id = $securityHandler->GetSingleUserModeUserId();
 	$user = $usersHandler->GetUser($user_id);
 	$_SESSION['email'] = $user->get('email');
-	$_SESSION['user_id'] = $user->getUserId();
+	$_SESSION['user_id'] = $user->get('userId');
 	$_SESSION['full_name'] = $user->get('name');
 	$_SESSION['read_only'] = $user->get('readOnly');
 
-	$usersHandler->RecordUserConnection($user->getUserId(), $_SERVER['REMOTE_ADDR'], $_SERVER['HTTP_USER_AGENT']);
+	$usersHandler->RecordUserConnection($user->get('userId'), $_SERVER['REMOTE_ADDR'], $_SERVER['HTTP_USER_AGENT']);
 
 	header("HTTP/1.1 301 Moved Permanently");
 	if (isset($_SESSION['go_to']) && $_SESSION['go_to'] != '')
@@ -68,7 +68,7 @@ if (isset($_GET['autologin']) && strlen($_GET['autologin']) > 0)
 		if ($user->IsPasswordCorrect("d41d8cd98f00b204e9800998ecf8427e"))
 		{
 			$_SESSION['email'] = $user->get('email');
-			$_SESSION['user_id'] = $user->getUserId();
+			$_SESSION['user_id'] = $user->get('userId');
 			$_SESSION['full_name'] = $user->getName();
 			$_SESSION['read_only'] = $user->get('readOnly');
 	

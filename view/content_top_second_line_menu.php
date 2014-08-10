@@ -1,7 +1,7 @@
 <?php
 include_once '../security/security_manager.php';
 
-$accountsManager = new AccountsManager();
+$accountsHandler = new AccountsHandler();
 
 if ($_SESSION['page'] != 'asset_management')
 	echo '<a href="#" onclick="javascript:ChangeContext(\'asset_management\',\'\',\'asset_management\'); return false;">';
@@ -10,7 +10,7 @@ if ($_SESSION['page'] != 'asset_management')
 	echo '</a>';
 echo ' / ';
 
-$accounts = $accountsManager->GetAllInvestmentAccounts();
+$accounts = $accountsHandler->GetAllInvestmentAccounts();
 
 foreach ($accounts as $account)
 {

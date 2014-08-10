@@ -3,14 +3,14 @@ include '../security/security_manager.php';
 
 $translator = new Translator();
 
-$investmentsRecordsManager = new InvestmentsRecordsManager();
+$investmentsRecordsHandler = new InvestmentsRecordsHandler();
 if (isset($_GET['accounts']))
 {
-	$result = $investmentsRecordsManager->GetAllRecordsForSomeInvestments("'".str_replace(',', '\',\'', $_GET['accounts'])."'");
+	$result = $investmentsRecordsHandler->GetAllRecordsForSomeInvestments("'".str_replace(',', '\',\'', $_GET['accounts'])."'");
 }
 else
 {
-	$result = $investmentsRecordsManager->GetAllRecordsForAllInvestments();
+	$result = $investmentsRecordsHandler->GetAllRecordsForAllInvestments();
 }
 
 // content="text/plain; charset=utf-8"

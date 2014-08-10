@@ -30,7 +30,7 @@ $index = 0;
 $currentMonth = 0;
 $indexCategory = 0;
 $totalAverage = 0;
-$categories = $categoryHandler->GetIncomeCategoriesForUser($_SESSION['user_id']);
+$categories = $categoriesHandler->GetIncomeCategoriesForUser($_SESSION['user_id']);
 
 // Income
 foreach ($categories as $category)
@@ -100,7 +100,7 @@ $index = 0;
 $currentMonth = 0;
 $indexCategory = 0;
 $totalAverage = 0;
-$categories = $categoryHandler->GetOutcomeCategoriesForUser($_SESSION['user_id']);
+$categories = $categoriesHandler->GetOutcomeCategoriesForUser($_SESSION['user_id']);
 
 foreach ($categories as $category)
 {
@@ -171,7 +171,7 @@ $total = 0;
 for ($month = 1; $month <= 12; $month++)
 {
 	$value = 0;
-	$value = $recordsManager->GetTotalOutcomeToDuoAccount($month, $currentYear) - $recordsManager->GetTotalIncomeFromDuoAccount($month, $currentYear);
+	$value = $recordsHandler->GetTotalOutcomeToDuoAccount($month, $currentYear) - $recordsHandler->GetTotalIncomeFromDuoAccount($month, $currentYear);
 	$monthTotalExpense[$month] = (isset($monthTotalExpense[$month]) ? $monthTotalExpense[$month] : 0) + $value;
 	$total += $value;
 

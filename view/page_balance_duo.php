@@ -1,24 +1,24 @@
 <?php
-$accountsManager = new AccountsManager();
-$accounts = $accountsManager->GetAllDuoAccounts();
+$accountsHandler = new AccountsHandler();
+$accounts = $accountsHandler->GetAllDuoAccounts();
 $activeAccount = $accounts[0];
 
 $usersHandler = new UsersHandler();
 $user = $usersHandler->GetCurrentUser();
 $partner = $usersHandler->GetUser($user->GetPartnerId());
 
-$statistics = new Statistics();
+$statisticsHandler = new StatisticsHandler();
 $translator = new Translator();
 
 
-$totalIncomeDuoAccountsByUser = $statistics->GetTotalIncomeDuoAccountsByUser($user->getUserId());
-$totalIncomeDuoAccountsByPartner = $statistics->GetTotalIncomeDuoAccountsByUser($user->GetPartnerId());
-$totalIncomeOutsidePartners = $statistics->GetTotalIncomeOutsidePartnersDuoAccounts();
+$totalIncomeDuoAccountsByUser = $statisticsHandler->GetTotalIncomeDuoAccountsByUser($user->get('userId'));
+$totalIncomeDuoAccountsByPartner = $statisticsHandler->GetTotalIncomeDuoAccountsByUser($user->GetPartnerId());
+$totalIncomeOutsidePartners = $statisticsHandler->GetTotalIncomeOutsidePartnersDuoAccounts();
 $totalIncomeDuoAccounts = $totalIncomeDuoAccountsByUser + $totalIncomeDuoAccountsByPartner + $totalIncomeOutsidePartners;
 
-$totalExpenseDuoAccountsChargedForUser = $statistics->GetTotalExpenseDuoAccountsChargedForUser($user->getUserId());
-$totalExpenseDuoAccountsChargedForPartner = $statistics->GetTotalExpenseDuoAccountsChargedForUser($partner->getUserId());
-$totalExpenseDuoAccounts = $statistics->GetTotalExpenseDuoAccounts();
+$totalExpenseDuoAccountsChargedForUser = $statisticsHandler->GetTotalExpenseDuoAccountsChargedForUser($user->get('userId'));
+$totalExpenseDuoAccountsChargedForPartner = $statisticsHandler->GetTotalExpenseDuoAccountsChargedForUser($partner->get('userId'));
+$totalExpenseDuoAccounts = $statisticsHandler->GetTotalExpenseDuoAccounts();
 
 $totalValueDuoAccountsGivenByUser = $totalIncomeDuoAccountsByUser - $totalExpenseDuoAccountsChargedForUser;
 $totalValueDuoAccountsGivenByPartner = $totalIncomeDuoAccountsByPartner - $totalExpenseDuoAccountsChargedForPartner;
@@ -126,7 +126,7 @@ Situation des comptes entre <?= $user->get('name') ?> et <?= $partner->get('name
 
 <?php
 $balanceDuoAccounts = 0;
-$accountsManager->GetAllDuoAccounts();
+$accountsHandler->GetAllDuoAccounts();
 foreach ($accounts as $account)
 {
 
@@ -183,21 +183,21 @@ else
 <br /><br />
 
 <?php
-$totalExpensePrivateAccountsForDuoCategoriesMadeByUser = $statistics->GetTotalExpensePrivateAccountsForDuoCategoriesMadeByUser($user->getUserId());
-$totalExpensePrivateAccountsForDuoCategoriesMadeByPartner = $statistics->GetTotalExpensePrivateAccountsForDuoCategoriesMadeByUser($partner->getUserId());
+$totalExpensePrivateAccountsForDuoCategoriesMadeByUser = $statisticsHandler->GetTotalExpensePrivateAccountsForDuoCategoriesMadeByUser($user->get('userId'));
+$totalExpensePrivateAccountsForDuoCategoriesMadeByPartner = $statisticsHandler->GetTotalExpensePrivateAccountsForDuoCategoriesMadeByUser($partner->get('userId'));
 
-$totalExpensePrivateAccountsForPartnerCategoriesMadeByUser = $statistics->GetTotalExpensePrivateAccountsForPartnerCategoriesMadeByUser($user->getUserId());
-$totalExpensePrivateAccountsForPartnerCategoriesMadeByPartner = $statistics->GetTotalExpensePrivateAccountsForPartnerCategoriesMadeByUser($user->GetPartnerId());
+$totalExpensePrivateAccountsForPartnerCategoriesMadeByUser = $statisticsHandler->GetTotalExpensePrivateAccountsForPartnerCategoriesMadeByUser($user->get('userId'));
+$totalExpensePrivateAccountsForPartnerCategoriesMadeByPartner = $statisticsHandler->GetTotalExpensePrivateAccountsForPartnerCategoriesMadeByUser($user->GetPartnerId());
 
 $totalExpensePrivateAccountsMadeByUser = $totalExpensePrivateAccountsForDuoCategoriesMadeByUser + $totalExpensePrivateAccountsForPartnerCategoriesMadeByUser;
 $totalExpensePrivateAccountsMadeByPartner = $totalExpensePrivateAccountsForDuoCategoriesMadeByPartner + $totalExpensePrivateAccountsForPartnerCategoriesMadeByPartner;
 
 
-$totalExpensePrivateAccountsForDuoCategoriesChargedForUser = $statistics->GetTotalExpensePrivateAccountsForDuoCategoriesChargedForUser($user->getUserId());
-$totalExpensePrivateAccountsForDuoCategoriesChargedForPartner = $statistics->GetTotalExpensePrivateAccountsForDuoCategoriesChargedForUser($partner->getUserId());
+$totalExpensePrivateAccountsForDuoCategoriesChargedForUser = $statisticsHandler->GetTotalExpensePrivateAccountsForDuoCategoriesChargedForUser($user->get('userId'));
+$totalExpensePrivateAccountsForDuoCategoriesChargedForPartner = $statisticsHandler->GetTotalExpensePrivateAccountsForDuoCategoriesChargedForUser($partner->get('userId'));
 
-$totalExpensePrivateAccountsForPartnerCategoriesChargedForUser = $statistics->GetTotalExpensePrivateAccountsForPartnerCategoriesChargedForUser($user->getUserId());
-$totalExpensePrivateAccountsForPartnerCategoriesChargedForPartner = $statistics->GetTotalExpensePrivateAccountsForPartnerCategoriesChargedForUser($user->GetPartnerId());
+$totalExpensePrivateAccountsForPartnerCategoriesChargedForUser = $statisticsHandler->GetTotalExpensePrivateAccountsForPartnerCategoriesChargedForUser($user->get('userId'));
+$totalExpensePrivateAccountsForPartnerCategoriesChargedForPartner = $statisticsHandler->GetTotalExpensePrivateAccountsForPartnerCategoriesChargedForUser($user->GetPartnerId());
 
 $totalExpensePrivateAccountsChargedForUser = $totalExpensePrivateAccountsForDuoCategoriesChargedForUser + $totalExpensePrivateAccountsForPartnerCategoriesChargedForUser;
 $totalExpensePrivateAccountsChargedForPartner = $totalExpensePrivateAccountsForDuoCategoriesChargedForPartner + $totalExpensePrivateAccountsForPartnerCategoriesChargedForPartner;
@@ -207,8 +207,8 @@ $totalRepaymentNeedByUser = $totalExpensePrivateAccountsMadeByUser - $totalExpen
 $totalRepaymentNeedByPartner = $totalExpensePrivateAccountsMadeByPartner - $totalExpensePrivateAccountsChargedForPartner;
 $totalRepaymentNeedDifference = $totalRepaymentNeedByUser - $totalRepaymentNeedByPartner;
 
-$totalRepaymentFromUserToPartner = $statistics->GetTotalRepaymentFromUserToPartner($user->getUserId(), $user->getPartnerId());
-$totalRepaymentFromPartnerToUser = $statistics->GetTotalRepaymentFromUserToPartner($user->getPartnerId(), $user->getUserId());
+$totalRepaymentFromUserToPartner = $statisticsHandler->GetTotalRepaymentFromUserToPartner($user->get('userId'), $user->getPartnerId());
+$totalRepaymentFromPartnerToUser = $statisticsHandler->GetTotalRepaymentFromUserToPartner($user->getPartnerId(), $user->get('userId'));
 $totalRepaymentDifference = $totalRepaymentFromUserToPartner - $totalRepaymentFromPartnerToUser;
 
 $totalRepaymentRequest = $totalRepaymentNeedDifference + $totalRepaymentDifference;

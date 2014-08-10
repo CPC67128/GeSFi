@@ -1,8 +1,8 @@
 <?php
 include_once '../security/security_manager.php';
 
-$accountsManager = new AccountsManager();
-$account = $accountsManager->GetCurrentActiveAccount();
+$accountsHandler = new AccountsHandler();
+$account = $accountsHandler->GetCurrentActiveAccount();
 
 function AddMenuEntry($id, $image, $text)
 {

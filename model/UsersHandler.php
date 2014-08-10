@@ -1,5 +1,5 @@
 <?php
-class UsersHandler
+class UsersHandler extends Handler
 {
 	function GetUser($id)
 	{

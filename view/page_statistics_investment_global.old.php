@@ -2,8 +2,8 @@
 
 <form action="/" id="form">
 <?php
-$accountsManager = new AccountsManager();
-$accounts = $accountsManager->GetAllInvestmentAccounts();
+$accountsHandler = new AccountsHandler();
+$accounts = $accountsHandler->GetAllInvestmentAccounts();
 $i = 0;
 
 foreach ($accounts as $account)

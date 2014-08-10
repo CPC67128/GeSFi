@@ -20,8 +20,8 @@ class Account extends Entity
 
 	public function getTypeDescription()
 	{
-		$accountsManager = new AccountsManager();
-		$types = $accountsManager->GetAccountTypes();
+		$accountsHandler = new AccountsHandler();
+		$types = $accountsHandler->GetAccountTypes();
 		return $types[$this->_type];
 	}
 

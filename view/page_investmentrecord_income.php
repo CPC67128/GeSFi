@@ -8,13 +8,13 @@
 <?= $translator->getTranslation('Depuis le compte') ?> :<br/>
 <input type="radio" name="fromAccount" value=""><i>Compte inconnu</i><br />
 <?php
-$accounts = $accountsManager->GetAllPrivateAccounts();
+$accounts = $accountsHandler->GetAllPrivateAccounts();
 foreach ($accounts as $account)
 { ?>
 <input type="radio" name="fromAccount" <?= $account->get('accountId') == $_SESSION['account_id'] ? 'checked' : '' ?> value="<?= $account->get('accountId') ?>"><?= $account->get('name') ?><br />
 <?php } ?>
 <?php
-$accounts = $accountsManager->GetAllDuoAccounts();
+$accounts = $accountsHandler->GetAllDuoAccounts();
 foreach ($accounts as $account)
 { ?>
 <input type="radio" name="fromAccount" <?= $account->get('accountId') == $_SESSION['account_id'] ? 'checked' : '' ?> value="<?= $account->get('accountId') ?>"><?= $account->get('name') ?><br />
@@ -27,8 +27,8 @@ foreach ($accounts as $account)
 
 <?= $translator->getTranslation('Vers le placement :') ?><br/>
 <?php
-$accountsManager = new AccountsManager();
-$accounts = $accountsManager->GetAllInvestmentAccounts();
+$accountsHandler = new AccountsHandler();
+$accounts = $accountsHandler->GetAllInvestmentAccounts();
 
 foreach ($accounts as $account)
 {

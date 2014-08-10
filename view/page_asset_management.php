@@ -15,11 +15,11 @@
 <?php
 /***** Private Assets *****/
 
-$accountsManager = new AccountsManager();
+$accountsHandler = new AccountsHandler();
 $sum = 0;
 $sumGlobal = 0;
 
-$accounts = $accountsManager->GetAllPrivateAccounts();
+$accounts = $accountsHandler->GetAllPrivateAccounts();
 
 foreach ($accounts as $account)
 {
@@ -47,7 +47,7 @@ foreach ($accounts as $account)
 					<td colspan="7"><b><?= $translator->getTranslation('Placements') ?></b></td>
 				</tr>
 <?php
-$accounts = $accountsManager->GetAllPrivateInvestmentAccounts();
+$accounts = $accountsHandler->GetAllPrivateInvestmentAccounts();
 
 $sumGlobal += $sum;
 $sum = 0;
@@ -107,7 +107,7 @@ $sumGlobal += $sum;
 $sum = 0;
 $sumGlobal = 0;
 
-$accounts = $accountsManager->GetAllDuoAccounts();
+$accounts = $accountsHandler->GetAllDuoAccounts();
 
 foreach ($accounts as $account)
 {
@@ -133,7 +133,7 @@ $sumGlobal = $sum;
 </tr>
 <?php
 $sum = 0;
-$accounts = $accountsManager->GetAllSharedInvestmentAccounts();
+$accounts = $accountsHandler->GetAllSharedInvestmentAccounts();
 
 foreach ($accounts as $account)
 {
@@ -158,7 +158,7 @@ $sumGlobal += $sum;
 </tr>
 <?php
 $sum = 0;
-$accounts = $accountsManager->GetAllSharedLoans();
+$accounts = $accountsHandler->GetAllSharedLoans();
 
 foreach ($accounts as $account)
 {

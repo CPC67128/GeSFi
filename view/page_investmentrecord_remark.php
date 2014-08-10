@@ -5,8 +5,8 @@
 <tr>
   <td style="vertical-align: middle;">
 <?php
-$accountsManager = new AccountsManager();
-$fromAccount = $accountsManager->GetCurrentActiveAccount();
+$accountsHandler = new AccountsHandler();
+$fromAccount = $accountsHandler->GetCurrentActiveAccount();
 
 if ($fromAccount->get('type') == 2)
 {

@@ -21,7 +21,7 @@ class Operation_Account_Modification extends Operation_Account
 
 	public function Save()
 	{
-		$handler = new AccountsManager();
+		$handler = new AccountsHandler();
 
 		if ($this->_accountId == '')
 		{

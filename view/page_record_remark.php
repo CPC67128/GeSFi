@@ -5,7 +5,7 @@
 <tr>
   <td style="vertical-align: middle;">
 <?php
-$accountsManager = new AccountsManager();
+$accountsHandler = new AccountsHandler();
 $fromAccount = $activeAccount;
 
 if ($fromAccount->get('type') == 2)

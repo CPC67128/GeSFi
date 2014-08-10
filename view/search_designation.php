@@ -12,8 +12,8 @@ $type = 2;
 if (isset($_GET['type']))
 	$type = $_GET['type'];
 
-$recordsManager = new RecordsManager();
-$result = $recordsManager->ListDesignation($searchString, $type);
+$recordsHandler = new RecordsHandler();
+$result = $recordsHandler->ListDesignation($searchString, $type);
 
 $output = array(
 	"identifier" => "id",

@@ -1,9 +1,9 @@
 <?php
 
-$investmentsRecordsManager = new InvestmentsRecordsManager();
+$investmentsRecordsHandler = new InvestmentsRecordsHandler();
 
-$investmentsRecordsManager->CalculateIndicators();
-$result = $investmentsRecordsManager->GetAllRecords(12 * 10);
+$investmentsRecordsHandler->CalculateIndicators();
+$result = $investmentsRecordsHandler->GetAllRecords(12 * 10);
 
 $now = date('Y-m-d');
 $lastKnownValue = null;

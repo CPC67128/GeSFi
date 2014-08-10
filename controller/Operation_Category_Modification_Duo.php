@@ -3,7 +3,7 @@ class Operation_Category_Modification_Duo extends Operation_Category
 {
 	public function Save()
 	{
-		$handler = new CategoryHandler();
+		$handler = new CategoriesHandler();
 
 		if ($this->_categoryId == '')
 		{

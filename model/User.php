@@ -12,16 +12,6 @@ class User extends Entity
 
 	protected $_isNull = true;
 
-	public function setUserId($userId)
-	{
-		$this->_userId = $userId;
-	}
-	
-	public function getUserId()
-	{
-		return $this->_userId;
-	}
-	
 	public function setEmail($email)
 	{
 		$this->_email = $email;

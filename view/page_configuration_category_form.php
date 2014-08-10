@@ -25,8 +25,8 @@ if ($_POST['categoryId'] == 'AddCategory')
 }
 else
 {
-	$categoryHandler = new CategoryHandler();
-	$category = $categoryHandler->GetCategory($_POST['categoryId']);
+	$categoriesHandler = new CategoriesHandler();
+	$category = $categoriesHandler->GetCategory($_POST['categoryId']);
 ?>
 <?= $translator->getTranslation('Identifiant') ?> <input type='text' name='categoryId' size='41' style='background-color : #d1d1d1;' readonly="readonly" value="<?= $category->get("categoryId") ?>" /><br /> 
 <?= $translator->getTranslation('Nom') ?> <input type='text' name='category' size='41' value="<?= $category->get('category') ?>" /><br /> 

@@ -10,7 +10,7 @@
 <br/>
 
 <?php
-$accounts = $accountsManager->GetAllDuoAccounts();
+$accounts = $accountsHandler->GetAllDuoAccounts();
 foreach ($accounts as $account)
 { ?>
 <input type="radio" name="toAccount" <?= $account->get('accountId') == $_SESSION['account_id'] ? 'checked' : '' ?> value="<?= $account->get('accountId') ?>"><?= $account->get('name') ?><br />
@@ -20,7 +20,7 @@ foreach ($accounts as $account)
 
 <input type="radio" name="toAccount" value="USER/<?= $activeUser->get('userId') ?>"><i><?= $activeUser->get('name') ?> / Compte inconnu</i><br />
 <?php
-$accounts = $accountsManager->GetAllPrivateAccounts();
+$accounts = $accountsHandler->GetAllPrivateAccounts();
 foreach ($accounts as $account)
 { ?>
 <input type="radio" name="toAccount" <?= $account->get('accountId') == $_SESSION['account_id'] ? 'checked' : '' ?> value="<?= $account->get('accountId') ?>"><?= $activeUser->get('name') ?> / <?= $account->get('name') ?><br />
@@ -49,8 +49,8 @@ foreach ($accounts as $account)
 <td colspan=4><b><i><?= $translator->getTranslation('Catégories duo') ?></i></b></td>
 </tr>
 <?php
-$categoriesHandler = new CategoryHandler();
-$categories = $categoriesHandler->GetIncomeCategoriesForDuo($activeUser->getUserId());
+$categoriesHandler = new CategoriesHandler();
+$categories = $categoriesHandler->GetIncomeCategoriesForDuo($activeUser->get('userId'));
 $i = 1;
 foreach ($categories as $category)
 {
@@ -82,7 +82,7 @@ foreach ($categories as $category)
 <td colspan=4><b><i><?= $translator->getTranslation('Catégories privées de ') ?><?= $activeUser->getName() ?></i></b></td>
 </tr>
 <?php
-$categories = $categoriesHandler->GetIncomeCategoriesForUser($activeUser->getUserId());
+$categories = $categoriesHandler->GetIncomeCategoriesForUser($activeUser->get('userId'));
 
 foreach ($categories as $category)
 {

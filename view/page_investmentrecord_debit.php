@@ -7,8 +7,8 @@
 
 <?= $translator->getTranslation('Depuis le placement') ?> :<br/>
 <?php
-$accountsManager = new AccountsManager();
-$accounts = $accountsManager->GetAllInvestmentAccounts();
+$accountsHandler = new AccountsHandler();
+$accounts = $accountsHandler->GetAllInvestmentAccounts();
 
 foreach ($accounts as $account)
 {
@@ -25,7 +25,7 @@ foreach ($accounts as $account)
 <?= $translator->getTranslation('Vers le compte :') ?><br/>
 <input type="radio" name="toAccount" value=""><i>Compte inconnu</i><br />
 <?php
-$accounts = $accountsManager->GetAllPrivateAccounts();
+$accounts = $accountsHandler->GetAllPrivateAccounts();
 foreach ($accounts as $account)
 { ?>
 <input type="radio" name="toAccount" <?= $account->get('accountId') == $_SESSION['account_id'] ? 'checked' : '' ?> value="<?= $account->get('accountId') ?>"><?= $account->get('name') ?><br />

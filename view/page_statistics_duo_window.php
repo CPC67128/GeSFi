@@ -14,7 +14,7 @@ $dateStart = new DateTime(date("Y-m-d", strtotime($dateEnd->format("Y-m-d") . " 
 $total = 0;
 $totalCharged = 0;
 $index = 0;
-$categories = $categoryHandler->GetOutcomeCategoriesForDuo($activeUser->get('userId'));
+$categories = $categoriesHandler->GetOutcomeCategoriesForDuo($activeUser->get('userId'));
 foreach ($categories as $category)
 {
 	$value = $category->GetTotalExpenseBetween2Dates($dateStart, $dateEnd);

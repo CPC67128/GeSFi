@@ -25,8 +25,8 @@ $(function () {
         series: [
 
 <?php
-$investmentsRecordsManager = new InvestmentsRecordsManager();
-$result = $investmentsRecordsManager->GetAllRecordsForAllInvestments();
+$investmentsRecordsHandler = new InvestmentsRecordsHandler();
+$result = $investmentsRecordsHandler->GetAllRecordsForAllInvestments();
 
 $previousAccountId = '';
 $previousName = '';

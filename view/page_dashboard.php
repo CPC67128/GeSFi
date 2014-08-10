@@ -7,8 +7,8 @@ if ($accountType == 0)
 
 	<table class="summaryTable">
 	<?php
-	$accountsManager = new AccountsManager();
-	$accounts = $accountsManager->GetAllOrdinaryAccounts();
+	$accountsHandler = new AccountsHandler();
+	$accounts = $accountsHandler->GetAllOrdinaryAccounts();
 	
 	foreach ($accounts as $account)
 	{
@@ -74,16 +74,16 @@ Débit prévus pour les 10 prochains jours : <?= $translator->getCurrencyValuePr
 <br /><br />
 <?php
 
-$recordsManager = new RecordsManager();
+$recordsHandler = new RecordsHandler();
 $fullView = false;
 
 if (isset($_GET['fullview']))
 	$fullView = true;
 
 if ($fullView)
-	$result = $recordsManager->GetAllRecords(12 * 5);
+	$result = $recordsHandler->GetAllRecords(12 * 5);
 else
-	$result = $recordsManager->GetAllRecords(3);
+	$result = $recordsHandler->GetAllRecords(3);
 
 $now = date('Y-m-d');
 

@@ -41,7 +41,7 @@ $index = 0;
 $currentMonth = 0;
 $indexCategory = 0;
 $totalAverage = 0;
-$categories = $categoryHandler->GetIncomeCategoriesForDuo($_SESSION['user_id']);
+$categories = $categoriesHandler->GetIncomeCategoriesForDuo($_SESSION['user_id']);
 
 // Income
 foreach ($categories as $category)
@@ -110,7 +110,7 @@ $index = 0;
 $currentMonth = 0;
 $indexCategory = 0;
 $totalAverage = 0;
-$categories = $categoryHandler->GetOutcomeCategoriesForDuo($_SESSION['user_id']);
+$categories = $categoriesHandler->GetOutcomeCategoriesForDuo($_SESSION['user_id']);
 
 foreach ($categories as $category)
 {

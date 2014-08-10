@@ -11,7 +11,7 @@ $index = 0;
 
 $dateEnd = new DateTime(date("Y").'-'.date("m").'-01');
 $dateStart = new DateTime(date("Y-m-d", strtotime($dateEnd->format("Y-m-d") . " -12 months")));
-$categories = $categoryHandler->GetIncomeCategoriesForUser($activeUser->get('userId'));
+$categories = $categoriesHandler->GetIncomeCategoriesForUser($activeUser->get('userId'));
 foreach ($categories as $category)
 {
 	$value = $category->GetTotalIncomeBetween2Dates($dateStart, $dateEnd);
@@ -48,7 +48,7 @@ foreach ($categories as $category)
 <?php
 $total = 0;
 $index = 0;
-$categories = $categoryHandler->GetOutcomeCategoriesForUser($activeUser->get('userId'));
+$categories = $categoriesHandler->GetOutcomeCategoriesForUser($activeUser->get('userId'));
 foreach ($categories as $category)
 {
 	$value = $category->GetTotalExpenseBetween2Dates($dateStart, $dateEnd);

@@ -21,12 +21,12 @@ $_SESSION['data'] = $data;
 
 $translator = new Translator();
 
-$accountsManager = new AccountsManager();
+$accountsHandler = new AccountsHandler();
 
 //if ($id != '')
 //	$activeAccount = $accountsManager->GetAccount($id);
 //else
-$activeAccount = $accountsManager->GetCurrentActiveAccount();
+$activeAccount = $accountsHandler->GetCurrentActiveAccount();
 $accountType = $activeAccount->get('type');
 
 $pageName = $page;
@@ -53,9 +53,9 @@ if ($accountType == -100 && $pageName == 'records')
 if ($accountType == 100 && $pageName == 'records')
 	$pageName = 'asset_management';
 
-$categoryHandler = new CategoryHandler();
+$categoriesHandler = new CategoriesHandler();
 
-$recordsManager = new RecordsManager();
+$recordsHandler = new RecordsHandler();
 
 $usersHandler = new UsersHandler();
 $activeUser = $usersHandler->GetCurrentUser();

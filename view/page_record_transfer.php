@@ -7,15 +7,15 @@
 
 <?= $translator->getTranslation('Depuis le compte') ?> :<br/>
 <?php
-$accounts = $accountsManager->GetAllDuoAccounts();
+$accounts = $accountsHandler->GetAllDuoAccounts();
 foreach ($accounts as $account)
 { ?>
 <input type="radio" name="fromAccount" <?= $account->get('accountId') == $_SESSION['account_id'] ? 'checked' : '' ?> value="<?= $account->get('accountId') ?>"><?= $account->get('name') ?><br />
 <?php } ?>
 
-<input type="radio" name="fromAccount" value="USER/<?= $activeUser->getUserId() ?>"><i><?= $activeUser->getName() ?> / Compte inconnu</i><br />
+<input type="radio" name="fromAccount" value="USER/<?= $activeUser->get('userId') ?>"><i><?= $activeUser->getName() ?> / Compte inconnu</i><br />
 <?php
-$accounts = $accountsManager->GetAllPrivateAccounts();
+$accounts = $accountsHandler->GetAllPrivateAccounts();
 foreach ($accounts as $account)
 { ?>
 <input type="radio" name="fromAccount" <?= $account->get('accountId') == $_SESSION['account_id'] ? 'checked' : '' ?> value="<?= $account->get('accountId') ?>"><?= $activeUser->get('name') ?> / <?= $account->get('name') ?><br />
@@ -27,13 +27,13 @@ foreach ($accounts as $account)
 
 <?= $translator->getTranslation('Vers le compte') ?> :<br/>
 <?php
-$accounts = $accountsManager->GetAllDuoAccounts();
+$accounts = $accountsHandler->GetAllDuoAccounts();
 foreach ($accounts as $account)
 { ?>
 <input type="radio" name="toAccount" value="<?= $account->get('accountId') ?>"><?= $account->get('name') ?><br />
 <?php } ?>
 <?php
-$accounts = $accountsManager->GetAllSharedLoans();
+$accounts = $accountsHandler->GetAllSharedLoans();
 foreach ($accounts as $account)
 { ?>
 <input type="radio" name="toAccount" value="<?= $account->get('accountId') ?>"><?= $account->get('name') ?><br />
@@ -41,7 +41,7 @@ foreach ($accounts as $account)
 
 <input type="radio" name="toAccount" value="USER/<?= $activeUser->get('userId') ?>"><i><?= $activeUser->get('name') ?> / Compte inconnu</i><br />
 <?php
-$accounts = $accountsManager->GetAllPrivateAccounts();
+$accounts = $accountsHandler->GetAllPrivateAccounts();
 foreach ($accounts as $account)
 { ?>
 <input type="radio" name="toAccount" value="<?= $account->get('accountId') ?>"><?= $activeUser->get('name') ?> / <?= $account->get('name') ?><br />

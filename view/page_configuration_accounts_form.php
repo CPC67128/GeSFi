@@ -15,8 +15,8 @@ if ($_POST['accountId'] == 'AddAccount')
 <?= $translator->getTranslation('Information') ?> <input name='information' type='text' size='41' value="" /><br /> 
 <?= $translator->getTranslation('Type') ?> <select name="type">
 <?php
-$accountsManager = new AccountsManager();
-$types = $accountsManager->GetAccountTypes();
+$accountsHandler = new AccountsHandler();
+$types = $accountsHandler->GetAccountTypes();
 foreach ($types as $key => $value)
 {
 	?><option value="<?= $key ?>"><?=  $value ?></option><?php
@@ -37,8 +37,8 @@ foreach ($types as $key => $value)
 }
 else
 {
-	$accountsManager = new AccountsManager();
-	$account = $accountsManager->GetAccount($_POST['accountId']);
+	$accountsHandler = new AccountsHandler();
+	$account = $accountsHandler->GetAccount($_POST['accountId']);
 ?>
 <?= $translator->getTranslation('Identifiant') ?> <input type='text' name='accountId' size='41' style='background-color : #d1d1d1;' readonly="readonly" value="<?= $account->get('accountId') ?>" /><br /> 
 <?= $translator->getTranslation('Nom') ?> <input type='text' name='name' size='41' value="<?= $account->get('name') ?>" /><br />

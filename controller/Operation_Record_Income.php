@@ -33,7 +33,7 @@ class Operation_Record_Income extends Operation_Record
 				{
 					$this->_db->InsertRecord_AmountUse(
 						$toAccountId,
-						$user->getUserId(),
+						$user->get('userId'),
 						$currentDate,
 						$categoryData['amount'],
 						$this->_designation,

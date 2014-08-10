@@ -10,13 +10,13 @@
 <br/>
 
 <?php
-$accounts = $accountsManager->GetAllDuoAccounts();
+$accounts = $accountsHandler->GetAllDuoAccounts();
 foreach ($accounts as $account)
 { ?>
 <input type="radio" name="fromAccount" <?= $account->get('accountId') == $activeAccount->get('accountId') ? 'checked' : '' ?> value="<?= $account->get('accountId') ?>"><?= $account->get('name') ?><br />
 <?php } ?>
 <?php
-$accounts = $accountsManager->GetAllSharedLoans();
+$accounts = $accountsHandler->GetAllSharedLoans();
 foreach ($accounts as $account)
 { ?>
 <input type="radio" name="fromAccount" <?= $account->get('accountId') == $activeAccount->get('accountId') ? 'checked' : '' ?> value="<?= $account->get('accountId') ?>"><?= $account->get('name') ?><br />
@@ -25,9 +25,9 @@ foreach ($accounts as $account)
 
 <br/>
 
-<input type="radio" name="fromAccount" value="USER/<?= $activeUser->getUserId() ?>"><i><?= $activeUser->getName() ?> / Compte inconnu</i><br />
+<input type="radio" name="fromAccount" value="USER/<?= $activeUser->get('userId') ?>"><i><?= $activeUser->getName() ?> / Compte inconnu</i><br />
 <?php
-$accounts = $accountsManager->GetAllPrivateAccounts();
+$accounts = $accountsHandler->GetAllPrivateAccounts();
 foreach ($accounts as $account)
 { ?>
 <input type="radio" name="fromAccount" <?= $account->get('accountId') == $activeAccount->get('accountId') ? 'checked' : '' ?> value="<?= $account->get('accountId') ?>"><?= $activeUser->get('name') ?> / <?= $account->get('name') ?><br />
@@ -67,8 +67,8 @@ Montant <input type="text" name="amount" tabindex="-1" size="6" style='backgroun
 <td colspan=4><b><i><?= $translator->getTranslation('Catégories duo') ?></i></b></td>
 </tr>
 <?php
-$categoriesHandler = new CategoryHandler();
-$categories = $categoriesHandler->GetOutcomeCategoriesForDuo($activeUser->getUserId());
+$categoriesHandler = new CategoriesHandler();
+$categories = $categoriesHandler->GetOutcomeCategoriesForDuo($activeUser->get('userId'));
 $i = 1;
 foreach ($categories as $category)
 {
@@ -89,7 +89,7 @@ foreach ($categories as $category)
 <td colspan=4><b><i><?= $translator->getTranslation('Catégories privées de ') ?><?= $activeUser->getName() ?></i></b></td>
 </tr>
 <?php
-$categories = $categoriesHandler->GetOutcomeCategoriesForUser($activeUser->getUserId());
+$categories = $categoriesHandler->GetOutcomeCategoriesForUser($activeUser->get('userId'));
 
 foreach ($categories as $category)
 {
@@ -109,7 +109,7 @@ foreach ($categories as $category)
 <tr>
 <td><i><?= $translator->getTranslation('(Inconnue)') ?></i></td>
 <td><input type="text" name="category<?= $i ?>Formula" tabindex="<?= ($i * 2) ?>" size="12" onkeyup="javascript: CalculateAllAmounts();">&nbsp;=&nbsp;</td>
-<td><input type="text" name="category<?= $i ?>Amount"  tabindex="-1" size="6" readonly> &euro;<input type="hidden" name="category<?= $i ?>CategoryId" tabindex="-1" size="6" readonly value='USER/<?= $activeUser->getUserId() ?>'></td>
+<td><input type="text" name="category<?= $i ?>Amount"  tabindex="-1" size="6" readonly> &euro;<input type="hidden" name="category<?= $i ?>CategoryId" tabindex="-1" size="6" readonly value='USER/<?= $activeUser->get('userId') ?>'></td>
 <td align="center"><input type="text" name="category<?= $i ?>ChargeLevel" tabindex="<?= (($i * 2) + 1) ?>" value="100" size="2"> %</td>
 <?php $i++; ?>
 </tr>
@@ -117,7 +117,7 @@ foreach ($categories as $category)
 <td colspan=4><b><i><?= $translator->getTranslation('Catégories privées de ') ?><?= $activeUser->GetPartnerName() ?></i></b></td>
 </tr>
 <?php
-$categoriesHandler = new CategoryHandler();
+$categoriesHandler = new CategoriesHandler();
 $categories = $categoriesHandler->GetOutcomeCategoriesForUser($activeUser->GetPartnerId());
 
 foreach ($categories as $category)

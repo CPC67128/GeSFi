@@ -30,7 +30,7 @@ class User extends Entity
 	public function getName()
 	{
 		return $this->_name;
-	} //TEST
+	}
 	
 	public function setPassword($password)
 	{

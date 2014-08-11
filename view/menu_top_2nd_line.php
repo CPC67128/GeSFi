@@ -3,10 +3,10 @@ include_once '../security/security_manager.php';
 
 $accountsHandler = new AccountsHandler();
 
-if ($_SESSION['page'] != 'asset_management')
-	echo '<a href="#" onclick="javascript:ChangeContext(\'asset_management\',\'\',\'asset_management\'); return false;">';
+if ($_SESSION['page'] != 'investment_records_dashboard' && $_SESSION['page'] != 'investment_records_statistics')
+	echo '<a href="#" onclick="javascript:ChangeContext(\'investment_records_dashboard\',\'\',\'\'); return false;">';
 echo 'Gestion patrimoniale';
-if ($_SESSION['page'] != 'asset_management')
+if ($_SESSION['page'] != 'investment_records_dashboard' && $_SESSION['page'] != 'investment_records_statistics')
 	echo '</a>';
 echo ' / ';
 

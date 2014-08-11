@@ -190,7 +190,7 @@ function LoadTopMenu()
 {
 	$.ajax({
         type : 'POST',
-        url : 'content_top_menu.php',
+        url : 'menu_top_1st_line.php',
         dataType: 'html',
         success : function(data) {
             $('#topMenu').html(data);
@@ -199,7 +199,7 @@ function LoadTopMenu()
 
 	$.ajax({
         type : 'POST',
-        url : 'content_top_second_line_menu.php',
+        url : 'menu_top_2nd_line.php',
         dataType: 'html',
         success : function(data) {
             $('#topSecondLineMenu').html(data);
@@ -211,7 +211,7 @@ function LoadLeftMenu()
 {
 	$.ajax({
         type : 'POST',
-        url : 'content_left_menu.php',
+        url : 'menu_left.php',
         dataType: 'html',
         success : function(data) {
             $('#leftMenu').html(data);

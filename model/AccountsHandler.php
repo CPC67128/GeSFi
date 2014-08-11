@@ -179,7 +179,11 @@ class AccountsHandler extends Handler
 		{
 			$newAccount->set('type', 0);
 		}
-		elseif ($_SESSION['data'] == 'asset_management' && $_SESSION['account_id'] == '')
+		elseif ($_SESSION['page'] == 'investment_records_dashboard' && $_SESSION['account_id'] == '')
+		{
+			$newAccount->set('type', 100);
+		}
+		elseif ($_SESSION['page'] == 'investment_records_statistics' && $_SESSION['account_id'] == '')
 		{
 			$newAccount->set('type', 100);
 		}

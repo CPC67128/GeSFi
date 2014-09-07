@@ -69,45 +69,91 @@ class RecordsHandler extends Handler
 		return $result;
 	}
 
+	// Total of outcome to duo account
 	function GetTotalOutcomeToDuoAccount($month, $year)
 	{
 		$total = 0;
 
 		$db = new DB();
-		
+
+		/* Virtual account
 		$query = "select sum(amount) as total
-		from {TABLEPREFIX}record
-		where record_type in (12)
-		and marked_as_deleted = 0
-		and record_date <= curdate()
-		and record_date_month = ".$month."
-		and record_date_year = ".$year."
-		and actor = 1
-		and account_id in (select account_id from {TABLEPREFIX}account where type = 2 and owner_user_id = '".$_SESSION['user_id']."')";
+			from {TABLEPREFIX}record
+			where record_type in (12)
+			and marked_as_deleted = 0
+			and record_date <= curdate()
+			and record_date_month = ".$month."
+			and record_date_year = ".$year."
+			and actor = 1
+			and account_id in (select account_id from {TABLEPREFIX}account where type = 2 and owner_user_id = '".$_SESSION['user_id']."')";
 		$row = $db->SelectRow($query);
 		$total += $row['total'];
 		
 		$query = "select sum(amount) as total
-		from {TABLEPREFIX}record
-		where record_type in (12)
-		and marked_as_deleted = 0
-		and record_date <= curdate()
-		and record_date_month = ".$month."
-		and record_date_year = ".$year."
-		and actor = 2
-		and account_id in (select account_id from {TABLEPREFIX}account where type = 2 and coowner_user_id = '".$_SESSION['user_id']."')";
+			from {TABLEPREFIX}record
+			where record_type in (12)
+			and marked_as_deleted = 0
+			and record_date <= curdate()
+			and record_date_month = ".$month."
+			and record_date_year = ".$year."
+			and actor = 2
+			and account_id in (select account_id from {TABLEPREFIX}account where type = 2 and coowner_user_id = '".$_SESSION['user_id']."')";
 		$row = $db->SelectRow($query);
 		$total += $row['total'];
-		
+		*/
+
+		// Total income from the current user to a duo account
 		$query = "select sum(amount) as total
-		from {TABLEPREFIX}record
-		where record_type in (10)
-		and marked_as_deleted = 0
-		and record_date <= curdate()
-		and record_date_month = ".$month."
-		and record_date_year = ".$year."
-		and user_id = '".$_SESSION['user_id']."'
-		and account_id in (select account_id from {TABLEPREFIX}account where type in (2, 3) and (owner_user_id = '".$_SESSION['user_id']."' or coowner_user_id = '".$_SESSION['user_id']."'))";
+			from {TABLEPREFIX}record
+			where record_type in (20)
+			and marked_as_deleted = 0
+			and record_date <= curdate()
+			and record_date_month = ".$month."
+			and record_date_year = ".$year."
+			and record_group_id in
+				(
+					select record_group_id
+					from {TABLEPREFIX}record
+					where record_type in (10)
+					and account_id in (select account_id from {TABLEPREFIX}account where type in (2, 3) and (owner_user_id = '{USERID}' or coowner_user_id = '{USERID}'))
+				)
+			and account_id in
+				(
+					select account_id
+					from {TABLEPREFIX}account
+					where type not in (2, 3, 5, 12) and owner_user_id = '{USERID}'
+				)";
+		$row = $db->SelectRow($query);
+		$total += $row['total'];
+
+		$usersHandler = new UsersHandler();
+		$user = $usersHandler->GetUser($_SESSION['user_id']);
+
+		// Total expense from the current user to a duo category 
+		$query = "select sum(amount * (charge / 100)) as total
+			from {TABLEPREFIX}record
+			where record_type in (22)
+			and marked_as_deleted = 0
+			and category_id in (select category_id from {TABLEPREFIX}category where link_type = 'DUO' and link_id = '".$user->getDuoId()."')
+			and record_date <= curdate()
+			and record_date_month = ".$month."
+			and record_date_year = ".$year."
+			and user_id = '{USERID}'
+			and account_id not in (select account_id from {TABLEPREFIX}account where type in (2, 3, 5, 12))";
+		$row = $db->SelectRow($query);
+		$total += $row['total'];
+
+		// Total expense from the current user to a private category that is not his 
+		$query = "select sum(amount * (charge / 100)) as total
+			from {TABLEPREFIX}record
+			where record_type in (22)
+			and marked_as_deleted = 0
+			and category_id in (select category_id from {TABLEPREFIX}category where link_type = 'USER' and link_id != '{USERID}')
+			and record_date <= curdate()
+			and record_date_month = ".$month."
+			and record_date_year = ".$year."
+			and user_id = '{USERID}'
+			and account_id not in (select account_id from {TABLEPREFIX}account where type in (2, 3, 5, 12))";
 		$row = $db->SelectRow($query);
 		$total += $row['total'];
 
@@ -119,16 +165,27 @@ class RecordsHandler extends Handler
 		$total = 0;
 
 		$db = new DB();
-		
+
 		$query = "select sum(amount) as total
-		from {TABLEPREFIX}record
-		where record_type in (20)
-		and marked_as_deleted = 0
-		and record_date <= curdate()
-		and record_date_month = ".$month."
-		and record_date_year = ".$year."
-		and user_id = '".$_SESSION['user_id']."'
-		and account_id in (select account_id from {TABLEPREFIX}account where type in (2, 3) and (owner_user_id = '".$_SESSION['user_id']."' or coowner_user_id = '".$_SESSION['user_id']."'))";
+			from {TABLEPREFIX}record
+			where record_type in (10)
+			and marked_as_deleted = 0
+			and record_date <= curdate()
+			and record_date_month = ".$month."
+			and record_date_year = ".$year."
+			and record_group_id in
+				(
+					select record_group_id
+					from {TABLEPREFIX}record
+					where record_type in (20)
+					and account_id in (select account_id from {TABLEPREFIX}account where type in (2, 3) and (owner_user_id = '".$_SESSION['user_id']."' or coowner_user_id = '".$_SESSION['user_id']."'))
+				)
+			and account_id in
+				(
+					select account_id
+					from {TABLEPREFIX}account
+					where type not in (2, 3, 5, 12) and owner_user_id = '{USERID}'
+				)";
 		$row = $db->SelectRow($query);
 		$total += $row['total'];
 

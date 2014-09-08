@@ -94,25 +94,43 @@ class DB
 
 	function Execute($query)
 	{
+		return $this->_Execute($query, false);
+	}
+
+	function _Execute($query, $returnQueryInException)
+	{
 		if ($this->_isReadOnly)
 			return 0;
-
+	
 		$query = str_replace('{USERID}', $this->_userId, $query);
 		$query = str_replace('{ACCOUNTID}', $this->_accountId, $query);
 		$query = str_replace('{TABLEPREFIX}', $this->_dbTablePrefix, $query);
-		$result = $this->_connection->query($query) or die('Erreur SQL ! '.$query.'<br />'.mysql_error());
-	
-		return $result->fetch();
+		if ($returnQueryInException)
+			throw new Exception($query);
+		else
+		{
+			$result = $this->_connection->query($query) or die('Erreur SQL ! '.$query.'<br />'.mysql_error());
+			return $result->fetch();
+		}
 	}
 
 	function Select($query)
 	{
+		return $this->_Select($query, false);
+	}
+
+	function _Select($query, $returnQueryInException)
+	{
 		$query = str_replace('{USERID}', $this->_userId, $query);
 		$query = str_replace('{ACCOUNTID}', $this->_accountId, $query);
 		$query = str_replace('{TABLEPREFIX}', $this->_dbTablePrefix, $query);
-		$result = $this->_connection->query($query) or die('Erreur SQL ! '.$query.'<br />'.mysql_error());
-			
-		return $result;
+		if ($returnQueryInException)
+			throw new Exception($query);
+		else
+		{
+			$result = $this->_connection->query($query) or die('Erreur SQL ! '.$query.'<br />'.mysql_error());
+			return $result;
+		}
 	}
 
 	function GenerateUUID()

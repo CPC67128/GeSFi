@@ -7,19 +7,19 @@ try
 
 	switch ($_GET['action'])
 	{
-		case 'record_remark':
+		case 'records_remark':
 			$operation = new Operation_Record_Remark();
 			break;
 		case 'record_delete':
 			$operation = new Operation_Record_Delete();
 			break;
-		case 'record_transfer':
+		case 'records_transfer':
 			$operation = new Operation_Record_Transfer();
 			break;
-		case 'record_income':
+		case 'records_income':
 			$operation = new Operation_Record_Income();
 			break;
-		case 'record_expense':
+		case 'records_expense':
 			$operation = new Operation_Record_Expense();
 			break;
 		case 'record_confirm':
@@ -37,19 +37,19 @@ try
 			$operation = new Operation_Account_Modification();
 			break;
 
-		case 'investmentrecord_value':
+		case 'investment_records_value':
 			$operation = new Operation_InvestmentRecord_Value();
 			break;
 		case 'investmentrecord_delete':
 			$operation = new Operation_InvestmentRecord_Delete();
 			break;
-		case 'investmentrecord_income':
+		case 'investment_records_credit':
 			$operation = new Operation_InvestmentRecord_Income();
 			break;
-		case 'investmentrecord_debit':
+		case 'investment_records_debit':
 			$operation = new Operation_InvestmentRecord_Debit();
 			break;
-		case 'investmentrecord_remark':
+		case 'investment_records_remark':
 			$operation = new Operation_InvestmentRecord_Remark();
 			break;
 				
@@ -73,6 +73,10 @@ try
 			break;
 		case 'category_modification_user':
 			$operation = new Operation_Category_Modification_User();
+			break;
+
+		case 'designation_rename':
+			$operation = new Operation_Designation_Rename();
 			break;
 /*
 		case 'userCategoryModification':

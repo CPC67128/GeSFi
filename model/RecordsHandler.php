@@ -117,11 +117,16 @@ class RecordsHandler extends Handler
 					where record_type in (10)
 					and account_id in (select account_id from {TABLEPREFIX}account where type in (2, 3) and (owner_user_id = '{USERID}' or coowner_user_id = '{USERID}'))
 				)
-			and account_id in
+			and
 				(
-					select account_id
-					from {TABLEPREFIX}account
-					where type not in (2, 3, 5, 12) and owner_user_id = '{USERID}'
+					account_id in
+					(
+						select account_id
+						from {TABLEPREFIX}account
+						where type not in (2, 3, 5, 12) and owner_user_id = '{USERID}'
+					)
+					or
+					account_id = ''
 				)";
 		$row = $db->SelectRow($query);
 		$total += $row['total'];
@@ -196,17 +201,44 @@ class RecordsHandler extends Handler
 	{
 		$usersHandler = new UsersHandler();
 		$user = $usersHandler->GetCurrentUser();
-
+	
 		$db = new DB();
+		$searchString = $db->ConvertStringForSqlInjection($searchString);
+
+		$typeStart = $type.'0';
+		$typeEnd = $type.'9';
+
+		if ($type == 0)
+		{
+			$typeStart = 0;
+			$typeEnd = 99;
+		}
 
 		$query = "select designation, count(*) as total
 			from {TABLEPREFIX}record
 			where designation like '%".$searchString."%'
-			and record_type >= ".$type."0 and record_type <= ".$type."9
+			and record_type >= ".$typeStart." and record_type <= ".$typeEnd."
 			and account_id in (select account_id from {TABLEPREFIX}account where owner_user_id = '".$user->get('userId')."' or coowner_user_id = '".$user->get('userId')."')
 			group by designation
 			order by count(*) desc";
 		$result = $db->Select($query);
+		return $result;
+	}
+
+	function RenameDesignation($source, $destination)
+	{
+		$usersHandler = new UsersHandler();
+		$user = $usersHandler->GetCurrentUser();
+
+		$db = new DB();
+		$source = $db->ConvertStringForSqlInjection($source);
+		$destination = $db->ConvertStringForSqlInjection($destination);
+
+		$query = "update {TABLEPREFIX}record
+			set designation = '".$destination."'
+			where designation = '".$source."'
+			and account_id in (select account_id from {TABLEPREFIX}account where owner_user_id = '".$user->get('userId')."' or coowner_user_id = '".$user->get('userId')."')";
+		$result = $db->_Execute($query, false);
 		return $result;
 	}
 }

@@ -45,6 +45,7 @@ if ($account->get('type') == -100)
 	AddMenuEntry("administration_connection", "connectionMenuIcon.jpg", "Connections");
 	AddMenuEntry("administration_accounts", "accountsMenuIcon.png", "Comptes");
 	AddMenuEntry("administration_category", "categoriesMenuIcon.jpg", "Catégories");
+	AddMenuEntry("administration_designation", "designationMenuIcon.png", "Désignation");
 	AddMenuEntry("administration_user", "userMenuIcon.png", "Utilisateur");
 }
 

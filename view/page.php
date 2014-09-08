@@ -152,6 +152,7 @@ switch ($pageName)
 	case 'administration_user';
 	case 'administration_category';
 	case 'administration_connection';
+	case 'administration_designation';
 	case 'home';
 	case 'investment';
 	case 'investment_records_dashboard';

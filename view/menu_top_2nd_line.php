@@ -1,24 +1,18 @@
 <?php
-include_once '../security/security_manager.php';
+include 'menu.php';
 
-$accountsHandler = new AccountsHandler();
+$isGlobalRecordSelected = ($id == '' && $area == 'investment');
 
-if ($_SESSION['page'] != 'investment_records_dashboard' && $_SESSION['page'] != 'investment_records_statistics')
-	echo '<a href="#" onclick="javascript:ChangeContext(\'investment_records_dashboard\',\'\',\'\'); return false;">';
-echo 'Gestion patrimoniale';
-if ($_SESSION['page'] != 'investment_records_dashboard' && $_SESSION['page'] != 'investment_records_statistics')
-	echo '</a>';
-echo ' / ';
+AddMenuTopItem(!$isGlobalRecordSelected, $translator->getTranslation('Gestion patrimoniale'), 'record', 'investment', '', '', true);
 
 $accounts = $accountsHandler->GetAllInvestmentAccounts();
+$lastItem = end($accounts);
+reset($accounts);
 
 foreach ($accounts as $account)
 {
-	if ($account->get('accountId') != $_SESSION['account_id'])
-		echo '<a href="#" onclick="javascript:ChangeContext(\'records\',\''.$account->get('accountId').'\',\'asset_management\'); return false;">';
-	echo $account->get('name');
-	if ($account->get('accountId') != $_SESSION['account_id'])
-		echo '</a>';
-	echo ' / ';
-}
+	$isAccountSelected = $account->get('accountId') == $id;
+	$isLastItem = $lastItem->get('accountId') == $account->get('accountId');
 
+	AddMenuTopItem(!$isAccountSelected, $account->get('name'), 'record', 'investment', $account->get('accountId'), '', !$isLastItem);
+}

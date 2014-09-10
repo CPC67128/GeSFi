@@ -19,6 +19,14 @@ $_SESSION['account_id'] = $id;
 $_SESSION['page'] = $page;
 $_SESSION['data'] = $data;
 
+if (!isset($_POST))
+	exit();
+
+$page = isset($_POST['page']) ? $_POST['page'] : '';
+$area = isset($_POST['area']) ? $_POST['area'] : '';
+$id = isset($_POST['id']) ? $_POST['id'] : '';
+$data = isset($_POST['data']) ? $_POST['data'] : '';
+
 $translator = new Translator();
 
 $accountsHandler = new AccountsHandler();
@@ -42,7 +50,7 @@ if ($pageName == 'records-fullview')
 }
 
 if ($pageName == '-')
-	$pageName = 'dashboard';
+	$pageName = 'records';
 
 if ($accountType == -50 && $pageName == 'records')
 	$pageName = 'home';
@@ -66,40 +74,48 @@ if ($accountType >= 1 && $accountType <= 10)
 
 switch ($pageName)
 {
-	case 'records_remark';
-	case 'records_transfer';
+	case 'record_remark':
+	case 'record_transfer':
+	case 'record_expense':
+	case 'record_income':
+	case 'investment_record_value':
+	case 'investment_record_credit';
+	case 'investment_record_debit';
+	case 'investment_record_remark';
 		include 'page_'.$pageName.'.php';
 		AddFormManagementEnd($pageName);
 		break;
 
-	case 'records_expense';
+	case 'record_balance':
+	case 'administration_accounts';
+	case 'administration_user';
+	case 'administration_category';
+	case 'administration_connection';
+	case 'administration_designation';
+	case 'home';
+	case 'investment';
+	case 'investment_records_dashboard';
 		include 'page_'.$pageName.'.php';
-		AddFormManagementEnd($pageName);
 		break;
-
-	case 'income';
-	case 'records_income';
+		/*
+	case 'income':
+		case 'record_income':
 		if ($accountType >= 10 && $accountType <= 19)
 			$pageName = 'income_investment';
 		include 'page_'.$pageName.'.php';
 		AddFormManagementEnd($pageName);
 		break;
+*/
 
-	case 'records_balance';
-		include 'page_'.$pageName.'.php';
-		break;
-
-	case 'dashboard';
-		include 'page_records.php';
-		break;
-
-	case 'records';
+	case 'record';
+		if ($area == 'investment')
+			$pageName = 'investment_records_dashboard';
 		if ($accountType >= 10 && $accountType <= 19)
 			$pageName = 'investment_records';
 		include 'page_'.$pageName.'.php';
 		break;
 
-	case 'investment_records_statistics';
+	case 'investment_record_statistics';
 		if ($accountType == -50 || $accountType == 0)
 			include 'page_'.$pageName.'_global.php';
 		else if ($accountType == 1)
@@ -125,39 +141,11 @@ switch ($pageName)
 			include 'page_'.$pageName.'_private.php';
 		break;
 
-	case 'investment_records_value':
-		include 'page_'.$pageName.'.php';
-		AddFormManagementEnd('investment_records_value');
-		break;
-
-	case 'investment_records_credit';
-		include 'page_'.$pageName.'.php';
-		AddFormManagementEnd('investment_records_income');
-		break;
-		
-	case 'investment_records_debit';
-		include 'page_'.$pageName.'.php';
-		AddFormManagementEnd('investment_records_debit');
-		break;
-		
-	case 'investment_records_remark';
-		include 'page_'.$pageName.'.php';
-		AddFormManagementEnd('investment_records_remark');
-		break;
 
 	case 'configuration';
 		break;
 
-	case 'administration_accounts';
-	case 'administration_user';
-	case 'administration_category';
-	case 'administration_connection';
-	case 'administration_designation';
-	case 'home';
-	case 'investment';
-	case 'investment_records_dashboard';
-		include 'page_'.$pageName.'.php';
-		break;
+
 }
 
 // ------------------------------------------------------------------------------------------------

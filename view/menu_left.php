@@ -1,53 +1,45 @@
 <?php
-include_once '../security/security_manager.php';
+include 'menu.php';
 
-$accountsHandler = new AccountsHandler();
 $account = $accountsHandler->GetCurrentActiveAccount();
 
-function AddMenuEntry($id, $image, $text)
+if ($area == 'administration')
 {
-	echo '<img id="'.$id.'" class="menuIcon" src="../media/'.$image.'" /><br />'.$text.'<br /><br />';
+	AddMenuLeftItem("administration_connection", "connectionMenuIcon.jpg", "Connections");
+	AddMenuLeftItem("administration_accounts", "accountsMenuIcon.png", "Comptes");
+	AddMenuLeftItem("administration_category", "categoriesMenuIcon.jpg", "Catégories");
+	AddMenuLeftItem("administration_designation", "designationMenuIcon.png", "Désignation");
+	AddMenuLeftItem("administration_user", "userMenuIcon.png", "Utilisateur");
 }
-
-if ($account->get('type') >= 0 && $account->get('type') < 10)
+else if ($area == 'investment' && $id == '')
 {
-	if ($account->get('type') == 0)
-		AddMenuEntry("dashboard", "recordsMenuIcon.png", "Situation");
+	AddMenuLeftItem("investment_record_dashboard", "assetManagementMenuIcon.png", "Situation");
+	AddMenuLeftItem("investment_record_statistics", "statsMenuIcon.png", "Graphiques");
+}
+else if ($area == 'investment')
+{
+	AddMenuLeftItem("records", "recordsMenuIcon.png", "Lignes");
+	AddMenuLeftItem("investment_record_value", "valueMenuIcon.gif", "Valorisation");
+	AddMenuLeftItem("investment_record_credit", "incomeMenuIcon.gif", "Enregistrement");
+	AddMenuLeftItem("investment_record_debit", "expenseMenuIcon.png", "Dépense");
+	AddMenuLeftItem("investment_record_remark", "remarkMenuIcon.png", "Remarque");
+	AddMenuLeftItem("investment_record_statistics", "statsMenuIcon.png", "Statistiques");
+}
+else
+{
+	if ($id == '')
+		AddMenuLeftItem("dashboard", "recordsMenuIcon.png", "Situation");
 	else
-		AddMenuEntry("records", "recordsMenuIcon.png", "Lignes");
+		AddMenuLeftItem("records", "recordsMenuIcon.png", "Lignes");
 
-	AddMenuEntry("records_expense", "expenseMenuIcon.png", "Dépense");
-	AddMenuEntry("records_income", "incomeMenuIcon.gif", "Revenu");
-	AddMenuEntry("records_transfer", "transferMenuIcon.png", "Virement");
-	AddMenuEntry("records_remark", "remarkMenuIcon.png", "Remarque");
-	AddMenuEntry("records_balance", "balanceMenuIcon.png", "Balance");
-	AddMenuEntry("statistics", "statsMenuIcon.png", "Statistiques");
+	AddMenuLeftItem("record_expense", "expenseMenuIcon.png", "Dépense");
+	AddMenuLeftItem("record_income", "incomeMenuIcon.gif", "Revenu");
+	AddMenuLeftItem("record_transfer", "transferMenuIcon.png", "Virement");
+	AddMenuLeftItem("record_remark", "remarkMenuIcon.png", "Remarque");
+	AddMenuLeftItem("record_balance", "balanceMenuIcon.png", "Balance");
+	AddMenuLeftItem("statistics", "statsMenuIcon.png", "Statistiques");
 }
 
-if ($account->get('type') == 100)
-{
-	AddMenuEntry("investment_records_dashboard", "assetManagementMenuIcon.png", "Situation");
-	AddMenuEntry("investment_records_statistics", "statsMenuIcon.png", "Graphiques");
-}
-
-if ($account->get('type') >= 10 && $account->get('type') <= 12)
-{
-	AddMenuEntry("records", "recordsMenuIcon.png", "Lignes");
-	AddMenuEntry("investment_records_value", "valueMenuIcon.gif", "Valorisation");
-	AddMenuEntry("investment_records_credit", "incomeMenuIcon.gif", "Enregistrement");
-	AddMenuEntry("investment_records_debit", "expenseMenuIcon.png", "Dépense");
-	AddMenuEntry("investment_records_remark", "remarkMenuIcon.png", "Remarque");
-	AddMenuEntry("investment_records_statistics", "statsMenuIcon.png", "Statistiques");
-}
-
-if ($account->get('type') == -100)
-{
-	AddMenuEntry("administration_connection", "connectionMenuIcon.jpg", "Connections");
-	AddMenuEntry("administration_accounts", "accountsMenuIcon.png", "Comptes");
-	AddMenuEntry("administration_category", "categoriesMenuIcon.jpg", "Catégories");
-	AddMenuEntry("administration_designation", "designationMenuIcon.png", "Désignation");
-	AddMenuEntry("administration_user", "userMenuIcon.png", "Utilisateur");
-}
 
 ?>
 <a href="../view/copyright.htm">Copyright</a>

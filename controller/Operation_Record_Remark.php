@@ -9,7 +9,6 @@ class Operation_Record_Remark extends Operation_Record
 
 	public function Save()
 	{
-		die($this->_currentAccountId);
 		$this->_db->InsertRecord_Remark(
 				$this->_currentAccountId,
 				$this->_currentUserId,

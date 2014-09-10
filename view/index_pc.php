@@ -22,6 +22,7 @@ $common_acount_actor2_charge = 50;
 <script src="http://code.highcharts.com/highcharts.js"></script>
 <script src="http://code.highcharts.com/modules/exporting.js"></script>
 <script type="text/javascript" src="budgetfox.js"></script>
+<script type="text/javascript" src="budgetfox_specific.js"></script>
 </head>
 <body>
 <div id='topMenu' class='topMenu'>

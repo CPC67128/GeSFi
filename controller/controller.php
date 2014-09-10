@@ -1,15 +1,16 @@
 <?php
 include_once '../security/security_manager.php';
 
+$action = $_GET['action'];
+$operationClassName = 'Operation_'.str_replace(' ', '_', ucwords(str_replace('_', ' ', $action)));
+$operation = new $operationClassName();
+
 try
 {
 	$operation = null;
 
-	switch ($_GET['action'])
+	switch ($action)
 	{
-		case 'records_remark':
-			$operation = new Operation_Record_Remark();
-			break;
 		case 'record_delete':
 			$operation = new Operation_Record_Delete();
 			break;

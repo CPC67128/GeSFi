@@ -1,47 +1,61 @@
 $.fx.speeds._default = 200;
 
-var PAGE_UNDEFINED = 'dashboard';
+var PAGE_UNDEFINED = 'record';
+var AREA_UNDEFINED = '';
 var ID_UNDEFINED = '';
 var DATA_UNDEFINED = '';
 
-function Context(page, id, data) {
+// ========== Context
+
+function Context(page, area, id, data) {
 	this.page = page;
+	this.area = area;
 	this.id = id;
 	this.data = data;
 }
 
-var currentContext = new Context(PAGE_UNDEFINED, ID_UNDEFINED, DATA_UNDEFINED);
+var currentContext = new Context(PAGE_UNDEFINED, AREA_UNDEFINED, ID_UNDEFINED, DATA_UNDEFINED);
+
+// ========== URL Handling
 
 function ManageHash() {
+	// alert('ManageHash()');
 	var hash = document.location.hash.replace("#", "");
+	// alert('hash=' + hash);
 	var hashSplit = hash.split("/");
+	// alert('hash length=' + hashSplit.length);
 
-	if (hashSplit.length == 4) {
+	if (hashSplit.length == 5) {
 		currentContext.page = hashSplit[0];
-		currentContext.id = hashSplit[1];
-		currentContext.data = hashSplit[2];
+		currentContext.area = hashSplit[1];
+		currentContext.id = hashSplit[2];
+		currentContext.data = hashSplit[3];
 		return true;
 	}
 
 	return false;
 }
 
-if (!ManageHash()) {
-	UpdateUrl();
-}
-
 function UpdateUrl() {
 	var now = new Date();
 
 	var hash = currentContext.page;
+	hash += "/" + currentContext.area;
 	hash += "/" + currentContext.id;
 	hash += "/" + currentContext.data;
 	hash += "/" + now.toISOString();
 
+	// alert(hash);
 	document.location.hash = hash;
 
 	setFavicon(); // Bug firefox: favicon disappears http://kilianvalkhof.com/2010/javascript/the-case-of-the-disappearing-favicon/
 }
+
+if (!ManageHash()) {
+	UpdateUrl();
+}
+
+// ========== Général UI information handling
 
 function setFavicon() {
 	  var link = $('link[type="image/ico"]').remove().attr("href");
@@ -57,26 +71,30 @@ function SetTitle(title) {
 	document.title = currentTitle;
 }
 
-/*** Executed at page refresh ***/
+// ========== Page loading
+
+// Executed at page refresh
 $(function() {
-	//DEBUG alert('function()');
+	// alert('function() raised');
 	LoadPage();
 })
 
-/*** Action on hash change  ***/
+// Action on hash change
 $(window).bind('hashchange', function() {
+	// alert('$(window).bind(hashchange, function()');
 	if (ManageHash()) {
-		//DEBUG alert('HashChange event : page=' + currentContext.page + ", id=" + currentContext.id + ", data=" + currentContext.data);
+		// alert('HashChange event : page=' + currentContext.page + ', area=' + currentContext.area + ', id=' + currentContext.id + ', data=' + currentContext.data);
 
 		LoadPage();
 	}
 });
 
-/*** Change context of the application ***/
-function ChangeContext(page, id, data) {
-	//DEBUG alert('ChangeContext(' + page + ', ' + id + ', ' + data + ')');
+// Change context of the application
+function ChangeContext(page, area, id, data) {
+	// alert('ChangeContext(' + page + ', ' + area + ', ' + id + ', ' + data + ')');
 
 	currentContext.page = page;
+	currentContext.area = area;
 	currentContext.id = id;
 	currentContext.data = data;
 
@@ -84,21 +102,27 @@ function ChangeContext(page, id, data) {
 }
 
 function ChangeContext_Page(page) {
-	//DEBUG alert('ChangeContext_Page(' + page + ')');
+	// alert('ChangeContext_Page(' + page + ')');
 
 	currentContext.page = page;
 
 	UpdateUrl();
 }
 
-/*** Load page according to the current context ***/
+// Load page according to the current context
 function LoadPage() {
-	//DEBUG alert('LoadPage() : ' + 'page=' + currentContext.page + ', id=' + currentContext.id + ', data=' + currentContext.data);
+	// alert('LoadPage() : ' + 'page=' + currentContext.page + ', ' + 'area=' + currentContext.area + ', id=' + currentContext.id + ', data=' + currentContext.data);
 
 	$('#content').html('<img src="../media/loading.gif" />');
 	$.ajax({
         type : 'POST',
-        url : 'page.php?page=' + currentContext.page + '&id=' + currentContext.id + '&data=' + currentContext.data,
+        url : 'page.php?page=' + currentContext.page + '&area=' + currentContext.area + '&id=' + currentContext.id + '&data=' + currentContext.data,
+        data: {
+            'page': currentContext.page, 
+            'area': currentContext.area,
+            'id': currentContext.id,
+            'data': currentContext.data,
+        },
         dataType: 'html',
         success : function(data) {
             LoadTopMenu();
@@ -108,89 +132,18 @@ function LoadPage() {
     });
 }
 
-function DeleteRecord(recordIdToDelete)
-{
-	$.post (
-			'../controller/controller.php?action=record_delete',
-			{ recordId: recordIdToDelete },
-			function(response, status) {
-				LoadRecords();
-			}
-		);
-}
+// ========== Menus management
 
-function DeleteRecordInvestment(recordIdToDelete)
-{
-	$.post (
-			'../controller/controller.php?action=investmentrecord_delete',
-			{ recordId: recordIdToDelete },
-			function(response, status) {
-				LoadRecords();
-			}
-		);
-}
-
-function ConfirmRecord(recordIdToConfirm, sender)
-{
-	if (sender.checked)
-		confirmation = 1;
-	else
-		confirmation = 0;
-
-	sender.disabled = true;
-	$.post (
-			'../controller/controller.php?action=record_confirm',
-			{ recordId: recordIdToConfirm , confirmed: confirmation },
-			function(response, status) {
-				sender.disabled = false;
-			}
-		);
-}
-
-
-
-/*
-function LoadPage(pageName)
-{
-	return;
-	
-	alert('LoadPage(' + pageName + ')');
-	
-	$.ajax({
-        type : 'POST',
-        url : 'page.php?name=' + pageName,
-        dataType: 'html',
-        success : function(data) {
-            $('#content').html(data);
-            LoadLeftMenu();
-
-            SetContext(pageName);
-        }
-    });
-}
-*/
-
-function SetContext(pageName) {
-	currentContext.page = pageName;
-	UpdateUrl();	
-}
-
-function LoadConfigurationPage()
-{
-	LoadPage('configuration');
-}
-
-function LoadRecords()
-{
-	$('#content').html('<img src="../media/loading.gif" />');
-	LoadPage('records');
-}
-
-function LoadTopMenu()
-{
+function LoadTopMenu() {
 	$.ajax({
         type : 'POST',
         url : 'menu_top_1st_line.php',
+        data: {
+            'page': currentContext.page, 
+            'area': currentContext.area,
+            'id': currentContext.id,
+            'data': currentContext.data,
+        },
         dataType: 'html',
         success : function(data) {
             $('#topMenu').html(data);
@@ -200,6 +153,12 @@ function LoadTopMenu()
 	$.ajax({
         type : 'POST',
         url : 'menu_top_2nd_line.php',
+        data: {
+            'page': currentContext.page, 
+            'area': currentContext.area,
+            'id': currentContext.id,
+            'data': currentContext.data,
+        },
         dataType: 'html',
         success : function(data) {
             $('#topSecondLineMenu').html(data);
@@ -212,141 +171,15 @@ function LoadLeftMenu()
 	$.ajax({
         type : 'POST',
         url : 'menu_left.php',
+        data: {
+            'page': currentContext.page, 
+            'area': currentContext.area,
+            'id': currentContext.id,
+            'data': currentContext.data,
+        },
         dataType: 'html',
         success : function(data) {
             $('#leftMenu').html(data);
         }
     });
 }
-
-function LoadRecords_All()
-{
-	$('#content').html('<img src="../media/loading.gif" />');
-	SetContext('records-fullview');
-}
-
-function LoadRecords_Normal()
-{
-	$('#content').html('<img src="../media/loading.gif" />');
-	SetContext('records');
-}
-
-function LoadRepaymentNeeds()
-{
-	$.ajax({
-        type : 'POST',
-        url : 'web_repayment_needs.php',
-        dataType: 'html',
-        success : function(data) {
-            $('#repaymentNeeds').html(data);
-        }
-    });
-   
-	$.ajax({
-        type : 'POST',
-        url : 'web_repayment_needs_details.php',
-        dataType: 'html',
-        success : function(data) {
-            $('#dialog-modal').html(data);
-        }
-    });
-
-	$.ajax({
-        type : 'POST',
-        url : 'web_repayment_needs_conclusion.php',
-        dataType: 'html',
-        success : function(data) {
-            $('#repaymentNeedsConclusion').html(data);
-        }
-    });
-}
-
-function LoadStatistics()
-{
-	$.ajax({
-        type : 'POST',
-        url : 'web_statistics.php',
-        dataType: 'html',
-        success : function(data) {
-            $('#stats').html(data);
-        }
-    });
-
-	$.ajax({
-        type : 'POST',
-        url : 'web_statistics_last_months.php',
-        dataType: 'html',
-        success : function(data) {
-            $('#statsLastMonths').html(data);
-        }
-    });
-}
-
-function LoadCommonAccountStatistics()
-{
-	$.ajax({
-        type : 'POST',
-        url : 'web_statistics_common_account.php',
-        dataType: 'html',
-        success : function(data) {
-            $('#commonAccount').html(data);
-        }
-    });
-
-	$.ajax({
-        type : 'POST',
-        url : 'web_common_account_conclusion.php',
-        dataType: 'html',
-        success : function(data) {
-            $('#commonAccountConclusion').html(data);
-        }
-    });
-}
-
-function CreateUnexpectedErrorWeb($error)
-{
-	var html = '<div class="ui-widget">';
-	html += '<div class="ui-state-error ui-corner-all" style="margin-top: 20px; margin-bottom: 20px; padding: 0 .7em;">';
-	html += '<p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>';
-	html += '<strong><?php echo $LNG_Unexpected_error; ?></strong>' + $error + '</p>';
-	html += '</div></div>';
-	return html;
-}
-
-function ChangeAccount(id)
-{
-	if (id == 'dashboard')
-	{
-		$.post (
-				'../controller/controller.php?action=dashboard',
-				function(response, status) {
-					LoadTopMenu();
-					LoadPage('home');
-				}
-		);
-	}
-	else if (id == 'configuration')
-	{
-		$.post (
-				'../controller/controller.php?action=configuration',
-				function(response, status) {
-					LoadTopMenu();
-					LoadPage('configuration');
-				}
-		);
-	}
-	else
-	{
-		currentContext.id = id;
-		currentContext.page = 'records';
-
-		$.post (
-				'../controller/controller.php?action=account_change',
-				{ accountId: id },
-				function(response, status) {
-					LoadPage();
-				}
-		);
-	}
-}
-

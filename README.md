@@ -33,3 +33,19 @@ Private real account allowed operations:
 10 (credit between account)     -> Account -> 20 (debit between account)
 11 (credit coming from partner)            -> 22 (expense)
 12 (money coming from outside)
+
+
+Coding standards
+================
+
+Classes naming:
+- standard: AaaaAaaaAaaa
+- inherited: AaaaAaaaAaaa_BbbbbBbbb
+Use of singular in names
+
+Quotes:
+- HTML tags "
+- Javascript within HTML tags '
+- PHP strings '
+- SQL queries delimiters within PHP "
+- SQL queries in string delimiters '

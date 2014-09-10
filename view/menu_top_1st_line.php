@@ -1,27 +1,19 @@
 <?php
-include_once '../security/security_manager.php';
+include 'menu.php';
 
-?>
+$isGlobalRecordSelected = ($id == '' && $area == '');
 
-<?php if (!($_SESSION['page'] == 'dashboard' || ($_SESSION['page'] == 'records' && $_SESSION['account_id'] == ''))) { ?><a href="#" onclick="javascript:ChangeContext('dashboard','',''); return false;"><?php } ?>Gestion courante<?php if (!($_SESSION['page'] == 'dashboard' || ($_SESSION['page'] == 'records' && $_SESSION['account_id'] == ''))) { ?></a><?php } ?>
- / 
-<?php
-$accountsHandler = new AccountsHandler();
+AddMenuTopItem(!$isGlobalRecordSelected, $translator->getTranslation('Gestion courante'), 'record', '', '', '', true); 
+
 $accounts = $accountsHandler->GetAllOrdinaryAccounts();
 
 foreach ($accounts as $account)
 {
-	if ($account->get('accountId') != $_SESSION['account_id'])
-		echo '<a href="#" onclick="javascript:ChangeContext(\'records\', \''.$account->get('accountId').'\',\'\'); return false;">';
-	echo $account->get('name');
-	if ($account->get('accountId') != $_SESSION['account_id'])
-		echo '</a>';
-	echo ' / ';
+	$isAccountSelected = $account->get('accountId') == $id;
+
+	AddMenuTopItem(!$isAccountSelected, $account->get('name'), 'record', '', $account->get('accountId'), '', true);
 }
 
-if ($_SESSION['page'] != 'configuration')
-	echo '<a href="#" onclick="javascript:ChangeContext(\'configuration\', \'\',\'configuration\'); return false;">';
-echo 'Configuration';
-if ($_SESSION['page'] != 'configuration')
-	echo '</a>';
-?>
+$isConfigurationSelected = ($page == 'administration');
+
+AddMenuTopItem(!$isConfigurationSelected, $translator->getTranslation('Administration'), 'administration', 'administration', '', '', false);

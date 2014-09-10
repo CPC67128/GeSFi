@@ -18,7 +18,7 @@ else if ($area == 'investment' && $id == '')
 }
 else if ($area == 'investment')
 {
-	AddMenuLeftItem("records", "recordsMenuIcon.png", $translator->getTranslation("Lignes"));
+	AddMenuLeftItem("investment_record", "recordsMenuIcon.png", $translator->getTranslation("Lignes"));
 	AddMenuLeftItem("investment_record_value", "valueMenuIcon.gif", $translator->getTranslation("Valorisation"));
 	AddMenuLeftItem("investment_record_credit", "incomeMenuIcon.gif", $translator->getTranslation("Enregistrement"));
 	AddMenuLeftItem("investment_record_debit", "expenseMenuIcon.png", $translator->getTranslation("Dépense"));
@@ -28,9 +28,9 @@ else if ($area == 'investment')
 else
 {
 	if ($id == '')
-		AddMenuLeftItem("dashboard", "recordsMenuIcon.png", $translator->getTranslation("Situation"));
+		AddMenuLeftItem("record", "recordsMenuIcon.png", $translator->getTranslation("Situation"));
 	else
-		AddMenuLeftItem("records", "recordsMenuIcon.png", $translator->getTranslation("Lignes"));
+		AddMenuLeftItem("record", "recordsMenuIcon.png", $translator->getTranslation("Lignes"));
 
 	AddMenuLeftItem("record_expense", "expenseMenuIcon.png", $translator->getTranslation("Dépense"));
 	AddMenuLeftItem("record_income", "incomeMenuIcon.gif", $translator->getTranslation("Revenu"));

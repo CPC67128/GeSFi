@@ -86,6 +86,7 @@ switch ($pageName)
 		AddFormManagementEnd($pageName);
 		break;
 
+	case 'record':
 	case 'record_balance':
 	case 'administration_accounts';
 	case 'administration_user';
@@ -94,24 +95,8 @@ switch ($pageName)
 	case 'administration_designation';
 	case 'home';
 	case 'investment';
-	case 'investment_records_dashboard';
-		include 'page_'.$pageName.'.php';
-		break;
-/*
-	case 'income':
-		case 'record_income':
-		if ($accountType >= 10 && $accountType <= 19)
-			$pageName = 'income_investment';
-		include 'page_'.$pageName.'.php';
-		AddFormManagementEnd($pageName);
-		break;
-*/
-
-	case 'record';
-		if ($area == 'investment')
-			$pageName = 'investment_record_dashboard';
-		if ($accountType >= 10 && $accountType <= 19)
-			$pageName = 'investment_record';
+	case 'investment_record_dashboard':
+	case 'investment_record':
 		include 'page_'.$pageName.'.php';
 		break;
 

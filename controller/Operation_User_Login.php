@@ -28,4 +28,9 @@ class Operation_User_Login extends Operation_User
 		SendEmailToAdministrator("Nouvelle connection", $body);
 		*/
 	}
+
+	public function IsSessionRequired()
+	{
+		return false;
+	}
 }

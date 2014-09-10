@@ -5,7 +5,7 @@ include_once('mailing.php');
 
 function RedirectToLoginPage()
 {
-	header("location:../view/login.php");
+	header("location:../view/page_login.php");
 	exit();
 }
 

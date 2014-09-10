@@ -25,4 +25,9 @@ class Operation_User_Subscription extends Operation_User
 		/*TODO$body = "Inscription de ".$_POST['email'];
 		SendEmailToAdministrator("Inscription", $body);*/
 	}
+
+	public function IsSessionRequired()
+	{
+		return false;
+	}
 }

@@ -381,6 +381,7 @@ class User extends Entity
 		return $are_passwords_matching;
 	}
 
+	/*
 	function RecordConnection($Ip, $Browser)
 	{
 		$db = new DB();
@@ -394,4 +395,5 @@ class User extends Entity
 	
 		return true;
 	}
+	*/
 }

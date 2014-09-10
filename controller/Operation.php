@@ -69,4 +69,9 @@ class Operation
 
 		return $amount;
 	}
+
+	public function IsSessionRequired()
+	{
+		return true;
+	}
 }

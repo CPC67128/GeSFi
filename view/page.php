@@ -97,7 +97,7 @@ switch ($pageName)
 	case 'investment_records_dashboard';
 		include 'page_'.$pageName.'.php';
 		break;
-		/*
+/*
 	case 'income':
 		case 'record_income':
 		if ($accountType >= 10 && $accountType <= 19)
@@ -109,9 +109,9 @@ switch ($pageName)
 
 	case 'record';
 		if ($area == 'investment')
-			$pageName = 'investment_records_dashboard';
+			$pageName = 'investment_record_dashboard';
 		if ($accountType >= 10 && $accountType <= 19)
-			$pageName = 'investment_records';
+			$pageName = 'investment_record';
 		include 'page_'.$pageName.'.php';
 		break;
 

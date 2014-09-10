@@ -1,105 +1,25 @@
 <?php
-include_once '../security/security_manager.php';
+include '../component/component_autoload.php';
+
+$usersHandler = new UsersHandler();
+
+$usersHandler->StartSession();
+$isSessionUserSet = $usersHandler->IsSessionUserSet();
 
 $action = $_GET['action'];
-$operationClassName = 'Operation_'.str_replace(' ', '_', ucwords(str_replace('_', ' ', $action)));
-$operation = new $operationClassName();
 
 try
 {
 	$operation = null;
 
-	switch ($action)
-	{
-		case 'record_delete':
-			$operation = new Operation_Record_Delete();
-			break;
-		case 'records_transfer':
-			$operation = new Operation_Record_Transfer();
-			break;
-		case 'records_income':
-			$operation = new Operation_Record_Income();
-			break;
-		case 'records_expense':
-			$operation = new Operation_Record_Expense();
-			break;
-		case 'record_confirm':
-			$operation = new Operation_Record_Confirm();
-			break;
-
-		case 'record_amount_modify':
-			$operation = new Operation_Record_Amount_Modify();
-			break;
-				
-		case 'account_change':
-			$operation = new Operation_Account_Change();
-			break;
-		case 'account_modification':
-			$operation = new Operation_Account_Modification();
-			break;
-
-		case 'investment_records_value':
-			$operation = new Operation_InvestmentRecord_Value();
-			break;
-		case 'investmentrecord_delete':
-			$operation = new Operation_InvestmentRecord_Delete();
-			break;
-		case 'investment_records_credit':
-			$operation = new Operation_InvestmentRecord_Income();
-			break;
-		case 'investment_records_debit':
-			$operation = new Operation_InvestmentRecord_Debit();
-			break;
-		case 'investment_records_remark':
-			$operation = new Operation_InvestmentRecord_Remark();
-			break;
-				
-		case 'user_subscription':
-			$operation = new Operation_User_Subscription();
-			break;
-		case 'user_duo':
-			$operation = new Operation_User_Duo();
-			break;
-		case 'user_modification':
-			$operation = new Operation_User_Modification();
-			break;
-
-		case 'configuration':
-			$operation = new Operation_Account_Change();
-			$operation->set('accountId', 'configuration');
-			break;
-
-		case 'category_modification_duo':
-			$operation = new Operation_Category_Modification_Duo();
-			break;
-		case 'category_modification_user':
-			$operation = new Operation_Category_Modification_User();
-			break;
-
-		case 'designation_rename':
-			$operation = new Operation_Designation_Rename();
-			break;
-/*
-		case 'userCategoryModification':
-			$newAction = new Action_UserCategoryModification();
-			$newAction->hydrate($_POST);
-			$newAction->Execute();
-			break;
-		case 'duoCategoryModification':
-			$newAction = new Action_DuoCategoryModification();
-			$newAction->hydrate($_POST);
-			$newAction->Execute();
-			break;
-		case 'dashboard':
-			$newAction = new Action_ChangeAccount();
-			$newAction->setAccountId('dashboard');
-			$newAction->Execute();
-			break;
-		*/
-	}
+	$operationClassName = 'Operation_'.str_replace(' ', '_', ucwords(str_replace('_', ' ', $action)));
+	$operation = new $operationClassName();
 
 	if ($operation == null)
 		throw new Exception("Aucune opération associée");
+
+	if ($operation->IsSessionRequired() && !$isSessionUserSet)
+		throw new Exception("Une session utilisateur doit être démarré");
 
 	$operation->hydrate($_POST);
 	$operation->Execute();
@@ -113,27 +33,27 @@ ReturnSuccess();
 
 function ReturnError($error)
 {
-?>
-<!-- ERROR -->
-<div class="ui-widget">
-<div class="ui-state-error ui-corner-all" style="margin-top: 20px; margin-bottom: 20px; padding: 0 .7em;">
-<p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
-<strong>Erreur : </strong><?php echo $error; ?></p>
-</div>
-</div>
-<?php
+	?>
+	<!-- ERROR -->
+	<div class="ui-widget">
+	<div class="ui-state-error ui-corner-all" style="margin-top: 20px; margin-bottom: 20px; padding: 0 .7em;">
+	<p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
+	<strong>Erreur : </strong><?php echo $error; ?></p>
+	</div>
+	</div>
+	<?php
 	exit();
 }
 
 function ReturnSuccess()
 {
-?>
-<div class="ui-widget">
-<div class="ui-state-highlight ui-corner-all" style="margin-top: 20px; margin-bottom: 20px; padding: 0 .7em;">
-<p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-Enregistré!</p>
-</div>
-</div>
+	?>
+	<div class="ui-widget">
+	<div class="ui-state-highlight ui-corner-all" style="margin-top: 20px; margin-bottom: 20px; padding: 0 .7em;">
+	<p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+	Enregistré!</p>
+	</div>
+	</div>
 	<?php
 	exit();
 }

@@ -1,4 +1,4 @@
-// ===== 
+//===== 
 function DeleteRecord(recordIdToDelete)
 {
 	$.post (
@@ -7,7 +7,7 @@ function DeleteRecord(recordIdToDelete)
 			function(response, status) {
 				LoadRecords();
 			}
-		);
+	);
 }
 
 function DeleteRecordInvestment(recordIdToDelete)
@@ -18,7 +18,7 @@ function DeleteRecordInvestment(recordIdToDelete)
 			function(response, status) {
 				LoadRecords();
 			}
-		);
+	);
 }
 
 function ConfirmRecord(recordIdToConfirm, sender)
@@ -35,7 +35,7 @@ function ConfirmRecord(recordIdToConfirm, sender)
 			function(response, status) {
 				sender.disabled = false;
 			}
-		);
+	);
 }
 
 function LoadRecords_All()
@@ -53,73 +53,73 @@ function LoadRecords_Normal()
 function LoadRepaymentNeeds()
 {
 	$.ajax({
-        type : 'POST',
-        url : 'web_repayment_needs.php',
-        dataType: 'html',
-        success : function(data) {
-            $('#repaymentNeeds').html(data);
-        }
-    });
-   
-	$.ajax({
-        type : 'POST',
-        url : 'web_repayment_needs_details.php',
-        dataType: 'html',
-        success : function(data) {
-            $('#dialog-modal').html(data);
-        }
-    });
+		type : 'POST',
+		url : 'web_repayment_needs.php',
+		dataType: 'html',
+		success : function(data) {
+			$('#repaymentNeeds').html(data);
+		}
+	});
 
 	$.ajax({
-        type : 'POST',
-        url : 'web_repayment_needs_conclusion.php',
-        dataType: 'html',
-        success : function(data) {
-            $('#repaymentNeedsConclusion').html(data);
-        }
-    });
+		type : 'POST',
+		url : 'web_repayment_needs_details.php',
+		dataType: 'html',
+		success : function(data) {
+			$('#dialog-modal').html(data);
+		}
+	});
+
+	$.ajax({
+		type : 'POST',
+		url : 'web_repayment_needs_conclusion.php',
+		dataType: 'html',
+		success : function(data) {
+			$('#repaymentNeedsConclusion').html(data);
+		}
+	});
 }
 
 function LoadStatistics()
 {
 	$.ajax({
-        type : 'POST',
-        url : 'web_statistics.php',
-        dataType: 'html',
-        success : function(data) {
-            $('#stats').html(data);
-        }
-    });
+		type : 'POST',
+		url : 'web_statistics.php',
+		dataType: 'html',
+		success : function(data) {
+			$('#stats').html(data);
+		}
+	});
 
 	$.ajax({
-        type : 'POST',
-        url : 'web_statistics_last_months.php',
-        dataType: 'html',
-        success : function(data) {
-            $('#statsLastMonths').html(data);
-        }
-    });
+		type : 'POST',
+		url : 'web_statistics_last_months.php',
+		dataType: 'html',
+		success : function(data) {
+			$('#statsLastMonths').html(data);
+		}
+	});
 }
 
 function LoadCommonAccountStatistics()
 {
 	$.ajax({
-        type : 'POST',
-        url : 'web_statistics_common_account.php',
-        dataType: 'html',
-        success : function(data) {
-            $('#commonAccount').html(data);
-        }
-    });
+		type : 'POST',
+		url : 'web_statistics_common_account.php',
+		dataType: 'html',
+		success : function(data) {
+			$('#commonAccount').html(data);
+		}
+	});
 
 	$.ajax({
-        type : 'POST',
-        url : 'web_common_account_conclusion.php',
-        dataType: 'html',
-        success : function(data) {
-            $('#commonAccountConclusion').html(data);
-        }
-    });
+		type : 'POST',
+		url : 'web_common_account_conclusion.php',
+		dataType: 'html',
+		success : function(data) {
+			$('#commonAccountConclusion').html(data);
+		}
+	});
 }
 
 function CreateUnexpectedErrorWeb($error)
@@ -169,3 +169,12 @@ function ChangeAccount(id)
 	}
 }
 
+function LogoutUser()
+{
+	$.post (
+			'../controller/controller.php?action=user_logout',
+			function(response, status) {
+				window.location = 'page_login.php';
+			}
+	);
+}

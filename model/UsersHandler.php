@@ -19,6 +19,17 @@ class UsersHandler extends Handler
 		return $newUser;
 	}
 	
+	function IsUserIdExisting($userId)
+	{
+		$db = new DB();
+		$query = "select count(*) as total
+			from {TABLEPREFIX}user
+			where user_id = '".$userId."'";
+		$row = $db->SelectRow($query);
+
+		return $row['total'] > 0;
+	}
+
 	function GetUserByEmail($email)
 	{
 		$newUser = null;
@@ -104,6 +115,7 @@ class UsersHandler extends Handler
 		return $result;
 	}
 
+	/*
 	function IsPasswordCorrect($Email, $Hashed_password)
 	{
 		$db = new DB();
@@ -125,21 +137,66 @@ class UsersHandler extends Handler
 
 		return $are_passwords_matching;
 	}
+	*/
 
-	function RecordUserConnection($User_id, $Ip, $Browser)
+	function RecordUserConnection()
 	{
 		$db = new DB();
 	
-		$escaped_browser = $db->ConvertStringForSqlInjection($Browser);
+		$escaped_browser = $db->ConvertStringForSqlInjection($_SERVER['HTTP_USER_AGENT']);
 	
-		$query = sprintf("insert into {TABLEPREFIX}user_connection (user_id, connection_date_time, ip_address, browser) values('%s', now(), '%s', '%s')",
-				$User_id,
-				$Ip,
+		$query = sprintf("insert into {TABLEPREFIX}user_connection (user_id, connection_date_time, ip_address, browser) values({USERID}, now(), '%s', '%s')",
+				$_SERVER['REMOTE_ADDR'],
 				$escaped_browser);
 
 		$result = $db->Execute($query);
 	
 		return true;
 	
+	}
+
+	function StartSession()
+	{
+		session_start();
+	}
+
+	function SetSessionUser($userId)
+	{
+		$user = $this->GetUser($userId);
+		$_SESSION['email'] = $user->get('email');
+		$_SESSION['user_id'] = $user->get('userId');
+		$_SESSION['full_name'] = $user->get('name');
+		$_SESSION['read_only'] = $user->get('readOnly');
+	}
+
+	function GetSessionUser()
+	{
+		$user = $this->GetUser($_SESSION['user_id']);
+		return $user;
+	}
+	
+	function IsSessionUserSet()
+	{
+		if (!empty($_SESSION['user_id']))
+			return $this->IsUserIdExisting($_SESSION['user_id']);
+		return false;
+	}
+
+	function UnsetSessionUser()
+	{
+		// If it's desired to kill the session, also delete the session cookie.
+		// Note: This will destroy the session, and not just the session data!
+		if (ini_get("session.use_cookies")) {
+			$params = session_get_cookie_params();
+			setcookie(session_name(), '', time() - 42000,
+			$params["path"], $params["domain"],
+			$params["secure"], $params["httponly"]
+			);
+		}
+
+		session_unset();
+		session_destroy();
+
+		session_commit();
 	}
 }

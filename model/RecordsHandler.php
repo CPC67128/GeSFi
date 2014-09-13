@@ -102,7 +102,7 @@ class RecordsHandler extends Handler
 		$total += $row['total'];
 		*/
 
-		// Total income from the current user to a duo account
+		// Total deposits from the current user to a duo account
 		$query = "select sum(amount) as total
 			from {TABLEPREFIX}record
 			where record_type in (20)
@@ -134,7 +134,7 @@ class RecordsHandler extends Handler
 		$usersHandler = new UsersHandler();
 		$user = $usersHandler->GetUser($_SESSION['user_id']);
 
-		// Total expense from the current user to a duo category 
+		// Total payments from the current user to a duo category 
 		$query = "select sum(amount * (charge / 100)) as total
 			from {TABLEPREFIX}record
 			where record_type in (22)
@@ -148,7 +148,7 @@ class RecordsHandler extends Handler
 		$row = $db->SelectRow($query);
 		$total += $row['total'];
 
-		// Total expense from the current user to a private category that is not his 
+		// Total payments from the current user to a private category that is not his 
 		$query = "select sum(amount * (charge / 100)) as total
 			from {TABLEPREFIX}record
 			where record_type in (22)

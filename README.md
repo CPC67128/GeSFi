@@ -1,8 +1,6 @@
 BudgetFox
 =========
 
-This is my read me file
-
 record_type:
 - money transfer from an account to another account :
 
@@ -34,6 +32,10 @@ Private real account allowed operations:
 11 (credit coming from partner)            -> 22 (expense)
 12 (money coming from outside)
 
+Terms to use
+============
+
+Withdrawal, Payment, Deposit, Transfer
 
 Coding standards
 ================

@@ -14,14 +14,14 @@ if ($area == 'administration')
 else if ($area == 'investment' && $id == '')
 {
 	AddMenuLeftItem("investment_record_dashboard", "assetManagementMenuIcon.png", $translator->getTranslation("Situation"));
-	AddMenuLeftItem("investment_record_statistics", "statsMenuIcon.png", $translator->getTranslation("Graphiques"));
+	AddMenuLeftItem("investment_record_dashboard_statistics", "statsMenuIcon.png", $translator->getTranslation("Graphiques"));
 }
 else if ($area == 'investment')
 {
 	AddMenuLeftItem("investment_record", "recordsMenuIcon.png", $translator->getTranslation("Lignes"));
 	AddMenuLeftItem("investment_record_value", "valueMenuIcon.gif", $translator->getTranslation("Valorisation"));
-	AddMenuLeftItem("investment_record_credit", "incomeMenuIcon.gif", $translator->getTranslation("Enregistrement"));
-	AddMenuLeftItem("investment_record_debit", "expenseMenuIcon.png", $translator->getTranslation("Dépense"));
+	AddMenuLeftItem("investment_record_deposit", "depositMenuIcon.gif", $translator->getTranslation("Dépôt"));
+	AddMenuLeftItem("investment_record_withdrawal", "paymentMenuIcon.png", $translator->getTranslation("Retrait"));
 	AddMenuLeftItem("investment_record_remark", "remarkMenuIcon.png", $translator->getTranslation("Remarque"));
 	AddMenuLeftItem("investment_record_statistics", "statsMenuIcon.png", $translator->getTranslation("Statistiques"));
 }
@@ -32,8 +32,8 @@ else
 	else
 		AddMenuLeftItem("record", "recordsMenuIcon.png", $translator->getTranslation("Lignes"));
 
-	AddMenuLeftItem("record_expense", "expenseMenuIcon.png", $translator->getTranslation("Dépense"));
-	AddMenuLeftItem("record_income", "incomeMenuIcon.gif", $translator->getTranslation("Revenu"));
+	AddMenuLeftItem("record_payment", "paymentMenuIcon.png", $translator->getTranslation("Dépense"));
+	AddMenuLeftItem("record_deposit", "depositMenuIcon.gif", $translator->getTranslation("Revenu"));
 	AddMenuLeftItem("record_transfer", "transferMenuIcon.png", $translator->getTranslation("Virement"));
 	AddMenuLeftItem("record_remark", "remarkMenuIcon.png", $translator->getTranslation("Remarque"));
 	AddMenuLeftItem("record_balance", "balanceMenuIcon.png", $translator->getTranslation("Balance"));

@@ -72,15 +72,20 @@ $partnerUser = $usersHandler->GetUser($activeUser->GetPartnerId());
 if ($accountType >= 1 && $accountType <= 10)
 	$windowTitle .= $activeAccount->get('name');
 
+// -------
+
+if ($pageName == 'record' && $area == 'investment')
+	$pageName = 'investment_record';
+
 switch ($pageName)
 {
 	case 'record_remark':
 	case 'record_transfer':
-	case 'record_expense':
-	case 'record_income':
+	case 'record_payment':
+	case 'record_deposit':
 	case 'investment_record_value':
-	case 'investment_record_credit';
-	case 'investment_record_debit';
+	case 'investment_record_deposit';
+	case 'investment_record_withdrawal';
 	case 'investment_record_remark';
 		include 'page_'.$pageName.'.php';
 		AddFormManagementEnd($pageName);
@@ -88,15 +93,16 @@ switch ($pageName)
 
 	case 'record':
 	case 'record_balance':
-	case 'administration_accounts';
-	case 'administration_user';
-	case 'administration_category';
-	case 'administration_connection';
-	case 'administration_designation';
-	case 'home';
-	case 'investment';
+	case 'administration_accounts':
+	case 'administration_user':
+	case 'administration_category':
+	case 'administration_connection':
+	case 'administration_designation':
+	case 'home':
+	case 'investment':
 	case 'investment_record_dashboard':
 	case 'investment_record':
+	case 'investment_record_dashboard_statistics':
 		include 'page_'.$pageName.'.php';
 		break;
 
@@ -151,7 +157,7 @@ $("#form").submit( function () {
 					$("#formResult").html(response);
 				}
 				else {
-					ChangeContext_Page('records');
+					ChangeContext_Page('record');
 				}
 			}
 			else {

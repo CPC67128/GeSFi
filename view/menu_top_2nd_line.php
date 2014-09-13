@@ -3,7 +3,7 @@ include 'menu.php';
 
 $isGlobalRecordSelected = ($id == '' && $area == 'investment');
 
-AddMenuTopItem(!$isGlobalRecordSelected, $translator->getTranslation('Gestion patrimoniale'), 'record', 'investment', '', '', true);
+AddMenuTopItem(!$isGlobalRecordSelected, $translator->getTranslation('Gestion patrimoniale'), 'investment_record_dashboard', 'investment', '', '', true);
 
 $accounts = $accountsHandler->GetAllInvestmentAccounts();
 $lastItem = end($accounts);

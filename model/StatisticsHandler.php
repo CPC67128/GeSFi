@@ -36,7 +36,7 @@ class StatisticsHandler extends Handler
 		return $total;
 	}
 
-	// Total expenses made from private accounts for expenses to duo categories
+	// Total payments made from private accounts for payments to duo categories
 	function GetTotalExpensePrivateAccountsForDuoCategoriesMadeByUser($userId)
 	{
 		$usersHandler = new UsersHandler();
@@ -60,7 +60,7 @@ class StatisticsHandler extends Handler
 		return $total;
 	}
 
-	// Total expenses made from private accounts for expenses to duo categories
+	// Total payments made from private accounts for payments to duo categories
 	function GetTotalExpensePrivateAccountsForPartnerCategoriesMadeByUser($userId)
 	{
 		$usersHandler = new UsersHandler();
@@ -135,7 +135,7 @@ class StatisticsHandler extends Handler
 		return $total;
 	}
 
-	// Total of expenses made from duo accounts, part charged for user in parameter
+	// Total of payments made from duo accounts, part charged for user in parameter
 	function GetTotalExpenseDuoAccountsChargedForUser($userId)
 	{
 		$db = new DB();
@@ -163,7 +163,7 @@ class StatisticsHandler extends Handler
 		return $total;
 	}
 
-	// Total of expenses made from duo accounts
+	// Total of payments made from duo accounts
 	function GetTotalExpenseDuoAccounts()
 	{
 		$db = new DB();
@@ -179,7 +179,7 @@ class StatisticsHandler extends Handler
 		return $row['total'];
 	}
 
-	// Total of incomes coming from outside for duo accounts
+	// Total deposits coming from outside for duo accounts
 	function GetTotalIncomeOutsidePartnersDuoAccounts()
 	{
 		$db = new DB();
@@ -507,7 +507,7 @@ class StatisticsHandler extends Handler
 		$row = $db->SelectRow($query);
 		$total = $row['total'];
 
-		// Total out (outside expenses)
+		// Total out (outside payments)
 		$query = "select sum(amount) as total
 			from {TABLEPREFIX}record
 			where record_type in (20)

@@ -15,16 +15,18 @@ class InvestmentsRecordsHandler extends Handler
 		return $result;
 	}
 
+	// This function is used for the global chart
 	function GetAllRecordsForAllInvestments()
 	{
 		$db = new DB();
 		$query = "select ACC.name, INR.*
 			from {TABLEPREFIX}investment_record INR
 			inner join {TABLEPREFIX}account ACC on ACC.account_id = INR.account_id
+			left join {TABLEPREFIX}account_user_preference as PRF on ACC.account_id = PRF.account_id and PRF.user_id = '{USERID}'
 			where ACC.owner_user_id = '{USERID}'
 			and marked_as_deleted = 0
 			and value is not null
-			order by ACC.account_id, INR.record_date";
+			order by PRF.sort_order, ACC.account_id, INR.record_date";
 		$result = $db->Select($query);
 		return $result;
 	}

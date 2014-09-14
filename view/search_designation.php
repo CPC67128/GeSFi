@@ -1,5 +1,5 @@
 <?php
-include '../security/security_manager.php';
+include '../component/component_security.php';
 
 $usersHandler = new UsersHandler();
 $activeUser = $usersHandler->GetCurrentUser();

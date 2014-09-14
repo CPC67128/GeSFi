@@ -1,7 +1,7 @@
 <?php
 include 'menu.php';
 
-$account = $accountsHandler->GetCurrentActiveAccount();
+//$account = $accountsHandler->GetCurrentActiveAccount();
 
 if ($area == 'administration')
 {

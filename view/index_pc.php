@@ -1,5 +1,5 @@
 <?php
-include_once '../security/security_manager.php';
+include '../component/component_security.php';
 
 $translator = new Translator();
 

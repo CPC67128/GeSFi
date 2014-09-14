@@ -1,5 +1,5 @@
 <?php
-include '../security/security_manager.php';
+include '../component/component_security.php';
 
 $page = '';
 if (isset($_GET['page']))
@@ -72,10 +72,14 @@ $partnerUser = $usersHandler->GetUser($activeUser->GetPartnerId());
 if ($accountType >= 1 && $accountType <= 10)
 	$windowTitle .= $activeAccount->get('name');
 
-// -------
+// --------------------------------------------------------------------------------------------------
 
 if ($pageName == 'record' && $area == 'investment')
 	$pageName = 'investment_record';
+
+// Default page for administration
+if ($pageName == 'administration' && $area == 'administration' && $id == '')
+	$pageName = 'administration_connection';
 
 switch ($pageName)
 {
@@ -87,56 +91,43 @@ switch ($pageName)
 	case 'investment_record_deposit';
 	case 'investment_record_withdrawal';
 	case 'investment_record_remark';
-		include 'page_'.$pageName.'.php';
+		include 'pages/page_'.$pageName.'.php';
 		AddFormManagementEnd($pageName);
-		break;
-
-	case 'record':
-	case 'record_balance':
-	case 'administration_accounts':
-	case 'administration_user':
-	case 'administration_category':
-	case 'administration_connection':
-	case 'administration_designation':
-	case 'home':
-	case 'investment':
-	case 'investment_record_dashboard':
-	case 'investment_record':
-	case 'investment_record_dashboard_statistics':
-		include 'page_'.$pageName.'.php';
 		break;
 
 	case 'investment_record_statistics';
 		if ($accountType == -50 || $accountType == 0)
-			include 'page_'.$pageName.'_global.php';
+			include 'pages/page_'.$pageName.'_global.php';
 		else if ($accountType == 1)
-			include 'page_'.$pageName.'_private.php';
+			include 'pages/page_'.$pageName.'_private.php';
 		else if ($accountType == 10)
-			include 'page_'.$pageName.'.php';
+			include 'pages/page_'.$pageName.'.php';
 		else if ($accountType == 100)
-			include 'page_'.$pageName.'_global.php';
+			include 'pages/page_'.$pageName.'_global.php';
 		else
-			include 'page_'.$pageName.'_duo.php';
+			include 'pages/page_'.$pageName.'_duo.php';
 		break;
 
 	case 'statistics';
 		if ($accountType == -50 || $accountType == 0)
-			include 'page_'.$pageName.'_global.php';
+			include 'pages/page_'.$pageName.'_global.php';
 		else if ($accountType == 2 || $accountType == 3)
-			include 'page_'.$pageName.'_duo.php';
+			include 'pages/page_'.$pageName.'_duo.php';
 		else if ($accountType == 10)
-			include 'page_'.$pageName.'_investment.php';
+			include 'pages/page_'.$pageName.'_investment.php';
 		else if ($accountType == 100)
-			include 'page_'.$pageName.'_investment_global.php';
+			include 'pages/page_'.$pageName.'_investment_global.php';
 		else
-			include 'page_'.$pageName.'_private.php';
+			include 'pages/page_'.$pageName.'_private.php';
 		break;
 
 
 	case 'configuration';
 		break;
 
-
+	default:
+		include 'pages/page_'.$pageName.'.php';
+		break;
 }
 
 // ------------------------------------------------------------------------------------------------

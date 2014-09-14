@@ -1,6 +1,4 @@
 <?php
-include '../security/security_manager.php';
-
 $translator = new Translator();
 
 $investmentsRecordsHandler = new InvestmentsRecordsHandler();
@@ -48,19 +46,19 @@ $graph->SetMargin(40,40,30,30);
 
 // Fix the Y-scale to go between [0,100] and use date for the x-axis
 $graph->SetScale('datlin');
-$graph->title->Set($translator->getTranslation("Rendement moyen"));
+$graph->title->Set($translator->getTranslation("Rendement global"));
 
 // Set the angle for the labels to 90 degrees
 $graph->xaxis->SetLabelAngle(0);
 
 $graph->img->SetAntiAliasing(false);
 
-$lineYieldAverage = new LinePlot($yieldAverageYArray, $yieldAverageXArray);
+$lineYieldAverage = new LinePlot($yieldYArray, $yieldXArray);
 
 $graph->Add($lineYieldAverage);
 
-$lineYieldAverage->SetColor('lightred');
-$lineYieldAverage->SetFillColor('lightred@0.8');
+$lineYieldAverage->SetColor('lightblue');
+$lineYieldAverage->SetFillColor('lightblue@0.8');
 $lineYieldAverage->SetWeight(2);
 $lineYieldAverage->SetStyle("solid");
 

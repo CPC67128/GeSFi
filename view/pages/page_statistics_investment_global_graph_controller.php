@@ -1,6 +1,4 @@
 <?php
-include '../security/security_manager.php';
-
 $accounts = '';
 $i = $_POST['maximumIndex'];
 for (--$i; $i >= 0; $i--)

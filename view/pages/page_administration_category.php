@@ -38,7 +38,12 @@ function listCategories()
 {
 	$.ajax({
 	    type : 'POST',
-	    url : 'page_administration_category_list.php?type=USER',
+	    url : 'page.php',
+	    data: {
+	        'page': 'administration_category_list', 
+	        'area': 'administration',
+	        'data': 'USER'
+	    },
 	    dataType: 'html',
 	    success : function(data) {
 	        $('#categoryList').html(data);
@@ -51,7 +56,12 @@ function listCategoriesDuo()
 {
 	$.ajax({
 	    type : 'POST',
-	    url : 'page_administration_category_list.php?type=DUO',
+	    url : 'page.php',
+	    data: {
+	        'page': 'administration_category_list', 
+	        'area': 'administration',
+	        'data': 'DUO'
+	    },
 	    dataType: 'html',
 	    success : function(data) {
 	        $('#categoryDuoList').html(data);
@@ -70,8 +80,13 @@ function changeForm(categoriesList)
   else
 	  $.ajax({
 	      type : 'POST',
-	      url : 'page_administration_category_form.php?type=USER',
-	      data: { categoryId: value }, 
+		    url : 'page.php',
+		    data: {
+		        'page': 'administration_category_form', 
+		        'area': 'administration',
+		        categoryId: value,
+		        'data': 'USER'
+		    },
 	      dataType: 'html',
 	      success : function(data) {
 	          $('#categoryModification').html(data);
@@ -89,8 +104,13 @@ function changeFormDuo(categoriesList)
   else
 	  $.ajax({
 	      type : 'POST',
-	      url : 'page_administration_category_form.php?type=DUO',
-	      data: { categoryId: value }, 
+		    url : 'page.php',
+		    data: {
+		        'page': 'administration_category_form', 
+		        'area': 'administration',
+		        categoryId: value,
+		        'data': 'DUO'
+		    },
 	      dataType: 'html',
 	      success : function(data) {
 	          $('#categoryDuoModification').html(data);

@@ -1,9 +1,7 @@
 <?php
-include '../security/security_manager.php';
-
 $type = 'USER';
-if (isset($_GET['type']))
-if ($_GET['type'] == 'DUO')
+if (isset($_POST['data']))
+if ($_POST['data'] == 'DUO')
 	$type = 'DUO';
 
 $translator = new Translator();

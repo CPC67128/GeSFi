@@ -1,6 +1,4 @@
 <?php
-include '../security/security_manager.php';
-
 $translator = new Translator();
 
 $investmentsRecordsHandler = new InvestmentsRecordsHandler();

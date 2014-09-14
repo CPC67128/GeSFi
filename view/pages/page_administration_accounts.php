@@ -21,7 +21,11 @@ function listAccounts()
 {
 	$.ajax({
 	    type : 'POST',
-	    url : 'page_administration_accounts_list.php',
+	    url : 'page.php',
+	    data: {
+	        'page': 'administration_accounts_list', 
+	        'area': 'administration'
+	    },
 	    dataType: 'html',
 	    success : function(data) {
 	        $('#accountsList').html(data);
@@ -39,8 +43,12 @@ function changeAccount(accountsList)
   else
 	  $.ajax({
 	      type : 'POST',
-	      url : 'page_administration_accounts_form.php',
-	      data: { accountId: value }, 
+		    url : 'page.php',
+		    data: {
+		        'page': 'administration_accounts_form', 
+		        'area': 'administration',
+		        accountId: value
+		    },
 	      dataType: 'html',
 	      success : function(data) {
 	          $('#accountModification').html(data);

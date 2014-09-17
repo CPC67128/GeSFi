@@ -1,5 +1,12 @@
 <?php
+include '../component/component_autoload.php';
 include '../component/component_security.php';
+
+$translator = new Translator();
+
+$specialPage = '';
+if (isset($_GET['special_page']))
+	$specialPage = $_GET['special_page'];
 
 $page = '';
 if (isset($_GET['page']))
@@ -41,10 +48,9 @@ $pageName = $page;
 
 $fullRecordsView = false;
 
-if ($pageName == 'records-fullview')
+if ($pageName == 'record-fullview')
 {
-	$pageName = 'records';
-	echo 'FULLVIEW';
+	$pageName = 'record';
 	$fullRecordsView = true;
 	
 }
@@ -81,6 +87,10 @@ if ($pageName == 'record' && $area == 'investment')
 if ($pageName == 'administration' && $area == 'administration' && $id == '')
 	$pageName = 'administration_connection';
 
+// Special statistics page
+if (!empty($specialPage))
+	$pageName = $specialPage;
+
 switch ($pageName)
 {
 	case 'record_remark':
@@ -94,7 +104,7 @@ switch ($pageName)
 		include 'pages/page_'.$pageName.'.php';
 		AddFormManagementEnd($pageName);
 		break;
-
+/*
 	case 'investment_record_statistics';
 		if ($accountType == -50 || $accountType == 0)
 			include 'pages/page_'.$pageName.'_global.php';
@@ -120,7 +130,7 @@ switch ($pageName)
 		else
 			include 'pages/page_'.$pageName.'_private.php';
 		break;
-
+*/
 
 	case 'configuration';
 		break;

@@ -1,7 +1,5 @@
 <?php
-include '../component/component_security.php';
-
-$translator = new Translator();
+include '../component/component_page_common.php';
 
 $accountsHandler = new AccountsHandler();
 

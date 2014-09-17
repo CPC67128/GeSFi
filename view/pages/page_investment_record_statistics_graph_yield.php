@@ -1,6 +1,4 @@
 <?php
-$translator = new Translator();
-
 $investmentsRecordsHandler = new InvestmentsRecordsHandler();
 $result = $investmentsRecordsHandler->GetAllRecords();
 
@@ -34,8 +32,12 @@ require_once ('../3rd_party/jpgraph-3.5.0b1/src/jpgraph_line.php');
 require_once ('../3rd_party/jpgraph-3.5.0b1/src/jpgraph_date.php');
 
 // Create a data set in range (50,70) and X-positions
-DEFINE('NDATAPOINTS',360);
-DEFINE('SAMPLERATE',240);
+/*
+if (!defined('NDATAPOINTS'))
+	DEFINE('NDATAPOINTS',360);
+if (!defined('SAMPLERATE'))
+	DEFINE('SAMPLERATE',240);
+*/
 
 // Create the new graph
 $graph = new Graph(1000,300);
@@ -46,7 +48,7 @@ $graph->SetMargin(40,40,30,30);
 
 // Fix the Y-scale to go between [0,100] and use date for the x-axis
 $graph->SetScale('datlin');
-$graph->title->Set($translator->getTranslation("Rendement global"));
+$graph->title->Set($translator->getTranslation("Rendement"));
 
 // Set the angle for the labels to 90 degrees
 $graph->xaxis->SetLabelAngle(0);
@@ -62,5 +64,7 @@ $lineYieldAverage->SetFillColor('lightblue@0.8');
 $lineYieldAverage->SetWeight(2);
 $lineYieldAverage->SetStyle("solid");
 
-$graph->Stroke();
-?>
+// $graph->Stroke(); sends the headers
+$graph->Stroke(_IMG_HANDLER);
+
+$graph->img->Stream();

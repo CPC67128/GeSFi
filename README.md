@@ -49,5 +49,6 @@ Quotes:
 - HTML tags "
 - Javascript within HTML tags '
 - PHP strings '
+but Strings to translate: "
 - SQL queries delimiters within PHP "
 - SQL queries in string delimiters '

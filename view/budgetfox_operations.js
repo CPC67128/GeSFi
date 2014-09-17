@@ -41,13 +41,13 @@ function ConfirmRecord(recordIdToConfirm, sender)
 function LoadRecords_All()
 {
 	$('#content').html('<img src="../media/loading.gif" />');
-	SetContext('records-fullview');
+	ChangeContext_Page('record-fullview')
 }
 
 function LoadRecords_Normal()
 {
 	$('#content').html('<img src="../media/loading.gif" />');
-	SetContext('records');
+	ChangeContext_Page('record')
 }
 
 function LoadRepaymentNeeds()

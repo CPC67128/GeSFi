@@ -1,14 +1,9 @@
 <?php
+include '../component/component_autoload.php';
 include '../component/component_security.php';
-
 $translator = new Translator();
-
-$actor_default = 1;
-
-$common_acount_actor1_charge = 50;
-$common_acount_actor2_charge = 50;
 ?>
-<!DOCTYPE>
+<!DOCTYPE html>
 <html>
 <head>
 <title><?= $translator->getTranslation("BudgetFox : Logiciel de comptabilité personnelle") ?></title>

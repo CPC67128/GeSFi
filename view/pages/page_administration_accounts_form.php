@@ -31,6 +31,7 @@ foreach ($types as $key => $value)
 <?= $translator->getTranslation('Date de clôture') ?> <input title="aaaa-mm-jj" size="10" class="datePicker" name="closingDate"><br/>
 <?= $translator->getTranslation('Période de vérification minimale') ?> <input name="minimumCheckPeriod" type="text" size="4" value="30"><br/>
 <?= $translator->getTranslation('Ordre') ?> <input name='sortOrder' type='text' size='5' /><br />
+<?= $translator->getTranslation('Confirmation des lignes') ?> <input name='recordConfirmation' type='checkbox' /> <i><?= $translator->getTranslation('(Les lignes doivent être confirmées pour être prises en comptes)') ?></i><br /><br />
 <?php
 }
 else
@@ -52,7 +53,8 @@ else
 <?= $translator->getTranslation('Date de disponibilité') ?> <input title="aaaa-mm-jj" size="10" class="datePicker" name="availabilityDate" value="<?php echo $account->get('availabilityDate') ?>"><br/>
 <?= $translator->getTranslation('Date de clôture') ?> <input title="aaaa-mm-jj" size="10" class="datePicker" name="closingDate" value="<?php echo $account->get('closingDate') ?>"><br/>
 <?= $translator->getTranslation('Période de vérification minimale') ?> <input name="minimumCheckPeriod" type="text" size="4" value="<?php echo $account->get('minimumCheckPeriod') ?>"><br/>
-<?= $translator->getTranslation('Ordre') ?> <input name='sortOrder' type='text' size='5' value="<?= $account->get('sortOrder') ?>" /><br />
+<?= $translator->getTranslation('Ordre') ?> <input name='sortOrder' type='text' size='5' value="<?= $account->getIfSetOrDefault('sortOrder', 0) ?>" /><br />
+<?= $translator->getTranslation('Confirmation des lignes') ?> <input name='recordConfirmation' type='checkbox' <?= $account->get('recordConfirmation') == "1" ? 'checked' : '' ?> /> <i><?= $translator->getTranslation('(Les lignes doivent être confirmées pour être prises en comptes)') ?></i><br /><br />
 <br />
 <font color='red'><?= $translator->getTranslation('Supprimer') ?> <input name='delete' type='checkbox' /></font> <i>Cocher pour clôturer le compte</i><br /><br />
 <?php

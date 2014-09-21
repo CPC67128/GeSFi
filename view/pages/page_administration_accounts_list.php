@@ -10,7 +10,7 @@ $accounts = $accountsHandler->GetAllAccounts();
 foreach ($accounts as $account)
 {
 ?>
-<option value="<?= $account->get('accountId') ?>"><?= $account->get('name') ?> (<?= $account->get('sortOrder') ?>)</option>
+<option value="<?= $account->get('accountId') ?>"><?= $account->get('name') ?> (<?= $account->getIfSetOrDefault('sortOrder', 0) ?>)</option>
 <?php
 }
 ?>

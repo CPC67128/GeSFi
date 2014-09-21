@@ -42,7 +42,9 @@ foreach ($accounts as $account)
 <?= $translator->getTranslation('Date') ?> <input title="aaaa-mm-jj hh:mm:ss" size="10" id="datePicker" name="date" value="<?php echo date("Y-m-d") ?>"><br/>
 Montant <input type="text" name="amount" tabindex="-1" size="6" style='background-color : #d1d1d1;' readonly>&nbsp;&euro;<br />
 
-<?= $translator->getTranslation('Désignation') ?> <input type="text" name="designation" id="designation" size="30">
+<?= $translator->getTranslation('Désignation') ?> <input type="text" name="designation" id="designation" size="30"><br/>
+<br/>
+<?= $translator->getTranslation("Confirmer l'opération") ?> <input type="checkbox" name="confirmed" id="confirmed" />
 
 
 </td>

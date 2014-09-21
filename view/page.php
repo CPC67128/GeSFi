@@ -38,10 +38,10 @@ $translator = new Translator();
 
 $accountsHandler = new AccountsHandler();
 
-//if ($id != '')
-//	$activeAccount = $accountsManager->GetAccount($id);
-//else
-$activeAccount = $accountsHandler->GetCurrentActiveAccount();
+if ($id != '')
+	$activeAccount = $accountsHandler->GetAccount($id);
+else
+	$activeAccount = $accountsHandler->GetCurrentActiveAccount();
 $accountType = $activeAccount->get('type');
 
 $pageName = $page;

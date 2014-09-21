@@ -40,6 +40,7 @@ class Operation_Record_Income extends Operation_Record
 						$categoryData['chargeLevel'],
 						$categoryData['categoryId'],
 						12,
+						0,
 						$uuid);
 				}
 			}

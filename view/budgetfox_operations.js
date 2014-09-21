@@ -5,7 +5,7 @@ function DeleteRecord(recordIdToDelete)
 			'../controller/controller.php?action=record_delete',
 			{ recordId: recordIdToDelete },
 			function(response, status) {
-				LoadRecords();
+				LoadRecords_Normal()
 			}
 	);
 }
@@ -16,7 +16,7 @@ function DeleteRecordInvestment(recordIdToDelete)
 			'../controller/controller.php?action=investmentrecord_delete',
 			{ recordId: recordIdToDelete },
 			function(response, status) {
-				LoadRecords();
+				LoadRecords_Normal();
 			}
 	);
 }
@@ -34,6 +34,7 @@ function ConfirmRecord(recordIdToConfirm, sender)
 			{ recordId: recordIdToConfirm , confirmed: confirmation },
 			function(response, status) {
 				sender.disabled = false;
+				LoadAccountStatusInPageRecord();
 			}
 	);
 }
@@ -177,4 +178,22 @@ function LogoutUser()
 				window.location = 'page_login.php';
 			}
 	);
+}
+
+
+function LoadAccountStatusInPageRecord()
+{
+	$.ajax({
+		type : 'POST',
+		url : 'page.php',
+		data: {
+			'page': 'record_account_status',
+			'area': '',
+			'id': currentContext.id
+		},
+		dataType: 'html',
+		success : function(data) {
+			$('#accountStatus').html(data);
+		}
+	});
 }

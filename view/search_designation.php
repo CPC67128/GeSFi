@@ -1,4 +1,5 @@
 <?php
+include '../component/component_autoload.php';
 include '../component/component_security.php';
 
 $usersHandler = new UsersHandler();

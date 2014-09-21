@@ -9,6 +9,7 @@ class Operation_Record_Payment extends Operation_Record
 		$this->ValidateRecordDate();
 		$this->ValidatePeriodicity();
 		$this->ValidatePeriodicityNumber();
+		$this->ValidateConfirmed();
 	}
 
 	public function Save()
@@ -41,6 +42,7 @@ class Operation_Record_Payment extends Operation_Record
 						$categoryData['chargeLevel'],
 						$categoryData['categoryId'],
 						$recordType,
+						$this->_confirmed,
 						$uuid);
 				}
 			}

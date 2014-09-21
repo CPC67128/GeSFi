@@ -12,6 +12,7 @@ class Operation_Record extends Operation
 	protected $_amount;
 	protected $_userId;
 	protected $_categories;
+	protected $_confirmed;
 
 	// -------------------------------------------------------------------------------------------------------------------
 	
@@ -131,5 +132,13 @@ class Operation_Record extends Operation
 			throw new Exception('Merci de renseigner le compte de destination');
 		if ($this->_toAccount == $this->_fromAccount)
 			throw new Exception('Merci de renseigner correctement le compte de destination');
+	}
+
+	public function ValidateConfirmed()
+	{
+		if (!empty($this->_confirmed))
+			$this->_confirmed = 1;
+		else
+			$this->_confirmed = 0;
 	}
 }

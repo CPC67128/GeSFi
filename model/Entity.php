@@ -16,6 +16,15 @@ class Entity
 			throw new Exception('Unknow attribute '.$member);
 	}
 	
+	public function getIfSetOrDefault($member, $default)
+	{
+		$member = '_'.$member;
+		if (isset($this->$member))
+			return $this->$member;
+		else
+			return $default;
+	}
+
 	public function hydrate(array $data)
 	{
 		foreach ($data as $key => $value)

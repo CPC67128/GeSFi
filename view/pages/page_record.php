@@ -1,88 +1,5 @@
+<div id="accountStatus"></div>
 <?php
-$totalPlannedDebit = 0;
-if ($accountType == 0)
-{
-	?>
-	<h1><?= $translator->getTranslation('Situation des comptes') ?></h1>
-
-	<table class="summaryTable">
-	<?php
-	$accountsHandler = new AccountsHandler();
-	$accounts = $accountsHandler->GetAllOrdinaryAccounts();
-	
-	foreach ($accounts as $account)
-	{
-		
-		if ($account->get('type') != 2 && $account->get('type') != 4)
-		{
-			$balance = $account->GetBalance();
-			?>
-	
-			<tr>
-			<td><a href="#" onclick="javascript:ChangeAccount('<?= $account->get('accountId') ?>'); return false;"><?= $account->get('name') ?></a></td>
-			<td style='text-align: right;<?php 
-			if ($account->get('type') != 5)
-			{
-				if ($balance <= $account->get('expectedMinimumBalance'))
-					echo 'background-color: #FF0000';
-				else
-					echo 'background-color: #00FF00';
-			}
-			?>'><?= $translator->getCurrencyValuePresentation($balance) ?></td>
-			<td style='text-align: right; font-style:italic;'><?= $translator->getTranslation($account->getTypeDescription()) ?></td>
-			</tr>
-
-			<?php
-			$totalPlannedDebit += $account->GetPlannedOutcome(10);
-		}
-	}
-	?>
-	</table>
-	<br />
-<?php
-}
-?>
-
-<?php
-$accountPlannedDebit = $activeAccount->GetPlannedOutcome(10);
-
-// ------------ Affichage du solde d'un compte réel
-if ($accountType == 4)
-{
-	$balance = $activeAccount->GetBalance();
-?>
-Epargne : <?= $translator->getCurrencyValuePresentation($balance) ?>
-<?php
-}
-else if ($accountType != 2 && $accountType != 0)
-{
-	$accountExpectedMinimumBalance = $activeAccount->get('expectedMinimumBalance');
-	$balance = $activeAccount->GetBalance();
-	$balanceConfirmed = $activeAccount->GetBalanceConfirmed();
-
-	$criticalAccountBalance = false;
-	if ($accountExpectedMinimumBalance >= ($balance + $accountPlannedDebit))
-		$criticalAccountBalance = true;
-
-	if ($criticalAccountBalance)
-		echo "<font color='red'>";
-	else
-		echo "<font color='green'>";
-?>
-Solde : <?= $translator->getCurrencyValuePresentation($balance) ?>
-</font> / <?= $translator->getCurrencyValuePresentation($balanceConfirmed) ?> confirmé (Débit prévus pour les 10 prochains jours : <?= $translator->getCurrencyValuePresentation($accountPlannedDebit) ?>)
-<?php
-}
-else
-{
-?>
-Débit prévus pour les 10 prochains jours : <?= $translator->getCurrencyValuePresentation($totalPlannedDebit) ?>
-<?php
-}
-?>
-<br /><br />
-<?php
-
 $recordsHandler = new RecordsHandler();
 
 if ($fullRecordsView)
@@ -114,7 +31,14 @@ function AddTitleRow()
 // ------ Add a data row
 function AddRow($index, $row, $mergeRow)
 {
-	global $activeAccount, $now, $translator, $activeUser, $partnerUser;
+	global $accountsHandler, $now, $translator, $activeUser, $partnerUser;
+
+	try {
+		if (!empty($row['account_id']))
+			$activeAccount = $accountsHandler->GetAccount($row['account_id']);
+	} catch (Exception $e) {
+
+	}
 
 	$tr = '<tr class="tableRow';
 	if ($row['marked_as_deleted']) $tr .= 'Deleted';
@@ -142,7 +66,10 @@ function AddRow($index, $row, $mergeRow)
 	//if (!$mergeRow && !($row['record_date'] > $now))
 	if (!$mergeRow)
 	{
-		echo '<td><input type="checkbox" '.($row['confirmed'] == 1 ? 'checked' : '').' onclick="ConfirmRecord(\''.$row['record_id'].'\', this);"></span></td>';
+		if (empty($row['account_id']) || $activeAccount->get('recordConfirmation') != 1) 
+			echo '<td><input type="checkbox" '.($row['confirmed'] == 1 ? 'checked' : '').' disabled="disabled"></td>';
+		else
+			echo '<td><input type="checkbox" '.($row['confirmed'] == 1 ? 'checked' : '').' onclick="ConfirmRecord(\''.$row['record_id'].'\', this);"></td>';
 	}
 	else
 		echo "<td></td>";
@@ -308,7 +235,6 @@ while ($row = $result->fetch())
 <script type="text/javascript">
 
 $(function() {
-
 	var amount = $( "#amount" );
 	var recordId = $( "#recordId" );
 
@@ -354,6 +280,8 @@ function ModifyRecord(recordIdToModify, amount, sender)
 	$( "#amount" ).val(amount);
 	$( "#dialog-form" ).dialog( "open" );
 }
+
+LoadAccountStatusInPageRecord();
 
 </script>
 

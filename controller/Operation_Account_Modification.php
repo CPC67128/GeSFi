@@ -14,10 +14,19 @@ class Operation_Account_Modification extends Operation_Account
 	protected $_availabilityDate;
 	protected $_closingDate;
 	protected $_minimumCheckPeriod;
+	protected $_recordConfirmation;
 
 	protected $_delete;
 
 	protected $_sortOrder;
+
+	public function Validate()
+	{
+		if (!empty($this->_recordConfirmation))
+			$this->_recordConfirmation = "1";
+		else
+			$this->_recordConfirmation = "0";
+	}
 
 	public function Save()
 	{
@@ -25,7 +34,7 @@ class Operation_Account_Modification extends Operation_Account
 
 		if ($this->_accountId == '')
 		{
-			$handler->InsertAccount($this->_name, $this->_owner, $this->_coowner, $this->_type, $this->_openingBalance, $this->_expectedMinimumBalance, $this->_sortOrder, $this->_minimumCheckPeriod);
+			$handler->InsertAccount($this->_name, $this->_owner, $this->_coowner, $this->_type, $this->_openingBalance, $this->_expectedMinimumBalance, $this->_sortOrder, $this->_minimumCheckPeriod, $this->_recordConfirmation);
 		}
 		else
 		{
@@ -44,7 +53,8 @@ class Operation_Account_Modification extends Operation_Account
 							$this->_sortOrder,
 							$this->_minimumCheckPeriod,
 							$this->_creationDate,
-							$this->_availabilityDate);
+							$this->_availabilityDate,
+							$this->_recordConfirmation);
 			}
 			else
 			{

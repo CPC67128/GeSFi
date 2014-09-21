@@ -183,13 +183,14 @@ class DB
 						  $charge,
 						  $category,
 						  $recordType,
+						  $confirmed,
 						  $recordGroupId)
 	{
 		if ($this->_isReadOnly)
 			return 0;
 	
-		$query = sprintf("insert into ".$this->_dbTablePrefix."record (account_id, user_id, record_date, marked_as_deleted, designation, record_type, amount, actor, charge, category_id, record_group_id, record_id)
-				values ('%s', '%s', '%s', 0, '%s', %s, %s, %s, %s, '%s', '%s', uuid())",
+		$query = sprintf("insert into ".$this->_dbTablePrefix."record (account_id, user_id, record_date, marked_as_deleted, designation, record_type, amount, actor, charge, category_id, record_group_id, record_id, confirmed)
+				values ('%s', '%s', '%s', 0, '%s', %s, %s, %s, %s, '%s', '%s', uuid(), %s)",
 				$accountId,
 				$userId,
 				$recordDate,
@@ -199,7 +200,8 @@ class DB
 				$actor == null ? 0 : $actor,
 				$charge,
 				$category == null ? "" : $category,
-				$recordGroupId == null ? "" : $recordGroupId);
+				$recordGroupId == null ? "" : $recordGroupId,
+				$confirmed);
 		//throw new Exception($query);
 		$result = $this->_connection->exec($query);
 	
@@ -220,6 +222,7 @@ class DB
 								   0,
 								   null,
 								   2,
+								   0,
 								   null);
 	}
 
@@ -234,10 +237,11 @@ class DB
 				0,
 				null,
 				$recordType,
+				0,
 				$recordGroupId);
 	}
 	
-	function InsertRecord_AmountUse($accountId, $userId, $recordDate, $amount, $designation, $charge, $category, $recordType, $recordGroupId)
+	function InsertRecord_AmountUse($accountId, $userId, $recordDate, $amount, $designation, $charge, $category, $recordType, $confirmed, $recordGroupId)
 	{
 		return $this->InsertRecord(
 				$accountId,
@@ -249,6 +253,7 @@ class DB
 				$charge,
 				$category,
 				$recordType,
+				$confirmed,
 				$recordGroupId);
 	}
 

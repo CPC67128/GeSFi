@@ -330,12 +330,13 @@ class AccountsHandler extends Handler
 			where ACC.account_id = \''.$id.'\'
 			and marked_as_closed = 0';
 		$row = $db->SelectRow($query);
-		$newAccount->hydrate($row);
+		if (isset($row))
+			$newAccount->hydrate($row);
 
 		return $newAccount;
 	}
 
-	function InsertAccount($name, $owner, $coowner, $type, $openingBalance, $expectedMinimumBalance, $sortOrder, $minimumCheckPeriod)
+	function InsertAccount($name, $owner, $coowner, $type, $openingBalance, $expectedMinimumBalance, $sortOrder, $minimumCheckPeriod, $recordConfirmation)
 	{
 		$db = new DB();
 
@@ -369,8 +370,8 @@ class AccountsHandler extends Handler
 		
 		$sortOrder = $originalSortOrder;
 		
-		$query = sprintf("insert into {TABLEPREFIX}account (account_id, name, type, owner_user_id, coowner_user_id, opening_balance, expected_minimum_balance, minimum_check_period, creation_date)
-				values ('%s', '%s', %s, '%s', '%s', %s, %s, %s, CURRENT_TIMESTAMP())",
+		$query = sprintf("insert into {TABLEPREFIX}account (account_id, name, type, owner_user_id, coowner_user_id, opening_balance, expected_minimum_balance, minimum_check_period, creation_date, record_confirmation)
+				values ('%s', '%s', %s, '%s', '%s', %s, %s, %s, CURRENT_TIMESTAMP(), %s)",
 				$uuid,
 				$name,
 				$type,
@@ -378,7 +379,8 @@ class AccountsHandler extends Handler
 				$coowner,
 				$openingBalance,
 				$expectedMinimumBalance,
-				$minimumCheckPeriod);
+				$minimumCheckPeriod,
+				$recordConfirmation);
 		$result = $db->Execute($query);
 
 		$query = sprintf("insert into {TABLEPREFIX}account_user_preference (user_id, account_id, sort_order)
@@ -405,11 +407,11 @@ class AccountsHandler extends Handler
 		return $result;
 	}
 
-	function UpdateAccount($accountId, $name, $description, $openingBalance, $expectedMinimumBalance, $sortOrder, $minimumCheckPeriod, $creationDate, $availabilityDate)
+	function UpdateAccount($accountId, $name, $description, $openingBalance, $expectedMinimumBalance, $sortOrder, $minimumCheckPeriod, $creationDate, $availabilityDate, $recordConfirmation)
 	{
 		$db = new DB();
 
-		$query = sprintf("update {TABLEPREFIX}account set name = '%s', description='%s', opening_balance = %s, expected_minimum_balance = %s, minimum_check_period = %s, creation_date = '%s', availability_date = '%s' where account_id = '%s'",
+		$query = sprintf("update {TABLEPREFIX}account set name = '%s', description='%s', opening_balance = %s, expected_minimum_balance = %s, minimum_check_period = %s, creation_date = '%s', availability_date = '%s', record_confirmation = %s where account_id = '%s'",
 				$db->ConvertStringForSqlInjection($name),
 				$db->ConvertStringForSqlInjection($description),
 				$openingBalance,
@@ -417,6 +419,7 @@ class AccountsHandler extends Handler
 				$minimumCheckPeriod,
 				$creationDate,
 				$availabilityDate,
+				$recordConfirmation,
 				$accountId);
 		
 		$result = $db->Execute($query);

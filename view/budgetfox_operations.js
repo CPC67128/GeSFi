@@ -13,7 +13,7 @@ function DeleteRecord(recordIdToDelete)
 function DeleteRecordInvestment(recordIdToDelete)
 {
 	$.post (
-			'../controller/controller.php?action=investmentrecord_delete',
+			'../controller/controller.php?action=investment_record_delete',
 			{ recordId: recordIdToDelete },
 			function(response, status) {
 				LoadRecords_Normal();

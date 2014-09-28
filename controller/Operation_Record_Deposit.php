@@ -1,5 +1,5 @@
 <?php
-class Operation_Record_Income extends Operation_Record
+class Operation_Record_Deposit extends Operation_Record
 {
 	public function Validate()
 	{

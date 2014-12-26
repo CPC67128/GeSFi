@@ -133,6 +133,14 @@ class DB
 		}
 	}
 
+	function Parse($query)
+	{
+		$query = str_replace('{USERID}', $this->_userId, $query);
+		$query = str_replace('{ACCOUNTID}', $this->_accountId, $query);
+		$query = str_replace('{TABLEPREFIX}', $this->_dbTablePrefix, $query);
+		return $query;
+	}
+
 	function GenerateUUID()
 	{
 		$query = sprintf('select uuid()');

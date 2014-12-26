@@ -5,7 +5,7 @@ $isGlobalRecordSelected = ($id == '' && $area == 'investment');
 
 AddMenuTopItem(!$isGlobalRecordSelected, $translator->getTranslation('Gestion patrimoniale'), 'investment_record_dashboard', 'investment', '', '', true);
 
-$accounts = $accountsHandler->GetAllInvestmentAccounts();
+$accounts = $accountsHandler->GetAllInvestmentAccountsToDisplayInMenu();
 $lastItem = end($accounts);
 reset($accounts);
 

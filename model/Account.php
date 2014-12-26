@@ -15,6 +15,7 @@ class Account extends Entity
 	protected $_closingDate;
 	protected $_minimumCheckPeriod;
 	protected $_markedAsClosed;
+	protected $_notDisplayedInMenu;
 
 	protected $_sortOrder;
 

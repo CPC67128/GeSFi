@@ -10,49 +10,134 @@ $partner = $usersHandler->GetUser($user->GetPartnerId());
 $statisticsHandler = new StatisticsHandler();
 $translator = new Translator();
 
+$totalContributionOfUser = 0;
+$totalContributionOfPartner = 0;
+$totalExpenses = 0;
+$totalExpensesChargedToUser = 0;
+$totalExpensesChargedToPartner = 0;
 
-$totalIncomeDuoAccountsByUser = $statisticsHandler->GetTotalIncomeDuoAccountsByUser($user->get('userId'));
-$totalIncomeDuoAccountsByPartner = $statisticsHandler->GetTotalIncomeDuoAccountsByUser($user->GetPartnerId());
-$totalIncomeOutsidePartners = $statisticsHandler->GetTotalIncomeOutsidePartnersDuoAccounts();
-$totalIncomeDuoAccounts = $totalIncomeDuoAccountsByUser + $totalIncomeDuoAccountsByPartner + $totalIncomeOutsidePartners;
 
-$totalExpenseDuoAccountsChargedForUser = $statisticsHandler->GetTotalExpenseDuoAccountsChargedForUser($user->get('userId'));
-$totalExpenseDuoAccountsChargedForPartner = $statisticsHandler->GetTotalExpenseDuoAccountsChargedForUser($partner->get('userId'));
-$totalExpenseDuoAccounts = $statisticsHandler->GetTotalExpenseDuoAccounts();
+$totalExpensesFromPrivateAccountsToDuoCategoriesMadeByUser = $statisticsHandler->GetTotalExpensePrivateAccountsForDuoCategoriesMadeByUser($user->get('userId'));
+$totalExpensesFromPrivateAccountsToDuoCategoriesMadeByUserChargedToUser = $statisticsHandler->GetTotalExpensePrivateAccountsForDuoCategoriesChargedForUser($user->get('userId'));
+$totalExpensesFromPrivateAccountsToDuoCategoriesMadeByUserChargedToPartner = $totalExpensesFromPrivateAccountsToDuoCategoriesMadeByUser - $totalExpensesFromPrivateAccountsToDuoCategoriesMadeByUserChargedToUser;
 
-$totalValueDuoAccountsGivenByUser = $totalIncomeDuoAccountsByUser - $totalExpenseDuoAccountsChargedForUser;
-$totalValueDuoAccountsGivenByPartner = $totalIncomeDuoAccountsByPartner - $totalExpenseDuoAccountsChargedForPartner;
-$totalValueDuoAccountsGivenDifference = $totalValueDuoAccountsGivenByUser - $totalValueDuoAccountsGivenByPartner;
+$totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByUser = $statisticsHandler->GetTotalExpensePrivateAccountsForPartnerCategoriesMadeByUser($user->get('userId'));
+$totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByUserChargedToUser = $statisticsHandler->GetTotalExpensePrivateAccountsForPartnerCategoriesChargedForUser($user->get('userId'));
+$totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByUserChargedToPartner = $totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByUser - $totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByUserChargedToUser;
+
+$totalContributionOfUser += $totalExpensesFromPrivateAccountsToDuoCategoriesMadeByUser + $totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByUser;
+$totalExpenses += $totalExpensesFromPrivateAccountsToDuoCategoriesMadeByUser + $totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByUser;
+$totalExpensesChargedToUser += $totalExpensesFromPrivateAccountsToDuoCategoriesMadeByUserChargedToUser + $totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByUserChargedToUser;
+$totalExpensesChargedToPartner += $totalExpensesFromPrivateAccountsToDuoCategoriesMadeByUserChargedToPartner + $totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByUserChargedToPartner;
+
+
+$totalExpensesFromPrivateAccountsToDuoCategoriesMadeByPartner = $statisticsHandler->GetTotalExpensePrivateAccountsForDuoCategoriesMadeByUser($partner->get('userId'));
+$totalExpensesFromPrivateAccountsToDuoCategoriesMadeByPartnerChargedToPartner = $statisticsHandler->GetTotalExpensePrivateAccountsForDuoCategoriesChargedForUser($partner->get('userId'));
+$totalExpensesFromPrivateAccountsToDuoCategoriesMadeByPartnerChargedToUser = $totalExpensesFromPrivateAccountsToDuoCategoriesMadeByPartner - $totalExpensesFromPrivateAccountsToDuoCategoriesMadeByPartnerChargedToPartner;
+
+$totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByPartner = $statisticsHandler->GetTotalExpensePrivateAccountsForPartnerCategoriesMadeByUser($partner->get('userId'));
+$totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByPartnerChargedToPartner = $statisticsHandler->GetTotalExpensePrivateAccountsForPartnerCategoriesChargedForUser($partner->get('userId'));
+$totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByPartnerChargedToUser = $totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByPartner - $totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByPartnerChargedToPartner;
+
+$totalContributionOfPartner += $totalExpensesFromPrivateAccountsToDuoCategoriesMadeByPartner + $totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByPartner;
+$totalExpenses += $totalExpensesFromPrivateAccountsToDuoCategoriesMadeByPartner + $totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByPartner;
+$totalExpensesChargedToUser += $totalExpensesFromPrivateAccountsToDuoCategoriesMadeByPartnerChargedToUser + $totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByPartnerChargedToUser;
+$totalExpensesChargedToPartner += $totalExpensesFromPrivateAccountsToDuoCategoriesMadeByPartnerChargedToPartner + $totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByPartnerChargedToPartner;
+
+
+$totalIncomeDuoAccountsMadeByUser = $statisticsHandler->GetTotalIncomeDuoAccountsByUser($user->get('userId'));
+$totalIncomeDuoAccountsMadeByPartner = $statisticsHandler->GetTotalIncomeDuoAccountsByUser($user->GetPartnerId());
+$totalIncomeDuoAccountsOutsidePartners = $statisticsHandler->GetTotalDepositFromOutsideToDuoAccounts();
+
+$totalOutcomeDuoAccountsMadeByUser = $statisticsHandler->GetTotalOutcomeFromDuoAccountsByUser($user->get('userId'));
+$totalOutcomeDuoAccountsMadeByPartner = $statisticsHandler->GetTotalOutcomeFromDuoAccountsByUser($user->GetPartnerId());
+
+$totalExpensesDuoAccounts = $statisticsHandler->GetTotalExpenseDuoAccounts();
+$totalExpensesDuoAccountsChargedForUser = $statisticsHandler->GetTotalExpenseDuoAccountsChargedForUser($user->get('userId'));
+$totalExpensesDuoAccountsChargedForPartner = $statisticsHandler->GetTotalExpenseDuoAccountsChargedForUser($user->GetPartnerId());
+
+$totalContributionOfUser += $totalIncomeDuoAccountsMadeByUser - $totalOutcomeDuoAccountsMadeByUser + $totalIncomeDuoAccountsOutsidePartners / 2;
+$totalContributionOfPartner += $totalIncomeDuoAccountsMadeByPartner - $totalOutcomeDuoAccountsMadeByPartner + $totalIncomeDuoAccountsOutsidePartners / 2;
+$totalExpenses += $totalExpensesDuoAccounts;
+$totalExpensesChargedToUser += $totalExpensesDuoAccountsChargedForUser;
+$totalExpensesChargedToPartner += $totalExpensesDuoAccountsChargedForPartner;
+
+
+$totalRepaymentFromUserToPartner = $statisticsHandler->GetTotalRepaymentFromUserToPartner($user->get('userId'), $user->getPartnerId());
+$totalRepaymentFromPartnerToUser = $statisticsHandler->GetTotalRepaymentFromUserToPartner($user->getPartnerId(), $user->get('userId'));
+
+$totalContributionOfUser += $totalRepaymentFromUserToPartner - $totalRepaymentFromPartnerToUser;
+$totalContributionOfPartner += $totalRepaymentFromPartnerToUser - $totalRepaymentFromUserToPartner;
+
+
+$totalIncomeOutsidePartnersToUser = $statisticsHandler->GetTotalDepositFromOutsideToPrivateAccounts($user->get('userId'));
+$totalIncomeOutsidePartnersToPartner = $statisticsHandler->GetTotalDepositFromOutsideToPrivateAccounts($user->GetPartnerId());
+
+$totalContributionOfUser += $totalIncomeOutsidePartnersToPartner / 2 - $totalIncomeOutsidePartnersToUser / 2; 
+$totalContributionOfPartner += $totalIncomeOutsidePartnersToUser / 2 - $totalIncomeOutsidePartnersToPartner / 2;
 
 ?>
 Situation des comptes entre <?= $user->get('name') ?> et <?= $partner->get('name') ?>
 
-<h1><?= $translator->getTranslation('Situation comptes duo') ?></h1>
+<h1><?= $translator->getTranslation('Situation globale') ?></h1>
 <table class="blankTable">
+
 <thead>
-<th>Versements effectifs</th>
+<th>Désignation</th>
+<th>Apports</th>
 <th>Dépenses</th>
-<th>Valeurs effectives apportées</th>
 </thead>
-<tr>
 
+<tr>
 <td>
 <table class="summaryTable">
 <tr>
-<td>Versements <?= $user->get('name') ?></td>
-<td><?= $translator->getCurrencyValuePresentation($totalIncomeDuoAccountsByUser) ?></td>
+<td>&nbsp;</td>
 </tr>
 <tr>
-<td>Versements <?= $partner->get('name') ?></td>
-<td><?= $translator->getCurrencyValuePresentation($totalIncomeDuoAccountsByPartner) ?></td>
+<td>Dépenses <?= $user->get('name') ?> > catégories duo</td>
 </tr>
 <tr>
-<td>Revenus (intérêts...)</td>
-<td><?= $translator->getCurrencyValuePresentation($totalIncomeOutsidePartners) ?></td>
+<td>Dépenses <?= $user->get('name') ?> > catégories <?= $partner->get('name') ?></td>
 </tr>
 <tr>
-<td><i>Total versements</i></td>
-<td><?= $translator->getCurrencyValuePresentation($totalIncomeDuoAccounts) ?></td>
+<td>Dépenses <?= $partner->get('name') ?> > catégories duo</td>
+</tr>
+<tr>
+<td>Dépenses <?= $partner->get('name') ?> > catégories <?= $user->get('name') ?></td>
+</tr>
+<tr>
+<td>Versements sur comptes duo</td>
+</tr>
+<tr>
+<td>Revenus versées sur comptes duo</td>
+</tr>
+<tr>
+<td>Retraits depuis comptes duo</td>
+</tr>
+<tr>
+<td>Dépenses depuis comptes duo</td>
+</tr>
+<tr>
+<td>Remboursement de <?= $partner->get('name') ?> à <?= $user->get('name') ?></td>
+</tr>
+<tr>
+<td>Remboursement de <?= $user->get('name') ?> à <?= $partner->get('name') ?></td>
+</tr>
+<tr>
+<td>Revenus duo versés sur compte privé</td>
+</tr>
+<tr>
+<td>/ versés chez <?= $user->get('name') ?></td>
+</tr>
+<tr>
+<td>/ versés chez <?= $partner->get('name') ?></td>
+</tr>
+<tr>
+<td><b>Total</b></td>
+</tr>
+<tr>
+<td>Apports - Dépenses</td>
 </tr>
 </table>
 </td>
@@ -60,16 +145,84 @@ Situation des comptes entre <?= $user->get('name') ?> et <?= $partner->get('name
 <td>
 <table class="summaryTable">
 <tr>
-<td><i>Total dépenses</i></td>
-<td><?= $translator->getCurrencyValuePresentation($totalExpenseDuoAccounts) ?></td>
+<td align="center"><b><i>Total</i></b></td>
+<td align="center"><b><i><?= $user->get('name') ?></i></b></td>
+<td align="center"><b><i><?= $partner->get('name') ?></i></b></td>
 </tr>
 <tr>
-<td>Prise en charge <?= $user->get('name') ?></td>
-<td><?= $translator->getCurrencyValuePresentation($totalExpenseDuoAccountsChargedForUser) ?></td>
+<td align="right"><?= $translator->getCurrencyValuePresentation($totalExpensesFromPrivateAccountsToDuoCategoriesMadeByUser) ?></td>
+<td align="right"><?= $translator->getCurrencyValuePresentation($totalExpensesFromPrivateAccountsToDuoCategoriesMadeByUser) ?></td>
+<td>&nbsp;</td>
 </tr>
 <tr>
-<td>Prise en charge <?= $partner->get('name') ?></td>
-<td><?= $translator->getCurrencyValuePresentation($totalExpenseDuoAccountsChargedForPartner) ?></td>
+<td align="right"><?= $translator->getCurrencyValuePresentation($totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByUser) ?></td>
+<td align="right"><?= $translator->getCurrencyValuePresentation($totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByUser) ?></td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td align="right"><?= $translator->getCurrencyValuePresentation($totalExpensesFromPrivateAccountsToDuoCategoriesMadeByPartner) ?></td>
+<td>&nbsp;</td>
+<td align="right"><?= $translator->getCurrencyValuePresentation($totalExpensesFromPrivateAccountsToDuoCategoriesMadeByPartner) ?></td>
+</tr>
+<tr>
+<td align="right"><?= $translator->getCurrencyValuePresentation($totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByPartner) ?></td>
+<td>&nbsp;</td>
+<td align="right"><?= $translator->getCurrencyValuePresentation($totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByPartner) ?></td>
+</tr>
+<tr>
+<td align="right"><?= $translator->getCurrencyValuePresentation($totalIncomeDuoAccountsMadeByUser + $totalIncomeDuoAccountsMadeByPartner) ?></td>
+<td align="right"><?= $translator->getCurrencyValuePresentation($totalIncomeDuoAccountsMadeByUser) ?></td>
+<td align="right"><?= $translator->getCurrencyValuePresentation($totalIncomeDuoAccountsMadeByPartner) ?></td>
+</tr>
+<tr>
+<td align="right"><?= $translator->getCurrencyValuePresentation($totalIncomeDuoAccountsOutsidePartners) ?></td>
+<td align="right"><?= $translator->getCurrencyValuePresentation($totalIncomeDuoAccountsOutsidePartners / 2) ?></td>
+<td align="right"><?= $translator->getCurrencyValuePresentation($totalIncomeDuoAccountsOutsidePartners / 2) ?></td>
+</tr>
+<tr>
+<td align="right">- <?= $translator->getCurrencyValuePresentation($totalOutcomeDuoAccountsMadeByUser + $totalOutcomeDuoAccountsMadeByPartner) ?></td>
+<td align="right">- <?= $translator->getCurrencyValuePresentation($totalOutcomeDuoAccountsMadeByUser) ?></td>
+<td align="right">- <?= $translator->getCurrencyValuePresentation($totalOutcomeDuoAccountsMadeByPartner) ?></td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td align="right"><?= $translator->getCurrencyValuePresentation(-$totalRepaymentFromPartnerToUser) ?></td>
+<td align="right"><?= $translator->getCurrencyValuePresentation($totalRepaymentFromPartnerToUser) ?></td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td align="right"><?= $translator->getCurrencyValuePresentation($totalRepaymentFromUserToPartner) ?></td>
+<td align="right"><?= $translator->getCurrencyValuePresentation(-$totalRepaymentFromUserToPartner) ?></td>
+</tr>
+<tr>
+<td align="right"><?= $translator->getCurrencyValuePresentation($totalIncomeOutsidePartnersToUser + $totalIncomeOutsidePartnersToPartner) ?></td>
+<td align="right"><?= $translator->getCurrencyValuePresentation($totalIncomeOutsidePartnersToUser / 2 + $totalIncomeOutsidePartnersToPartner / 2) ?></td>
+<td align="right"><?= $translator->getCurrencyValuePresentation($totalIncomeOutsidePartnersToUser / 2 + $totalIncomeOutsidePartnersToPartner / 2) ?></td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td align="right"><?= $translator->getCurrencyValuePresentation(-$totalIncomeOutsidePartnersToUser) ?></td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td align="right"><?= $translator->getCurrencyValuePresentation(-$totalIncomeOutsidePartnersToPartner) ?></td>
+</tr>
+<tr>
+<td align="right"><b><?= $translator->getCurrencyValuePresentation($totalContributionOfUser + $totalContributionOfPartner) ?></b></td>
+<td align="right"><b><?= $translator->getCurrencyValuePresentation($totalContributionOfUser) ?></b></td>
+<td align="right"><b><?= $translator->getCurrencyValuePresentation($totalContributionOfPartner) ?></b></td>
+</tr>
+<tr>
+<td align="right"><?= $translator->getCurrencyValuePresentation(($totalContributionOfUser - $totalExpensesChargedToUser) + ($totalContributionOfPartner - $totalExpensesChargedToPartner)) ?></td>
+<td align="right"><?= $translator->getCurrencyValuePresentation($totalContributionOfUser - $totalExpensesChargedToUser) ?></td>
+<td align="right"><?= $translator->getCurrencyValuePresentation($totalContributionOfPartner - $totalExpensesChargedToPartner) ?></td>
 </tr>
 </table>
 </td>
@@ -77,16 +230,79 @@ Situation des comptes entre <?= $user->get('name') ?> et <?= $partner->get('name
 <td>
 <table class="summaryTable">
 <tr>
-<td>Valeur apportée par <?= $user->get('name') ?></td>
-<td><?= $translator->getCurrencyValuePresentation($totalValueDuoAccountsGivenByUser) ?></td>
+<td align="center"><b><i>Total</i></b></td>
+<td align="center"><b><i>Part <?= $user->get('name') ?></i></b></td>
+<td align="center"><b><i>Part <?= $partner->get('name') ?></i></b></td>
 </tr>
 <tr>
-<td>Valeur apportée par <?= $partner->get('name') ?></td>
-<td><?= $translator->getCurrencyValuePresentation($totalValueDuoAccountsGivenByPartner) ?></td>
+<td align="right"><?= $translator->getCurrencyValuePresentation($totalExpensesFromPrivateAccountsToDuoCategoriesMadeByUser) ?></td>
+<td align="right"><?= $translator->getCurrencyValuePresentation($totalExpensesFromPrivateAccountsToDuoCategoriesMadeByUserChargedToUser) ?></td>
+<td align="right"><?= $translator->getCurrencyValuePresentation($totalExpensesFromPrivateAccountsToDuoCategoriesMadeByUserChargedToPartner) ?></td>
 </tr>
 <tr>
-<td>Différence <?= $user->get('name') ?> - <?= $partner->get('name') ?></td>
-<td><?= $translator->getCurrencyValuePresentation($totalValueDuoAccountsGivenByUser - $totalValueDuoAccountsGivenByPartner) ?></td>
+<td align="right"><?= $translator->getCurrencyValuePresentation($totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByUser) ?></td>
+<td align="right"><?= $translator->getCurrencyValuePresentation($totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByUserChargedToUser) ?></td>
+<td align="right"><?= $translator->getCurrencyValuePresentation($totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByUserChargedToPartner) ?></td>
+</tr>
+<tr>
+<td align="right"><?= $translator->getCurrencyValuePresentation($totalExpensesFromPrivateAccountsToDuoCategoriesMadeByPartner) ?></td>
+<td align="right"><?= $translator->getCurrencyValuePresentation($totalExpensesFromPrivateAccountsToDuoCategoriesMadeByPartnerChargedToUser) ?></td>
+<td align="right"><?= $translator->getCurrencyValuePresentation($totalExpensesFromPrivateAccountsToDuoCategoriesMadeByPartnerChargedToPartner) ?></td>
+</tr>
+<tr>
+<td align="right"><?= $translator->getCurrencyValuePresentation($totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByPartner) ?></td>
+<td align="right"><?= $translator->getCurrencyValuePresentation($totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByPartnerChargedToUser) ?></td>
+<td align="right"><?= $translator->getCurrencyValuePresentation($totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByPartnerChargedToPartner) ?></td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td align="right"><?= $translator->getCurrencyValuePresentation($totalExpensesDuoAccounts) ?></td>
+<td align="right"><?= $translator->getCurrencyValuePresentation($totalExpensesDuoAccountsChargedForUser) ?></td>
+<td align="right"><?= $translator->getCurrencyValuePresentation($totalExpensesDuoAccountsChargedForPartner) ?></td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td align="right"><b><?= $translator->getCurrencyValuePresentation($totalExpenses) ?></b></td>
+<td align="right"><b><?= $translator->getCurrencyValuePresentation($totalExpensesChargedToUser) ?></b></td>
+<td align="right"><b><?= $translator->getCurrencyValuePresentation($totalExpensesChargedToPartner) ?></b></td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
 </tr>
 </table>
 </td>
@@ -96,6 +312,8 @@ Situation des comptes entre <?= $user->get('name') ?> et <?= $partner->get('name
 
 <?php // ========= ?>
 
+<h1><?= $translator->getTranslation('Situation comptes duo') ?></h1>
+
 <table class="blankTable">
 <thead>
 <th>Résumé</th>
@@ -104,19 +322,29 @@ Situation des comptes entre <?= $user->get('name') ?> et <?= $partner->get('name
 
 <tr>
 
+<?php $temp = $totalIncomeDuoAccountsMadeByUser + $totalIncomeDuoAccountsMadeByPartner + $totalIncomeDuoAccountsOutsidePartners; ?>
+<?php $total = $temp; ?>
 <td>
 <table class="summaryTable">
 <tr>
 <td>Total versements</td>
-<td><?= $translator->getCurrencyValuePresentation($totalIncomeDuoAccounts) ?></td>
+<td><?= $translator->getCurrencyValuePresentation($temp) ?></td>
 </tr>
+<?php $temp = $totalOutcomeDuoAccountsMadeByUser + $totalOutcomeDuoAccountsMadeByPartner; ?>
+<?php $total -= $temp; ?>
+<tr>
+<td>Total retraits</td>
+<td>- <?= $translator->getCurrencyValuePresentation($temp) ?></td>
+</tr>
+<?php $temp = $totalExpensesDuoAccounts; ?>
+<?php $total -= $temp; ?>
 <tr>
 <td>Total dépenses</td>
-<td><?= $translator->getCurrencyValuePresentation($totalExpenseDuoAccounts) ?></td>
+<td>- <?= $translator->getCurrencyValuePresentation($temp) ?></td>
 </tr>
 <tr>
-<td><i>Différence</i></td>
-<td><i><?= $translator->getCurrencyValuePresentation($totalIncomeDuoAccounts - $totalExpenseDuoAccounts) ?></i></td>
+<td><i>Total</i></td>
+<td><i><?= $translator->getCurrencyValuePresentation($total) ?></i></td>
 </tr>
 </table>
 </td>
@@ -154,232 +382,3 @@ foreach ($accounts as $account)
 </tr>
 
 </table>
-
-
-<?= $translator->getTranslation('Conclusion : ')?>
-<?php
-if ($totalValueDuoAccountsGivenDifference > 0)
-	echo $user->getName()
-		.$translator->getTranslation(' a crédité ')
-		.$translator->getCurrencyValuePresentation(abs($totalValueDuoAccountsGivenDifference))
-		.$translator->getTranslation(' de plus par rapport à ')
-		.$partner->getName()
-		.'. '
-		.$partner->getName()
-		.$translator->getTranslation(' doit donc virer ce montant sur un compte du couple.');
-else if ($totalValueDuoAccountsGivenDifference < 0)
-	echo $partner->getName()
-		.$translator->getTranslation(' a crédité ')
-		.$translator->getCurrencyValuePresentation(abs($totalValueDuoAccountsGivenDifference))
-		.$translator->getTranslation(' de plus par rapport à ')
-		.$user->getName()
-		.'. '
-		.$user->getName()
-		.$translator->getTranslation(' doit donc virer ce montant sur un compte du couple.');
-else
-	echo $translator->getTranslation('Equilibre entre les partenaires')
-?>
-
-<br /><br />
-
-<?php
-$totalExpensePrivateAccountsForDuoCategoriesMadeByUser = $statisticsHandler->GetTotalExpensePrivateAccountsForDuoCategoriesMadeByUser($user->get('userId'));
-$totalExpensePrivateAccountsForDuoCategoriesMadeByPartner = $statisticsHandler->GetTotalExpensePrivateAccountsForDuoCategoriesMadeByUser($partner->get('userId'));
-
-$totalExpensePrivateAccountsForPartnerCategoriesMadeByUser = $statisticsHandler->GetTotalExpensePrivateAccountsForPartnerCategoriesMadeByUser($user->get('userId'));
-$totalExpensePrivateAccountsForPartnerCategoriesMadeByPartner = $statisticsHandler->GetTotalExpensePrivateAccountsForPartnerCategoriesMadeByUser($user->GetPartnerId());
-
-$totalExpensePrivateAccountsMadeByUser = $totalExpensePrivateAccountsForDuoCategoriesMadeByUser + $totalExpensePrivateAccountsForPartnerCategoriesMadeByUser;
-$totalExpensePrivateAccountsMadeByPartner = $totalExpensePrivateAccountsForDuoCategoriesMadeByPartner + $totalExpensePrivateAccountsForPartnerCategoriesMadeByPartner;
-
-
-$totalExpensePrivateAccountsForDuoCategoriesChargedForUser = $statisticsHandler->GetTotalExpensePrivateAccountsForDuoCategoriesChargedForUser($user->get('userId'));
-$totalExpensePrivateAccountsForDuoCategoriesChargedForPartner = $statisticsHandler->GetTotalExpensePrivateAccountsForDuoCategoriesChargedForUser($partner->get('userId'));
-
-$totalExpensePrivateAccountsForPartnerCategoriesChargedForUser = $statisticsHandler->GetTotalExpensePrivateAccountsForPartnerCategoriesChargedForUser($user->get('userId'));
-$totalExpensePrivateAccountsForPartnerCategoriesChargedForPartner = $statisticsHandler->GetTotalExpensePrivateAccountsForPartnerCategoriesChargedForUser($user->GetPartnerId());
-
-$totalExpensePrivateAccountsChargedForUser = $totalExpensePrivateAccountsForDuoCategoriesChargedForUser + $totalExpensePrivateAccountsForPartnerCategoriesChargedForUser;
-$totalExpensePrivateAccountsChargedForPartner = $totalExpensePrivateAccountsForDuoCategoriesChargedForPartner + $totalExpensePrivateAccountsForPartnerCategoriesChargedForPartner;
-
-
-$totalRepaymentNeedByUser = $totalExpensePrivateAccountsMadeByUser - $totalExpensePrivateAccountsChargedForUser;
-$totalRepaymentNeedByPartner = $totalExpensePrivateAccountsMadeByPartner - $totalExpensePrivateAccountsChargedForPartner;
-$totalRepaymentNeedDifference = $totalRepaymentNeedByUser - $totalRepaymentNeedByPartner;
-
-$totalRepaymentFromUserToPartner = $statisticsHandler->GetTotalRepaymentFromUserToPartner($user->get('userId'), $user->getPartnerId());
-$totalRepaymentFromPartnerToUser = $statisticsHandler->GetTotalRepaymentFromUserToPartner($user->getPartnerId(), $user->get('userId'));
-$totalRepaymentDifference = $totalRepaymentFromUserToPartner - $totalRepaymentFromPartnerToUser;
-
-$totalRepaymentRequest = $totalRepaymentNeedDifference + $totalRepaymentDifference;
-
-?>
-
-<h1><?= $translator->getTranslation('Situation comptes privées') ?></h1>
-<table class="blankTable">
-<thead>
-<th>Dépenses</th>
-<th>Prise en charge</th>
-<th>Remboursement nécéssaire</th>
-<th>Remboursements</th>
-<th>Remboursement nécéssaire restant</th>
-</thead>
-<tr>
-
-<td>
-<table class="summaryTable">
-<tr>
-<td>Dépenses <?= $user->get('name') ?> > catégories duo</td>
-<td><?= $translator->getCurrencyValuePresentation($totalExpensePrivateAccountsForDuoCategoriesMadeByUser) ?></td>
-</tr>
-<tr>
-<td>Dépenses <?= $user->get('name') ?> > catégories <?= $partner->get('name') ?></td>
-<td><?= $translator->getCurrencyValuePresentation($totalExpensePrivateAccountsForPartnerCategoriesMadeByUser) ?></td>
-</tr>
-<tr>
-<td><i>Total <?= $user->get('name') ?></i></td>
-<td><?= $translator->getCurrencyValuePresentation($totalExpensePrivateAccountsMadeByUser) ?></td>
-</tr>
-<tr>
-<td>Dépenses <?= $partner->get('name') ?> > catégories duo</td>
-<td><?= $translator->getCurrencyValuePresentation($totalExpensePrivateAccountsForDuoCategoriesMadeByPartner) ?></td>
-</tr>
-<tr>
-<td>Dépenses <?= $partner->get('name') ?> > catégories <?= $user->get('name') ?></td>
-<td><?= $translator->getCurrencyValuePresentation($totalExpensePrivateAccountsForPartnerCategoriesMadeByPartner) ?></td>
-</tr>
-<tr>
-<td><i>Total <?= $partner->get('name') ?></i></td>
-<td><?= $translator->getCurrencyValuePresentation($totalExpensePrivateAccountsMadeByPartner) ?></td>
-</tr>
-</table>
-</td>
-
-<td>
-<table class="summaryTable">
-<tr>
-<td>Prise en charge <?= $user->get('name') ?></td>
-<td><?= $translator->getCurrencyValuePresentation($totalExpensePrivateAccountsForDuoCategoriesChargedForUser) ?></td>
-</tr>
-<tr>
-<td>Prise en charge <?= $user->get('name') ?></td>
-<td><?= $translator->getCurrencyValuePresentation($totalExpensePrivateAccountsForPartnerCategoriesChargedForUser) ?></td>
-</tr>
-<tr>
-<td><i>Total <?= $user->get('name') ?></i></td>
-<td><?= $translator->getCurrencyValuePresentation($totalExpensePrivateAccountsChargedForUser) ?></td>
-</tr>
-<tr>
-<td>Prise en charge <?= $partner->get('name') ?></td>
-<td><?= $translator->getCurrencyValuePresentation($totalExpensePrivateAccountsForDuoCategoriesChargedForPartner) ?></td>
-</tr>
-<tr>
-<td>Prise en charge <?= $partner->get('name') ?></td>
-<td><?= $translator->getCurrencyValuePresentation($totalExpensePrivateAccountsForPartnerCategoriesChargedForPartner) ?></td>
-</tr>
-<tr>
-<td><i>Total <?= $partner->get('name') ?></i></td>
-<td><?= $translator->getCurrencyValuePresentation($totalExpensePrivateAccountsChargedForPartner) ?></td>
-</tr>
-</table>
-</td>
-
-<td>
-<table class="summaryTable">
-<tr>
-<td>De <?= $partner->get('name') ?> à <?= $user->get('name') ?></td>
-<td><?= $translator->getCurrencyValuePresentation($totalRepaymentNeedByUser) ?></td>
-</tr>
-<tr>
-<td>De <?= $user->get('name') ?> à <?= $partner->get('name') ?></td>
-<td><?= $translator->getCurrencyValuePresentation($totalRepaymentNeedByPartner) ?></td>
-</tr>
-<tr>
-<td><i>Différence</i></td>
-<td><?= $translator->getCurrencyValuePresentation($totalRepaymentNeedDifference) ?></td>
-</tr>
-</table>
-</td>
-
-<td>
-<table class="summaryTable">
-<tr>
-<td>De <?= $partner->get('name') ?> à <?= $user->get('name') ?></td>
-<td><?= $translator->getCurrencyValuePresentation($totalRepaymentFromPartnerToUser) ?></td>
-</tr>
-<tr>
-<td>De <?= $user->get('name') ?> à <?= $partner->get('name') ?></td>
-<td><?= $translator->getCurrencyValuePresentation($totalRepaymentFromUserToPartner) ?></td>
-</tr>
-<tr>
-<td><i>Différence</i></td>
-<td><?= $translator->getCurrencyValuePresentation($totalRepaymentDifference) ?></td>
-</tr>
-</table>
-</td>
-
-<td>
-<table class="summaryTable">
-<tr>
-<td>De <?= $partner->get('name') ?> à <?= $user->get('name') ?></td>
-<td><?= $translator->getCurrencyValuePresentation($totalRepaymentNeedByUser - $totalRepaymentFromPartnerToUser) ?></td>
-</tr>
-<tr>
-<td>De <?= $user->get('name') ?> à <?= $partner->get('name') ?></td>
-<td><?= $translator->getCurrencyValuePresentation($totalRepaymentNeedByPartner - $totalRepaymentFromUserToPartner) ?></td>
-</tr>
-<tr>
-<td><i>Différence</i></td>
-<td><?= $translator->getCurrencyValuePresentation(($totalRepaymentNeedByUser - $totalRepaymentFromPartnerToUser) - ($totalRepaymentNeedByPartner - $totalRepaymentFromUserToPartner)) ?></td>
-</tr>
-</table>
-</td>
-
-</tr>
-</table>
-
-<?= $translator->getTranslation('Conclusion : ')?>
-<?php
-if ($totalRepaymentRequest < 0)
-	echo $user->getName()
-		.$translator->getTranslation(' doit encore rembourser ')
-		.$translator->getCurrencyValuePresentation(abs($totalRepaymentRequest))
-		.$translator->getTranslation(' à ')
-		.$partner->getName()
-		.'. ';
-else if ($totalRepaymentRequest > 0)
-	echo $partner->getName()
-		.$translator->getTranslation(' doit encore rembourser ')
-		.$translator->getCurrencyValuePresentation(abs($totalRepaymentRequest))
-		.$translator->getTranslation(' à ')
-		.$user->getName()
-		.'. ';
-else
-	echo $translator->getTranslation('Equilibre entre les partenaires')
-?>
-
-<h1><?= $translator->getTranslation('Conclusion globale') ?></h1>
-
-<?php
-
-$globalRepaymentRequest = $totalValueDuoAccountsGivenDifference + $totalRepaymentRequest;
-
-?>
-<?php
-if ($globalRepaymentRequest < 0)
-	echo $user->getName()
-		.$translator->getTranslation(' doit verser ')
-		.$translator->getCurrencyValuePresentation(abs($globalRepaymentRequest))
-		.$translator->getTranslation(' sur un compte commun ou rembourser ')
-		.$partner->getName()
-		.$translator->getTranslation(' directement de cette somme.');
-else if ($globalRepaymentRequest > 0)
-	echo $partner->getName()
-		.$translator->getTranslation(' doit verser ')
-		.$translator->getCurrencyValuePresentation(abs($globalRepaymentRequest))
-		.$translator->getTranslation(' sur un compte commun ou rembourser ')
-		.$user->getName()
-		.$translator->getTranslation(' directement de cette somme.');
-else
-	echo $translator->getTranslation('Equilibre entre les partenaires')
-?>

@@ -45,7 +45,7 @@ else
 $("#form<?= $type == 'DUO' ? 'Duo' : '' ?>").submit( function () {
 	document.getElementById("submitForm<?= $type == 'DUO' ? 'Duo' : '' ?>").disabled = true;
 	$.post (
-		'../controller/controller.php?action=category_modification_user',
+		'../controller/controller.php?action=category_modification_<?= $type == 'DUO' ? 'duo' : 'user' ?>',
 		$(this).serialize(),
 		function(response, status) {
 			$("#formResult<?= $type == 'DUO' ? 'Duo' : '' ?>").stop().show();

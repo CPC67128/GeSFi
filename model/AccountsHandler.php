@@ -503,5 +503,64 @@ class AccountsHandler extends Handler
 
 		return $result;
 	}
-}
 
+	function CalculateAccountBalances($account_id)
+	{
+		$db = new DB();
+
+		$query = "update bf_account
+			set CALC_balance = opening_balance
+				+
+				(
+					select sum(amount) as total
+					from bf_record
+					where record_type between 10 and 19
+					and marked_as_deleted = 0
+					and account_id = bf_account.account_id
+					and record_date <= curdate()
+				)
+				-
+				(
+					select sum(amount) as total
+					from bf_record
+					where record_type between 20 and 29
+					and marked_as_deleted = 0
+					and account_id = bf_account.account_id
+					and record_date <= curdate()
+				)
+			where account_id = '".$account_id."'";
+		$result = $db->Execute($query);
+
+		$query = "update bf_account
+			set CALC_balance_confirmed = opening_balance
+				+
+				(
+					select sum(amount) as total
+					from bf_record
+					where record_type between 10 and 19
+					and marked_as_deleted = 0
+					and account_id = bf_account.account_id
+					and record_date <= curdate()
+					and confirmed = 1
+				)
+				-
+				(
+					select sum(amount) as total
+					from bf_record
+					where record_type between 20 and 29
+					and marked_as_deleted = 0
+					and account_id = bf_account.account_id
+					and record_date <= curdate()
+					and confirmed = 1
+				)
+			where account_id = '".$account_id."'
+			and record_confirmation = 1";
+		$result = $db->Execute($query);
+
+		$query = "update bf_account
+			set CALC_balance_confirmed = CALC_balance
+			where account_id = '".$account_id."'
+			and record_confirmation != 1";
+		$result = $db->Execute($query);
+	}
+}

@@ -15,6 +15,6 @@ class Operation_Record_Confirm extends Operation_Record
 		{
 			$sql = "update {TABLEPREFIX}record set confirmed = ".$this->_confirmed." where record_id = '".$this->_recordId."' and account_id = '{ACCOUNTID}'";
 		}
-		$row = $this->_db->Execute($sql);
+		$this->_db->Execute($sql);
 	}
 }

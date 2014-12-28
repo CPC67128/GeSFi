@@ -16,6 +16,8 @@ class Account extends Entity
 	protected $_minimumCheckPeriod;
 	protected $_markedAsClosed;
 	protected $_notDisplayedInMenu;
+	protected $_calcBalance;
+	protected $_calcBalanceConfirmed;
 
 	protected $_sortOrder;
 
@@ -27,7 +29,7 @@ class Account extends Entity
 	}
 
 	// -------------------------------------------------------------------------------------------------------------------
-
+/*
 	public function GetTotalIncome()
 	{
 		$db = new DB();
@@ -89,17 +91,17 @@ class Account extends Entity
 	
 		return $row['total'];
 	}
-
+*/
 	public function GetBalance()
 	{
-		$balance = $this->get('openingBalance') + $this->GetTotalIncome() - $this->GetTotalOutcome();
-		return $balance;
+		//$balance = $this->get('openingBalance') + $this->GetTotalIncome() - $this->GetTotalOutcome();
+		return $this->get('calcBalance');
 	}
 
 	public function GetBalanceConfirmed()
 	{
-		$balance = $this->get('openingBalance') + $this->GetTotalIncomeConfirmed() - $this->GetTotalOutcomeConfirmed();
-		return $balance;
+		//$balance = $this->get('openingBalance') + $this->GetTotalIncomeConfirmed() - $this->GetTotalOutcomeConfirmed();
+		return $this->get('calcBalanceConfirmed');
 	}
 
 	public function GetPlannedOutcome($numberOfDays)
@@ -328,7 +330,7 @@ class Account extends Entity
 		$db = new DB();
 	
 		$query = "select value
-			from {TABLEPREFIX}investment_record
+			from {TABLEPREFIX}record
 			where account_id = '".$this->_accountId."'
 			and value is not null
 			and marked_as_deleted = 0
@@ -340,7 +342,7 @@ class Account extends Entity
 			return $row['value'];
 
 		$query = "select CALC_payment_invested_accumulated
-			from {TABLEPREFIX}investment_record
+			from {TABLEPREFIX}record
 			where account_id = '".$this->_accountId."'
 			and value is null
 			and marked_as_deleted = 0
@@ -355,7 +357,7 @@ class Account extends Entity
 		$db = new DB();
 	
 		$query = "select CALC_yield
-			from {TABLEPREFIX}investment_record
+			from {TABLEPREFIX}record
 			where account_id = '".$this->_accountId."'
 			and CALC_yield is not null
 			and marked_as_deleted = 0
@@ -371,7 +373,7 @@ class Account extends Entity
 		$db = new DB();
 	
 		$query = "select CALC_yield_average
-			from {TABLEPREFIX}investment_record
+			from {TABLEPREFIX}record
 			where account_id = '".$this->_accountId."'
 			and CALC_yield_average is not null
 			and marked_as_deleted = 0
@@ -388,7 +390,7 @@ class Account extends Entity
 		$db = new DB();
 	
 		$query = "select record_date
-			from {TABLEPREFIX}investment_record
+			from {TABLEPREFIX}record
 			where account_id = '".$this->_accountId."'
 			and value is not null
 			and marked_as_deleted = 0

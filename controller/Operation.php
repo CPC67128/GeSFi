@@ -4,6 +4,7 @@ class Operation
 	protected $_db;
 	protected $_currentAccountId;
 	protected $_currentUserId;
+	protected $_accountsHandler;
 
 	function __construct()
 	{
@@ -12,6 +13,8 @@ class Operation
 			$this->_currentAccountId = $_SESSION['account_id'];
 		if (isset($_SESSION['user_id']))
 			$this->_currentUserId = $_SESSION['user_id'];
+
+		$_accountsHandler = new AccountsHandler();
 	}
 
 	// -------------------------------------------------------------------------------------------------------------------

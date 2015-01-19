@@ -1,4 +1,4 @@
-<h1><?= $translator->getTranslation('Tableau de bord duo') ?></h1>
+<h1><?= $translator->getTranslation('Tableau de bord duo, revenus et dépenses') ?></h1>
 <table class="statsTable">
 <tbody>
 

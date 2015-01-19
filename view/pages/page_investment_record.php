@@ -56,8 +56,8 @@ function AddRow($index, $row)
 	echo '<td style="text-align: left;">'.$row['designation'].'</td>';
 	if ($accountType != 11 && $accountType != 12) {
 	?>
-	<td style="text-align: right;"><?php if ($row['payment'] != null) { ?><?= $translator->getCurrencyValuePresentation($row['payment']) ?><br /><i><small>(&sum;) <?= $translator->getCurrencyValuePresentation($row['CALC_payment_accumulated'])?></small></i><?php } ?></td>
-	<td style="text-align: right;"><?php if ($row['payment_invested'] != null) { ?><?= $translator->getCurrencyValuePresentation($row['payment_invested']) ?><br /><i><small>(&sum;) <?= $translator->getCurrencyValuePresentation($row['CALC_payment_invested_accumulated'])?></small></i><?php } ?></td>
+	<td style="text-align: right;"><?php if ($row['amount'] != null) { ?><?= $translator->getCurrencyValuePresentation($row['amount']) ?><br /><i><small>(&sum;) <?= $translator->getCurrencyValuePresentation($row['CALC_amount_accumulated'])?></small></i><?php } ?></td>
+	<td style="text-align: right;"><?php if ($row['amount_invested'] != null) { ?><?= $translator->getCurrencyValuePresentation($row['amount_invested']) ?><br /><i><small>(&sum;) <?= $translator->getCurrencyValuePresentation($row['CALC_amount_invested_accumulated'])?></small></i><?php } ?></td>
 	<?php
 	}
 	?>
@@ -69,7 +69,7 @@ function AddRow($index, $row)
 	}
 
 	// Trash bin
-	echo "<td style='text-align: center;'><span class='ui-icon ui-icon-trash' onclick='if (confirm(\"".$translator->getTranslation('Etes-vous sûr de vouloir supprimer cette entrée ?')."\")) { DeleteRecordInvestment(\"".$row['investment_record_id']."\"); }'></span></td>";
+	echo "<td style='text-align: center;'><span class='ui-icon ui-icon-trash' onclick='if (confirm(\"".$translator->getTranslation('Etes-vous sûr de vouloir supprimer cette entrée ?')."\")) { DeleteRecordInvestment(\"".$row['record_id']."\"); }'></span></td>";
 
 	echo '</tr>';
 }

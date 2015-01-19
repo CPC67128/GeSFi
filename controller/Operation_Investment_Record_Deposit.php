@@ -31,7 +31,7 @@ class Operation_Investment_Record_Deposit extends Operation_Investment_Record
 						$this->_fromAccount,
 						$this->_currentUserId,
 						$fromDate,
-						$this->_payment,
+						$this->_amount,
 						$this->_designation,
 						$recordTypeOutcome,
 						$uuid);
@@ -42,8 +42,8 @@ class Operation_Investment_Record_Deposit extends Operation_Investment_Record
 					$uuid,
 					$toDate,
 					$this->_designation,
-					$this->_payment,
-					$this->_paymentInvested);
+					$this->_amount,
+					$this->_amountInvested);
 		}
 	}
 }

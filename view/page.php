@@ -70,6 +70,7 @@ if ($accountType == -100 && $pageName == 'records')
 $categoriesHandler = new CategoriesHandler();
 
 $recordsHandler = new RecordsHandler();
+$statisticsHandler = new StatisticsHandler();
 
 $usersHandler = new UsersHandler();
 $activeUser = $usersHandler->GetCurrentUser();

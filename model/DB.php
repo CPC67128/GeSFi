@@ -284,7 +284,7 @@ class DB
 		
 		if (strlen($row['record_group_id']) > 0)
 		{
-			$sql = "update {TABLEPREFIX}investment_record set marked_as_deleted = 1 where record_group_id = '".$row['record_group_id']."'";
+			$sql = "update {TABLEPREFIX}record set marked_as_deleted = 1 where record_group_id = '".$row['record_group_id']."'";
 		}
 		$result = $this->Execute($sql);
 
@@ -305,7 +305,7 @@ class DB
 		if ($this->_isReadOnly)
 			return 0;
 	
-		$query = sprintf("insert into ".$this->_dbTablePrefix."investment_record (account_id, record_group_id, record_date, designation, payment, payment_invested, value, investment_record_id, record_type)
+		$query = sprintf("insert into ".$this->_dbTablePrefix."record (account_id, record_group_id, record_date, designation, amount, amount_invested, value, investment_record_id, record_type)
 				values ('%s', '%s', '%s', '%s', %s, %s, %s, uuid(), %s)",
 				$accountId,
 				$recordGroupId == null ? "" : $recordGroupId,
@@ -363,15 +363,15 @@ class DB
 		if ($this->_isReadOnly)
 			return 0;
 	
-		$sql = "select record_group_id from {TABLEPREFIX}investment_record where investment_record_id = '".$recordId."'";
+		$sql = "select record_group_id from {TABLEPREFIX}record where record_id = '".$recordId."'";
 		$row = $this->SelectRow($sql);
 		if (strlen($row['record_group_id']) > 0)
 		{
-			$sql = "update {TABLEPREFIX}investment_record set marked_as_deleted = 1 where record_group_id = '".$row['record_group_id']."'";
+			$sql = "update {TABLEPREFIX}record set marked_as_deleted = 1 where record_group_id = '".$row['record_group_id']."'";
 		}
 		else
 		{
-			$sql = "update {TABLEPREFIX}investment_record set marked_as_deleted = 1 where investment_record_id = '".$recordId."' and account_id = '{ACCOUNTID}'";
+			$sql = "update {TABLEPREFIX}record set marked_as_deleted = 1 where record_id = '".$recordId."' and account_id = '{ACCOUNTID}'";
 		}
 		$result = $this->Execute($sql);
 	

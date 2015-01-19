@@ -8,6 +8,10 @@
 <td class="statsTableRowHeader"><?= $translator->getTranslation('Mois') ?></td>
 <?php
 $currentMonth = 0;
+if ($currentYear < Date('Y'))
+	$currentMonth = 13;
+if ($currentYear == Date('Y'))
+	$currentMonth = Date('M');
 
 for ($month = 1; $month <= 12; $month++)
 {
@@ -17,6 +21,9 @@ for ($month = 1; $month <= 12; $month++)
 	<td><?= $month ?></td>
 	<?php
 }
+
+$globalAverage = 0;
+
 ?>
 <td class="statsTableRowSummary"><?= $translator->getTranslation('Total') ?></td>
 <td><?= $translator->getTranslation('Moyenne') ?></td>
@@ -27,7 +34,6 @@ for ($month = 1; $month <= 12; $month++)
 <?php
 
 $index = 0;
-$currentMonth = 0;
 $indexCategory = 0;
 $totalAverage = 0;
 $categories = $categoriesHandler->GetIncomeCategoriesForUser($_SESSION['user_id']);
@@ -41,12 +47,15 @@ foreach ($categories as $category)
 	<td class="statsTableRowHeader"><?= $category->get('category') ?></td>
 	<?php
 	$total = 0;
+	$totalForAverage = 0;
 	for ($month = 1; $month <= 12; $month++)
 	{
 		$value = 0;
 		$value = $category->GetTotalIncomeByMonthAndYear($month, $currentYear);
 		$monthTotalIncome[$month] = (isset($monthTotalIncome[$month]) ? $monthTotalIncome[$month] : 0) + $value;
 		$total += $value;
+		if ($month < $currentMonth)
+			$totalForAverage += $value;
 		?>
 		<td><?= ($value > 0) ? $translator->getCurrencyValuePresentation($value) : '' ?></td>
 		<?php
@@ -56,9 +65,9 @@ foreach ($categories as $category)
 	<td class="statsTableRowSummary"><?= ($total > 0) ? $translator->getCurrencyValuePresentation($total) : '&nbsp;' ?></td>
 	<td>
 	<?php
-	if ($total > 0)
+	if ($totalForAverage > 0 && $currentMonth > 0)
 	{
-		$average = $category->GetAverageRevenueByMonth();
+		$average = $totalForAverage / ($currentMonth - 1); //$category->GetAverageRevenueByMonth();
 		$totalAverage += $average;
 		echo $translator->getCurrencyValuePresentation($average);
 	}
@@ -76,7 +85,6 @@ foreach ($categories as $category)
 <tr class="statsTableRowTitle">
 <td class="statsTableRowHeader"><?= $translator->getTranslation('Total revenus') ?></td>
 <?php
-$currentMonth = 0;
 $total = 0;
 
 for ($month = 1; $month <= 12; $month++)
@@ -89,15 +97,14 @@ for ($month = 1; $month <= 12; $month++)
 }
 ?>
 <td class="statsTableRowSummary amount"><?= ($total > 0) ? $translator->getCurrencyValuePresentation($total) : '' ?></td>
-<td class="amount"><?= ($total > 0) ? $translator->getCurrencyValuePresentation($totalAverage) : '&nbsp;' ?></td>
+<td class="amount"><?= ($totalAverage > 0 && $currentMonth > 0) ? $translator->getCurrencyValuePresentation($totalAverage) : '&nbsp;' ?></td>
 </tr>
-
+<?php $globalAverage += $totalAverage; ?>
 
 <?php /* =============== Expense detail =============== */ ?>
 
 <?php
 $index = 0;
-$currentMonth = 0;
 $indexCategory = 0;
 $totalAverage = 0;
 $categories = $categoriesHandler->GetOutcomeCategoriesForUser($_SESSION['user_id']);
@@ -110,12 +117,15 @@ foreach ($categories as $category)
 	<td class="statsTableRowHeader"><?= $category->get('category') ?></td>
 	<?php
 	$total = 0;
+	$totalForAverage = 0;
 	for ($month = 1; $month <= 12; $month++)
 	{
 		$value = 0;
 		$value = $category->GetTotalExpenseByMonthAndYear($month, $currentYear);
 		$monthTotalExpense[$month] = (isset($monthTotalExpense[$month]) ? $monthTotalExpense[$month] : 0) + $value;
 		$total += $value;
+		if ($month < $currentMonth)
+			$totalForAverage += $value;
 		?>
 		<td><?= ($value > 0) ? $translator->getCurrencyValuePresentation($value) : '' ?></td>
 		<?php
@@ -125,9 +135,9 @@ foreach ($categories as $category)
 	<td class="statsTableRowSummary"><?= ($total > 0) ? $translator->getCurrencyValuePresentation($total) : '&nbsp;' ?></td>
 	<td>
 	<?php
-	if ($total > 0)
+	if ($totalForAverage > 0 && $currentMonth > 0)
 	{
-		$average = $category->GetAverageExpenseByMonth();
+		$average = $totalForAverage / ($currentMonth - 1); //$category->GetAverageExpenseByMonth();
 		$totalAverage += $average;
 		echo $translator->getCurrencyValuePresentation($average);
 	}
@@ -145,7 +155,6 @@ foreach ($categories as $category)
 <tr class="statsTableRowTitle">
 <td class="statsTableRowHeader"><?= $translator->getTranslation('Total dépenses') ?></td>
 <?php
-$currentMonth = 0;
 $total = 0;
 
 for ($month = 1; $month <= 12; $month++)
@@ -158,50 +167,29 @@ for ($month = 1; $month <= 12; $month++)
 }
 ?>
 <td class="statsTableRowSummary amount"><?= ($total > 0) ? $translator->getCurrencyValuePresentation($total) : '' ?></td>
-<td class="amount"><?= ($total > 0) ? $translator->getCurrencyValuePresentation($totalAverage) : '&nbsp;' ?></td>
+<td class="amount"><?= ($totalAverage > 0 && $currentMonth > 0) ? $translator->getCurrencyValuePresentation($totalAverage) : '&nbsp;' ?></td>
 </tr>
-
-<?php /* =============== Duo summary =============== */ ?>
-
-<tr class="statsTableRow0">
-<td class="statsTableRowHeader"><?= $translator->getTranslation('Duo') ?></td>
-<?php
-$total = 0;
-
-for ($month = 1; $month <= 12; $month++)
-{
-	$value = 0;
-	$value = $recordsHandler->GetTotalOutcomeToDuoAccount($month, $currentYear) - $recordsHandler->GetTotalIncomeFromDuoAccount($month, $currentYear);
-	$monthTotalExpense[$month] = (isset($monthTotalExpense[$month]) ? $monthTotalExpense[$month] : 0) + $value;
-	$total += $value;
-
-	?>
-	<td><?= ($value > 0) ? $translator->getCurrencyValuePresentation($value) : '' ?></td>
-	<?php
-}
-?>
-<td class="statsTableRowSummary"><?= ($total > 0) ? $translator->getCurrencyValuePresentation($total) : '&nbsp;' ?></td>
-<td></td>
-</tr>
+<?php $globalAverage -= $totalAverage; ?>
 
 <?php /* =============== Saving summary =============== */ ?>
 
-<tr class="statsTableRowTitle">
+<tr class="statsTableRow0">
 <td class="statsTableRowHeader"><?= $translator->getTranslation('Epargne') ?></td>
 <?php
-$currentMonth = 0;
 $total = 0;
+$totalMonth = 0;
 
 for ($month = 1; $month <= 12; $month++)
 {
-	$total += ($monthTotalIncome[$month] - $monthTotalExpense[$month]);
+	$totalMonth = ($monthTotalIncome[$month] - $monthTotalExpense[$month]);
+	$total += $totalMonth;
 	?>
-	<td class="amount"><?= $translator->getCurrencyValuePresentation($monthTotalIncome[$month] - $monthTotalExpense[$month]) ?></td>
+	<td class="amount"><?= ($totalMonth != 0) ? $translator->getCurrencyValuePresentation($totalMonth) : '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' ?></td>
 	<?php
 }
 ?>
 <td class="statsTableRowSummary amount"><?= $translator->getCurrencyValuePresentation($total) ?></td>
-<td></td>
+<td class="amount"><?= ($globalAverage > 0) ? $translator->getCurrencyValuePresentation($globalAverage) : '&nbsp;' ?></td>
 </tr>
 
 </tbody>

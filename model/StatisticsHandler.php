@@ -540,11 +540,11 @@ class StatisticsHandler extends Handler
 					)
 					union
 					select distinct record_group_id
-					from {TABLEPREFIX}investment_record
+					from {TABLEPREFIX}record
 					where account_id in (select account_id from {TABLEPREFIX}account where type not in (2, 3) and owner_user_id = '".$userId."')
 					and record_type = 0
-					and payment is not null
-					and payment < 0
+					and amount is not null
+					and amount < 0
 				)
 				or
 				(record_group_id = '' and user_id = '".$userId."')
@@ -556,10 +556,7 @@ class StatisticsHandler extends Handler
 
 		return $total;
 	}
-	/*
-
-	 */
-
+	
 	// Total of money taken by one user from duo accounts
 	function GetTotalOutcomeFromDuoAccountsByUser($userId)
 	{
@@ -585,11 +582,11 @@ class StatisticsHandler extends Handler
 					)
 					union
 					select distinct record_group_id
-					from {TABLEPREFIX}investment_record
+					from {TABLEPREFIX}record
 					where account_id in (select account_id from {TABLEPREFIX}account where type not in (2, 3) and owner_user_id = '".$userId."')
 					and record_type = 0
-					and payment is not null
-					and payment > 0
+					and amount is not null
+					and amount > 0
 				)
 				or
 				(record_group_id = '' and user_id = '".$userId."')

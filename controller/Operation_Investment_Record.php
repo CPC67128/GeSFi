@@ -2,8 +2,8 @@
 class Operation_Investment_Record extends Operation
 {
 	protected $_date;
-	protected $_payment;
-	protected $_paymentInvested;
+	protected $_amount;
+	protected $_amountInvested;
 	protected $_value;
 	protected $_designation;
 	protected $_accountId;
@@ -17,7 +17,7 @@ class Operation_Investment_Record extends Operation
 	protected $_periodicity;
 	protected $_periodicityNumber;
 
-	protected $_paymentDisinvested;
+	protected $_amountDisinvested;
 
 	// -------------------------------------------------------------------------------------------------------------------
 
@@ -77,31 +77,31 @@ class Operation_Investment_Record extends Operation
 	
 	public function ValidatePayment()
 	{
-		if (!isset($this->_payment))
+		if (!isset($this->_amount))
 			throw new Exception('Merci de renseigner correctement le versement');
 	
-		$this->_payment = $this->ParseAmount($this->_payment);
-		if (!is_numeric($this->_payment))
+		$this->_amount = $this->ParseAmount($this->_amount);
+		if (!is_numeric($this->_amount))
 			throw new Exception('Merci de renseigner correctement le versement');
 	}
 	
 	public function ValidatePaymentInvested()
 	{
-		if (!isset($this->_paymentInvested))
+		if (!isset($this->_amountInvested))
 			throw new Exception('Merci de renseigner correctement le montant investi');
 	
-		$this->_paymentInvested = $this->ParseAmount($this->_paymentInvested);
-		if (!is_numeric($this->_paymentInvested))
+		$this->_amountInvested = $this->ParseAmount($this->_amountInvested);
+		if (!is_numeric($this->_amountInvested))
 			throw new Exception('Merci de renseigner correctement le montant investi');
 	}
 	
 	public function ValidatePaymentDisinvested()
 	{
-		if (!isset($this->_paymentDisinvested))
+		if (!isset($this->_amountDisinvested))
 			throw new Exception('Merci de renseigner correctement le montant désinvesti');
 
-		$this->_paymentDisinvested = $this->ParseAmount($this->_paymentDisinvested);
-		if (!is_numeric($this->_paymentDisinvested))
+		$this->_amountDisinvested = $this->ParseAmount($this->_amountDisinvested);
+		if (!is_numeric($this->_amountDisinvested))
 			throw new Exception('Merci de renseigner correctement le montant désinvesti');
 	}
 

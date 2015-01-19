@@ -21,8 +21,8 @@ class Operation_Investment_Record_Withdrawal extends Operation_Investment_Record
 				$uuid,
 				$this->_fromDate,
 				$this->_designation,
-				-1 * $this->_paymentDisinvested,
-				-1 * $this->_paymentDisinvested);
+				-1 * $this->_amountDisinvested,
+				-1 * $this->_amountDisinvested);
 
 		if ($this->_toAccount != '')
 		{
@@ -30,7 +30,7 @@ class Operation_Investment_Record_Withdrawal extends Operation_Investment_Record
 					$this->_toAccount,
 					$this->_currentUserId,
 					$this->_toDate,
-					$this->_paymentDisinvested,
+					$this->_amountDisinvested,
 					$this->_designation,
 					$recordTypeIncome,
 					$uuid);

@@ -2,7 +2,7 @@
 $categoriesHandler = new CategoriesHandler();
 $categories = $categoriesHandler->GetOutcomeCategoriesForDuo($_SESSION['user_id']);
 ?>
-<h1><?= $translator->getTranslation('Tableau de bord duo') ?></h1>
+<h1><?= $translator->getTranslation('Tableau de bord duo, évolution des dépenses') ?></h1>
 <table id="recordsTable">
 <thead>
 <tr class="tableRowTitle">

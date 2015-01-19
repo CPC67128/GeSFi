@@ -10,8 +10,8 @@ $yieldAverageYArray = array();
 
 while ($row = $result->fetch())
 {
-	$paymentAccumulated = $row['CALC_payment_accumulated'];
-	$paymentInvestedAccumulated = $row['CALC_payment_invested_accumulated'];
+	$paymentAccumulated = $row['CALC_amount_accumulated'];
+	$paymentInvestedAccumulated = $row['CALC_amount_invested_accumulated'];
 
 	if (isset($row['CALC_yield']))
 	{

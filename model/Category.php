@@ -139,6 +139,7 @@ class Category extends Entity
 		return $result;
 	}
 
+	// OBSOLETE
 	public function GetAverageRevenueByMonth()
 	{
 		$result = 0;

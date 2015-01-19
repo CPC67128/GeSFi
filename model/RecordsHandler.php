@@ -69,7 +69,7 @@ class RecordsHandler extends Handler
 		return $result;
 	}
 
-	// Total of outcome to duo account
+	// OBSOLETE Total of outcome to duo account
 	function GetTotalOutcomeToDuoAccount($month, $year)
 	{
 		$total = 0;
@@ -165,6 +165,7 @@ class RecordsHandler extends Handler
 		return $total;
 	}
 
+	// OBSOLETE
 	function GetTotalIncomeFromDuoAccount($month, $year)
 	{
 		$total = 0;

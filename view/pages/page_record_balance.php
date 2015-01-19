@@ -295,6 +295,11 @@ Situation des comptes entre <?= $user->get('name') ?> et <?= $partner->get('name
 <td>&nbsp;</td>
 </tr>
 <tr>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
 <td align="right"><b><?= $translator->getCurrencyValuePresentation($totalExpenses) ?></b></td>
 <td align="right"><b><?= $translator->getCurrencyValuePresentation($totalExpensesChargedToUser) ?></b></td>
 <td align="right"><b><?= $translator->getCurrencyValuePresentation($totalExpensesChargedToPartner) ?></b></td>

@@ -58,3 +58,27 @@ from bf_investment_record
 ;
 
 
+ALTER TABLE `bf_record` CHANGE `amount` `amount` DECIMAL( 10, 2 ) NULL DEFAULT '0.00';
+ALTER TABLE `bf_record` CHANGE `amount_invested` `amount_invested` DECIMAL( 10, 2 ) NULL DEFAULT '0.00';
+ALTER TABLE `bf_record` CHANGE `value` `value` DECIMAL( 10, 2 ) NULL DEFAULT '0.00';
+
+update `bf_record`
+set amount = null, amount_invested = null
+WHERE BOB_category = 'STEVE_TRANSFER'
+and amount = 0
+and amount_invested = 0;
+
+update `bf_record`
+set value = null
+WHERE BOB_category = 'STEVE_TRANSFER'
+and amount is not null
+and amount_invested is not null
+and value = 0;
+
+update `bf_record`
+set value = null
+WHERE BOB_category = 'STEVE_TRANSFER'
+and amount is null
+and amount_invested is null
+and value = 0
+and record_type = 2;

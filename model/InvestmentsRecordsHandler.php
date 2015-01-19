@@ -5,7 +5,7 @@ class InvestmentsRecordsHandler extends Handler
 	{
 		$db = new DB();
 		$query = "select INR.*
-			from {TABLEPREFIX}investment_record INR
+			from {TABLEPREFIX}record INR
 			inner join {TABLEPREFIX}account ACC on ACC.account_id = INR.account_id
 			where ACC.owner_user_id = '{USERID}'
 			and marked_as_deleted = 0
@@ -20,7 +20,7 @@ class InvestmentsRecordsHandler extends Handler
 	{
 		$db = new DB();
 		$query = "select ACC.name, INR.*
-			from {TABLEPREFIX}investment_record INR
+			from {TABLEPREFIX}record INR
 			inner join {TABLEPREFIX}account ACC on ACC.account_id = INR.account_id
 			left join {TABLEPREFIX}account_user_preference as PRF on ACC.account_id = PRF.account_id and PRF.user_id = '{USERID}'
 			where ACC.owner_user_id = '{USERID}'
@@ -35,7 +35,7 @@ class InvestmentsRecordsHandler extends Handler
 	{
 		$db = new DB();
 		$query = "select ACC.name, INR.*
-			from {TABLEPREFIX}investment_record INR
+			from {TABLEPREFIX}record INR
 			inner join {TABLEPREFIX}account ACC on ACC.account_id = INR.account_id
 			where ACC.owner_user_id = '{USERID}'
 			and ACC.account_id in (".$accountsId.")
@@ -58,7 +58,7 @@ class InvestmentsRecordsHandler extends Handler
 
 		// Search for investment records
 		$query = "select INR.*
-			from {TABLEPREFIX}investment_record INR
+			from {TABLEPREFIX}record INR
 			inner join {TABLEPREFIX}account ACC on ACC.account_id = INR.account_id
 			where ACC.owner_user_id = '{USERID}'
 			and marked_as_deleted = 0
@@ -67,18 +67,18 @@ class InvestmentsRecordsHandler extends Handler
 		$records = $db->Select($query);
 
 		// Calculate
-		$paymentAccumulated = 0;
-		$paymentInvestedAccumulated = 0;
+		$amountAccumulated = 0;
+		$amountInvestedAccumulated = 0;
 
-		$updateQueryString = "update {TABLEPREFIX}investment_record
+		$updateQueryString = "update {TABLEPREFIX}record
 			set
 			CALC_days_since_creation = %s,
-			CALC_payment_accumulated = %s,
-			CALC_payment_invested_accumulated = %s,
+			CALC_amount_accumulated = %s,
+			CALC_amount_invested_accumulated = %s,
 			CALC_gain = %s,
 			CALC_yield = %s,
 			CALC_yield_average = %s
-			where investment_record_id = '%s'";
+			where record_id = '%s'";
 
 		unset($creationDate);
 		while ($record = $records->fetch())
@@ -86,8 +86,8 @@ class InvestmentsRecordsHandler extends Handler
 			if (!isset($creationDate))
 				$creationDate = $record['record_date'];
 
-			$paymentAccumulated += $record['payment'];
-			$paymentInvestedAccumulated += $record['payment_invested'];
+			$amountAccumulated += $record['amount'];
+			$amountInvestedAccumulated += $record['amount_invested'];
 			$daysSinceCreation = (int) (strtotime($record['record_date']) - strtotime($creationDate)) / 86400;
 
 			unset($gain);
@@ -95,12 +95,12 @@ class InvestmentsRecordsHandler extends Handler
 			unset($yieldAverage);
 			if (isset($record['value']))
 			{
-				$gain = $record['value'] - $paymentAccumulated;
+				$gain = $record['value'] - $amountAccumulated;
 
-				if ($paymentAccumulated != 0 && $paymentInvestedAccumulated > 0)
+				if ($amountAccumulated != 0 && $amountInvestedAccumulated > 0)
 				{
-					$yield = $record['value'] * 1 / $paymentAccumulated;
-					//$yield = (($record['value'] / $paymentAccumulated) - 1) * 100;
+					$yield = $record['value'] * 1 / $amountAccumulated;
+					//$yield = (($record['value'] / $amountAccumulated) - 1) * 100;
 				}
 
 				$yearsSinceCreation = $daysSinceCreation / 365.25;
@@ -109,7 +109,7 @@ class InvestmentsRecordsHandler extends Handler
 				unset($yieldAverage);
 				if (floor($yearsSinceCreation) > 0)
 				{
-					if ($paymentInvestedAccumulated > 0)
+					if ($amountInvestedAccumulated > 0)
 					{
 						$yieldAverage = pow($yield, (1 / $yearsSinceCreation));
 						//pow(abs($yield), (1 / $yearsSinceCreation)) * ($yield < 0 ? -1 : 1);
@@ -119,12 +119,12 @@ class InvestmentsRecordsHandler extends Handler
 
 			$query = sprintf($updateQueryString,
 				$daysSinceCreation,
-				$paymentAccumulated,
-				$paymentInvestedAccumulated,
+				$amountAccumulated,
+				$amountInvestedAccumulated,
 				isset($gain) ? $gain : 'null',
 				isset($yield) ? ($yield - 1) * 100 : 'null',
 				isset($yieldAverage) ? ($yieldAverage - 1) * 100 : 'null',
-				$record['investment_record_id']);
+				$record['record_id']);
 			$db->Execute($query);
 		}
 	}

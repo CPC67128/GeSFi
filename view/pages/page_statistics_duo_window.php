@@ -8,16 +8,23 @@ $dateStart = new DateTime(date("Y-m-d", strtotime($dateEnd->format("Y-m-d") . " 
 <tr class="tableRowTitle">
 <td><?= $translator->getTranslation('Revenus') ?></td>
 <td><?= $translator->getTranslation('Montant') ?></td>
+<td><?= $translator->getTranslation('Moyenne') ?></td>
 </tr>
 <?php
 $total = 0;
 $totalCharged = 0;
+$average = 0;
+$totalAverage = 0;
+$averageCharged = 0;
+$totalAverageCharged = 0;
 $index = 0;
 $categories = $categoriesHandler->GetIncomeCategoriesForDuo($activeUser->get('userId'));
 foreach ($categories as $category)
 {
 	$value = $category->GetTotalIncomeBetween2Dates($dateStart, $dateEnd);
+	$average = $value / 12;
 	$total += $value;
+	$totalAverage += $average;
 
 	if ($value > 0)
 	{
@@ -25,6 +32,7 @@ foreach ($categories as $category)
 		<tr class="tableRow<?= (++$index) % 2 ?>">
 		<td><?= $category->get('category') ?></td>
 		<td class="amount"><?= ($category->get('activeFrom') > $dateStart->format("Y-m-d")) ? '<font color="red">* </font>' : '' ?><?= $translator->getCurrencyValuePresentation($value) ?></td>
+		<td class="amount"><?= ($category->get('activeFrom') > $dateStart->format("Y-m-d")) ? '<font color="red">* </font>' : '' ?><?= $translator->getCurrencyValuePresentation($average) ?></td>
 		</tr>
 		<?php
 	}
@@ -33,6 +41,7 @@ foreach ($categories as $category)
 <tr class="tableRowTitle">
 <td><?= $translator->getTranslation('Total revenus') ?></td>
 <td class="amount"><?= $translator->getCurrencyValuePresentation($total) ?></td>
+<td class="amount"><?= $translator->getCurrencyValuePresentation($totalAverage) ?></td>
 </tr>
 </tbody>
 </table>
@@ -48,11 +57,17 @@ $dateStart = new DateTime(date("Y-m-d", strtotime($dateEnd->format("Y-m-d") . " 
 <tr class="tableRowTitle">
 <td><?= $translator->getTranslation('Dépenses') ?></td>
 <td><?= $translator->getTranslation('Montant') ?></td>
+<td><?= $translator->getTranslation('Moyenne') ?></td>
 <td><?= $translator->getTranslation('(pris en charge)') ?></td>
+<td><?= $translator->getTranslation('Moyenne') ?></td>
 </tr>
 <?php
 $total = 0;
 $totalCharged = 0;
+$average = 0;
+$totalAverage = 0;
+$averageCharged = 0;
+$totalAverageCharged = 0;
 $index = 0;
 $categories = $categoriesHandler->GetOutcomeCategoriesForDuo($activeUser->get('userId'));
 foreach ($categories as $category)
@@ -62,13 +77,20 @@ foreach ($categories as $category)
 	$total += $value;
 	$totalCharged += $valueCharged;
 
+	$average = $value / 12;
+	$totalAverage += $average;
+	$averageCharged = $valueCharged / 12;
+	$totalAverageCharged += $averageCharged;
+	
 	if ($value > 0)
 	{
 		?>
 		<tr class="tableRow<?= (++$index) % 2 ?>">
 		<td><?= $category->get('category') ?></td>
 		<td class="amount"><?= ($category->get('activeFrom') > $dateStart->format("Y-m-d")) ? '<font color="red">* </font>' : '' ?><?= $translator->getCurrencyValuePresentation($value) ?></td>
+		<td class="amount"><?= ($category->get('activeFrom') > $dateStart->format("Y-m-d")) ? '<font color="red">* </font>' : '' ?><?= $translator->getCurrencyValuePresentation($average) ?></td>
 		<td class="amount"><?= ($category->get('activeFrom') > $dateStart->format("Y-m-d")) ? '<font color="red">* </font>' : '' ?><?= $translator->getCurrencyValuePresentation($valueCharged) ?></td>
+		<td class="amount"><?= ($category->get('activeFrom') > $dateStart->format("Y-m-d")) ? '<font color="red">* </font>' : '' ?><?= $translator->getCurrencyValuePresentation($averageCharged) ?></td>
 		</tr>
 		<?php
 	}
@@ -77,7 +99,9 @@ foreach ($categories as $category)
 <tr class="tableRowTitle">
 <td><?= $translator->getTranslation('Total revenus') ?></td>
 <td class="amount"><?= $translator->getCurrencyValuePresentation($total) ?></td>
+<td class="amount"><?= $translator->getCurrencyValuePresentation($totalAverage) ?></td>
 <td class="amount"><?= $translator->getCurrencyValuePresentation($totalCharged) ?></td>
+<td class="amount"><?= $translator->getCurrencyValuePresentation($totalAverageCharged) ?></td>
 </tr>
 </tbody>
 </table>

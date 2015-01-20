@@ -1,3 +1,7 @@
+<?php
+if (isset($data))
+	$currentYear = $data;
+?>
 <h1><?= $translator->getTranslation('Tableau de bord privé, année').' '.$currentYear ?></h1>
 <table class="statsTable">
 <tbody>

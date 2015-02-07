@@ -29,6 +29,44 @@ class Account extends Entity
 	}
 
 	// -------------------------------------------------------------------------------------------------------------------
+
+	function GetAccountTypeName()
+	{
+		$types = array
+		(
+			1 => 'Compte privé',
+			2 => 'Compte duo virtuel',
+			3 => 'Compte duo',
+			4 => 'Compte d\'optimisation financière',
+			5 => 'Prêt', // TODO : créér distinction entre prêt en indivision
+			10 => 'Placement bancaire',
+			11 => 'Immobilier',
+			12 => 'Immobilier en indivision'
+		);
+
+		if (array_key_exists($this->_type, $types))
+			return $types[$this->_type];
+		else
+			return '';
+	}
+
+	function GetAccountTypeColor()
+	{
+		$types = array
+		(
+				1 => '#FFFFFF',
+				2 => '#FFFFFF',
+				3 => '#FFFFFF',
+				4 => '#FFFFFF',
+				5 => '#FEBFD2',
+				10 => '#FFFFFF',
+				11 => '#FFFFFF',
+				12 => '#FFFFFF'
+		);
+	
+		return $types[$this->_type];
+	}
+
 /*
 	public function GetTotalIncome()
 	{

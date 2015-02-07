@@ -305,7 +305,7 @@ class DB
 		if ($this->_isReadOnly)
 			return 0;
 	
-		$query = sprintf("insert into ".$this->_dbTablePrefix."record (account_id, record_group_id, record_date, designation, amount, amount_invested, value, investment_record_id, record_type)
+		$query = sprintf("insert into ".$this->_dbTablePrefix."record (account_id, record_group_id, record_date, designation, amount, amount_invested, value, record_id, record_type)
 				values ('%s', '%s', '%s', '%s', %s, %s, %s, uuid(), %s)",
 				$accountId,
 				$recordGroupId == null ? "" : $recordGroupId,

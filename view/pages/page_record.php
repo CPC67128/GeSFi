@@ -14,16 +14,16 @@ function AddTitleRow()
 {
 	global $translator, $activeAccount;
 	?>
-	<tr class="tableRowTitle">
-	<td style="vertical-align: top; text-align: center; font-style: italic;"><?= $translator->getTranslation('Date') ?></td>
-	<td style="vertical-align: top; text-align: center; font-style: italic;"><?= $translator->getTranslation('Désignation') ?></td>
-	<td style="vertical-align: top; text-align: center; font-style: italic;"><?= $translator->getTranslation('Effectuée par') ?></td>
-	<td style="vertical-align: top; text-align: center; font-style: italic;"><?= $translator->getTranslation('Compte') ?></td>
-	<td style="vertical-align: top; text-align: center; font-style: italic;"></td>
-	<td style="vertical-align: top; text-align: center; font-style: italic;"><?= $translator->getTranslation('Montant') ?></td>
-	<td style="vertical-align: top; text-align: center; font-style: italic;"><?= $translator->getTranslation('Catégorie') ?></td>
-	<td style="vertical-align: top; text-align: center; font-style: italic;"><?= $translator->getTranslation('Prise en charge') ?></td>
-	<td style="vertical-align: top; text-align: center; font-style: italic;"></td>
+	<tr class="titleRow">
+	<td><?= $translator->getTranslation('Date') ?></td>
+	<td><?= $translator->getTranslation('Désignation') ?></td>
+	<td><?= $translator->getTranslation('Effectuée par') ?></td>
+	<td><?= $translator->getTranslation('Compte') ?></td>
+	<td><?= $translator->getTranslation('Cnf') ?></td>
+	<td><?= $translator->getTranslation('Montant') ?></td>
+	<td><?= $translator->getTranslation('Catégorie') ?></td>
+	<td><?= $translator->getTranslation('Prise en charge') ?></td>
+	<td></td>
 	</tr>
 	<?php
 }
@@ -181,10 +181,15 @@ $subTotal = 0;
 $mergeRow = false;
 ?>
 <table id="recordsTable">
+<?php if ($activeAccount->get('type') > 0) { ?>
 <thead>
-<?php AddTitleRow(); ?>
+<tr class="headerRowLoan" style="background-color: <?= $activeAccount->GetAccountTypeColor() ?>;">
+<td colspan="9"><?= $activeAccount->GetAccountTypeName() ?> : <?= $activeAccount->get('name') ?></td>
+</tr>
 </thead>
+<?php } ?>
 <tbody>
+<?php AddTitleRow(); ?>
 <?php
 while ($row = $result->fetch())
 {
@@ -249,8 +254,8 @@ $(function() {
 	    				'../controller/controller.php?action=record_amount_modify',
 	    				{ recordId: recordId.val() , amount: amount.val() },
 	    				function(response, status) {
-	    					LoadRecords();
 	    					$( "#dialog-form" ).dialog( "close" );
+	    					LoadPage();
 						}
 	    			);
 				

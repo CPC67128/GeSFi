@@ -169,6 +169,21 @@ small {
 .tableRowRemark1    { background-color: #88FF88; font-style:italic; }
 
 
+#recordsTable .titleRow td {
+	vertical-align: top;
+	text-align: center;
+	font-style: italic;
+}
+
+#recordsTable .headerRowLoan td {
+	vertical-align: top;
+	text-align: center;
+	font-style: italic;
+}
+
+
+
+
 h1 {
 	font-weight: bold;
 	font-size: 1em;

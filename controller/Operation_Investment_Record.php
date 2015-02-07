@@ -79,7 +79,7 @@ class Operation_Investment_Record extends Operation
 	{
 		if (!isset($this->_amount))
 			throw new Exception('Merci de renseigner correctement le versement');
-	
+
 		$this->_amount = $this->ParseAmount($this->_amount);
 		if (!is_numeric($this->_amount))
 			throw new Exception('Merci de renseigner correctement le versement');

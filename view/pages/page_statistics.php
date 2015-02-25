@@ -7,9 +7,13 @@
     <option value="statistics_private_full_year?<?= Date('Y') - 4 ?>">Tableau de bord privé, année <?= Date('Y') - 4 ?></option>
     <option value="statistics_private_full_year?<?= Date('Y') - 5 ?>">Tableau de bord privé, année <?= Date('Y') - 5 ?></option>
     <option value="statistics_private_window">Tableau de bord privé, 12 mois glissants</option>
+    <option value="statistics_private_window_6">Tableau de bord privé, 6 mois glissants</option>
+    <option value="statistics_private_window_3">Tableau de bord privé, 3 mois glissants</option>
     <option value="statistics_duo_full">Tableau de bord duo, revenus et dépenses</option>
     <option value="statistics_duo_payment">Tableau de bord duo, évolution des dépenses</option>
     <option value="statistics_duo_window">Tableau de bord duo, 12 mois glissants</option>
+    <option value="statistics_duo_window_6">Tableau de bord duo, 6 mois glissants</option>
+    <option value="statistics_duo_window_3">Tableau de bord duo, 3 mois glissants</option>
 </select>
 
 <div id="statisticsData"></div>

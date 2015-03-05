@@ -6,7 +6,7 @@ class Operation_Investment_Record_Withdrawal extends Operation_Investment_Record
 		$this->ValidateFromDate();
 		$this->ValidateToAccountAllowingUnknownAccount();
 		$this->ValidateToDate();
-		$this->ValidatePaymentDisinvested();
+		$this->ValidateAmountDisinvested();
 		$this->ValidateDesignation();
 	}
 

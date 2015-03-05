@@ -34,7 +34,7 @@ foreach ($accounts as $account)
 <br/>
 <?= $translator->getTranslation('Date de prise en compte') ?> <input title="aaaa-mm-jj hh:mm:ss" size="10" class="datePicker" name="toDate" value="<?php echo date("Y-m-d") ?>"><br/>
 <br/>
-<?= $translator->getTranslation('Montant désinvesti') ?> <input type="text" name="paymentDisinvested" size="6">&nbsp;&euro;<br/>
+<?= $translator->getTranslation('Montant désinvesti') ?> <input type="text" name="amountDisinvested" size="6">&nbsp;&euro;<br/>
 <?= $translator->getTranslation('Désignation') ?> <input type="text" name="designation" id="designation" size="30" value="<?= $translator->getTranslation('Retrait depuis placement') ?>">
 </td>
 

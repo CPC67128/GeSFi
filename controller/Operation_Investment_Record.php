@@ -95,7 +95,7 @@ class Operation_Investment_Record extends Operation
 			throw new Exception('Merci de renseigner correctement le montant investi');
 	}
 	
-	public function ValidatePaymentDisinvested()
+	public function ValidateAmountDisinvested()
 	{
 		if (!isset($this->_amountDisinvested))
 			throw new Exception('Merci de renseigner correctement le montant désinvesti');

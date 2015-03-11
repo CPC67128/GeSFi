@@ -368,33 +368,13 @@ class AccountsHandler extends Handler
 
 		$uuid = $db->GenerateUUID();
 
-		$originalSortOrder = $sortOrder;
-		$continue = true;
+		$tempSortOrder = 0;
+
+		$query = sprintf("select (max(sort_order) + 1) as max_order from {TABLEPREFIX}account_user_preference where user_id = '{USERID}'");
+		$row = $db->SelectRow($query);
 		
-		$updateQueries = array();
-		while ($continue)
-		{
-			$query = sprintf("select count(*) as total from {TABLEPREFIX}account_user_preference where sort_order = %s and user_id = '{USERID}'",
-					$sortOrder);
-			$row = $db->SelectRow($query);
-		
-			if ($row['total'] == 0)
-				$continue = false;
-			else
-			{
-				$query = sprintf("update {TABLEPREFIX}account_user_preference set sort_order = sort_order + 1 where sort_order = %s and user_id = '{USERID}'",
-						$sortOrder);
-				array_push($updateQueries, $query);
-			}
-			$sortOrder++;
-		}
-		
-		for ($i = (count($updateQueries) - 1); $i >= 0; $i--)
-		{
-			$db->Execute($updateQueries[$i]);
-		}
-		
-		$sortOrder = $originalSortOrder;
+		if (!empty($row['max_order']))
+			$tempSortOrder = $row['max_order'];
 		
 		$query = sprintf("insert into {TABLEPREFIX}account (account_id, name, type, owner_user_id, coowner_user_id, opening_balance, expected_minimum_balance, minimum_check_period, creation_date, record_confirmation, not_displayed_in_menu)
 				values ('%s', '%s', %s, '%s', '%s', %s, %s, %s, CURRENT_TIMESTAMP(), %s, %s)",
@@ -413,8 +393,11 @@ class AccountsHandler extends Handler
 		$query = sprintf("insert into {TABLEPREFIX}account_user_preference (user_id, account_id, sort_order)
 				values ('{USERID}', '%s', %s)",
 				$uuid,
-				$sortOrder);
+				$tempSortOrder);
 		$result = $db->Execute($query);
+
+		if (!empty($sortOrder))
+			$this->UpdateAccountSortOrder($uuid, $sortOrder);
 
 		return $result;
 	}

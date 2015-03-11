@@ -40,7 +40,17 @@ class Operation_Account_Modification extends Operation_Account
 
 		if ($this->_accountId == '')
 		{
-			$handler->InsertAccount($this->_name, $this->_owner, $this->_coowner, $this->_type, $this->_openingBalance, $this->_expectedMinimumBalance, $this->_sortOrder, $this->_minimumCheckPeriod, $this->_recordConfirmation, $this->_notDisplayedInMenu);
+			$handler->InsertAccount(
+					$this->_name,
+					$this->_owner,
+					$this->_coowner,
+					$this->_type,
+					$this->_openingBalance,
+					$this->_expectedMinimumBalance,
+					$this->_sortOrder,
+					$this->_minimumCheckPeriod,
+					$this->_recordConfirmation,
+					$this->_notDisplayedInMenu);
 		}
 		else
 		{

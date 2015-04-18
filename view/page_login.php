@@ -14,7 +14,7 @@
 <td valign="top" align="left">
 <img src="../media/gfc.ico" /> BudgetFox par <a href="http://stevefuchs.fr/">Steve Fuchs</a><br />
 <br />
-<a href="copyright.htm" target="blank">Mentions légales - Copyright</a>
+<a href="copyright.htm" target="blank">Licence et droit d’auteur</a>
 </td>
 <td valign="top" align="right">
 <!-- Ad placeholder -->
@@ -30,7 +30,7 @@
 <td colspan="2">
 <table>
 <tr>
-	<td>Email</td>
+	<td>Nom d'utilisateur</td>
 	<td><input type="text" name="email" size="35" /></td>
 </tr>
 <tr>
@@ -46,7 +46,6 @@
 </tr>
 
 <tr>
-<td align="left"><input value="Créer un compte" id="subscriptionButton" type="button"></td>
 <td align="right"><input value="Se connecter" name="submit" type="submit"></td>
 </tr>
 

@@ -3,6 +3,8 @@ class Operation_User extends Operation
 {
 	protected $_email;
 	protected $_name;
+	protected $_userName;
+	protected $_role;
 	protected $_passwordMD5;
 	protected $_password;
 	protected $_passwordConfirmation;
@@ -81,7 +83,25 @@ class Operation_User extends Operation
 				$isValid = false;
 			}
 		}
-		return $isValid;
+
+		if (!$isValid)
+			throw new Exception("Merci de renseigner correctement votre email");
+	}
+
+	public function ValidateUserName_Inexistence()
+	{
+		$usersHandler = new UsersHandler();
+		$user = $usersHandler->GetUserByUserName($_POST["userName"]);
+	
+		if ($user != null)
+			throw new Exception("Ce nom d'utilisateur est déjà utilisé.");
+	}
+
+	public function ValidateUserName_Structure()
+	{
+		if (!isset($this->_userName)
+				|| strlen(trim($this->_userName)) == 0)
+			throw new Exception("Merci de renseigner correctement le nom d'utilisateur");
 	}
 
 	public function ValidatePasswordMD5()

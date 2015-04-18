@@ -2,9 +2,11 @@
 class User extends Entity
 {
 	protected $_userId;
+	protected $_userName;
 	protected $_email;
 	protected $_password;
 	protected $_subscriptionDate;
+	protected $_role;
 	protected $_name;
 	protected $_culture;
 	protected $_readOnly;
@@ -67,6 +69,7 @@ class User extends Entity
 			switch ($key)
 			{
 				case 'user_id': $key = 'userId'; break;
+				case 'user_name': $key = 'userName'; break;
 				case 'subscription_date': $key = 'subscriptionDate'; break;
 				case 'read_only': $key = 'readOnly'; break;
 				case 'duo_id': $key = 'duoId'; break;
@@ -339,7 +342,26 @@ class User extends Entity
 	
 		return '';
 	}
+
+	function HasPartner()
+	{
+		$db = new DB();
 	
+		$query = "select user_id
+			from {TABLEPREFIX}user
+			where duo_id != ''
+			and duo_id = '".$this->_duoId."'
+			and user_id != '".$this->_userId."'";
+		$row = $db->SelectRow($query);
+	
+		if ($row)
+		{
+			return true;
+		}
+	
+		return false;
+	}
+
 	function GetPartnerName()
 	{
 		$db = new DB();

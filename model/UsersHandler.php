@@ -1,6 +1,18 @@
 <?php
 class UsersHandler extends Handler
 {
+	function GetRolesList()
+	{
+		$types = array
+		(
+				0 => 'Lecteur',
+				1 => 'Utilisateur',
+				2 => 'Administrateur'
+		);
+	
+		return $types;
+	}
+
 	function GetUser($id)
 	{
 		$newUser = new User();
@@ -30,7 +42,27 @@ class UsersHandler extends Handler
 		return $row['total'] > 0;
 	}
 
-	function GetUserByEmail($email)
+	function GetUserByUserName($userName)
+	{
+		$newUser = null;
+	
+		$db = new DB();
+	
+		$query = sprintf("select * from {TABLEPREFIX}user where lower(user_name) = '%s'",
+				strtolower($userName));
+	
+		$result = $db->Select($query);
+		if ($row = $result->fetch())
+		{
+			$newUser = new User();
+			$newUser->hydrate($row);
+		}
+	
+		return $newUser;
+	}
+	
+
+	function _____________GetUserByEmail($email)
 	{
 		$newUser = null;
 	
@@ -65,6 +97,24 @@ class UsersHandler extends Handler
 		}
 	
 		return $newUser;
+	}
+
+	function InsertUser($userName, $name, $email, $passwordHash, $role)
+	{
+		$db = new DB();
+
+		$query = sprintf("insert into {TABLEPREFIX}user (user_name, name, email, password, role, subscription_date, user_id)
+				values ('%s', '%s', '%s', '%s', %s, now(), uuid())",
+				$db->ConvertStringForSqlInjection($userName),
+				$db->ConvertStringForSqlInjection($name),
+				$db->ConvertStringForSqlInjection($email),
+				$db->ConvertStringForSqlInjection($passwordHash),
+				$role);
+		//throw new Exception($query);
+	
+		$result = $db->Execute($query);
+	
+		return $result;
 	}
 
 	function UpdateUser($userId, $name, $email)
@@ -198,5 +248,23 @@ class UsersHandler extends Handler
 		session_destroy();
 
 		session_commit();
+	}
+
+	function GetAllUsers()
+	{
+		$users = array();
+	
+		$db = new DB();
+	
+		$query = 'select * from {TABLEPREFIX}user';
+		$result = $db->Select($query);
+		while ($row = $result->fetch())
+		{
+			$newUser = new User();
+			$newUser->hydrate($row);
+			array_push($users, $newUser);
+		}
+	
+		return $users;
 	}
 }

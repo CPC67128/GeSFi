@@ -385,7 +385,7 @@ class DB
 	}
 	
 	/***** user *****/
-	
+	// OBSOLETE
 	function InsertUser(
 			$email,
 			$name,

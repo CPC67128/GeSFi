@@ -10,17 +10,22 @@ class Operation_User_Login extends Operation_User
 	public function Save()
 	{
 		$usersHandler = new UsersHandler();
-		$user = $usersHandler->GetUserByEmail($_POST["email"]);
+		$user = $usersHandler->GetUserByUserName($_POST["email"]);
 
 		if ($user == null)
-			throw new Exception("Cette adresse email n'est pas enregistrée.");
+			throw new Exception("Cet utilisateur n'est pas enregistré.");
 
-		session_start();
+		if(!isset($_SESSION))
+		{
+			session_start();
+		}
+
+		$_SESSION['user_name'] = $user->get('user_name');
 		$_SESSION['email'] = $user->get('email');
 		$_SESSION['user_id'] = $user->get('userId');
 		$_SESSION['full_name'] = $user->getName();
 		$_SESSION['read_only'] = $user->get('readOnly');
-		
+
 		//userHandler->RecordUserConnection($user->get('userId'), $_SERVER['REMOTE_ADDR'], $_SERVER['HTTP_USER_AGENT']);
 
 		/*TODO

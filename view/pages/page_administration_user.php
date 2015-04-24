@@ -8,7 +8,6 @@
 </td>
 <td style="vertical-align: top;">
 <div id="userModification">
-Sélectionnez un utilisateur...
 </div>
 </td>
 </tr>
@@ -29,6 +28,7 @@ function listUsers()
 	    dataType: 'html',
 	    success : function(data) {
 	        $('#usersList').html(data);
+	        $('#userModification').html('Sélectionnez un utilisateur...');
 	    }
 	});
 }

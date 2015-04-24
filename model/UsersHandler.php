@@ -117,13 +117,41 @@ class UsersHandler extends Handler
 		return $result;
 	}
 
-	function UpdateUser($userId, $name, $email)
+	function UpdateUser($userId, $userName, $name, $email, $role)
 	{
 		$db = new DB();
 	
-		$query = sprintf("update {TABLEPREFIX}user set name = '%s', email = '%s' where user_id = '%s'",
-				$name,
-				$email,
+		$query = sprintf("update {TABLEPREFIX}user set user_name='%s', name='%s', email='%s', role=%s where user_id = '%s'",
+				$db->ConvertStringForSqlInjection($userName),
+				$db->ConvertStringForSqlInjection($name),
+				$db->ConvertStringForSqlInjection($email),
+				$role,
+				$userId);
+	
+		$result = $db->Execute($query);
+	
+		return $result;
+	}
+
+	function UpdateUserPassword($userId, $passwordHash)
+	{
+		$db = new DB();
+	
+		$query = sprintf("update {TABLEPREFIX}user set password='%s' where user_id='%s'",
+				$db->ConvertStringForSqlInjection($passwordHash),
+				$userId);
+	
+		$result = $db->Execute($query);
+	
+		return $result;
+	}
+
+	function UpdateUserActive($userId, $active)
+	{
+		$db = new DB();
+	
+		$query = sprintf("update {TABLEPREFIX}user set active=%s where user_id='%s'",
+				$active,
 				$userId);
 	
 		$result = $db->Execute($query);

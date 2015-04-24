@@ -30,7 +30,7 @@ else
 $roles = $usersHandler->GetRolesList();
 foreach ($roles as $key => $value)
 {
-	?><option value="<?= $key ?>"><?= $translator->getTranslation($value) ?></option><?php
+	?><option <?= $isNew ? '' : ($user->get('role') == $key ? 'selected' : '') ?> value="<?= $key ?>"><?= $translator->getTranslation($value) ?></option><?php
 }
 ?>
 </select><br />

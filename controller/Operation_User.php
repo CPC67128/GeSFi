@@ -1,10 +1,12 @@
 <?php
 class Operation_User extends Operation
 {
+	protected $_userId;
 	protected $_email;
 	protected $_name;
 	protected $_userName;
 	protected $_role;
+	protected $_active;
 	protected $_passwordMD5;
 	protected $_password;
 	protected $_passwordConfirmation;
@@ -80,7 +82,7 @@ class Operation_User extends Operation
 			if ($isValid && !(checkdnsrr($domain,"MX") || checkdnsrr($domain,"A")))
 			{
 				// domain not found in DNS
-				$isValid = false;
+				//$isValid = false;
 			}
 		}
 
@@ -90,10 +92,11 @@ class Operation_User extends Operation
 
 	public function ValidateUserName_Inexistence()
 	{
-		$usersHandler = new UsersHandler();
-		$user = $usersHandler->GetUserByUserName($_POST["userName"]);
+		$user = $this->_usersHandler->GetUserByUserName($_POST["userName"]);
 	
-		if ($user != null)
+		if (empty($this->_userId) && $user != null)
+			throw new Exception("Ce nom d'utilisateur est déjà utilisé.");
+		if (!empty($this->_userId) && $user->get('userId') != $this->_userId)
 			throw new Exception("Ce nom d'utilisateur est déjà utilisé.");
 	}
 

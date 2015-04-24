@@ -5,6 +5,7 @@ class Operation
 	protected $_currentAccountId;
 	protected $_currentUserId;
 	protected $_accountsHandler;
+	protected $_usersHandler;
 
 	function __construct()
 	{
@@ -14,7 +15,8 @@ class Operation
 		if (isset($_SESSION['user_id']))
 			$this->_currentUserId = $_SESSION['user_id'];
 
-		$_accountsHandler = new AccountsHandler();
+		$this->_accountsHandler = new AccountsHandler();
+		$this->_usersHandler = new UsersHandler();
 	}
 
 	// -------------------------------------------------------------------------------------------------------------------

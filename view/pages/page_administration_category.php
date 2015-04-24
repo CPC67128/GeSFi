@@ -1,4 +1,4 @@
-<h1><?= $translator->getTranslation("Catégories de l'utilisateur") ?></h1>
+	<h1><?= $translator->getTranslation("Catégories de l'utilisateur") ?></h1>
 
 <table class="actionsTable">
 <tr>

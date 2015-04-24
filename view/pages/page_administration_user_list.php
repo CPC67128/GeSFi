@@ -16,7 +16,7 @@ if ($activeUser->get('role') == 2)
 foreach ($users as $user)
 {
 ?>
-<option value="<?= $user->get('userId') ?>"><?= $user->get('userName') ?> (<?= $user->get('name') ?>)</option>
+<option value="<?= $user->get('userId') ?>"><?= $user->get('active') == 0 ? '- ' : '' ?><?= $user->get('userName') ?> (<?= $user->get('name') ?>)</option>
 <?php
 }
 ?>

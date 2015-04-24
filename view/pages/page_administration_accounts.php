@@ -3,7 +3,7 @@
 <table class="actionsTable">
 <tr>
 <td style="vertical-align: top;">
-<div id="accountsList">
+<div id="accounts">
 </div>
 </td>
 <td style="vertical-align: top;">
@@ -28,7 +28,8 @@ function listAccounts()
 	    },
 	    dataType: 'html',
 	    success : function(data) {
-	        $('#accountsList').html(data);
+	        $('#accounts').html(data);
+	        changeAccount(document.getElementById("accountsList"));
 	    }
 	});
 }

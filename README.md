@@ -51,4 +51,8 @@ Quotes:
 - PHP strings '
 but Strings to translate: "
 - SQL queries delimiters within PHP "
-- SQL queries in string delimiters '
+- SQL queries in-string delimiters '
+
+Examples:
+$row['record_group_id']
+$sql = sprintf("update {TABLEPREFIX}record set designation='%s' where record_group_id = '%s'", ...

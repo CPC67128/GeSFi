@@ -69,9 +69,9 @@ class Operation_Record extends Operation
 	public function ValidateDesignation()
 	{
 		if (!isset($this->_designation))
-			throw new Exception('Merci de renseigner la désignation de l\'opération');
+			throw new Exception("Merci de renseigner la désignation de l'opération");
 		if (strlen(trim($this->_designation)) == 0)
-			throw new Exception('Merci de renseigner la désignation de l\'opération');
+			throw new Exception("Merci de renseigner la désignation de l'opération");
 	}
 
 	public function ValidatePeriodicity()
@@ -111,6 +111,8 @@ class Operation_Record extends Operation
 	
 		$this->_amount = str_replace(",", ".", $this->_amount);
 		if (!is_numeric($this->_amount))
+			throw new Exception('Merci de renseigner correctement le montant');
+		if ($this->_amount < 0)
 			throw new Exception('Merci de renseigner correctement le montant');
 	}
 	

@@ -244,7 +244,7 @@ class UsersHandler extends Handler
 		$_SESSION['email'] = $user->get('email');
 		$_SESSION['user_id'] = $user->get('userId');
 		$_SESSION['full_name'] = $user->get('name');
-		$_SESSION['read_only'] = $user->get('readOnly');
+		$_SESSION['user_name'] = $user->get('userName');
 	}
 
 	function GetSessionUser()

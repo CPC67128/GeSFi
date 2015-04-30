@@ -215,7 +215,7 @@ class DB
 	
 		$queryMonthYearFill = "update ".$this->_dbTablePrefix."record set record_date_month = month(record_date), record_date_year = year(record_date) where record_date_month = -1";
 		$resultMonthYearFill = $this->_connection->exec($queryMonthYearFill);
-	
+
 		return $result;
 	}
 

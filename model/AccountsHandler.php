@@ -6,12 +6,9 @@ class AccountsHandler extends Handler
 		$types = array
 		(
 			1 => 'Compte privé',
-			2 => 'Compte duo virtuel',
-			3 => 'Compte duo',
-			4 => 'Compte d\'optimisation financière',
-			5 => 'Prêt', // TODO : créér distinction entre prêt en indivision
+			3 => 'Compte joint',
+			5 => 'Prêt en indivision',
 			10 => 'Placement bancaire',
-			11 => 'Immobilier',
 			12 => 'Immobilier en indivision'
 		);
 
@@ -399,6 +396,8 @@ class AccountsHandler extends Handler
 		if (!empty($sortOrder))
 			$this->UpdateAccountSortOrder($uuid, $sortOrder);
 
+		//$this->CalculateAccountBalance($uuid);
+
 		return $result;
 	}
 
@@ -436,6 +435,8 @@ class AccountsHandler extends Handler
 		$result = $db->Execute($query);
 
 		$result = $this->UpdateAccountSortOrder($accountId, $sortOrder);
+
+		//$this->CalculateAccountBalance($accountId);
 
 		return $result;
 	}
@@ -487,55 +488,57 @@ class AccountsHandler extends Handler
 		return $result;
 	}
 
-	function CalculateAccountBalances($account_id)
+	function CalculateAccountBalance($account_id)
 	{
 		$db = new DB();
 
 		$query = "update bf_account
-			set CALC_balance = opening_balance
-				+
-				(
-					select sum(amount) as total
-					from bf_record
-					where record_type between 10 and 19
-					and marked_as_deleted = 0
-					and account_id = bf_account.account_id
-					and record_date <= curdate()
-				)
-				-
-				(
-					select sum(amount) as total
-					from bf_record
-					where record_type between 20 and 29
-					and marked_as_deleted = 0
-					and account_id = bf_account.account_id
-					and record_date <= curdate()
-				)
+			set CALC_balance =
+			opening_balance
+			+
+			(
+			    select ifnull(sum(amount), 0) as total
+				from bf_record
+				where record_type between 10 and 19
+				and marked_as_deleted = 0
+				and account_id = bf_account.account_id
+				and record_date <= curdate()
+			)
+			-
+			(
+			    select ifnull(sum(amount), 0) as total
+				from bf_record
+				where record_type between 20 and 29
+				and marked_as_deleted = 0
+				and account_id = bf_account.account_id
+				and record_date <= curdate()
+			)
 			where account_id = '".$account_id."'";
 		$result = $db->Execute($query);
 
 		$query = "update bf_account
-			set CALC_balance_confirmed = opening_balance
-				+
-				(
-					select sum(amount) as total
-					from bf_record
-					where record_type between 10 and 19
-					and marked_as_deleted = 0
-					and account_id = bf_account.account_id
-					and record_date <= curdate()
-					and confirmed = 1
-				)
-				-
-				(
-					select sum(amount) as total
-					from bf_record
-					where record_type between 20 and 29
-					and marked_as_deleted = 0
-					and account_id = bf_account.account_id
-					and record_date <= curdate()
-					and confirmed = 1
-				)
+			set CALC_balance_confirmed =
+			opening_balance
+			+
+			(
+			    select ifnull(sum(amount), 0) as total
+				from bf_record
+				where record_type between 10 and 19
+				and marked_as_deleted = 0
+				and account_id = bf_account.account_id
+				and record_date <= curdate()
+				and confirmed = 1
+			)
+			-
+			(
+			    select ifnull(sum(amount), 0) as total
+				from bf_record
+				where record_type between 20 and 29
+				and marked_as_deleted = 0
+				and account_id = bf_account.account_id
+				and record_date <= curdate()
+				and confirmed = 1
+			)
 			where account_id = '".$account_id."'
 			and record_confirmation = 1";
 		$result = $db->Execute($query);

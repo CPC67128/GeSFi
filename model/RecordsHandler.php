@@ -1,6 +1,28 @@
 <?php
 class RecordsHandler extends Handler
 {
+	function GetRecordTypeColours()
+	{
+		$types = array
+		(
+				0 => 'blue',
+				3 => 'blue',
+				10 => 'DarkBlue',
+				11 => 'DarkBlue',
+				12 => 'blue',
+				20 => 'DarkRed',
+				21 => 'DarkRed',
+				22 => 'red'
+		);
+	
+		return $types;
+	}
+
+	function GetRecordTypeCoulour($recordType)
+	{
+		return $this->GetRecordTypeColours()[$recordType];
+	}
+
 	function GetAllRecords($month)
 	{
 		$accountsHandler = new AccountsHandler();

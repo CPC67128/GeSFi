@@ -6,6 +6,7 @@ class Operation
 	protected $_currentUserId;
 	protected $_accountsHandler;
 	protected $_usersHandler;
+	protected $_recordsHandler;
 
 	function __construct()
 	{
@@ -17,6 +18,7 @@ class Operation
 
 		$this->_accountsHandler = new AccountsHandler();
 		$this->_usersHandler = new UsersHandler();
+		$this->_recordsHandler = new RecordsHandler();
 	}
 
 	// -------------------------------------------------------------------------------------------------------------------

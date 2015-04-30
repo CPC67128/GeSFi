@@ -37,7 +37,7 @@ function ApplyScriptForVersion($version)
 	else if ($version > 0)
 		$file = 'upgrade.'.str_pad($version, 3, "0", STR_PAD_LEFT).'.sql';
 
-	echo 'Apply script "'.$file.'"...<br />';
+	echo 'Apply script "'.$file.'"... ';
 
 	$sqlFileToExecute = 'scripts/'.$file;
 	$f = fopen($sqlFileToExecute,'r');
@@ -56,11 +56,11 @@ function ApplyScriptForVersion($version)
 
 	if ($operationResult)
 	{
-		echo "Script applied successfully.";
+		echo "Script applied successfully.<br/>";
 	}
 	else
 	{
-		echo "An error occured during the script execution! ".$operationMessage;
+		echo "An error occured during the script execution! ".$operationMessage."<br/>";
 	}
 
 	return $operationResult;

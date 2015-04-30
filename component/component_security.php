@@ -50,11 +50,9 @@ else
 	$EMAIL = $_SESSION["email"];
 	$USER_ID = $_SESSION["user_id"];
 	$FULL_NAME = $_SESSION["full_name"];
-	$READ_ONLY = $_SESSION["read_only"];
 }
 
 define('EMAIL', $EMAIL);
 define('USER_ID', $USER_ID);
 define('FULL_NAME', $FULL_NAME);
-define('READ_ONLY', $READ_ONLY);
 

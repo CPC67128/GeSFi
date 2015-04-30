@@ -9,7 +9,6 @@ class User extends Entity
 	protected $_role;
 	protected $_name;
 	protected $_culture;
-	protected $_readOnly;
 	protected $_duoId;
 
 	protected $_isNull = true;

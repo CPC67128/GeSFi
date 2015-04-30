@@ -28,10 +28,12 @@ function AddTitleRow()
 	<?php
 }
 
-// ------ Add a data row
+// ------------------------------------------------------------------
+// ------ Row
+// ------------------------------------------------------------------
 function AddRow($index, $row, $mergeRow)
 {
-	global $accountsHandler, $now, $translator, $activeUser, $partnerUser;
+	global $accountsHandler, $recordsHandler, $now, $translator, $activeUser, $partnerUser;
 
 	try {
 		if (!empty($row['account_id']))
@@ -48,48 +50,31 @@ function AddRow($index, $row, $mergeRow)
 
 	if ($index % 2 == 0) echo '0">'; else echo '1">';
 
-	if (!$mergeRow)
-	{
-		echo '<td>'.($row['record_date'] == 0 ? '' : $row['record_date']).'</td>';
-		echo '<td style="text-align: left;">'.$row['designation'].'</td>';
-		echo '<td style="text-align: right;">'.$row['user_name'].'</td>';
-		echo '<td style="text-align: right;">'.$row['account_name'].'</td>';
-	}
-	else
-	{
-		echo '<td></td>';
-		echo '<td></td>';
-		echo '<td></td>';
-		echo '<td></td>';
-	}
+?>
 
-	//if (!$mergeRow && !($row['record_date'] > $now))
-	if (!$mergeRow)
-	{
-		if (empty($row['account_id']) || $activeAccount->get('recordConfirmation') != 1) 
-			echo '<td><input type="checkbox" '.($row['confirmed'] == 1 ? 'checked' : '').' disabled="disabled"></td>';
-		else
-			echo '<td><input type="checkbox" '.($row['confirmed'] == 1 ? 'checked' : '').' onclick="ConfirmRecord(\''.$row['record_id'].'\', this);"></td>';
-	}
-	else
-		echo "<td></td>";
+<td><?= !$mergeRow && $row['record_date'] != 0 ? $row['record_date'] : '' ?></td>
 
-	echo '<td style="text-align: right;" ondblclick="ModifyRecord(\''.$row['record_id'].'\', \''.$row['amount'].'\', this);">';
-	if ($row['record_type'] == 0 || $row['record_type'] == 3|| $row['record_type'] == 12)
-		echo '<font color="blue">';
-	else if ($row['record_type'] == 10 || $row['record_type'] == 11)
-		echo '<font color="DarkBlue">';
-	else if ($row['record_type'] == 20 || $row['record_type'] == 21)
-		echo '<font color="DarkRed">';
-	else
-		echo '<font color="red">';
+<td style="text-align: left;" ondblclick="ModifyRecordDesignation('<?= $row['record_id'] ?>', '<?= $row['designation'] ?>', this);">
+<?= !$mergeRow ? $row['designation'] : '' ?>
+</td>
 
-	if ($row['record_type'] < 2 || $row['record_type'] >= 3)
-		echo $translator->getCurrencyValuePresentation($row['amount']);
-	
-	echo '</font>';
-	echo '</td>';
+<td style="text-align: left;"><?= !$mergeRow ? $row['user_name'] : '' ?></td>
 
+<td style="text-align: left;"><?= !$mergeRow ? $row['account_name'] : '' ?></td>
+
+<td>
+<?php if (!$mergeRow && !(empty($row['account_id']) || $activeAccount->get('recordConfirmation') != 1)) { ?>
+<input type="checkbox" <?= $row['confirmed'] == 1 ? 'checked' : '' ?> onclick="ConfirmRecord('<?= $row['record_id'] ?>', this);"></td>
+<?php } ?>
+</td>
+
+<td style="text-align: right;" ondblclick="ModifyRecord('<?= $row['record_id'] ?>', '<?= $row['amount'] ?>', this);">
+<font color="<?= $recordsHandler->GetRecordTypeCoulour($row['record_type']) ?>">
+<?= $row['record_type'] != 2 ? $translator->getCurrencyValuePresentation($row['amount']) : '' ?>	
+</font>
+</td>
+
+<?php
 	// Category
 	if (isset($row['category']))
 	{
@@ -241,6 +226,7 @@ while ($row = $result->fetch())
 
 $(function() {
 	var amount = $( "#amount" );
+	var designation = $( "#designation" );
 	var recordId = $( "#recordId" );
 
 	$( "#dialog-form" ).dialog({
@@ -251,7 +237,7 @@ $(function() {
 	    buttons: {
 	      "Modifier": function() {
 	    		$.post (
-	    				'../controller/controller.php?action=record_amount_modify',
+	    				'../controller/controller.php?action=record_modify_amount',
 	    				{ recordId: recordId.val() , amount: amount.val() },
 	    				function(response, status) {
 	    					$( "#dialog-form" ).dialog( "close" );
@@ -276,7 +262,42 @@ $(function() {
         }
     });
 
+
+	$( "#dialog-form-designation" ).dialog({
+	    autoOpen: false,
+	    height: 160,
+	    width: 400,
+	    modal: true,
+	    buttons: {
+	      "Modifier": function() {
+	    		$.post (
+	    				'../controller/controller.php?action=record_modify_designation',
+	    				{ recordId: recordId.val() , designation: designation.val() },
+	    				function(response, status) {
+	    					$( "#dialog-form-designation" ).dialog( "close" );
+	    					LoadPage();
+						}
+	    			);
+				
+	      },
+	      Cancel: function() {
+	        $( this ).dialog( "close" );
+	      }
+	    },
+	    close: function() {
+	    }
+	  });
+
+	$("#dialog-form-designation").keydown(function (event) {
+        if (event.keyCode == 13) {
+            $(this).parent()
+                   .find("button:eq(1)").trigger("click");
+            return false;
+        }
+    });
+
 	$( "#amount" ).focus(function() { $(this).select(); } );
+	$( "#designation" ).focus(function() { $(this).select(); } );
 });
 
 function ModifyRecord(recordIdToModify, amount, sender)
@@ -284,6 +305,13 @@ function ModifyRecord(recordIdToModify, amount, sender)
 	$( "#recordId" ).val(recordIdToModify);
 	$( "#amount" ).val(amount);
 	$( "#dialog-form" ).dialog( "open" );
+}
+
+function ModifyRecordDesignation(recordIdToModify, designation, sender)
+{
+	$( "#recordId" ).val(recordIdToModify);
+	$( "#designation" ).val(designation);
+	$( "#dialog-form-designation" ).dialog( "open" );
 }
 
 LoadAccountStatusInPageRecord();
@@ -295,6 +323,16 @@ LoadAccountStatusInPageRecord();
   <fieldset>
     <label for="amount">Nouveau montant</label>
     <input type="text" name="amount" autocomplete="off" id="amount" class="text ui-widget-content ui-corner-all">
+    <input type="hidden" name="recordId" id="recordId">
+    </fieldset>
+  </form>
+</div>
+
+<div id="dialog-form-designation" title="Modifier une désignation">
+  <form>
+  <fieldset>
+    <label for="designation">Nouvelle désignation</label>
+    <input type="text" name="designation" autocomplete="off" id="designation" class="text ui-widget-content ui-corner-all">
     <input type="hidden" name="recordId" id="recordId">
     </fieldset>
   </form>

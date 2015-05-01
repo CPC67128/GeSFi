@@ -1,4 +1,4 @@
-CREATE TRIGGER `Trigger_Account_AfterUpdate` AFTER UPDATE ON `bf_account` FOR EACH ROW begin if (new.opening_balance != old.opening_balance) then call CalculateAccountBalances(new.account_id); END IF; end;
+CREATE TRIGGER `Trigger_Account_AfterUpdate` AFTER UPDATE ON `{TABLEPREFIX}account` FOR EACH ROW begin if (new.opening_balance != old.opening_balance) then call CalculateAccountBalances(new.account_id); END IF; end;
 
 DROP PROCEDURE IF EXISTS `CalculateAllAccountsBalances`;
 
@@ -8,7 +8,7 @@ begin
 DECLARE done int DEFAULT FALSE;
 DECLARE t_account_id varchar(36);
 
-DECLARE cur1 cursor for SELECT account_id FROM bf_account;
+DECLARE cur1 cursor for SELECT account_id FROM {TABLEPREFIX}account;
 DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
 open cur1;
 

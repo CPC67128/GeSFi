@@ -22,13 +22,13 @@ function AddTitleRow()
 	<td style="vertical-align: top; text-align: center; font-style: italic;"><?= $translator->getTranslation('J') ?></td>
 	<td style="vertical-align: top; text-align: center; font-style: italic;"><?= $translator->getTranslation('Désignation') ?></td>
 
-	<?php if ($accountType != 11 && $accountType != 12) { ?>
+	<?php if ($accountType != 12) { ?>
 	<td style="text-align: right;"><?= $translator->getTranslation('Versement') ?><br /><i><small>(&sum;) <?= $translator->getTranslation('Cumul') ?></small></i></td>
 	<td style="text-align: right;"><?= $translator->getTranslation('Versement effectif') ?><br /><i><small>(&sum;) <?= $translator->getTranslation('Cumul') ?></small></i></td>
 	<!-- <td style="vertical-align: top; text-align: center; font-style: italic;"><?= $translator->getTranslation('Frais') ?></td> -->
 	<?php } ?>
 	<td style="vertical-align: top; text-align: center; font-style: italic;"><?= $translator->getTranslation('Valorisation') ?></td>
-	<?php if ($accountType != 11 && $accountType != 12) { ?>
+	<?php if ($accountType != 12) { ?>
 	<td style="vertical-align: top; text-align: center; font-style: italic;"><?= $translator->getTranslation('Rendement') ?></td>
 	<td style="vertical-align: top; text-align: center; font-style: italic;"><?= $translator->getTranslation('Rendement annuel') ?></td>
 	<?php } ?>
@@ -54,10 +54,10 @@ function AddRow($index, $row)
 	echo '<td>'.$row['record_date'].'</td>';
 	echo '<td style="text-align: right;">'.$row['CALC_days_since_creation'].'</td>';
 	echo '<td style="text-align: left;">'.$row['designation'].'</td>';
-	if ($accountType != 11 && $accountType != 12) {
+	if ($accountType != 12) {
 	?>
-	<td style="text-align: right;"><?php if ($row['amount'] != null) { ?><?= $translator->getCurrencyValuePresentation($row['amount']) ?><br /><i><small>(&sum;) <?= $translator->getCurrencyValuePresentation($row['CALC_amount_accumulated'])?></small></i><?php } ?></td>
-	<td style="text-align: right;"><?php if ($row['amount_invested'] != null) { ?><?= $translator->getCurrencyValuePresentation($row['amount_invested']) ?><br /><i><small>(&sum;) <?= $translator->getCurrencyValuePresentation($row['CALC_amount_invested_accumulated'])?></small></i><?php } ?></td>
+	<td style="text-align: right;"><?= $row['record_type'] == 20 ? '- ' : '' ?><?php if ($row['amount'] != null) { ?><?= $translator->getCurrencyValuePresentation($row['amount']) ?><br /><i><small>(&sum;) <?= $translator->getCurrencyValuePresentation($row['CALC_amount_accumulated'])?></small></i><?php } ?></td>
+	<td style="text-align: right;"><?= $row['record_type'] == 20 ? '- ' : '' ?><?php if ($row['amount_invested'] != null) { ?><?= $translator->getCurrencyValuePresentation($row['amount_invested']) ?><br /><i><small>(&sum;) <?= $translator->getCurrencyValuePresentation($row['CALC_amount_invested_accumulated'])?></small></i><?php } ?></td>
 	<?php
 	}
 	?>

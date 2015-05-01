@@ -343,7 +343,19 @@ class DB
 											 $payment,
 											 $paymentInvested,
 											 null,
-											 null);
+											 10);
+	}
+
+	function InsertInvestmentRecord_Outcome($accountId, $recordGroupId, $recordDate, $designation, $payment, $paymentInvested)
+	{
+		return $this->InsertInvestmentRecord($accountId,
+									 		 $recordGroupId,
+											 $recordDate,
+											 $designation,
+											 $payment,
+											 $paymentInvested,
+											 null,
+											 20);
 	}
 
 	function InsertInvestmentRecord_Value($accountId, $recordDate, $designation, $value)
@@ -355,7 +367,7 @@ class DB
 											 null,
 											 null,
 											 $value,
-											 null);
+											 30);
 	}
 	
 	function DeleteInvestmentRecord($recordId)

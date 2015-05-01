@@ -16,13 +16,13 @@ class Operation_Investment_Record_Withdrawal extends Operation_Investment_Record
 
 		$uuid = $this->_db->GenerateUUID();
 
-		$this->_db->InsertInvestmentRecord_Income(
+		$this->_db->InsertInvestmentRecord_Outcome(
 				$this->_fromAccount,
 				$uuid,
 				$this->_fromDate,
 				$this->_designation,
-				-1 * $this->_amountDisinvested,
-				-1 * $this->_amountDisinvested);
+				$this->_amountDisinvested,
+				$this->_amountDisinvested);
 
 		if ($this->_toAccount != '')
 		{

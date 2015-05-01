@@ -88,8 +88,8 @@ class InvestmentsRecordsHandler extends Handler
 			if (!isset($creationDate))
 				$creationDate = $record['record_date'];
 
-			$amountAccumulated += $record['amount'];
-			$amountInvestedAccumulated += $record['amount_invested'];
+			$amountAccumulated += ($record['record_type'] == 20 ? -1 : 1) * $record['amount'];
+			$amountInvestedAccumulated += ($record['record_type'] == 20 ? -1 : 1) * $record['amount_invested'];
 			$daysSinceCreation = (int) (strtotime($record['record_date']) - strtotime($creationDate)) / 86400;
 
 			unset($gain);

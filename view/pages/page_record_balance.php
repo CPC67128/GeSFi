@@ -47,7 +47,10 @@ $totalExpensesChargedToPartner += $totalExpensesFromPrivateAccountsToDuoCategori
 
 $totalIncomeDuoAccountsMadeByUser = $statisticsHandler->GetTotalIncomeDuoAccountsByUser($user->get('userId'));
 $totalIncomeDuoAccountsMadeByPartner = $statisticsHandler->GetTotalIncomeDuoAccountsByUser($user->GetPartnerId());
+
 $totalIncomeDuoAccountsOutsidePartners = $statisticsHandler->GetTotalDepositFromOutsideToDuoAccounts();
+$totalIncomeDuoAccountsOutsidePartnersForUser = $statisticsHandler->GetTotalDepositFromOutsideToDuoAccountsForUser($user->get('userId')); // NEW
+$totalIncomeDuoAccountsOutsidePartnersForPartner = $statisticsHandler->GetTotalDepositFromOutsideToDuoAccountsForUser($user->GetPartnerId());
 
 $totalOutcomeDuoAccountsMadeByUser = $statisticsHandler->GetTotalOutcomeFromDuoAccountsByUser($user->get('userId'));
 $totalOutcomeDuoAccountsMadeByPartner = $statisticsHandler->GetTotalOutcomeFromDuoAccountsByUser($user->GetPartnerId());
@@ -56,8 +59,8 @@ $totalExpensesDuoAccounts = $statisticsHandler->GetTotalExpenseDuoAccounts();
 $totalExpensesDuoAccountsChargedForUser = $statisticsHandler->GetTotalExpenseDuoAccountsChargedForUser($user->get('userId'));
 $totalExpensesDuoAccountsChargedForPartner = $statisticsHandler->GetTotalExpenseDuoAccountsChargedForUser($user->GetPartnerId());
 
-$totalContributionOfUser += $totalIncomeDuoAccountsMadeByUser - $totalOutcomeDuoAccountsMadeByUser + $totalIncomeDuoAccountsOutsidePartners / 2;
-$totalContributionOfPartner += $totalIncomeDuoAccountsMadeByPartner - $totalOutcomeDuoAccountsMadeByPartner + $totalIncomeDuoAccountsOutsidePartners / 2;
+$totalContributionOfUser += $totalIncomeDuoAccountsMadeByUser - $totalOutcomeDuoAccountsMadeByUser + $totalIncomeDuoAccountsOutsidePartnersForUser;
+$totalContributionOfPartner += $totalIncomeDuoAccountsMadeByPartner - $totalOutcomeDuoAccountsMadeByPartner + $totalIncomeDuoAccountsOutsidePartnersForPartner;
 $totalExpenses += $totalExpensesDuoAccounts;
 $totalExpensesChargedToUser += $totalExpensesDuoAccountsChargedForUser;
 $totalExpensesChargedToPartner += $totalExpensesDuoAccountsChargedForPartner;
@@ -176,8 +179,8 @@ Situation des comptes entre <?= $user->get('name') ?> et <?= $partner->get('name
 </tr>
 <tr>
 <td align="right"><?= $translator->getCurrencyValuePresentation($totalIncomeDuoAccountsOutsidePartners) ?></td>
-<td align="right"><?= $translator->getCurrencyValuePresentation($totalIncomeDuoAccountsOutsidePartners / 2) ?></td>
-<td align="right"><?= $translator->getCurrencyValuePresentation($totalIncomeDuoAccountsOutsidePartners / 2) ?></td>
+<td align="right"><?= $translator->getCurrencyValuePresentation($totalIncomeDuoAccountsOutsidePartnersForUser) ?></td>
+<td align="right"><?= $translator->getCurrencyValuePresentation($totalIncomeDuoAccountsOutsidePartnersForPartner) ?></td>
 </tr>
 <tr>
 <td align="right">- <?= $translator->getCurrencyValuePresentation($totalOutcomeDuoAccountsMadeByUser + $totalOutcomeDuoAccountsMadeByPartner) ?></td>

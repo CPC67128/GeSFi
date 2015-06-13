@@ -39,10 +39,12 @@ foreach ($accounts as $account)
 <td><?= $translator->getTranslation('Catégorie') ?></td>
 <td><?= $translator->getTranslation('Formule') ?></td>
 <td><?= $translator->getTranslation('Montant') ?></td>
+<td><?= $translator->getTranslation('Prise en charge') ?></td>
 </thead>
 <thead>
 <td>&nbsp;</td>
 <td><font size=1>x-- = x - others<br />x+y-z</font></td>
+<td>&nbsp;</td>
 <td>&nbsp;</td>
 </thead>
 <tr>
@@ -70,8 +72,8 @@ foreach ($categories as $category)
 	<td>
 	<input type="text" name="category<?php echo $i; ?>Amount"  tabindex="-1" size="6" readonly> &euro;
 	<input type="hidden" name="category<?php echo $i; ?>CategoryId"  tabindex="-1" size="6" readonly value='<?php echo $categoryId; ?>'>
-	<input type="hidden" name="category<?php echo $i; ?>ChargeLevel"  tabindex="-1" size="6" readonly value='50'>
 	</td>
+	<td align="center"><input type="text" name="category<?= $i ?>ChargeLevel" tabindex="<?= (($i * 2) + 1) ?>" value="50" size="2"> %</td>
 	<?php
 	}
 

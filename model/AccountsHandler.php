@@ -350,8 +350,7 @@ class AccountsHandler extends Handler
 		$query = 'select ACC.*, PRF.sort_order
 			from {TABLEPREFIX}account as ACC
 			left join {TABLEPREFIX}account_user_preference as PRF on ACC.account_id = PRF.account_id and PRF.user_id = \'{USERID}\'
-			where ACC.account_id = \''.$id.'\'
-			and marked_as_closed = 0';
+			where ACC.account_id = \''.$id.'\'';
 		$row = $db->SelectRow($query);
 		if (isset($row))
 			$newAccount->hydrate($row);
@@ -436,7 +435,7 @@ class AccountsHandler extends Handler
 
 		$result = $this->UpdateAccountSortOrder($accountId, $sortOrder);
 
-		//$this->CalculateAccountBalance($accountId);
+		$this->CalculateAccountBalance($accountId);
 
 		return $result;
 	}

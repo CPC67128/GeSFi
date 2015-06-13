@@ -198,6 +198,48 @@ class StatisticsHandler extends Handler
 		return $row['total'];
 	}
 
+	// Total deposits coming from outside to duo accounts
+	function GetTotalDepositFromOutsideToDuoAccountsForUser($userId)
+	{
+		$db = new DB();
+
+		/*
+		$query = "select sum(amount) as total
+			from {TABLEPREFIX}record
+			where record_type = 12
+			and marked_as_deleted = 0
+			and account_id in (select account_id from {TABLEPREFIX}account where type in (2, 3) and (owner_user_id = '{USERID}' or coowner_user_id = '{USERID}'))
+			and record_date <= curdate()";
+		$row = $db->SelectRow($query);
+		*/
+
+		$query = "select sum(amount * (charge / 100)) as total
+			from {TABLEPREFIX}record
+			where record_type in (12)
+			and marked_as_deleted = 0
+			and account_id in (select account_id from {TABLEPREFIX}account where type in (2, 3) and (owner_user_id = '{USERID}' or coowner_user_id = '{USERID}'))
+			and record_date <= curdate()
+			and user_id = '".$userId."'";
+		$row = $db->SelectRow($query);
+		$total = $row['total'];
+		
+		$query = "select sum(amount * ((100 - charge) / 100)) as total
+			from {TABLEPREFIX}record
+			where record_type in (12)
+			and marked_as_deleted = 0
+			and account_id in (select account_id from {TABLEPREFIX}account where type in (2, 3) and (owner_user_id = '{USERID}' or coowner_user_id = '{USERID}'))
+			and record_date <= curdate()
+			and user_id != '".$userId."'";
+		$row = $db->SelectRow($query);
+		$total += $row['total'];
+	
+		// TODO: check categories here - we should only have duo categories
+		// TODO: this should not use {USERID}
+	
+		return $total;
+	}
+	
+
 	// Total deposits coming from outside to private accounts
 	function GetTotalDepositFromOutsideToPrivateAccounts($userId)
 	{

@@ -1,5 +1,8 @@
 <select name="ab" onchange="if (this.selectedIndex) displayStatisticsPage(this.options[this.selectedIndex].value);">
     <option value="-1">--</option>
+    <option value="statistics_window?3">3 mois glissants</option>
+	<option value="statistics_window?6">6 mois glissants</option>
+    <option value="statistics_window?12">12 mois glissants</option>
     <option value="statistics_private_full_year?<?= Date('Y') ?>">Tableau de bord privé, année <?= Date('Y') ?></option> 
     <option value="statistics_private_full_year?<?= Date('Y') - 1 ?>">Tableau de bord privé, année <?= Date('Y') - 1 ?></option> 
     <option value="statistics_private_full_year?<?= Date('Y') - 2 ?>">Tableau de bord privé, année <?= Date('Y') - 2 ?></option>

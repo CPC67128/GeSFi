@@ -62,6 +62,35 @@ class Category extends Entity
 		return $row['total'];
 	}
 
+	public function GetTotalIncomeChargedBetween2Dates($dateStart, $dateEnd)
+	{
+		$db = new DB();
+	
+		$query = "select sum(amount * (charge / 100)) as total
+		from {TABLEPREFIX}record
+		where record_type in (12)
+		and marked_as_deleted = 0
+		and record_date < '".$dateEnd->format('Y-m-d')."'
+		and record_date >= '".$dateStart->format('Y-m-d')."'
+		and user_id = '".$_SESSION['user_id']."'
+		and category_id = '".$this->_categoryId."'";
+		$row = $db->SelectRow($query);
+		$total = $row['total'];
+	
+		$query = "select sum(amount * ((100 - charge) / 100)) as total
+			from {TABLEPREFIX}record
+			where record_type in (12)
+			and marked_as_deleted = 0
+			and record_date < '".$dateEnd->format('Y-m-d')."'
+			and record_date >= '".$dateStart->format('Y-m-d')."'
+			and user_id != '".$_SESSION['user_id']."'
+			and category_id = '".$this->_categoryId."'";
+		$row = $db->SelectRow($query);
+		$total = $total + $row['total'];
+	
+		return $total;
+	}
+
 	public function GetTotalExpenseBetween2Dates($dateStart, $dateEnd)
 	{
 		$db = new DB();

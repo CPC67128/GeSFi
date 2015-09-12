@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>BudgetFox</title>
+<link rel="stylesheet" href="projects.css" type="text/css">
+</head>
+<body>
+<h1>BudgetFox</h1>
+<p>BudgetFox est une application web de gestion de ses finances personnelles.</p>
+<p>A ses débuts en 2010, cette application se nommait GFC (« Gestion Financière du Couple ») et avait pour but d’aider au partage des dépenses du couple.</p>
+<p>Je l’ai faite évoluer régulièrement, en ajoutant des fonctionnalités progressivement. Elle permet dorénavant de suivre ses dépenses et ses revenus, de mieux gérer son budget, et depuis peu d’aider au suivi de ses placements financiers.</p>
+<p><a href="http://stevefuchs.fr/BudgetFox/">Démonstration</a></p>
+<p><a href="https://github.com/CPC67128/BudgetFox/archive/master.zip">Téléchargement de l’application</a></p>
+<h2>Installation et mise à jour</h2>
+<p><b>Prérequis:</b></p>
+<p>Un minimum de connaissances informatique est nécessaire: utilisation d’un client FTP, bases de MySQL…</p>
+<p>Il faudra également un environnement offrant :</p>
+<ul>
+<li>Un emplacement web disposant de PHP 5.5</li>
+<li>Une base de données MySQL 5</li>
+</ul>
+<p>Ce peut être un <a href="http://www.1and1.fr/?kwk=16605005">site Internet 1&1</a> comme ce site, un site sur un <a href="https://www.synology.com/fr-fr/">NAS Synology</a>, voir encore un Raspberry Pi qui est capable de supporter mon application.</p>
+<p>Sinon contactez moi pour que j’héberge et je gère votre application.</p>
+<p><b>Installation:</b></p>
+<ul>
+<li>Créer une base de données MySQL avec le nom voulu (par exemple « budgetfox ») et l’interclassement voulu (par exemple « utf8_general_ci »).<br />
+<img src="2015-04-18_155837.png" /></li>
+<li><a href="https://github.com/CPC67128/BudgetFox/archive/master.zip">Télécharger l’archive de l’application</a> sur GitHub, et la décompresser</li>
+<li>Uploader les fichiers dans un répertoire de votre emplacement web</li>
+<li>Editer le fichier ./configuration/configuration.php et remplir les paramètres requis (base de données...)</li>
+<li>Aller sur http://(votre site)/(emplacement BudgetFox)/setup/ et cliquer sur « Upgrade database » pour créer la base de données:<br />
+<img src="2015-04-18_155906.png" /><br />
+Ceci appliquera différent scripts:<br />
+<img src="2015-04-18_155921.png" /><br />
+qui créeront les tables de la base de données:<br />
+<img src="2015-04-18_160023.png" /><br />
+</li>
+<li>Effacer le répertoire setup de votre répertoire d’installation</li>
+<li>Se rendre sur la page http://(votre site)/(emplacement BudgetFox)/ et se connecter avec le compte administrateur (mot de passe admin)</li>
+<li>Débuter par la configuration des utilisateurs, des comptes et des catégories depuis l’espace d’administration.</li>
+</ul>
+<p><b>Mise à jour:</b></p>
+<ul>
+<li>Faites une sauvegarde de votre base de données et de votre répertoire web</li>
+<li>Dans ce dernier, effacer tout les sous-répertoires excepté « configuration »</li>
+<li>Télécharger l’archive de l’application sur GitHub</li>
+<li>Décompresser le zip et uploader l’ensemble des fichiers excepté le répertoire « configuration » dans votre répertoire d’installation</li>
+<li>Aller sur http://(votre site)/(emplacement BudgetFox)/setup/ et suivez les instructions comme lors de l’installation (la base de données sera mise à niveau)</li>
+<li>Effacer le répertoire « setup » de votre répertoire d’installation</li>
+</ul>
+<h2>Actualités</h2>
+<p>Les actualités de ce projet peuvent être décrites sur <a href="http://stevefuchs.fr/wordpress/category/informatique/budgetfox/">le flux dédié</a> de mon blog.</p>
+<h2>Don</h2>
+<p>Et si vous voulez supportez mes projets (ou participer à mon bien-être), merci pour votre don que vous pouvez faire ci-dessous :-)</p>
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post"><input name="cmd" type="hidden" value="_s-xclick" /> <input name="hosted_button_id" type="hidden" value="E8CXFRDRBZFC2" /> <input alt="PayPal - The safer, easier way to pay online!" name="submit" src="https://www.paypalobjects.com/fr_FR/FR/i/btn/btn_donateCC_LG.gif" type="image" /> <img src="https://www.paypalobjects.com/fr_FR/i/scr/pixel.gif" alt="" width="1" height="1" border="0" />
+</form>
+<h2>Versions précédentes</h2>
+<h3>version 2.2</h3>
+<p><img src="Gfcremark.png" alt="Remarques" /></p>
+<h3>version 2.1</h3>
+<p><img src="Gfcdepense.png" alt="Dépense / Interface" /></p>
+<p><img src="Gfcremboursement.png" alt="Remboursement" /></p>
+<p><img src="Gfcstatistiques.png" alt="Statistiques" /></p>
+<p><img src="Gfcetatdeslieux.png" alt="Etat des lieux" /></p>
+<h3>version 1.0.0</h3>
+<p><img src="Gfc.jpg" alt="Interface" /></p>
+</body>
+</html>

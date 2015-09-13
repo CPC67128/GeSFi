@@ -1,4 +1,10 @@
-<h1><?= $translator->getTranslation('Tableau de bord privé, revenus sur 12 mois glissants') ?></h1>
+<?php
+$nbMonths = 12;
+if (isset($data))
+	$nbMonths = $data;
+?>
+
+<h1><?= $translator->getTranslation('Tableau de bord privé, revenus sur '.$nbMonths.' mois glissants') ?></h1>
 <table class="statsTable">
 <tbody>
 <tr class="statsTableRowTitle">
@@ -13,12 +19,12 @@ $totalAverage = 0;
 $index = 0;
 
 $dateEnd = new DateTime(date("Y").'-'.date("m").'-01');
-$dateStart = new DateTime(date("Y-m-d", strtotime($dateEnd->format("Y-m-d") . " -12 months")));
+$dateStart = new DateTime(date("Y-m-d", strtotime($dateEnd->format("Y-m-d") . " -".$nbMonths." months")));
 $categories = $categoriesHandler->GetIncomeCategoriesForUser($activeUser->get('userId'));
 foreach ($categories as $category)
 {
 	$value = $category->GetTotalIncomeBetween2Dates($dateStart, $dateEnd);
-	$average = $value / 12;
+	$average = $value / $nbMonths;
 	$total += $value;
 	$totalAverage += $average;
 
@@ -41,11 +47,11 @@ foreach ($categories as $category)
 </tr>
 </tbody>
 </table>
-<small><font color="red">* </font> : <?= $translator->getTranslation('données non disponibles sur 12 mois complets') ?></small>
+<small><font color="red">* </font> : <?= $translator->getTranslation('données non disponibles sur '.$nbMonths.' mois complets') ?></small>
 
 <br />
 
-<h1><?= $translator->getTranslation('Tableau de bord privé, dépenses sur 12 mois glissants') ?></h1>
+<h1><?= $translator->getTranslation('Tableau de bord privé, dépenses sur '.$nbMonths.' mois glissants') ?></h1>
 <table class="statsTable">
 <tbody>
 <tr class="statsTableRowTitle">
@@ -62,7 +68,7 @@ $categories = $categoriesHandler->GetOutcomeCategoriesForUser($activeUser->get('
 foreach ($categories as $category)
 {
 	$value = $category->GetTotalExpenseBetween2Dates($dateStart, $dateEnd);
-	$average = $value / 12;
+	$average = $value / $nbMonths;
 	$total += $value;
 	$totalAverage += $average;
 	
@@ -85,4 +91,4 @@ foreach ($categories as $category)
 </tr>
 </tbody>
 </table>
-<small><font color="red">* </font> : <?= $translator->getTranslation('données non disponibles sur 12 mois complets') ?></small>
+<small><font color="red">* </font> : <?= $translator->getTranslation('données non disponibles sur '.$nbMonths.' mois complets') ?></small>

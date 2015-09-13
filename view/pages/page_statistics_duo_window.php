@@ -1,13 +1,20 @@
 <?php
-$dateEnd = new DateTime(date("Y").'-'.date("m").'-01');
-$dateStart = new DateTime(date("Y-m-d", strtotime($dateEnd->format("Y-m-d") . " -12 months")));
+$nbMonths = 12;
+if (isset($data))
+	$nbMonths = $data;
 ?>
-<h1><?= $translator->getTranslation('Tableau de bord duo, revenus sur 12 mois glissants') ?></h1>
+<?php
+$dateEnd = new DateTime(date("Y").'-'.date("m").'-01');
+$dateStart = new DateTime(date("Y-m-d", strtotime($dateEnd->format("Y-m-d") . " -".$nbMonths." months")));
+?>
+<h1><?= $translator->getTranslation('Tableau de bord duo, revenus sur '.$nbMonths.' mois glissants') ?></h1>
 <table id="recordsTable">
 <tbody>
 <tr class="tableRowTitle">
 <td><?= $translator->getTranslation('Revenus') ?></td>
 <td><?= $translator->getTranslation('Montant') ?></td>
+<td><?= $translator->getTranslation('Moyenne') ?></td>
+<td><?= $translator->getTranslation('(pris en charge)') ?></td>
 <td><?= $translator->getTranslation('Moyenne') ?></td>
 </tr>
 <?php
@@ -22,9 +29,14 @@ $categories = $categoriesHandler->GetIncomeCategoriesForDuo($activeUser->get('us
 foreach ($categories as $category)
 {
 	$value = $category->GetTotalIncomeBetween2Dates($dateStart, $dateEnd);
-	$average = $value / 12;
+	$valueCharged = $category->GetTotalIncomeChargedBetween2Dates($dateStart, $dateEnd);
 	$total += $value;
+	$totalCharged += $valueCharged;
+
+	$average = $value / $nbMonths;
 	$totalAverage += $average;
+	$averageCharged = $valueCharged / $nbMonths;
+	$totalAverageCharged += $averageCharged;
 
 	if ($value > 0)
 	{
@@ -33,6 +45,8 @@ foreach ($categories as $category)
 		<td><?= $category->get('category') ?></td>
 		<td class="amount"><?= ($category->get('activeFrom') > $dateStart->format("Y-m-d")) ? '<font color="red">* </font>' : '' ?><?= $translator->getCurrencyValuePresentation($value) ?></td>
 		<td class="amount"><?= ($category->get('activeFrom') > $dateStart->format("Y-m-d")) ? '<font color="red">* </font>' : '' ?><?= $translator->getCurrencyValuePresentation($average) ?></td>
+		<td class="amount"><?= ($category->get('activeFrom') > $dateStart->format("Y-m-d")) ? '<font color="red">* </font>' : '' ?><?= $translator->getCurrencyValuePresentation($valueCharged) ?></td>
+		<td class="amount"><?= ($category->get('activeFrom') > $dateStart->format("Y-m-d")) ? '<font color="red">* </font>' : '' ?><?= $translator->getCurrencyValuePresentation($averageCharged) ?></td>
 		</tr>
 		<?php
 	}
@@ -42,16 +56,18 @@ foreach ($categories as $category)
 <td><?= $translator->getTranslation('Total revenus') ?></td>
 <td class="amount"><?= $translator->getCurrencyValuePresentation($total) ?></td>
 <td class="amount"><?= $translator->getCurrencyValuePresentation($totalAverage) ?></td>
+<td class="amount"><?= $translator->getCurrencyValuePresentation($totalCharged) ?></td>
+<td class="amount"><?= $translator->getCurrencyValuePresentation($totalAverageCharged) ?></td>
 </tr>
 </tbody>
 </table>
-<small><font color="red">* </font> : <?= $translator->getTranslation('données non disponibles sur 12 mois complets') ?></small>
+<small><font color="red">* </font> : <?= $translator->getTranslation('données non disponibles sur '.$nbMonths.' mois complets') ?></small>
 
 <?php
 $dateEnd = new DateTime(date("Y").'-'.date("m").'-01');
-$dateStart = new DateTime(date("Y-m-d", strtotime($dateEnd->format("Y-m-d") . " -12 months")));
+$dateStart = new DateTime(date("Y-m-d", strtotime($dateEnd->format("Y-m-d") . " -".$nbMonths." months")));
 ?>
-<h1><?= $translator->getTranslation('Tableau de bord duo, dépenses sur 12 mois glissants') ?></h1>
+<h1><?= $translator->getTranslation('Tableau de bord duo, dépenses sur '.$nbMonths.' mois glissants') ?></h1>
 <table id="recordsTable">
 <tbody>
 <tr class="tableRowTitle">
@@ -77,9 +93,9 @@ foreach ($categories as $category)
 	$total += $value;
 	$totalCharged += $valueCharged;
 
-	$average = $value / 12;
+	$average = $value / $nbMonths;
 	$totalAverage += $average;
-	$averageCharged = $valueCharged / 12;
+	$averageCharged = $valueCharged / $nbMonths;
 	$totalAverageCharged += $averageCharged;
 	
 	if ($value > 0)
@@ -105,4 +121,4 @@ foreach ($categories as $category)
 </tr>
 </tbody>
 </table>
-<small><font color="red">* </font> : <?= $translator->getTranslation('données non disponibles sur 12 mois complets') ?></small>
+<small><font color="red">* </font> : <?= $translator->getTranslation('données non disponibles sur '.$nbMonths.' mois complets') ?></small>

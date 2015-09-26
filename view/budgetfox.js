@@ -183,3 +183,19 @@ function LoadLeftMenu()
         }
     });
 }
+
+//========== Common functions
+
+function GetDecimalValue(text) {
+	var value = 0; 
+
+	text = text.replace(' ','');
+	text = text.replace(',','.');
+	text = text.replace('€','');
+
+	if (!isNaN(parseFloat(text))) {
+		value = parseFloat(text);
+	}
+
+	return value;
+}

@@ -1,4 +1,5 @@
 <div id="accountStatus"></div>
+
 <?php
 $recordsHandler = new RecordsHandler();
 
@@ -12,7 +13,7 @@ $now = date('Y-m-d');
 // ------ Display a title row
 function AddTitleRow()
 {
-	global $translator, $activeAccount;
+	global $translator;
 	?>
 	<tr class="titleRow">
 	<td><?= $translator->getTranslation('Date') ?></td>
@@ -31,6 +32,23 @@ function AddTitleRow()
 // ------------------------------------------------------------------
 // ------ Row
 // ------------------------------------------------------------------
+
+function PrintTRClass($row, $index)
+{
+	global $now;
+
+	echo 'tableRow';
+
+	if ($row['marked_as_deleted'])
+		echo 'Deleted';
+	else if ($row['record_date'] > $now)
+		echo 'ToCome';
+	else if ($row['record_type'] == 2)
+		echo 'Remark';
+
+	echo ($index % 2);
+}
+	
 function AddRow($index, $row, $mergeRow)
 {
 	global $accountsHandler, $recordsHandler, $now, $translator, $activeUser, $partnerUser;
@@ -42,15 +60,8 @@ function AddRow($index, $row, $mergeRow)
 
 	}
 
-	$tr = '<tr class="tableRow';
-	if ($row['marked_as_deleted']) $tr .= 'Deleted';
-	else if ($row['record_date'] > $now) $tr .= 'ToCome';
-	else if ($row['record_type'] == 2) $tr .= 'Remark';
-	echo $tr;
-
-	if ($index % 2 == 0) echo '0">'; else echo '1">';
-
 ?>
+<tr class="<?php PrintTRClass($row, $index); ?>">
 
 <td><?= !$mergeRow && $row['record_date'] != 0 ? $row['record_date'] : '' ?></td>
 
@@ -74,91 +85,64 @@ function AddRow($index, $row, $mergeRow)
 </font>
 </td>
 
+<td>
+<font color='<?= $row['link_type'] == 'DUO' ? 'MediumVioletRed' : 'DarkGreen' ?>'>
 <?php
-	// Category
-	if (isset($row['category']))
-	{
-		echo "<td style='text-align: left;'>";
-	
-		if ($row['link_type'] == 'USER') echo "<font color='DarkGreen'>";
-		else if ($row['link_type'] == 'DUO') echo "<font color='MediumVioletRed'>";
-	
-		echo $row['category'];
-	
-		echo "</font>";
-		echo "</td>";
-	}
-	else if (isset($row['category_id']) && substr($row['category_id'], 0, 5) == "USER/")
-	{
-		echo "<td style='text-align: left;'>";
-	
-		$usersHandler = new UsersHandler();
-		$user = $usersHandler->GetUser(substr($row['category_id'], 5, 36));
+if (isset($row['category']))
+{
+	echo $row['category'];
+}
+else if (isset($row['category_id']) && substr($row['category_id'], 0, 5) == "USER/")
+{
+	$usersHandler = new UsersHandler();
+	$user = $usersHandler->GetUser(substr($row['category_id'], 5, 36));
 
-		echo "<font color='DarkGreen'>";
-	
-		echo 'Non définie / '.$user->getName();
-	
-		echo "</font>";
-		echo "</td>";
-	}
-	else
-		echo "<td></td>";
+	echo 'Non définie / '.$user->getName();
+}
+?>
+</font>
+</td>
 
-	// Charge level
-	echo '<td style="text-align: left;">';
+<td <?php
+if (isset($row['category']) || (isset($row['category_id']) && substr($row['category_id'], 0, 5) == "USER/"))
+{
+	?> ondblclick="ModifyRecordCharge('<?= $row['record_id'] ?>', '<?= $row['charge'] ?>', this);"<?php
+} ?>>
 
-	if (isset($row['category']) || (isset($row['category_id']) && substr($row['category_id'], 0, 5) == "USER/"))
-	{
-		echo "<img src='../media/information.png' title='";
-		echo $activeUser->get('name')."=".$translator->getCurrencyValuePresentation($row['part_actor1'])." / ".$partnerUser->get('name')."=".$translator->getCurrencyValuePresentation($row['part_actor2']);
-		echo "'>";
-		echo "&nbsp;";
-	}
+<?php if (isset($row['category'])) { ?>
+<img src='../media/information.png' title='<?= $activeUser->get('name')."=".$translator->getCurrencyValuePresentation($row['part_actor1'])." / ".$partnerUser->get('name')."=".$translator->getCurrencyValuePresentation($row['part_actor2']) ?>'>
+ <?= $row['charge']?> %<?php } ?>
+</td>
 
-	if ($row['link_type'] == 'DUO' || $row['link_type'] == 'USER' || (isset($row['category_id']) && substr($row['category_id'], 0, 5) == "USER/"))
-		echo $row['charge'].'&nbsp;%';
-	echo '</td>';
-
-	// Trash bin
-	echo "<td style='text-align: center;'><span class='ui-icon ui-icon-trash' onclick='if (confirm(\"".$translator->getTranslation('Etes-vous sûr de vouloir supprimer cette entrée ?')."\")) { DeleteRecord(\"".$row['record_id']."\"); }'></span></td>";
-
-	echo '</tr>';
+<td style='text-align: center;'><span class='ui-icon ui-icon-trash' onclick='if (confirm(\"".$translator->getTranslation('Etes-vous sûr de vouloir supprimer cette entrée ?')."\")) { DeleteRecord(\"".$row['record_id']."\"); }'></span></td>
+</tr>
+	<?php
 }
 
-// ------ Add a subtotal line in case of merged row
+// ------ Subtotal line in case of merged rows
+
+function PrintAmountSumClass($row)
+{
+	if ($row['record_type'] == 0 || $row['record_type'] == 3)
+		echo 'amountSumIn';
+	else
+		echo 'amountSumOut';
+}
+
 function AddSubTotalRow($index, $row, $subtotal)
 {
 	global $activeAccount, $now, $translator;
 
-	$tr = '<tr class="tableRow';
-	if ($row['marked_as_deleted']) $tr .= 'Deleted';
-	else if ($row['record_date'] > $now) $tr .= 'ToCome';
-	else if ($row['record_type'] == 2) $tr .= 'Remark';
-	echo $tr;
-
-	if ($index % 2 == 0) echo '0">'; else echo '1">';
-
-	echo '<td></td><td></td>';
-	echo '<td></td>';
-	echo '<td></td>';	
-	echo "<td></td>";
-
-	echo '<td style="text-align: right;">';
-	if ($row['record_type'] == 0 || $row['record_type'] == 3) echo '<font color="blue">';
-	else if ($row['record_type'] == 10) echo '<font color="DarkBlue">';
-	else if ($row['record_type'] == 20) echo '<font color="DarkRed">';
-	else echo '<font color="red">';
-
-	echo '<i>= '.$translator->getCurrencyValuePresentation($subtotal).'</i>';
-	echo '</font>';
-	echo '</td>';
-
-	echo '<td></td><td></td>';
-
-	echo '<td style="text-align: center;"><span class="ui-icon ui-icon-trash" onclick="if (confirm(\''.$translator->getTranslation('Etes-vous sûr de vouloir supprimer cette entrée ?').'\')) { DeleteRecord(\''.$row['record_id'].'\'); }"></span></td>';
-	echo '</tr>';
+?><tr class="<?php PrintTRClass($row, $index); ?>">
+<td></td><td></td><td></td><td></td><td></td>
+<td class="<?= PrintAmountSumClass($row) ?>">= <?= $translator->getCurrencyValuePresentation($subtotal) ?></td>
+<td></td><td></td>
+<td style="text-align: center;"><span class="ui-icon ui-icon-trash" onclick="if (confirm(\''.$translator->getTranslation('Etes-vous sûr de vouloir supprimer cette entrée ?').'\')) { DeleteRecord(\''.$row['record_id'].'\'); }"></span></td>
+</tr>
+<?php
 }
+
+// ------------------------------------------------------------------
 
 $index = 0;
 $previousRow = null;
@@ -205,7 +189,6 @@ while ($row = $result->fetch())
 			AddTitleRow();
 		}
 	}
-
 	AddRow($index, $row, $mergeRow);
 	$subTotal += $row['amount'];
 
@@ -225,45 +208,11 @@ while ($row = $result->fetch())
 <script type="text/javascript">
 
 $(function() {
-	var amount = $( "#amount" );
-	var designation = $( "#designation" );
-	var recordId = $( "#recordId" );
+	var newValue = $("#newValue");
+	var type = $("#type");
+	var recordId = $("#recordId");
 
-	$( "#dialog-form" ).dialog({
-	    autoOpen: false,
-	    height: 160,
-	    width: 350,
-	    modal: true,
-	    buttons: {
-	      "Modifier": function() {
-	    		$.post (
-	    				'../controller/controller.php?action=record_modify_amount',
-	    				{ recordId: recordId.val() , amount: amount.val() },
-	    				function(response, status) {
-	    					$( "#dialog-form" ).dialog( "close" );
-	    					LoadPage();
-						}
-	    			);
-				
-	      },
-	      Cancel: function() {
-	        $( this ).dialog( "close" );
-	      }
-	    },
-	    close: function() {
-	    }
-	  });
-
-	$("#dialog-form").keydown(function (event) {
-        if (event.keyCode == 13) {
-            $(this).parent()
-                   .find("button:eq(1)").trigger("click");
-            return false;
-        }
-    });
-
-
-	$( "#dialog-form-designation" ).dialog({
+	$( "#dialog-form-modifyValue" ).dialog({
 	    autoOpen: false,
 	    height: 160,
 	    width: 400,
@@ -271,10 +220,10 @@ $(function() {
 	    buttons: {
 	      "Modifier": function() {
 	    		$.post (
-	    				'../controller/controller.php?action=record_modify_designation',
-	    				{ recordId: recordId.val() , designation: designation.val() },
+	    				'../controller/controller.php?action=record_modify_' + type.val(),
+	    				{ recordId: recordId.val() , newValue: newValue.val() },
 	    				function(response, status) {
-	    					$( "#dialog-form-designation" ).dialog( "close" );
+	    					$( "#dialog-form-charge" ).dialog( "close" );
 	    					LoadPage();
 						}
 	    			);
@@ -288,7 +237,7 @@ $(function() {
 	    }
 	  });
 
-	$("#dialog-form-designation").keydown(function (event) {
+	$("#dialog-form-modifyValue").keydown(function (event) {
         if (event.keyCode == 13) {
             $(this).parent()
                    .find("button:eq(1)").trigger("click");
@@ -296,44 +245,44 @@ $(function() {
         }
     });
 
-	$( "#amount" ).focus(function() { $(this).select(); } );
-	$( "#designation" ).focus(function() { $(this).select(); } );
+	$( "#newValue" ).focus(function() { $(this).select(); } );
 });
 
 function ModifyRecord(recordIdToModify, amount, sender)
 {
-	$( "#recordId" ).val(recordIdToModify);
-	$( "#amount" ).val(amount);
-	$( "#dialog-form" ).dialog( "open" );
+	$("#recordId").val(recordIdToModify);
+	$("#newValue").val(amount);
+	$("#type").val("charge");
+	$("#dialog-form-modifyValue").dialog("open");
 }
 
 function ModifyRecordDesignation(recordIdToModify, designation, sender)
 {
-	$( "#recordId" ).val(recordIdToModify);
-	$( "#designation" ).val(designation);
-	$( "#dialog-form-designation" ).dialog( "open" );
+	$("#recordId").val(recordIdToModify);
+	$("#newValue").val(designation);
+	$("#type").val("charge");
+	$("#dialog-form-modifyValue").dialog("open");
+}
+
+function ModifyRecordCharge(recordIdToModify, charge, sender)
+{
+	$("#recordId").val(recordIdToModify);
+	$("#newValue").val(charge);
+	$("#type").val("charge");
+	$("#dialog-form-modifyValue").dialog("open");
 }
 
 LoadAccountStatusInPageRecord();
 
 </script>
 
-<div id="dialog-form" title="Modifier un montant">
+<div id="dialog-form-modifyValue" title="<?= $translator->getTranslation('Modifier') ?>">
   <form>
   <fieldset>
-    <label for="amount">Nouveau montant</label>
-    <input type="text" name="amount" autocomplete="off" id="amount" class="text ui-widget-content ui-corner-all">
+    <label for="charge">Nouvelle valeur</label>
+    <input type="text" name="newValue" autocomplete="off" id="newValue" class="text ui-widget-content ui-corner-all">
     <input type="hidden" name="recordId" id="recordId">
-    </fieldset>
-  </form>
-</div>
-
-<div id="dialog-form-designation" title="Modifier une désignation">
-  <form>
-  <fieldset>
-    <label for="designation">Nouvelle désignation</label>
-    <input type="text" name="designation" autocomplete="off" id="designation" class="text ui-widget-content ui-corner-all">
-    <input type="hidden" name="recordId" id="recordId">
-    </fieldset>
+    <input type="hidden" name="type" id="type">
+  </fieldset>
   </form>
 </div>

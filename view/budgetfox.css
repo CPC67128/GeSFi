@@ -152,7 +152,18 @@ small {
 
 #recordsTable td.amount {
 	text-align: right;
-} 
+}
+
+#recordsTable td.amountSumOut {
+	text-align: right;
+	color: red;
+	font-style: italic;
+}
+#recordsTable td.amountSumIn {
+	text-align: right;
+	color: blue;
+	font-style: italic;
+}
 
 .tableRowTitle    { font-style: italic }
 
@@ -232,3 +243,6 @@ h1 {
 	white-space: nowrap;
 }
 
+td left {
+	text-align: left;
+}

@@ -62,9 +62,12 @@ function PrintModifyRecordDesignationFunction($mergeRow, $row)
 
 function PrintConfirmedBox($mergeRow, $row, $activeAccount)
 {
-	if (!$mergeRow && !(empty($row['account_id']) || $activeAccount->get('recordConfirmation') != 1))
+	if (!$mergeRow)
 	{
-		?><input type="checkbox" <?= $row['confirmed'] == 1 ? 'checked' : '' ?> onclick="ConfirmRecord('<?= $row['record_id'] ?>', this);"></td><?php 
+		if (!empty($row['account_id']) && (isset($activeAccount) && $activeAccount->get('recordConfirmation') == 1))
+		{
+			?><input type="checkbox" <?= $row['confirmed'] == 1 ? 'checked' : '' ?> onclick="ConfirmRecord('<?= $row['record_id'] ?>', this);"></td><?php 
+		}
 	}
 }
 
@@ -125,7 +128,7 @@ function PrintModifyRecordChargeFunction($row)
 function PrintCharge($row)
 {
 	global $translator, $activeUser, $partnerUser;
-	if (isset($row['category']))
+	if (isset($row['category']) || (isset($row['category_id']) && substr($row['category_id'], 0, 5) == "USER/"))
 	{
 		?><img src='../media/information.png' title='<?= $activeUser->get('name')."=".$translator->getCurrencyValuePresentation($row['part_actor1'])." / ".$partnerUser->get('name')."=".$translator->getCurrencyValuePresentation($row['part_actor2']) ?>'> <?= $row['charge']?> %<?php
 	}
@@ -135,6 +138,7 @@ function AddRow($index, $row, $mergeRow)
 {
 	global $accountsHandler, $recordsHandler, $now, $translator, $activeUser, $partnerUser;
 
+	$activeAccount = '';
 	try {
 		if (!empty($row['account_id']))
 			$activeAccount = $accountsHandler->GetAccount($row['account_id']);

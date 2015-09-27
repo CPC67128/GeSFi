@@ -1,26 +1,26 @@
 <?php
 class RecordsHandler extends Handler
 {
-	function GetRecordTypeColours()
+	function GetRecordTypeGroups()
 	{
 		$types = array
 		(
-				0 => 'blue',
-				3 => 'blue',
-				10 => 'DarkBlue',
-				11 => 'DarkBlue',
-				12 => 'blue',
-				20 => 'DarkRed',
-				21 => 'DarkRed',
-				22 => 'red'
+				0 => 'In',
+				3 => 'In',
+				10 => 'TrIn',
+				11 => 'TrIn',
+				12 => 'In',
+				20 => 'TrOut',
+				21 => 'TrOut',
+				22 => 'Out'
 		);
 	
 		return $types;
 	}
 
-	function GetRecordTypeCoulour($recordType)
+	function GetRecordTypeGroup($recordType)
 	{
-		return $this->GetRecordTypeColours()[$recordType];
+		return $this->GetRecordTypeGroups()[$recordType];
 	}
 
 	function GetAllRecords($month)

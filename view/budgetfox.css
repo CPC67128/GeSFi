@@ -165,6 +165,34 @@ small {
 	font-style: italic;
 }
 
+#recordsTable td.amountOut {
+	text-align: right;
+	color: red;
+}
+#recordsTable td.amountIn {
+	text-align: right;
+	color: blue;
+}
+#recordsTable td.amountTrOut {
+	text-align: right;
+	color: darkred;
+}
+#recordsTable td.amountTrIn {
+	text-align: right;
+	color: darkblue;
+}
+
+#recordsTable td.categoryDUO {
+	color: MediumVioletRed;
+}
+#recordsTable td.categoryUSER {
+	color: DarkGreen;
+}
+// No category defined
+#recordsTable td.category {
+}
+
+
 .tableRowTitle    { font-style: italic }
 
 .tableRow0    { background-color: #eeeeff; }

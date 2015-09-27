@@ -48,7 +48,89 @@ function PrintTRClass($row, $index)
 
 	echo ($index % 2);
 }
+
+function PrintDate($mergeRow, $row)
+{
+	if (!$mergeRow && $row['record_date'] != 0)
+		echo $row['record_date'];
+}
+
+function PrintModifyRecordDesignationFunction($mergeRow, $row)
+{
+	?>ondblclick="ModifyRecordDesignation('<?= $row['record_id'] ?>', '<?= $row['designation'] ?>', this);"<?php
+}
+
+function PrintConfirmedBox($mergeRow, $row, $activeAccount)
+{
+	if (!$mergeRow && !(empty($row['account_id']) || $activeAccount->get('recordConfirmation') != 1))
+	{
+		?><input type="checkbox" <?= $row['confirmed'] == 1 ? 'checked' : '' ?> onclick="ConfirmRecord('<?= $row['record_id'] ?>', this);"></td><?php 
+	}
+}
+
+function PrintAmountClass($row, $index)
+{
+	global $now;
+
+	echo 'tableRow';
+
+	if ($row['marked_as_deleted'])
+		echo 'Deleted';
+	else if ($row['record_date'] > $now)
+		echo 'ToCome';
+	else if ($row['record_type'] == 2)
+		echo 'Remark';
+
+	echo ($index % 2);
+}
+
+function PrintModifyRecordAmountFunction($row)
+{
+	?>ondblclick="ModifyRecordAmount('<?= $row['record_id'] ?>', '<?= $row['amount'] ?>', this);"<?php
+}
+
+function PrintAmount($row)
+{
+	global $translator;
+	if ($row['record_type'] != 2)
+	{
+		echo $translator->getCurrencyValuePresentation($row['amount']);
+	}
+}
+
+function PrintCategory($row)
+{
+	global $usersHandler;
+
+	if (isset($row['category']))
+	{
+		echo $row['category'];
+	}
+	else if (isset($row['category_id']) && substr($row['category_id'], 0, 5) == "USER/")
+	{
+		$user = $usersHandler->GetUser(substr($row['category_id'], 5, 36));
 	
+		echo 'Non définie / '.$user->getName();
+	}
+}
+
+function PrintModifyRecordChargeFunction($row)
+{
+	if (isset($row['category']) || (isset($row['category_id']) && substr($row['category_id'], 0, 5) == "USER/"))
+	{
+		?> ondblclick="ModifyRecordCharge('<?= $row['record_id'] ?>', '<?= $row['charge'] ?>', this);"<?php
+	}
+}
+
+function PrintCharge($row)
+{
+	global $translator, $activeUser, $partnerUser;
+	if (isset($row['category']))
+	{
+		?><img src='../media/information.png' title='<?= $activeUser->get('name')."=".$translator->getCurrencyValuePresentation($row['part_actor1'])." / ".$partnerUser->get('name')."=".$translator->getCurrencyValuePresentation($row['part_actor2']) ?>'> <?= $row['charge']?> %<?php
+	}
+}
+
 function AddRow($index, $row, $mergeRow)
 {
 	global $accountsHandler, $recordsHandler, $now, $translator, $activeUser, $partnerUser;
@@ -59,62 +141,18 @@ function AddRow($index, $row, $mergeRow)
 	} catch (Exception $e) {
 
 	}
-
 ?>
+
 <tr class="<?php PrintTRClass($row, $index); ?>">
-
-<td><?= !$mergeRow && $row['record_date'] != 0 ? $row['record_date'] : '' ?></td>
-
-<td style="text-align: left;" ondblclick="ModifyRecordDesignation('<?= $row['record_id'] ?>', '<?= $row['designation'] ?>', this);">
-<?= !$mergeRow ? $row['designation'] : '' ?>
-</td>
-
-<td style="text-align: left;"><?= !$mergeRow ? $row['user_name'] : '' ?></td>
-
-<td style="text-align: left;"><?= !$mergeRow ? $row['account_name'] : '' ?></td>
-
-<td>
-<?php if (!$mergeRow && !(empty($row['account_id']) || $activeAccount->get('recordConfirmation') != 1)) { ?>
-<input type="checkbox" <?= $row['confirmed'] == 1 ? 'checked' : '' ?> onclick="ConfirmRecord('<?= $row['record_id'] ?>', this);"></td>
-<?php } ?>
-</td>
-
-<td style="text-align: right;" ondblclick="ModifyRecord('<?= $row['record_id'] ?>', '<?= $row['amount'] ?>', this);">
-<font color="<?= $recordsHandler->GetRecordTypeCoulour($row['record_type']) ?>">
-<?= $row['record_type'] != 2 ? $translator->getCurrencyValuePresentation($row['amount']) : '' ?>	
-</font>
-</td>
-
-<td>
-<font color='<?= $row['link_type'] == 'DUO' ? 'MediumVioletRed' : 'DarkGreen' ?>'>
-<?php
-if (isset($row['category']))
-{
-	echo $row['category'];
-}
-else if (isset($row['category_id']) && substr($row['category_id'], 0, 5) == "USER/")
-{
-	$usersHandler = new UsersHandler();
-	$user = $usersHandler->GetUser(substr($row['category_id'], 5, 36));
-
-	echo 'Non définie / '.$user->getName();
-}
-?>
-</font>
-</td>
-
-<td <?php
-if (isset($row['category']) || (isset($row['category_id']) && substr($row['category_id'], 0, 5) == "USER/"))
-{
-	?> ondblclick="ModifyRecordCharge('<?= $row['record_id'] ?>', '<?= $row['charge'] ?>', this);"<?php
-} ?>>
-
-<?php if (isset($row['category'])) { ?>
-<img src='../media/information.png' title='<?= $activeUser->get('name')."=".$translator->getCurrencyValuePresentation($row['part_actor1'])." / ".$partnerUser->get('name')."=".$translator->getCurrencyValuePresentation($row['part_actor2']) ?>'>
- <?= $row['charge']?> %<?php } ?>
-</td>
-
-<td style='text-align: center;'><span class='ui-icon ui-icon-trash' onclick='if (confirm(\"".$translator->getTranslation('Etes-vous sûr de vouloir supprimer cette entrée ?')."\")) { DeleteRecord(\"".$row['record_id']."\"); }'></span></td>
+<td><?php PrintDate($mergeRow, $row) ?></td>
+<td <?php PrintModifyRecordDesignationFunction($mergeRow, $row) ?>><?= !$mergeRow ? $row['designation'] : '' ?></td>
+<td><?= !$mergeRow ? $row['user_name'] : '' ?></td>
+<td><?= !$mergeRow ? $row['account_name'] : '' ?></td>
+<td><?php PrintConfirmedBox($mergeRow, $row, $activeAccount) ?></td>
+<td class="amount<?= $recordsHandler->GetRecordTypeGroup($row['record_type']) ?>" <?php PrintModifyRecordAmountFunction($row) ?>><?php PrintAmount($row) ?></td>
+<td class="category<?= $row['link_type'] ?>"><?php PrintCategory($row); ?></td>
+<td <?php PrintModifyRecordChargeFunction($row); ?>><?php PrintCharge($row); ?></td>
+<td style='text-align: center;'><span class='ui-icon ui-icon-trash' onclick='if (confirm("<?= $translator->getTranslation('Etes-vous sûr de vouloir supprimer cette entrée ?')?>")) { DeleteRecord("<?= $row['record_id']?>"); }'></span></td>
 </tr>
 	<?php
 }
@@ -248,27 +286,30 @@ $(function() {
 	$( "#newValue" ).focus(function() { $(this).select(); } );
 });
 
-function ModifyRecord(recordIdToModify, amount, sender)
+function ModifyRecordAmount(recordIdToModify, amount, sender)
 {
-	$("#recordId").val(recordIdToModify);
 	$("#newValue").val(amount);
 	$("#type").val("charge");
-	$("#dialog-form-modifyValue").dialog("open");
+	ModifyRecordOpen(recordIdToModify);
 }
 
 function ModifyRecordDesignation(recordIdToModify, designation, sender)
 {
-	$("#recordId").val(recordIdToModify);
 	$("#newValue").val(designation);
 	$("#type").val("charge");
-	$("#dialog-form-modifyValue").dialog("open");
+	ModifyRecordOpen(recordIdToModify);
 }
 
 function ModifyRecordCharge(recordIdToModify, charge, sender)
 {
-	$("#recordId").val(recordIdToModify);
 	$("#newValue").val(charge);
 	$("#type").val("charge");
+	ModifyRecordOpen(recordIdToModify);
+}
+
+function ModifyRecordOpen(recordIdToModify)
+{
+	$("#recordId").val(recordIdToModify);
 	$("#dialog-form-modifyValue").dialog("open");
 }
 

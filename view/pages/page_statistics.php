@@ -1,5 +1,5 @@
 <select name="ab" onchange="if (this.selectedIndex) displayStatisticsPage(this.options[this.selectedIndex].value);">
-    <option value="-1">--</option>
+    <option value="-1">-</option>
     <option value="statistics_window?3">Global, 3 mois glissants</option>
 	<option value="statistics_window?6">Global, 6 mois glissants</option>
     <option value="statistics_window?12">Global, 12 mois glissants</option>
@@ -22,7 +22,6 @@
 <div id="statisticsData"></div>
 
 <script type='text/javascript'>
-
 function displayStatisticsPage(statisticsContext)
 {
 	$('#statisticsData').html('<img src="../media/loading.gif" />');
@@ -36,21 +35,13 @@ function displayStatisticsPage(statisticsContext)
 		data = splits[1]; 
 
 	$.ajax({
-	    type : 'POST',
-	    url : 'page.php',
-	    data: {
-	        'page': page, 
-	        'data': data
-	    },
-	    dataType: 'html',
-	    success : function(data) {
-	        $('#statisticsData').html(data);
-	    }
+		type : 'POST',
+		url : 'page.php',
+		data: {'page': page, 'data': data},
+		dataType: 'html',
+		success : function(data) {
+			$('#statisticsData').html(data);
+		}
 	});
 }
 </script>
-
-<?php
-//include 'page_statistics_private.php';
-//include 'page_statistics_duo.php';
-?>

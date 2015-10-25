@@ -71,6 +71,7 @@ class InvestmentsRecordsHandler extends Handler
 		// Calculate
 		$amountAccumulated = 0;
 		$amountInvestedAccumulated = 0;
+		$incomeSum = 0;
 
 		$updateQueryString = "update {TABLEPREFIX}record
 			set
@@ -79,7 +80,8 @@ class InvestmentsRecordsHandler extends Handler
 			CALC_amount_invested_accumulated = %s,
 			CALC_gain = %s,
 			CALC_yield = %s,
-			CALC_yield_average = %s
+			CALC_yield_average = %s,
+			CALC_income_sum = %s
 			where record_id = '%s'";
 
 		unset($creationDate);
@@ -90,6 +92,7 @@ class InvestmentsRecordsHandler extends Handler
 
 			$amountAccumulated += ($record['record_type'] == 20 ? -1 : 1) * $record['amount'];
 			$amountInvestedAccumulated += ($record['record_type'] == 20 ? -1 : 1) * $record['amount_invested'];
+			$incomeSum += ($record['record_type'] == 40 ? $record['income'] : 0);
 			$daysSinceCreation = (int) (strtotime($record['record_date']) - strtotime($creationDate)) / 86400;
 
 			unset($gain);
@@ -126,6 +129,7 @@ class InvestmentsRecordsHandler extends Handler
 				isset($gain) ? $gain : 'null',
 				isset($yield) ? ($yield - 1) * 100 : 'null',
 				isset($yieldAverage) ? ($yieldAverage - 1) * 100 : 'null',
+				isset($incomeSum) ? $incomeSum : 'null',
 				$record['record_id']);
 			$db->Execute($query);
 		}

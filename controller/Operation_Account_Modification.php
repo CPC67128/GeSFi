@@ -16,6 +16,7 @@ class Operation_Account_Modification extends Operation_Account
 	protected $_minimumCheckPeriod;
 	protected $_recordConfirmation;
 	protected $_notDisplayedInMenu;
+	protected $_generateIncome;
 
 	protected $_delete;
 
@@ -32,6 +33,11 @@ class Operation_Account_Modification extends Operation_Account
 			$this->_notDisplayedInMenu = "1";
 		else
 			$this->_notDisplayedInMenu = "0";
+
+		if (!empty($this->_generateIncome))
+			$this->_generateIncome = "1";
+		else
+			$this->_generateIncome = "0";
 	}
 
 	public function Save()
@@ -50,7 +56,8 @@ class Operation_Account_Modification extends Operation_Account
 					$this->_sortOrder,
 					$this->_minimumCheckPeriod,
 					$this->_recordConfirmation,
-					$this->_notDisplayedInMenu);
+					$this->_notDisplayedInMenu,
+					$this->_generateIncome);
 		}
 		else
 		{
@@ -71,7 +78,8 @@ class Operation_Account_Modification extends Operation_Account
 							$this->_creationDate,
 							$this->_availabilityDate,
 							$this->_recordConfirmation,
-							$this->_notDisplayedInMenu);
+							$this->_notDisplayedInMenu,
+							$this->_generateIncome);
 			}
 			else
 			{

@@ -52,6 +52,26 @@ $accounts = $accountsHandler->GetAllPrivateInvestmentAccounts();
 $sumGlobal += $sum;
 $sum = 0;
 
+
+function PrintTDStyleAttributeForYield($value)
+{
+	if ($value < 0)
+		echo 'bgcolor="red"';
+}
+
+function PrintTDStyleAttributeForYieldAverage($value)
+{
+	if (strlen($value) == 0)
+		return;
+
+	if ($value < 0)
+		echo 'bgcolor="red"';
+	elseif ($value > 3)
+		echo 'bgcolor="lightgreen"';
+	elseif ($value < 1)
+		echo 'bgcolor="orange"';
+}
+
 foreach ($accounts as $account)
 {
 	global $sum;
@@ -70,9 +90,9 @@ foreach ($accounts as $account)
 					<td><?= $account->get('description') ?></td>
 					<td style='text-align: right;'><?= $openingDateToDisplay ? $openingYear : '' ?></td>
 					<td style='text-align: right;'
-						<?= $account->GetInvestmentLastYield() < 0 ? 'bgcolor="red"' : '' ?>><?= $translator->getPercentagePresentation($account->GetInvestmentLastYield()) ?></td>
+						<?php PrintTDStyleAttributeForYield($account->GetInvestmentLastYield()) ?>><?= $translator->getPercentagePresentation($account->GetInvestmentLastYield()) ?></td>
 					<td style='text-align: right;'
-						<?= $account->GetInvestmentLastYieldAverage() < 0 ? 'bgcolor="red"' : '' ?>><?= $translator->getPercentagePresentation($account->GetInvestmentLastYieldAverage()) ?></td>
+						<?php PrintTDStyleAttributeForYieldAverage($account->GetInvestmentLastYieldAverage()) ?>><?= $translator->getPercentagePresentation($account->GetInvestmentLastYieldAverage()) ?></td>
 					<td style='text-align: right;'><?= $availabilityDateToDisplay ? $availabilityYear : '' ?></td>
 				</tr>
 <?php

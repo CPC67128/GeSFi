@@ -1,67 +1,75 @@
-<?php
-$translator = new Translator();
-?>
 <div id='formPlaceHolder'>
 <form action="/" id="form">
 <?php
-if ($_POST['accountId'] == 'AddAccount')
+$account = null;
+$selectedTypeDescription = '';
+if ($_POST['accountId'] != 'AddAccount')
 {
+	$account = $accountsHandler->GetAccount($_POST['accountId']);
+	$selectedTypeDescription = $account->getTypeDescription();
+}
+
+function IfNullReturnEmptyString($account, $attribute)
+{
+	if (is_null($account))
+		return '';
+	return $account->get($attribute);
+}
+
+function IfNullReturnDefault($account, $attribute, $default)
+{
+	if (is_null($account))
+		return $default;
+	return $account->get($attribute);
+}
 ?>
-<?= $translator->getTranslation('Identifiant') ?> <input name='accountId' type='text' size='41' style='background-color : #d1d1d1;' readonly="readonly" value="" /><br />
-<?= $translator->getTranslation('Nom') ?> <input name='name' type='text' size='41' value="" /><br /> 
-<?= $translator->getTranslation('Description') ?> <input name='description' type='text' size='41' value="" /><br /> 
-<?= $translator->getTranslation('Information') ?> <input name='information' type='text' size='41' value="" /><br /> 
-<?= $translator->getTranslation('Type') ?> <select name="type">
+
+<?= $translator->getTranslation('Identifiant') ?> <input name='accountId' type='text' size='41' style='background-color : #d1d1d1;' readonly="readonly" value="<?= IfNullReturnEmptyString($account, 'accountId') ?>" /><br />
+<?= $translator->getTranslation('Nom') ?> <input type='text' name='name' size='41' value="<?= IfNullReturnEmptyString($account, 'name') ?>" /><br />
+
+<?= $translator->getTranslation('Description') ?> <input name='description' type='text' size='41' value="<?= IfNullReturnEmptyString($account, 'description') ?>" /><br /> 
+<?= $translator->getTranslation('Information') ?> <input name='information' type='text' size='41' value="<?= IfNullReturnEmptyString($account, 'information') ?>" /><br />
+
+
+<?= $translator->getTranslation('Type') ?> <select name="type" <?= strlen($selectedTypeDescription) > 0 ? 'style="background-color : #d1d1d1;"  disabled="true"' : '' ?>>
 <?php
-$accountsHandler = new AccountsHandler();
 $types = $accountsHandler->GetAccountTypes();
 foreach ($types as $key => $value)
 {
-	?><option value="<?= $key ?>"><?=  $value ?></option><?php
+	?><option value="<?= $key ?>" <?= $value == $selectedTypeDescription ? 'selected' : '' ?>><?= $value ?></option><?php
 }
 ?>
 </select><br />
-<?= $translator->getTranslation('Titulaire') ?> <input name='owner' type='text' size='41' style='background-color : #d1d1d1;' readonly="readonly" value="<?= $_SESSION['user_id'] ?>" /> <i>(vous-même)</i><br />
-<?= $translator->getTranslation('Co-titulaire') ?> <input name='coowner' type='text' size='41' /> <i>(l'identifiant de votre partenaire)</i><br />
-<?= $translator->getTranslation('Solde initial') ?> <input name='openingBalance' type='text' size='7' value="0.00" /><?= $translator->getCurrencyPresentation() ?><br />
-<?= $translator->getTranslation('Solde minimum') ?> <input name='expectedMinimumBalance' type='text' size='7' value="0.00" /><?= $translator->getCurrencyPresentation() ?><br />
-<?= $translator->getTranslation('Date de creation') ?> <input title="aaaa-mm-jj" size="10" class="datePicker" name="creationDate" value="<?php echo date("Y-m-d") ?>"><br/>
 
-<?= $translator->getTranslation('Date de disponibilité') ?> <input title="aaaa-mm-jj" size="10" class="datePicker" name="availabilityDate"><br/>
-<?= $translator->getTranslation('Date de clôture') ?> <input title="aaaa-mm-jj" size="10" class="datePicker" name="closingDate"><br/>
-<?= $translator->getTranslation('Période de vérification minimale') ?> <input name="minimumCheckPeriod" type="text" size="4" value="30"><br/>
-<?= $translator->getTranslation('Ordre') ?> <input name='sortOrder' type='text' size='5' /><br />
-<?= $translator->getTranslation('Confirmation des lignes') ?> <input name='recordConfirmation' type='checkbox' /> <i><?= $translator->getTranslation('(Les lignes doivent être confirmées pour être prises en comptes)') ?></i><br />
-<?= $translator->getTranslation('Ne pas afficher dans le menu') ?> <input name='notDisplayedInMenu' type='checkbox' /> <i><?= $translator->getTranslation('') ?></i><br /><br />
-<?php
-}
-else
-{
-	$accountsHandler = new AccountsHandler();
-	$account = $accountsHandler->GetAccount($_POST['accountId']);
-?>
-<?= $translator->getTranslation('Identifiant') ?> <input type='text' name='accountId' size='41' style='background-color : #d1d1d1;' readonly="readonly" value="<?= $account->get('accountId') ?>" /><br /> 
-<?= $translator->getTranslation('Nom') ?> <input type='text' name='name' size='41' value="<?= $account->get('name') ?>" /><br />
-<?= $translator->getTranslation('Description') ?> <input name='description' type='text' size='41' value="<?= $account->get('description') ?>" /><br /> 
-<?= $translator->getTranslation('Information') ?> <input name='information' type='text' size='41' value="<?= $account->get('information') ?>" /><br /> 
-<?= $translator->getTranslation('Type') ?> <input name="typeDescription" type='text' size='41' style='background-color : #d1d1d1;' readonly="readonly" value="<?= $account->getTypeDescription() ?>" /><br />
-<?= $translator->getTranslation('Titulaire') ?> <input name='owner' type='text' size='41' style='background-color : #d1d1d1;' readonly="readonly" value="<?= $account->get('ownerUserId') ?>" /> / <input type='text' size='40' style='background-color : #d1d1d1;' readonly="readonly" value="<?= $account->GetOwnerName() ?>" /><br />
-<?= $translator->getTranslation('Co-titulaire') ?> <input name='coowner' type='text' size='41' style='background-color : #d1d1d1;' readonly="readonly" value="<?= $account->get('coownerUserId') ?>" /> / <input type='text' size='40' style='background-color : #d1d1d1;' readonly="readonly" value="<?= $account->GetCoownerName() ?>" /><br />
-<?= $translator->getTranslation('Date de création') ?> <input type='text' size='41' style='background-color : #d1d1d1;' readonly="readonly" value="<?= $account->get('creationDate') ?>" /><br />
-<?= $translator->getTranslation('Solde initial') ?> <input name='openingBalance' type='text' size='7' value="<?= $account->get('openingBalance') ?>" /><?= $translator->getCurrencyPresentation() ?><br />
-<?= $translator->getTranslation('Solde minimum') ?> <input name='expectedMinimumBalance' type='text' size='7' value="<?= $account->get('expectedMinimumBalance') ?>" /><?= $translator->getCurrencyPresentation() ?><br />
-<?= $translator->getTranslation('Date de creation') ?> <input title="aaaa-mm-jj" size="10" class="datePicker" name="creationDate" value="<?php echo $account->get('creationDate') ?>"><br/>
-<?= $translator->getTranslation('Date de disponibilité') ?> <input title="aaaa-mm-jj" size="10" class="datePicker" name="availabilityDate" value="<?php echo $account->get('availabilityDate') ?>"><br/>
-<?= $translator->getTranslation('Date de clôture') ?> <input title="aaaa-mm-jj" size="10" class="datePicker" name="closingDate" value="<?php echo $account->get('closingDate') ?>"><br/>
-<?= $translator->getTranslation('Période de vérification minimale') ?> <input name="minimumCheckPeriod" type="text" size="4" value="<?php echo $account->get('minimumCheckPeriod') ?>"><br/>
-<?= $translator->getTranslation('Ordre') ?> <input name='sortOrder' type='text' size='5' value="<?= $account->getIfSetOrDefault('sortOrder', 0) ?>" /><br />
-<?= $translator->getTranslation('Confirmation des lignes') ?> <input name='recordConfirmation' type='checkbox' <?= $account->get('recordConfirmation') == "1" ? 'checked' : '' ?> /> <i><?= $translator->getTranslation('(Les lignes doivent être confirmées pour être prises en comptes)') ?></i><br />
-<?= $translator->getTranslation('Ne pas afficher dans le menu') ?> <input name='notDisplayedInMenu' type='checkbox' <?= $account->get('notDisplayedInMenu') == "1" ? 'checked' : '' ?> /> <i><?= $translator->getTranslation('') ?></i><br /><br />
-<br />
+<?= $translator->getTranslation('Titulaire') ?> <input name='owner' type='text' size='41' style='background-color : #d1d1d1;' readonly="readonly" value="<?= is_null($account) ? $_SESSION['user_id'] : $account->get('ownerUserId') ?>" />
+<?php if (!is_null($account)) { ?>
+ / <input type='text' size='40' style='background-color : #d1d1d1;' readonly="readonly" value="<?= $account->GetOwnerName() ?>" />
+<?php } else  { ?>
+ <i>(vous-même)</i>
+<?php } ?><br />
+<?= $translator->getTranslation('Co-titulaire') ?> <input name='coowner' type='text' size='41' <?= is_null($account) ? '' : 'style="background-color : #d1d1d1;" readonly="readonly"' ?> value="<?= IfNullReturnEmptyString($account, 'coownerUserId') ?>" />
+<?php if (!is_null($account)) { ?>
+ / <input type='text' size='40' style='background-color : #d1d1d1;' readonly="readonly" value="<?= $account->GetCoownerName() ?>" />
+<?php } else  { ?>
+ <i>(l'identifiant de votre partenaire)</i>
+<?php } ?><br />
+
+<?= $translator->getTranslation('Solde initial') ?> <input name='openingBalance' type='text' size='7' value="<?= IfNullReturnDefault($account, 'openingBalance', '0.00') ?>" /><?= $translator->getCurrencyPresentation() ?><br />
+<?= $translator->getTranslation('Solde minimum') ?> <input name='expectedMinimumBalance' type='text' size='7' value="<?= IfNullReturnDefault($account, 'expectedMinimumBalance', '0.00') ?>" /><?= $translator->getCurrencyPresentation() ?><br />
+<?= $translator->getTranslation('Date de creation') ?> <input title="aaaa-mm-jj" size="10" class="datePicker" name="creationDate" value="<?= IfNullReturnDefault($account, 'creationDate', date("Y-m-d")) ?>"><br/>
+<?= $translator->getTranslation('Date de disponibilité') ?> <input title="aaaa-mm-jj" size="10" class="datePicker" name="availabilityDate" value="<?= IfNullReturnEmptyString($account, 'availabilityDate') ?>"><br/>
+<?= $translator->getTranslation('Date de clôture') ?> <input title="aaaa-mm-jj" size="10" class="datePicker" name="closingDate" value="<?= IfNullReturnEmptyString($account, 'closingDate') ?>"><br/>
+<?= $translator->getTranslation('Période de vérification minimale') ?> <input name="minimumCheckPeriod" type="text" size="4" value="<?= IfNullReturnDefault($account, 'minimumCheckPeriod', '30') ?>"><br/>
+<?= $translator->getTranslation('Ordre') ?> <input name='sortOrder' type='text' size='5' value="<?= is_null($account) ? '' : $account->getIfSetOrDefault('sortOrder', 0) ?>" /><br />
+<?= $translator->getTranslation('Confirmation des lignes') ?> <input name='recordConfirmation' type='checkbox' <?= is_null($account) ? '' : ($account->get('recordConfirmation') == "1" ? 'checked' : '') ?> /> <i><?= $translator->getTranslation('(Les lignes doivent être confirmées pour être prises en comptes)') ?></i><br />
+<?= $translator->getTranslation('Ne pas afficher dans le menu') ?> <input name='notDisplayedInMenu' type='checkbox' <?= is_null($account) ? '' : ($account->get('notDisplayedInMenu') == "1" ? 'checked' : '') ?> /> <i><?= $translator->getTranslation('') ?></i><br /><br />
+<?= $translator->getTranslation('Peut générer des revenus') ?> <input name='generateIncome' type='checkbox' <?= is_null($account) ? '' : ($account->get('generateIncome') == "1" ? 'checked' : '') ?> /> <i><?= $translator->getTranslation('') ?></i><br /><br />
+
+<?php if (!is_null($account)) { ?>
 <font color='red'><?= $translator->getTranslation('Supprimer') ?> <input name='delete' type='checkbox' /></font> <i>Cocher pour clôturer le compte</i><br /><br />
-<?php
-}
-?>
+<?php } ?>
+
+
 <input type="submit" id='submitForm' value="Envoyer" />
 </div>
 <div id='formResult'></div>

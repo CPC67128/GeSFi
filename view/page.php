@@ -101,6 +101,7 @@ switch ($pageName)
 	case 'investment_record_value':
 	case 'investment_record_deposit';
 	case 'investment_record_withdrawal';
+	case 'investment_record_income';
 	case 'investment_record_remark';
 		include 'pages/page_'.$pageName.'.php';
 		AddFormManagementEnd($pageName);

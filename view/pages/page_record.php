@@ -293,21 +293,21 @@ $(function() {
 function ModifyRecordAmount(recordIdToModify, amount, sender)
 {
 	$("#newValue").val(amount);
-	$("#type").val("charge");
+	$("#type").val("Amount");
 	ModifyRecordOpen(recordIdToModify);
 }
 
 function ModifyRecordDesignation(recordIdToModify, designation, sender)
 {
 	$("#newValue").val(designation);
-	$("#type").val("charge");
+	$("#type").val("Designation");
 	ModifyRecordOpen(recordIdToModify);
 }
 
 function ModifyRecordCharge(recordIdToModify, charge, sender)
 {
 	$("#newValue").val(charge);
-	$("#type").val("charge");
+	$("#type").val("Charge");
 	ModifyRecordOpen(recordIdToModify);
 }
 

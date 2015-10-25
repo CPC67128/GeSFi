@@ -300,13 +300,14 @@ class DB
 									$payment,
 									$paymentInvested,
 									$value,
-									$recordType)
+									$recordType,
+									$income)
 	{
 		if ($this->_isReadOnly)
 			return 0;
 	
-		$query = sprintf("insert into ".$this->_dbTablePrefix."record (account_id, record_group_id, record_date, designation, amount, amount_invested, value, record_id, record_type)
-				values ('%s', '%s', '%s', '%s', %s, %s, %s, uuid(), %s)",
+		$query = sprintf("insert into ".$this->_dbTablePrefix."record (account_id, record_group_id, record_date, designation, amount, amount_invested, value, record_id, record_type, income)
+				values ('%s', '%s', '%s', '%s', %s, %s, %s, uuid(), %s, %s)",
 				$accountId,
 				$recordGroupId == null ? "" : $recordGroupId,
 				$recordDate,
@@ -314,7 +315,8 @@ class DB
 				$payment == null ? "null" : $payment,
 				$paymentInvested == null ? "null" : $paymentInvested,
 				$value == null ? "null" : $value,
-				$recordType == null ? "0" : $recordType);
+				$recordType == null ? "0" : $recordType,
+				$income == null ? "null" : $income);
 		//throw new Exception($query);
 	
 		$result = $this->_connection->exec($query);
@@ -331,7 +333,8 @@ class DB
 											 null,
 											 null,
 											 null,
-											 2);
+											 2,
+											 null);
 	}
 	
 	function InsertInvestmentRecord_Income($accountId, $recordGroupId, $recordDate, $designation, $payment, $paymentInvested)
@@ -343,7 +346,8 @@ class DB
 											 $payment,
 											 $paymentInvested,
 											 null,
-											 10);
+											 10,
+											 null);
 	}
 
 	function InsertInvestmentRecord_Outcome($accountId, $recordGroupId, $recordDate, $designation, $payment, $paymentInvested)
@@ -355,7 +359,8 @@ class DB
 											 $payment,
 											 $paymentInvested,
 											 null,
-											 20);
+											 20,
+											 null);
 	}
 
 	function InsertInvestmentRecord_Value($accountId, $recordDate, $designation, $value)
@@ -367,9 +372,23 @@ class DB
 											 null,
 											 null,
 											 $value,
-											 30);
+											 30,
+											 null);
 	}
-	
+
+	function InsertInvestmentRecord_IncomeSpecial($accountId, $recordGroupId, $recordDate, $designation, $income)
+	{
+		return $this->InsertInvestmentRecord($accountId,
+											$recordGroupId,
+											$recordDate,
+											$designation,
+											null,
+											null,
+											null,
+											40,
+											$income);
+	}
+
 	function DeleteInvestmentRecord($recordId)
 	{
 		if ($this->_isReadOnly)

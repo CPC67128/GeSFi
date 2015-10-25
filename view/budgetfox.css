@@ -8,7 +8,7 @@ small {
 }
 
 .topMenu  {
-	background-color: #000000;
+	background-color: #E0E0E0;
 	height: 17px;
  	width: 100%;
  	position: fixed;
@@ -16,13 +16,12 @@ small {
  	top: 0px;
  	padding-top: 5px;
  	font-size: 0.85em;
-	color: #ffffff;
-	border-right: dotted;
+	color: #000000;
 	z-index: 2;
 }
 
 .topSecondLineMenu  {
-	background-color: #333333;
+	background-color: #EEEEEE;
 	height: 17px;
  	width: 100%;
  	position: fixed;
@@ -30,17 +29,28 @@ small {
  	top: 22px;
  	padding-top: 3px;
  	font-size: 0.85em;
-	color: #ffffff;
-	border-right: dotted;
+	color: #000000;
+	border-bottom: dotted 1px;
 	z-index: 2;
 }
 
 .topMenu a {
-	color: #ffffff;
+	color: #000000;
+	text-decoration: none;
+}
+
+.topMenu a:hover {
+	color: #000000;
+	text-decoration: underline;
 }
 
 .topSecondLineMenu a {
-	color: #ffffff;
+	color: #000000;
+	text-decoration: none;
+}
+.topSecondLineMenu a:hover {
+	color: #000000;
+	text-decoration: underline;
 }
 
 .leftMenu {
@@ -52,7 +62,7 @@ small {
  	top: 45px;
  	padding-top: 5px;
  	font-size: 0.85em;
- 	border-right: dotted;
+ 	border-right: dotted 1px;
  	z-index: 1;
 }
 

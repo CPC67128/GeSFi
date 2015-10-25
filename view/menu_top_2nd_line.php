@@ -14,5 +14,5 @@ foreach ($accounts as $account)
 	$isAccountSelected = $account->get('accountId') == $id;
 	$isLastItem = $lastItem->get('accountId') == $account->get('accountId');
 
-	AddMenuTopItem(!$isAccountSelected, $account->get('name'), 'record', 'investment', $account->get('accountId'), '', !$isLastItem);
+	AddMenuTopItem(!$isAccountSelected, $account->get('name'), 'investment_record', 'investment', $account->get('accountId'), '', !$isLastItem);
 }

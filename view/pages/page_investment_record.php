@@ -15,24 +15,29 @@ $creationDate = $activeAccount->get('creationDate');
 // ------ Display a title row
 function AddTitleRow()
 {
-	global $translator, $activeInvestment, $accountType;
+	global $translator, $activeInvestment, $accountType, $activeAccount;
 	?>
-	<tr class="tableRowTitle">
-	<td style="vertical-align: top; text-align: center; font-style: italic;"><?= $translator->getTranslation('Date') ?></td>
-	<td style="vertical-align: top; text-align: center; font-style: italic;"><?= $translator->getTranslation('J') ?></td>
-	<td style="vertical-align: top; text-align: center; font-style: italic;"><?= $translator->getTranslation('Désignation') ?></td>
+	<tr class="titleRow">
+	<td><?= $translator->getTranslation('Date') ?></td>
+	<td><?= $translator->getTranslation('J') ?></td>
+	<td><?= $translator->getTranslation('Désignation') ?></td>
 
 	<?php if ($accountType != 12) { ?>
-	<td style="text-align: right;"><?= $translator->getTranslation('Versement') ?><br /><i><small>(&sum;) <?= $translator->getTranslation('Cumul') ?></small></i></td>
-	<td style="text-align: right;"><?= $translator->getTranslation('Versement effectif') ?><br /><i><small>(&sum;) <?= $translator->getTranslation('Cumul') ?></small></i></td>
+	<td><?= $translator->getTranslation('Versement') ?><br /><i><small>(&sum;) <?= $translator->getTranslation('Cumul') ?></small></i></td>
+	<td><?= $translator->getTranslation('Versement effectif') ?><br /><i><small>(&sum;) <?= $translator->getTranslation('Cumul') ?></small></i></td>
 	<!-- <td style="vertical-align: top; text-align: center; font-style: italic;"><?= $translator->getTranslation('Frais') ?></td> -->
 	<?php } ?>
-	<td style="vertical-align: top; text-align: center; font-style: italic;"><?= $translator->getTranslation('Valorisation') ?></td>
+	<td><?= $translator->getTranslation('Valorisation') ?></td>
 	<?php if ($accountType != 12) { ?>
-	<td style="vertical-align: top; text-align: center; font-style: italic;"><?= $translator->getTranslation('Rendement') ?></td>
-	<td style="vertical-align: top; text-align: center; font-style: italic;"><?= $translator->getTranslation('Rendement annuel') ?></td>
+	<td><?= $translator->getTranslation('Rendement') ?></td>
+	<td><?= $translator->getTranslation('Rendement annuel') ?></td>
 	<?php } ?>
-	<td style="vertical-align: top; text-align: center; font-style: italic;"></td>
+
+	<?php if ($activeAccount->get('generateIncome') == 1) {?>
+	<td><?= $translator->getTranslation('Revenu') ?></td>
+	<?php } ?>
+
+	<td></td>
 	</tr>
 	<?php
 }
@@ -42,7 +47,7 @@ function AddRow($index, $row)
 {
 	global $activeInvestment, $now, $translator, $lastKnownValue;
 	global $paymentAccumulated, $paymentInvestedAccumulated;
-	global $creationDate, $accountType;
+	global $creationDate, $accountType, $activeAccount;
 
 	$tr = '<tr class="tableRow';
 	if ($row['record_type'] == 2) $tr .= 'Remark';
@@ -69,8 +74,13 @@ function AddRow($index, $row)
 	}
 
 	// Trash bin
-	echo "<td style='text-align: center;'><span class='ui-icon ui-icon-trash' onclick='if (confirm(\"".$translator->getTranslation('Etes-vous sûr de vouloir supprimer cette entrée ?')."\")) { DeleteRecordInvestment(\"".$row['record_id']."\"); }'></span></td>";
 
+	?>
+	<?php if ($activeAccount->get('generateIncome') == 1) {?>
+	<td><?php if (!empty($row['income'])) { ?><?= $translator->getCurrencyValuePresentation($row['income']) ?><br /><i><small>(&sum;) <?= $translator->getCurrencyValuePresentation($row['CALC_income_sum'])?></small></i><?php } ?></td>
+	<?php } ?>
+	<td style='text-align: center;'><span class='ui-icon ui-icon-trash' onclick='if (confirm("<?= $translator->getTranslation('Etes-vous sûr de vouloir supprimer cette entrée ?') ?>")) { DeleteRecordInvestment("<?= $row['record_id'] ?>"); }'></span></td>
+	<?php 
 	echo '</tr>';
 }
 

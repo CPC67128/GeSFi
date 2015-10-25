@@ -1,45 +1,47 @@
 <?php
 include 'menu.php';
 
-//$account = $accountsHandler->GetCurrentActiveAccount();
-
 if ($area == 'administration')
 {
-	AddMenuLeftItem("administration_connection", "connectionMenuIcon.jpg", $translator->getTranslation("Connections"));
-	AddMenuLeftItem("administration_accounts", "accountsMenuIcon.png", $translator->getTranslation("Comptes"));
-	AddMenuLeftItem("administration_category", "categoriesMenuIcon.jpg", $translator->getTranslation("Catégories"));
-	AddMenuLeftItem("administration_designation", "designationMenuIcon.png", $translator->getTranslation("Désignation"));
-	AddMenuLeftItem("administration_user", "userMenuIcon.png", $translator->getTranslation("Utilisateur"));
+	AddMenuLeftItem("administration_connection");
+	AddMenuLeftItem("administration_accounts");
+	AddMenuLeftItem("administration_category");
+	AddMenuLeftItem("administration_designation");
+	AddMenuLeftItem("administration_user");
 }
 else if ($area == 'investment' && $id == '')
 {
-	AddMenuLeftItem("investment_record_dashboard", "assetManagementMenuIcon.png", $translator->getTranslation("Situation"));
-	AddMenuLeftItem("investment_record_dashboard_statistics", "statsMenuIcon.png", $translator->getTranslation("Graphiques"));
+	AddMenuLeftItem("investment_record_dashboard");
+	AddMenuLeftItem("investment_record_dashboard_statistics");
 }
 else if ($area == 'investment')
 {
-	AddMenuLeftItem("investment_record", "recordsMenuIcon.png", $translator->getTranslation("Lignes"));
-	AddMenuLeftItem("investment_record_value", "valueMenuIcon.gif", $translator->getTranslation("Valorisation"));
-	AddMenuLeftItem("investment_record_deposit", "depositMenuIcon.gif", $translator->getTranslation("Dépôt"));
-	AddMenuLeftItem("investment_record_withdrawal", "paymentMenuIcon.png", $translator->getTranslation("Retrait"));
-	AddMenuLeftItem("investment_record_remark", "remarkMenuIcon.png", $translator->getTranslation("Remarque"));
-	AddMenuLeftItem("investment_record_statistics", "statsMenuIcon.png", $translator->getTranslation("Statistiques"));
+	$account = $accountsHandler->GetCurrentActiveAccount();
+
+	AddMenuLeftItem("investment_record");
+	AddMenuLeftItem("investment_record_value");
+	AddMenuLeftItem("investment_record_deposit");
+	AddMenuLeftItem("investment_record_withdrawal");
+	if ($account->get('generateIncome'))
+		AddMenuLeftItem("investment_record_income");
+	AddMenuLeftItem("investment_record_remark");
+	AddMenuLeftItem("investment_record_statistics");
 }
 else
 {
-	if ($id == '')
-		AddMenuLeftItem("record", "recordsMenuIcon.png", $translator->getTranslation("Situation"));
-	else
-		AddMenuLeftItem("record", "recordsMenuIcon.png", $translator->getTranslation("Lignes"));
-
-	AddMenuLeftItem("record_payment", "paymentMenuIcon.png", $translator->getTranslation("Dépense"));
-	AddMenuLeftItem("record_deposit", "depositMenuIcon.gif", $translator->getTranslation("Revenu"));
-	AddMenuLeftItem("record_transfer", "transferMenuIcon.png", $translator->getTranslation("Virement"));
-	AddMenuLeftItem("record_remark", "remarkMenuIcon.png", $translator->getTranslation("Remarque"));
-	AddMenuLeftItem("record_balance", "balanceMenuIcon.png", $translator->getTranslation("Balance"));
-	AddMenuLeftItem("statistics", "statsMenuIcon.png", $translator->getTranslation("Statistiques"));
+	AddMenuLeftItem("record");
+	AddMenuLeftItem("record_payment");
+	AddMenuLeftItem("record_deposit");
+	AddMenuLeftItem("record_transfer");
+	AddMenuLeftItem("record_remark");
+	AddMenuLeftItem("record_balance");
+	AddMenuLeftItem("statistics");
 }
 ?>
+<i>BudgetFox
+<br />
+v. 15.10.25</i>
+<br />
 <a href="../view/copyright.htm">Copyright</a>
 <br />
 <a href="#" onClick="LogoutUser(); return false;">Déconnection</a>

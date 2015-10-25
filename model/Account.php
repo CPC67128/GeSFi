@@ -16,6 +16,7 @@ class Account extends Entity
 	protected $_minimumCheckPeriod;
 	protected $_markedAsClosed;
 	protected $_notDisplayedInMenu;
+	protected $_generateIncome;
 	protected $_calcBalance;
 	protected $_calcBalanceConfirmed;
 

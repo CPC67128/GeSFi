@@ -89,6 +89,32 @@ class AccountsHandler extends Handler
 		return $accounts;
 	}
 
+	function GetAllInvestmentAccountsWhichGenerateIncome()
+	{
+		$accounts = array();
+
+		$db = new DB();
+	
+		$query = 'select ACC.*, PRF.sort_order
+			from {TABLEPREFIX}account as ACC
+			left join {TABLEPREFIX}account_user_preference as PRF on ACC.account_id = PRF.account_id and PRF.user_id = \'{USERID}\' 
+			where (ACC.owner_user_id = \'{USERID}\'
+			or ACC.coowner_user_id = \'{USERID}\')
+			and ACC.type >= 10 and ACC.type <= 19
+			and marked_as_closed = 0
+			and generate_income = 1
+			order by PRF.sort_order';
+		$result = $db->Select($query);
+		while ($row = $result->fetch())
+		{
+			$newAccount = new Account();
+			$newAccount->hydrate($row);
+			array_push($accounts, $newAccount);
+		}
+
+		return $accounts;
+	}
+
 	function GetAllInvestmentAccountsToDisplayInMenu()
 	{
 		$accounts = array();
@@ -358,7 +384,8 @@ class AccountsHandler extends Handler
 		return $newAccount;
 	}
 
-	function InsertAccount($name, $owner, $coowner, $type, $openingBalance, $expectedMinimumBalance, $sortOrder, $minimumCheckPeriod, $recordConfirmation, $notDisplayedInMenu)
+	/***** Insert *****/
+	function InsertAccount($name, $owner, $coowner, $type, $openingBalance, $expectedMinimumBalance, $sortOrder, $minimumCheckPeriod, $recordConfirmation, $notDisplayedInMenu, $generateIncome)
 	{
 		$db = new DB();
 
@@ -372,8 +399,8 @@ class AccountsHandler extends Handler
 		if (!empty($row['max_order']))
 			$tempSortOrder = $row['max_order'];
 		
-		$query = sprintf("insert into {TABLEPREFIX}account (account_id, name, type, owner_user_id, coowner_user_id, opening_balance, expected_minimum_balance, minimum_check_period, creation_date, record_confirmation, not_displayed_in_menu)
-				values ('%s', '%s', %s, '%s', '%s', %s, %s, %s, CURRENT_TIMESTAMP(), %s, %s)",
+		$query = sprintf("insert into {TABLEPREFIX}account (account_id, name, type, owner_user_id, coowner_user_id, opening_balance, expected_minimum_balance, minimum_check_period, creation_date, record_confirmation, not_displayed_in_menu, generate_income)
+				values ('%s', '%s', %s, '%s', '%s', %s, %s, %s, CURRENT_TIMESTAMP(), %s, %s, %s)",
 				$uuid,
 				$name,
 				$type,
@@ -383,7 +410,8 @@ class AccountsHandler extends Handler
 				$expectedMinimumBalance,
 				$minimumCheckPeriod,
 				$recordConfirmation,
-				$notDisplayedInMenu);
+				$notDisplayedInMenu,
+				$generateIncome);
 		$result = $db->Execute($query);
 
 		$query = sprintf("insert into {TABLEPREFIX}account_user_preference (user_id, account_id, sort_order)
@@ -400,6 +428,7 @@ class AccountsHandler extends Handler
 		return $result;
 	}
 
+	/***** Delete *****/
 	function DeleteAccount($accountId)
 	{
 		$db = new DB();
@@ -415,11 +444,12 @@ class AccountsHandler extends Handler
 		return $result;
 	}
 
-	function UpdateAccount($accountId, $name, $description, $openingBalance, $expectedMinimumBalance, $sortOrder, $minimumCheckPeriod, $creationDate, $availabilityDate, $recordConfirmation, $notDisplayedInMenu)
+	/***** Update *****/
+	function UpdateAccount($accountId, $name, $description, $openingBalance, $expectedMinimumBalance, $sortOrder, $minimumCheckPeriod, $creationDate, $availabilityDate, $recordConfirmation, $notDisplayedInMenu, $generateIncome)
 	{
 		$db = new DB();
 
-		$query = sprintf("update {TABLEPREFIX}account set name = '%s', description='%s', opening_balance = %s, expected_minimum_balance = %s, minimum_check_period = %s, creation_date = '%s', availability_date = '%s', record_confirmation = %s, not_displayed_in_menu = %s where account_id = '%s'",
+		$query = sprintf("update {TABLEPREFIX}account set name = '%s', description='%s', opening_balance = %s, expected_minimum_balance = %s, minimum_check_period = %s, creation_date = '%s', availability_date = '%s', record_confirmation = %s, not_displayed_in_menu = %s, generate_income = %s where account_id = '%s'",
 				$db->ConvertStringForSqlInjection($name),
 				$db->ConvertStringForSqlInjection($description),
 				$openingBalance,
@@ -429,13 +459,14 @@ class AccountsHandler extends Handler
 				$availabilityDate,
 				$recordConfirmation,
 				$notDisplayedInMenu,
+				$generateIncome,
 				$accountId);
 		
 		$result = $db->Execute($query);
 
 		$result = $this->UpdateAccountSortOrder($accountId, $sortOrder);
 
-		$this->CalculateAccountBalance($accountId);
+		//$this->CalculateAccountBalance($accountId);
 
 		return $result;
 	}
@@ -487,6 +518,7 @@ class AccountsHandler extends Handler
 		return $result;
 	}
 
+	/* OBSOLETE / To Delete
 	function CalculateAccountBalance($account_id)
 	{
 		$db = new DB();
@@ -548,4 +580,5 @@ class AccountsHandler extends Handler
 			and record_confirmation != 1";
 		$result = $db->Execute($query);
 	}
+	*/
 }

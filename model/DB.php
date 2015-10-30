@@ -301,13 +301,14 @@ class DB
 									$paymentInvested,
 									$value,
 									$recordType,
+									$withdrawal,
 									$income)
 	{
 		if ($this->_isReadOnly)
 			return 0;
 	
-		$query = sprintf("insert into ".$this->_dbTablePrefix."record (account_id, record_group_id, record_date, designation, amount, amount_invested, value, record_id, record_type, income)
-				values ('%s', '%s', '%s', '%s', %s, %s, %s, uuid(), %s, %s)",
+		$query = sprintf("insert into ".$this->_dbTablePrefix."record (account_id, record_group_id, record_date, designation, amount, amount_invested, value, record_id, record_type, withdrawal, income)
+				values ('%s', '%s', '%s', '%s', %s, %s, %s, uuid(), %s, %s, %s)",
 				$accountId,
 				$recordGroupId == null ? "" : $recordGroupId,
 				$recordDate,
@@ -316,6 +317,7 @@ class DB
 				$paymentInvested == null ? "null" : $paymentInvested,
 				$value == null ? "null" : $value,
 				$recordType == null ? "0" : $recordType,
+				$withdrawal == null ? "0" : $withdrawal,
 				$income == null ? "null" : $income);
 		//throw new Exception($query);
 	
@@ -334,6 +336,7 @@ class DB
 											 null,
 											 null,
 											 2,
+											 null,
 											 null);
 	}
 	
@@ -347,19 +350,21 @@ class DB
 											 $paymentInvested,
 											 null,
 											 10,
+											 null,
 											 null);
 	}
 
-	function InsertInvestmentRecord_Outcome($accountId, $recordGroupId, $recordDate, $designation, $payment, $paymentInvested)
+	function InsertInvestmentRecord_Withdrawal($accountId, $recordGroupId, $recordDate, $designation, $withdrawal)
 	{
 		return $this->InsertInvestmentRecord($accountId,
 									 		 $recordGroupId,
 											 $recordDate,
 											 $designation,
-											 $payment,
-											 $paymentInvested,
+											 null,
+											 null,
 											 null,
 											 20,
+											 $withdrawal,
 											 null);
 	}
 
@@ -373,6 +378,7 @@ class DB
 											 null,
 											 $value,
 											 30,
+											 null,
 											 null);
 	}
 
@@ -386,6 +392,7 @@ class DB
 											null,
 											null,
 											40,
+											null,
 											$income);
 	}
 

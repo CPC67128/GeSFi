@@ -72,6 +72,7 @@ class InvestmentsRecordsHandler extends Handler
 		$amountAccumulated = 0;
 		$amountInvestedAccumulated = 0;
 		$incomeSum = 0;
+		$withdrawalSum = 0;
 
 		$updateQueryString = "update {TABLEPREFIX}record
 			set
@@ -81,6 +82,7 @@ class InvestmentsRecordsHandler extends Handler
 			CALC_gain = %s,
 			CALC_yield = %s,
 			CALC_yield_average = %s,
+			CALC_withdrawal_sum = %s,
 			CALC_income_sum = %s
 			where record_id = '%s'";
 
@@ -90,9 +92,10 @@ class InvestmentsRecordsHandler extends Handler
 			if (!isset($creationDate))
 				$creationDate = $record['record_date'];
 
-			$amountAccumulated += ($record['record_type'] == 20 ? -1 : 1) * $record['amount'];
-			$amountInvestedAccumulated += ($record['record_type'] == 20 ? -1 : 1) * $record['amount_invested'];
+			$amountAccumulated += $record['amount'];
+			$amountInvestedAccumulated += $record['amount_invested'];
 			$incomeSum += ($record['record_type'] == 40 ? $record['income'] : 0);
+			$withdrawalSum += $record['withdrawal'];
 			$daysSinceCreation = (int) (strtotime($record['record_date']) - strtotime($creationDate)) / 86400;
 
 			unset($gain);
@@ -100,11 +103,11 @@ class InvestmentsRecordsHandler extends Handler
 			unset($yieldAverage);
 			if (isset($record['value']))
 			{
-				$gain = $record['value'] - $amountAccumulated;
+				$gain = $record['value'] + $withdrawalSum - $amountAccumulated;
 
 				if ($amountAccumulated != 0 && $amountInvestedAccumulated > 0)
 				{
-					$yield = $record['value'] * 1 / $amountAccumulated;
+					$yield = ($record['value'] + $withdrawalSum) / $amountAccumulated;
 					//$yield = (($record['value'] / $amountAccumulated) - 1) * 100;
 				}
 
@@ -129,6 +132,7 @@ class InvestmentsRecordsHandler extends Handler
 				isset($gain) ? $gain : 'null',
 				isset($yield) ? ($yield - 1) * 100 : 'null',
 				isset($yieldAverage) ? ($yieldAverage - 1) * 100 : 'null',
+				isset($withdrawalSum) ? $withdrawalSum : 'null',
 				isset($incomeSum) ? $incomeSum : 'null',
 				$record['record_id']);
 			$db->Execute($query);

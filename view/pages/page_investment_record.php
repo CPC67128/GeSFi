@@ -25,6 +25,7 @@ function AddTitleRow()
 	<?php if ($accountType != 12) { ?>
 	<td><?= $translator->getTranslation('Versement') ?><br /><i><small>(&sum;) <?= $translator->getTranslation('Cumul') ?></small></i></td>
 	<td><?= $translator->getTranslation('Versement effectif') ?><br /><i><small>(&sum;) <?= $translator->getTranslation('Cumul') ?></small></i></td>
+	<td><?= $translator->getTranslation('Rachat') ?><br /><i><small>(&sum;) <?= $translator->getTranslation('Cumul') ?></small></i></td>
 	<!-- <td style="vertical-align: top; text-align: center; font-style: italic;"><?= $translator->getTranslation('Frais') ?></td> -->
 	<?php } ?>
 	<td><?= $translator->getTranslation('Valorisation') ?></td>
@@ -61,8 +62,9 @@ function AddRow($index, $row)
 	echo '<td style="text-align: left;">'.$row['designation'].'</td>';
 	if ($accountType != 12) {
 	?>
-	<td style="text-align: right;"><?= $row['record_type'] == 20 ? '- ' : '' ?><?php if ($row['amount'] != null) { ?><?= $translator->getCurrencyValuePresentation($row['amount']) ?><br /><i><small>(&sum;) <?= $translator->getCurrencyValuePresentation($row['CALC_amount_accumulated'])?></small></i><?php } ?></td>
-	<td style="text-align: right;"><?= $row['record_type'] == 20 ? '- ' : '' ?><?php if ($row['amount_invested'] != null) { ?><?= $translator->getCurrencyValuePresentation($row['amount_invested']) ?><br /><i><small>(&sum;) <?= $translator->getCurrencyValuePresentation($row['CALC_amount_invested_accumulated'])?></small></i><?php } ?></td>
+	<td style="text-align: right;"><?php if ($row['amount'] != null) { ?><?= $translator->getCurrencyValuePresentation($row['amount']) ?><br /><i><small>(&sum;) <?= $translator->getCurrencyValuePresentation($row['CALC_amount_accumulated'])?></small></i><?php } ?></td>
+	<td style="text-align: right;"><?php if ($row['amount_invested'] != null) { ?><?= $translator->getCurrencyValuePresentation($row['amount_invested']) ?><br /><i><small>(&sum;) <?= $translator->getCurrencyValuePresentation($row['CALC_amount_invested_accumulated'])?></small></i><?php } ?></td>
+	<td style="text-align: right;"><?php if ($row['withdrawal'] != null) { ?><?= $translator->getCurrencyValuePresentation($row['withdrawal']) ?><br /><i><small>(&sum;) <?= $translator->getCurrencyValuePresentation($row['CALC_withdrawal_sum'])?></small></i><?php } ?></td>
 	<?php
 	}
 	?>

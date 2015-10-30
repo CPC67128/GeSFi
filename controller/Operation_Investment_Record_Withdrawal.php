@@ -16,7 +16,7 @@ class Operation_Investment_Record_Withdrawal extends Operation_Investment_Record
 
 		$uuid = $this->_db->GenerateUUID();
 
-		$this->_db->InsertInvestmentRecord_Outcome(
+		$this->_db->InsertInvestmentRecord_Withdrawal(
 				$this->_fromAccount,
 				$uuid,
 				$this->_fromDate,

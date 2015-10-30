@@ -8,7 +8,7 @@ small {
 }
 
 .topMenu  {
-	background-color: #E0E0E0;
+	background-color: #EEEEEE;
 	height: 17px;
  	width: 100%;
  	position: fixed;
@@ -21,7 +21,7 @@ small {
 }
 
 .topSecondLineMenu  {
-	background-color: #EEEEEE;
+	background-color: #F7F7F7;
 	height: 17px;
  	width: 100%;
  	position: fixed;

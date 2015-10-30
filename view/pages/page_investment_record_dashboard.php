@@ -53,6 +53,24 @@ $sumGlobal += $sum;
 $sum = 0;
 
 
+function PrintTDStyleAttributeForAccountName($yieldAverage, $yield)
+{
+	if (strlen($yieldAverage) != 0)
+	{
+		if ($yieldAverage < 0)
+			echo 'bgcolor="red"';
+		elseif ($yieldAverage > 3)
+			echo 'bgcolor="lightgreen"';
+		elseif ($yieldAverage < 1)
+			echo 'bgcolor="orange"';
+	}
+	else if (strlen($yield) != 0)
+	{
+		if ($yield < 0)
+			echo 'bgcolor="red"';
+	}
+}
+
 function PrintTDStyleAttributeForYield($value)
 {
 	if ($value < 0)
@@ -81,20 +99,16 @@ foreach ($accounts as $account)
 	$openingDateToDisplay = ($account->get('creationDate') != '' && $account->get('creationDate') != '0000-00-00');
 	$availabilityYear = date("Y", strtotime($account->get('availabilityDate')));
 	$availabilityDateToDisplay = ($account->get('availabilityDate') != '' && $availabilityYear > date("Y"));
-
 ?>
 <tr>
-					<td><a href="#"
-						onclick="javascript:ChangeContext('record','investment','<?= $account->get('accountId')?>',''); return false;"><?= $account->get('name') ?></a></td>
-					<td style='text-align: right;'><?= $valueToUpdate ? '<i>' : '' ?><?= $translator->getCurrencyValuePresentation($account->GetInvestmentLastValue()) ?><?= $valueToUpdate ? '</i>' : '' ?></td>
-					<td><?= $account->get('description') ?></td>
-					<td style='text-align: right;'><?= $openingDateToDisplay ? $openingYear : '' ?></td>
-					<td style='text-align: right;'
-						<?php PrintTDStyleAttributeForYield($account->GetInvestmentLastYield()) ?>><?= $translator->getPercentagePresentation($account->GetInvestmentLastYield()) ?></td>
-					<td style='text-align: right;'
-						<?php PrintTDStyleAttributeForYieldAverage($account->GetInvestmentLastYieldAverage()) ?>><?= $translator->getPercentagePresentation($account->GetInvestmentLastYieldAverage()) ?></td>
-					<td style='text-align: right;'><?= $availabilityDateToDisplay ? $availabilityYear : '' ?></td>
-				</tr>
+<td <?php PrintTDStyleAttributeForAccountName($account->GetInvestmentLastYieldAverage(), $account->GetInvestmentLastYield()); ?>><a href="#" onclick="javascript:ChangeContext('record','investment','<?= $account->get('accountId')?>',''); return false;"><?= $account->get('name') ?></a></td>
+<td style='text-align: right;'><?= $valueToUpdate ? '<i>' : '' ?><?= $translator->getCurrencyValuePresentation($account->GetInvestmentLastValue()) ?><?= $valueToUpdate ? '</i>' : '' ?></td>
+<td><?= $account->get('description') ?></td>
+<td style='text-align: right;'><?= $openingDateToDisplay ? $openingYear : '' ?></td>
+<td style='text-align: right;' <?php PrintTDStyleAttributeForYield($account->GetInvestmentLastYield()); ?>><?= $translator->getPercentagePresentation($account->GetInvestmentLastYield()) ?></td>
+<td style='text-align: right;' <?php PrintTDStyleAttributeForYieldAverage($account->GetInvestmentLastYieldAverage()); ?>><?= $translator->getPercentagePresentation($account->GetInvestmentLastYieldAverage()) ?></td>
+<td style='text-align: right;'><?= $availabilityDateToDisplay ? $availabilityYear : '' ?></td>
+</tr>
 <?php
 	$sum += $account->GetInvestmentLastValue();
 }

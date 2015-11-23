@@ -265,7 +265,7 @@ $(function() {
 	    				'../controller/controller.php?action=record_modify_' + type.val(),
 	    				{ recordId: recordId.val() , newValue: newValue.val() },
 	    				function(response, status) {
-	    					$( "#dialog-form-charge" ).dialog( "close" );
+	    					$( "#dialog-form-modifyValue" ).dialog( "close" );
 	    					LoadPage();
 						}
 	    			);

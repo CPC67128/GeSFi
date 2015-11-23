@@ -3,6 +3,7 @@ class Operation_Record_Modify_Designation extends Operation_Record
 {
 	public function Validate()
 	{
+		$this->_designation = $this->_newValue;
 		$this->ValidateDesignation();
 	}
 

@@ -317,7 +317,7 @@ class DB
 				$paymentInvested == null ? "null" : $paymentInvested,
 				$value == null ? "null" : $value,
 				$recordType == null ? "0" : $recordType,
-				$withdrawal == null ? "0" : $withdrawal,
+				$withdrawal == null ? "null" : $withdrawal,
 				$income == null ? "null" : $income);
 		//throw new Exception($query);
 	

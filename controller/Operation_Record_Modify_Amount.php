@@ -3,6 +3,7 @@ class Operation_Record_Modify_Amount extends Operation_Record
 {
 	public function Validate()
 	{
+		$this->_amount = $this->_newValue;
 		$this->ValidateAmount();
 	}
 

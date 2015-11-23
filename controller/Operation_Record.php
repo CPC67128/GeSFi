@@ -14,6 +14,9 @@ class Operation_Record extends Operation
 	protected $_categories;
 	protected $_confirmed;
 
+	protected $_charge;
+	protected $_newValue;
+	
 	// -------------------------------------------------------------------------------------------------------------------
 	
 	public function setCategoryAmount($categoryIndex, $amount)
@@ -142,5 +145,17 @@ class Operation_Record extends Operation
 			$this->_confirmed = 1;
 		else
 			$this->_confirmed = 0;
+	}
+
+	public function ValidateCharge()
+	{
+		if (!isset($this->_charge))
+			throw new Exception('Merci de renseigner correctement le niveau de prise en charge');
+	
+		$this->_charge = str_replace(",", ".", $this->_charge);
+		if (!is_numeric($this->_charge))
+			throw new Exception('Merci de renseigner correctement le niveau de prise en charge');
+		if ($this->_charge < 0 || $this->_charge > 100 )
+			throw new Exception('Merci de renseigner correctement le niveau de prise en charge');
 	}
 }

@@ -26,13 +26,16 @@ record_type:
     22 = expense
 
 Duo virtual account allowed operations:
+
     12 (credit from partners) -> Account -> 22 (expense)
 
 Duo real account allowed operations:
+
     10 (credit between account) -> Account -> 20 (debit between account)
                                        -> 22 (expense)
 
 Private real account allowed operations:
+
     10 (credit between account)     -> Account -> 20 (debit between account)
     11 (credit coming from partner)            -> 22 (expense)
     12 (money coming from outside)

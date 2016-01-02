@@ -1,0 +1,299 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0051)http://stevefuchs.fr/wiki/index.php -->
+<!DOCTYPE html PUBLIC "" ""><HTML class="client-nojs" lang="fr" 
+dir="ltr"><HEAD><META content="IE=11.0000" http-equiv="X-UA-Compatible">
+ 
+<META charset="UTF-8"> <TITLE>BudgetFox — Steve Fuchs Wiki</TITLE> 
+<SCRIPT>document.documentElement.className = document.documentElement.className.replace( /(^|\s)client-nojs(\s|$)/, "$1client-js$2" );</SCRIPT>
+ 
+<SCRIPT>window.RLQ = window.RLQ || []; window.RLQ.push( function () {
+mw.config.set({"wgCanonicalNamespace":"","wgCanonicalSpecialPageName":!1,"wgNamespaceNumber":0,"wgPageName":"BudgetFox","wgTitle":"BudgetFox","wgCurRevisionId":1398,"wgRevisionId":1398,"wgArticleId":186,"wgIsArticle":!0,"wgIsRedirect":!1,"wgAction":"view","wgUserName":null,"wgUserGroups":["*"],"wgCategories":[],"wgBreakFrames":!1,"wgPageContentLanguage":"fr","wgPageContentModel":"wikitext","wgSeparatorTransformTable":[",\t."," \t,"],"wgDigitTransformTable":["",""],"wgDefaultDateFormat":"dmy","wgMonthNames":["","janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"],"wgMonthNamesShort":["","janv","fév","mars","avr","mai","juin","juil","août","sept","oct","nov","déc"],"wgRelevantPageName":"BudgetFox","wgRelevantArticleId":186,"wgIsProbablyEditable":!1,"wgRestrictionEdit":[],"wgRestrictionMove":[]});mw.loader.implement("user.options",function($,jQuery){mw.user.options.set({"variant":"fr"});});mw.loader.implement("user.tokens",function($,jQuery){mw.user.tokens.set({"editToken":"+\\","patrolToken":"+\\","watchToken":"+\\"});});mw.loader.load(["mediawiki.page.startup","mediawiki.legacy.wikibits","skins.vector.js"]);
+} );</SCRIPT>
+ <LINK href="BudgetFox%20—%20Steve%20Fuchs%20Wiki_php_fichiers/load.css" rel="stylesheet"> 
+<META name="ResourceLoaderDynamicStyles" content=""> 
+<STYLE>a:lang(ar),a:lang(kk-arab),a:lang(mzn),a:lang(ps),a:lang(ur){text-decoration:none}</STYLE>
+ 
+<SCRIPT src="BudgetFox%20—%20Steve%20Fuchs%20Wiki_php_fichiers/load.js" async=""></SCRIPT>
+ 
+<META name="GENERATOR" content="MSHTML 11.00.9600.18098"> <LINK href="/wiki/favicon.ico" 
+rel="shortcut icon"> <LINK title="Steve Fuchs Wiki (fr)" href="/wiki/opensearch_desc.php" 
+rel="search" type="application/opensearchdescription+xml"> <LINK href="http://stevefuchs.fr/wiki/api.php?action=rsd" 
+rel="EditURI" type="application/rsd+xml"> <LINK title="Flux Atom de Steve Fuchs Wiki" 
+href="/wiki/index.php?title=Sp%C3%A9cial:Modifications_r%C3%A9centes&amp;feed=atom" 
+rel="alternate" type="application/atom+xml"> <!--[if lt IE 7]><style type="text/css">body{behavior:url("/wiki/skins/Vector/csshover.min.htc")}</style><![endif]--> 
+</HEAD> 
+<BODY class="mediawiki ltr sitedir-ltr ns-0 ns-subject page-BudgetFox skin-vector action-view">
+<DIV class="noprint" id="mw-page-base"></DIV>
+<DIV class="noprint" id="mw-head-base"></DIV>
+<DIV class="mw-body" id="content" role="main"><A id="top"></A>						 
+<DIV class="mw-indicators"></DIV>
+<H1 class="firstHeading" id="firstHeading" lang="fr">BudgetFox</H1>
+<DIV class="mw-content-ltr" id="mw-content-text" lang="fr" dir="ltr">
+<H2><SPAN class="mw-headline" id="Installation_et_mise_.C3.A0_jour">Installation 
+et mise à jour</SPAN></H2>
+<H3><SPAN class="mw-headline" id="Pr.C3.A9requis">Prérequis</SPAN></H3>
+<P>Un minimum de connaissances informatique est nécessaire: utilisation d’un 
+client FTP, bases de MySQL…</P>
+<P>Il faudra également un environnement offrant&nbsp;:</P>
+<UL>
+  <LI>Un emplacement web disposant de PHP 5.5</LI>
+  <LI>Une base de données MySQL 5</LI></UL>
+<P>Ce peut être un <A class="external text" href="http://www.1and1.fr/?kwk=16605005" 
+rel="nofollow">site Internet 1&amp;1</A> comme ce site, un site sur un <A class="external text" 
+href="https://www.synology.com/fr-fr/" rel="nofollow">NAS Synology</A>, voir 
+encore un Raspberry Pi qui est capable de supporter mon application.</P>
+<P>Sinon contactez moi pour que j’héberge et je gère votre application.</P>
+<H3><SPAN class="mw-headline" id="Installation">Installation</SPAN></H3>
+<UL>
+  <LI>Créer une base de données MySQL avec le nom voulu (par exemple 
+  «&nbsp;budgetfox&nbsp;») et l’interclassement voulu (par exemple 
+  «&nbsp;utf8_general_ci&nbsp;»).<BR><A class="image" href="http://stevefuchs.fr/wiki/index.php?title=Fichier:2015-04-18_155837.png"><IMG 
+  width="476" height="214" alt="2015-04-18 155837.png" src="BudgetFox%20—%20Steve%20Fuchs%20Wiki_php_fichiers/2015-04-18_155837.png"></A> 
+  </LI>
+  <LI><A class="external text" href="https://github.com/CPC67128/BudgetFox/archive/master.zip" 
+  rel="nofollow">Télécharger l’archive de l’application</A> sur GitHub, et la 
+  décompresser</LI>
+  <LI>Uploader les fichiers dans un répertoire de votre emplacement web</LI>
+  <LI>Editer le fichier ./configuration/configuration.php et remplir les 
+  paramètres requis (base de données...)</LI>
+  <LI>Aller sur http://(votre site)/(emplacement BudgetFox)/setup/ et cliquer 
+  sur «&nbsp;Upgrade database&nbsp;» pour créer la base de données:<BR><A class="image" 
+  href="http://stevefuchs.fr/wiki/index.php?title=Fichier:2015-04-18_155906.png"><IMG 
+  width="600" height="243" alt="2015-04-18 155906.png" src="BudgetFox%20—%20Steve%20Fuchs%20Wiki_php_fichiers/2015-04-18_155906.png"></A><BR>
+  Ceci appliquera différent scripts:<BR><A class="image" href="http://stevefuchs.fr/wiki/index.php?title=Fichier:2015-04-18_155921.png"><IMG 
+  width="601" height="362" alt="2015-04-18 155921.png" src="BudgetFox%20—%20Steve%20Fuchs%20Wiki_php_fichiers/2015-04-18_155921.png"></A><BR>
+  qui créeront les tables de la base de données:<BR><A class="image" href="http://stevefuchs.fr/wiki/index.php?title=Fichier:2015-04-18_160023.png"><IMG 
+  width="236" height="238" alt="2015-04-18 160023.png" src="BudgetFox%20—%20Steve%20Fuchs%20Wiki_php_fichiers/2015-04-18_160023.png"></A><BR></LI>
+  <LI>Effacer le répertoire setup de votre répertoire d’installation</LI>
+  <LI>Se rendre sur la page http://(votre site)/(emplacement BudgetFox)/ et se 
+  connecter avec le compte administrateur (mot de passe admin)</LI>
+  <LI>Débuter par la configuration des utilisateurs, des comptes et des 
+  catégories depuis l’espace d’administration.</LI></UL>
+<H3><SPAN class="mw-headline" id="Mise_.C3.A0_jour">Mise à jour</SPAN></H3>
+<UL>
+  <LI>Faites une sauvegarde de votre base de données et de votre répertoire 
+  web</LI>
+  <LI>Dans ce dernier, effacer tout les sous-répertoires excepté 
+  «&nbsp;configuration&nbsp;»</LI>
+  <LI>Télécharger l’archive de l’application sur GitHub</LI>
+  <LI>Décompresser le zip et uploader l’ensemble des fichiers excepté le 
+  répertoire «&nbsp;configuration&nbsp;» dans votre répertoire 
+  d’installation</LI>
+  <LI>Aller sur http://(votre site)/(emplacement BudgetFox)/setup/ et suivez les 
+  instructions comme lors de l’installation (la base de données sera mise à 
+  niveau)</LI>
+  <LI>Effacer le répertoire «&nbsp;setup&nbsp;» de votre répertoire 
+  d’installation</LI></UL>
+<H2><SPAN class="mw-headline" id="Actualit.C3.A9s">Actualités</SPAN></H2>
+<P>Les actualités de ce projet peuvent être décrites sur <A class="external text" 
+href="http://stevefuchs.fr/wordpress/category/informatique/budgetfox" rel="nofollow">le 
+flux dédié</A> de mon blog.</P>
+<H2><SPAN class="mw-headline" id="Development_notes">Development 
+notes</SPAN></H2>
+<P><A title="BudgetFox Development Notes" href="http://stevefuchs.fr/wiki/index.php?title=BudgetFox_Development_Notes">BudgetFox 
+Development Notes</A> </P>
+<H2><SPAN class="mw-headline" id="Don">Don</SPAN></H2>
+<P>Et si vous voulez supportez mes projets (ou participer à mon bien-être), 
+merci pour votre don que vous pouvez faire ci-dessous&nbsp;:-) </P>
+<P></P>
+<FORM action="https://www.paypal.com/cgi-bin/webscr" method="post"><INPUT name="cmd" type="hidden" value="_s-xclick"> 
+<INPUT name="hosted_button_id" type="hidden" value="E8CXFRDRBZFC2"> <INPUT name="submit" 
+type="image" alt="PayPal - The safer, easier way to pay online!" src="BudgetFox%20—%20Steve%20Fuchs%20Wiki_php_fichiers/btn_donateCC_LG.gif"> 
+<IMG width="1" height="1" alt="" src="BudgetFox%20—%20Steve%20Fuchs%20Wiki_php_fichiers/pixel.gif" 
+border="0"> 
+<P></P>
+<H2><SPAN class="mw-headline" id="Versions_pr.C3.A9c.C3.A9dentes">Versions 
+précédentes</SPAN></H2>
+<P>Quelques captures d'écrans des versions précédentes&nbsp;: </P>
+<UL class="gallery mw-gallery-traditional" style="max-width: 652px; _width: 652px;">
+  <LI class="gallerycaption">version 2.2</LI>
+  <LI class="gallerybox" style="width: 155px;">
+  <DIV style="width: 155px;">
+  <DIV class="thumb" style="width: 150px;">
+  <DIV style="margin: 27px auto;"><A class="image" href="http://stevefuchs.fr/wiki/index.php?title=Fichier:Gfcremark.png"><IMG 
+  width="120" height="96" alt="" src="BudgetFox%20—%20Steve%20Fuchs%20Wiki_php_fichiers/120px-Gfcremark.png" 
+  srcset="/wiki/images/thumb/4/4d/Gfcremark.png/180px-Gfcremark.png 1.5x, /wiki/images/thumb/4/4d/Gfcremark.png/240px-Gfcremark.png 2x"></A></DIV></DIV>
+  <DIV class="gallerytext">
+  <P><I>Remarques</I> </P></DIV></DIV></LI></UL>
+<UL class="gallery mw-gallery-traditional" style="max-width: 652px; _width: 652px;">
+  <LI class="gallerycaption">version 2.1</LI>
+  <LI class="gallerybox" style="width: 155px;">
+  <DIV style="width: 155px;">
+  <DIV class="thumb" style="width: 150px;">
+  <DIV style="margin: 27px auto;"><A class="image" href="http://stevefuchs.fr/wiki/index.php?title=Fichier:Gfcdepense.png"><IMG 
+  width="120" height="96" alt="" src="BudgetFox%20—%20Steve%20Fuchs%20Wiki_php_fichiers/120px-Gfcdepense.png" 
+  srcset="/wiki/images/thumb/b/b2/Gfcdepense.png/180px-Gfcdepense.png 1.5x, /wiki/images/thumb/b/b2/Gfcdepense.png/240px-Gfcdepense.png 2x"></A></DIV></DIV>
+  <DIV class="gallerytext">
+  <P><I>Dépense / Interface</I> </P></DIV></DIV></LI>
+  <LI class="gallerybox" style="width: 155px;">
+  <DIV style="width: 155px;">
+  <DIV class="thumb" style="width: 150px;">
+  <DIV style="margin: 27px auto;"><A class="image" href="http://stevefuchs.fr/wiki/index.php?title=Fichier:Gfcremboursement.png"><IMG 
+  width="120" height="96" alt="" src="BudgetFox%20—%20Steve%20Fuchs%20Wiki_php_fichiers/120px-Gfcremboursement.png" 
+  srcset="/wiki/images/thumb/6/68/Gfcremboursement.png/180px-Gfcremboursement.png 1.5x, /wiki/images/thumb/6/68/Gfcremboursement.png/240px-Gfcremboursement.png 2x"></A></DIV></DIV>
+  <DIV class="gallerytext">
+  <P><I>Remboursement</I> </P></DIV></DIV></LI>
+  <LI class="gallerybox" style="width: 155px;">
+  <DIV style="width: 155px;">
+  <DIV class="thumb" style="width: 150px;">
+  <DIV style="margin: 27px auto;"><A class="image" href="http://stevefuchs.fr/wiki/index.php?title=Fichier:Gfcstatistiques.png"><IMG 
+  width="120" height="96" alt="" src="BudgetFox%20—%20Steve%20Fuchs%20Wiki_php_fichiers/120px-Gfcstatistiques.png" 
+  srcset="/wiki/images/thumb/f/fa/Gfcstatistiques.png/180px-Gfcstatistiques.png 1.5x, /wiki/images/thumb/f/fa/Gfcstatistiques.png/240px-Gfcstatistiques.png 2x"></A></DIV></DIV>
+  <DIV class="gallerytext">
+  <P><I>Statistiques</I> </P></DIV></DIV></LI>
+  <LI class="gallerybox" style="width: 155px;">
+  <DIV style="width: 155px;">
+  <DIV class="thumb" style="width: 150px;">
+  <DIV style="margin: 27px auto;"><A class="image" href="http://stevefuchs.fr/wiki/index.php?title=Fichier:Gfcetatdeslieux.png"><IMG 
+  width="120" height="96" alt="" src="BudgetFox%20—%20Steve%20Fuchs%20Wiki_php_fichiers/120px-Gfcetatdeslieux.png" 
+  srcset="/wiki/images/thumb/f/fe/Gfcetatdeslieux.png/180px-Gfcetatdeslieux.png 1.5x, /wiki/images/thumb/f/fe/Gfcetatdeslieux.png/240px-Gfcetatdeslieux.png 2x"></A></DIV></DIV>
+  <DIV class="gallerytext">
+  <P><I>Etat des lieux</I> </P></DIV></DIV></LI></UL>
+<UL class="gallery mw-gallery-traditional" style="max-width: 652px; _width: 652px;">
+  <LI class="gallerycaption">version 1.0.0</LI>
+  <LI class="gallerybox" style="width: 155px;">
+  <DIV style="width: 155px;">
+  <DIV class="thumb" style="width: 150px;">
+  <DIV style="margin: 45px auto;"><A class="image" href="http://stevefuchs.fr/wiki/index.php?title=Fichier:Gfc.jpg"><IMG 
+  width="120" height="60" alt="" src="BudgetFox%20—%20Steve%20Fuchs%20Wiki_php_fichiers/120px-Gfc.jpg" 
+  srcset="/wiki/images/thumb/0/0d/Gfc.jpg/180px-Gfc.jpg 1.5x, /wiki/images/thumb/0/0d/Gfc.jpg/240px-Gfc.jpg 2x"></A></DIV></DIV>
+  <DIV class="gallerytext">
+  <P><I>Interface</I> </P></DIV></DIV></LI></UL><!-- 
+NewPP limit report
+Cached time: 20160102192242
+Cache expiry: 86400
+Dynamic content: false
+CPU time usage: 0.144 seconds
+Real time usage: 0.937 seconds
+Preprocessor visited node count: 92/1000000
+Preprocessor generated node count: 218/1000000
+Post‐expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Highest expansion depth: 2/40
+Expensive parser function count: 0/100
+--> <!-- 
+Transclusion expansion time report (%,ms,calls,template)
+100.00%    0.000      1 - -total
+--> <!-- Saved in parser cache with key db371552974-mw_:pcache:idhash:186-0!*!0!!fr!5!* and timestamp 20160102192241 and revision id 1398
+ --> 
+</FORM></DIV>
+<DIV class="printfooter">						Récupérée de «&nbsp;<A dir="ltr" href="http://stevefuchs.fr/wiki/index.php?title=BudgetFox&amp;oldid=1398">http://stevefuchs.fr/wiki/index.php?title=BudgetFox&amp;oldid=1398</A>&nbsp;»					</DIV>
+<DIV class="catlinks catlinks-allhidden" id="catlinks"></DIV>
+<DIV class="visualClear"></DIV></DIV></DIV>
+<DIV id="mw-navigation">
+<H2>Menu de navigation</H2>
+<DIV id="mw-head">
+<DIV id="p-personal" role="navigation" aria-labelledby="p-personal-label">
+<H3 id="p-personal-label">Outils personnels</H3>
+<UL>
+  <LI id="pt-login"><A title="Il est recommandé de vous identifier ; ce n'est cependant pas obligatoire. [o]" 
+  accesskey="o" href="http://stevefuchs.fr/wiki/index.php?title=Sp%C3%A9cial:Connexion&amp;returnto=BudgetFox">Se 
+  connecter</A></LI></UL></DIV>
+<DIV id="left-navigation">
+<DIV class="vectorTabs" id="p-namespaces" role="navigation" aria-labelledby="p-namespaces-label">
+<H3 id="p-namespaces-label">Espaces de noms</H3>
+<UL>
+  <LI class="selected" id="ca-nstab-main"><SPAN><A title="Voir la page de contenu [c]" 
+  accesskey="c" 
+  href="http://stevefuchs.fr/wiki/index.php?title=BudgetFox">Page</A></SPAN></LI>
+  <LI class="new" id="ca-talk"><SPAN><A title="Discussion au sujet de cette page de contenu [t]" 
+  accesskey="t" href="http://stevefuchs.fr/wiki/index.php?title=Discussion:BudgetFox&amp;action=edit&amp;redlink=1" 
+  rel="discussion">Discussion</A></SPAN></LI></UL></DIV>
+<DIV class="vectorMenu emptyPortlet" id="p-variants" role="navigation" 
+aria-labelledby="p-variants-label">
+<H3 id="p-variants-label"><SPAN>Variantes</SPAN><A href="http://stevefuchs.fr/wiki/index.php?title=BudgetFox#"></A>
+						 </H3>
+<DIV class="menu">
+<UL></UL></DIV></DIV></DIV>				 
+<DIV id="right-navigation">
+<DIV class="vectorTabs" id="p-views" role="navigation" aria-labelledby="p-views-label">
+<H3 id="p-views-label">Affichages</H3>
+<UL>
+  <LI class="selected" id="ca-view"><SPAN><A href="http://stevefuchs.fr/wiki/index.php?title=BudgetFox">Lire</A></SPAN></LI>
+  <LI id="ca-viewsource"><SPAN><A title="Cette page est protégée.&#10;Vous pouvez toutefois en visualiser la source. [e]" 
+  accesskey="e" href="http://stevefuchs.fr/wiki/index.php?title=BudgetFox&amp;action=edit">Voir 
+  le texte source</A></SPAN></LI>
+  <LI class="collapsible" id="ca-history"><SPAN><A title="Les versions passées de cette page (avec leurs contributeurs) [h]" 
+  accesskey="h" href="http://stevefuchs.fr/wiki/index.php?title=BudgetFox&amp;action=history">Historique</A></SPAN></LI></UL></DIV>
+<DIV class="vectorMenu emptyPortlet" id="p-cactions" role="navigation" 
+aria-labelledby="p-cactions-label">
+<H3 id="p-cactions-label"><SPAN>Plus</SPAN><A href="http://stevefuchs.fr/wiki/index.php?title=BudgetFox#"></A></H3>
+<DIV class="menu">
+<UL></UL></DIV></DIV>
+<DIV id="p-search" role="search">
+<H3><LABEL for="searchInput">Rechercher</LABEL>						 </H3>
+<DIV id="simpleSearch"><INPUT name="search" title="Rechercher dans Steve Fuchs Wiki [f]" id="searchInput" accesskey="f" type="search" placeholder="Rechercher" value=""><INPUT name="title" type="hidden" value="Spécial:Recherche"><INPUT name="fulltext" title="Rechercher les pages comportant ce texte." class="searchButton mw-fallbackSearchButton" id="mw-searchButton" type="submit" value="Rechercher"><INPUT name="go" title="Aller vers une page portant exactement ce nom si elle existe." class="searchButton" id="searchButton" type="submit" value="Lire">							</DIV></DIV></DIV></DIV>
+<DIV id="mw-panel">
+<DIV id="p-logo" role="banner"><A title="Page principale" class="mw-wiki-logo" 
+href="http://stevefuchs.fr/wiki/index.php?title=Accueil"></A></DIV>
+<DIV class="portal" id="p-sommaire" role="navigation" aria-labelledby="p-sommaire-label">
+<H3 id="p-sommaire-label">sommaire</H3>
+<DIV class="body">
+<UL>
+  <LI id="n-Accueil-du-wiki"><A href="http://stevefuchs.fr/wiki/" 
+  rel="nofollow">Accueil du wiki</A></LI>
+  <LI id="n-Blog"><A href="http://stevefuchs.fr/wordpress/" 
+  rel="nofollow">Blog</A></LI></UL></DIV></DIV>
+<DIV class="portal" id="p-navigation" role="navigation" aria-labelledby="p-navigation-label">
+<H3 id="p-navigation-label">Navigation</H3>
+<DIV class="body">
+<UL>
+  <LI id="n-mainpage-description"><A title="Aller à l'accueil [z]" accesskey="z" 
+  href="http://stevefuchs.fr/wiki/index.php?title=Accueil">Accueil</A></LI>
+  <LI id="n-portal"><A title="À propos du projet, ce que vous pouvez faire, où trouver des informations" 
+  href="http://stevefuchs.fr/wiki/index.php?title=Steve_Fuchs_Wiki:Accueil">Communauté</A></LI>
+  <LI id="n-currentevents"><A title="Trouver les informations de fond sur l'actualité du moment" 
+  href="http://stevefuchs.fr/wiki/index.php?title=Steve_Fuchs_Wiki:Actualit%C3%A9s">Actualités</A></LI>
+  <LI id="n-recentchanges"><A title="Liste des modifications récentes sur le wiki [r]" 
+  accesskey="r" href="http://stevefuchs.fr/wiki/index.php?title=Sp%C3%A9cial:Modifications_r%C3%A9centes">Modifications 
+  récentes</A></LI>
+  <LI id="n-randompage"><A title="Afficher une page au hasard [x]" accesskey="x" 
+  href="http://stevefuchs.fr/wiki/index.php?title=Sp%C3%A9cial:Page_au_hasard">Page 
+  au hasard</A></LI>
+  <LI id="n-help"><A title="Aide" href="https://www.mediawiki.org/wiki/Special:MyLanguage/Help:Contents">Aide</A></LI></UL></DIV></DIV>
+<DIV class="portal" id="p-tb" role="navigation" aria-labelledby="p-tb-label">
+<H3 id="p-tb-label">Outils</H3>
+<DIV class="body">
+<UL>
+  <LI id="t-whatlinkshere"><A title="Liste des pages liées à celle-ci [j]" 
+  accesskey="j" href="http://stevefuchs.fr/wiki/index.php?title=Sp%C3%A9cial:Pages_li%C3%A9es/BudgetFox">Pages 
+  liées</A></LI>
+  <LI id="t-recentchangeslinked"><A title="Liste des modifications récentes des pages liées à celle-ci [k]" 
+  accesskey="k" href="http://stevefuchs.fr/wiki/index.php?title=Sp%C3%A9cial:Suivi_des_liens/BudgetFox">Suivi 
+  des pages liées</A></LI>
+  <LI id="t-specialpages"><A title="Liste de toutes les pages spéciales [q]" 
+  accesskey="q" href="http://stevefuchs.fr/wiki/index.php?title=Sp%C3%A9cial:Pages_sp%C3%A9ciales">Pages 
+  spéciales</A></LI>
+  <LI id="t-print"><A title="Version imprimable de cette page [p]" accesskey="p" 
+  href="http://stevefuchs.fr/wiki/index.php?title=BudgetFox&amp;printable=yes" 
+  rel="alternate">Version imprimable</A></LI>
+  <LI id="t-permalink"><A title="Lien permanent vers cette version de la page" 
+  href="http://stevefuchs.fr/wiki/index.php?title=BudgetFox&amp;oldid=1398">Adresse 
+  de cette version</A></LI>
+  <LI id="t-info"><A title="Plus d’information sur cette page" href="http://stevefuchs.fr/wiki/index.php?title=BudgetFox&amp;action=info">Information 
+  sur la page</A></LI></UL></DIV></DIV></DIV></DIV>
+<DIV id="footer" role="contentinfo">
+<UL id="footer-info">
+  <LI id="footer-info-lastmod"> Dernière modification de cette page le 27 
+  septembre 2015 à 14:25.</LI></UL>
+<UL id="footer-places">
+  <LI id="footer-places-privacy"><A title="Steve Fuchs Wiki:Confidentialité" 
+  href="http://stevefuchs.fr/wiki/index.php?title=Steve_Fuchs_Wiki:Confidentialit%C3%A9">Politique 
+  de confidentialité</A></LI>
+  <LI id="footer-places-about"><A title="Steve Fuchs Wiki:À propos" href="http://stevefuchs.fr/wiki/index.php?title=Steve_Fuchs_Wiki:%C3%80_propos">À 
+  propos de Steve Fuchs Wiki</A></LI>
+  <LI id="footer-places-disclaimer"><A title="Steve Fuchs Wiki:Avertissements généraux" 
+  href="http://stevefuchs.fr/wiki/index.php?title=Steve_Fuchs_Wiki:Avertissements_g%C3%A9n%C3%A9raux">Avertissements</A></LI></UL>
+<UL class="noprint" id="footer-icons">
+  <LI id="footer-poweredbyico"><A href="http://www.mediawiki.org/"><IMG width="88" 
+  height="31" alt="Powered by MediaWiki" src="BudgetFox%20—%20Steve%20Fuchs%20Wiki_php_fichiers/poweredby_mediawiki_88x31.png" 
+  srcset="/wiki/resources/assets/poweredby_mediawiki_132x47.png 1.5x, /wiki/resources/assets/poweredby_mediawiki_176x62.png 2x"></A>						</LI></UL>
+<DIV style="clear: both;"></DIV></DIV>
+<SCRIPT>window.RLQ = window.RLQ || []; window.RLQ.push( function () {
+mw.loader.state({"user":"ready","user.groups":"ready"});mw.loader.load(["mediawiki.toc","mediawiki.action.view.postEdit","site","mediawiki.user","mediawiki.hidpi","mediawiki.page.ready","mediawiki.searchSuggest"]);
+} );</SCRIPT>
+
+<SCRIPT>window.RLQ = window.RLQ || []; window.RLQ.push( function () {
+mw.config.set({"wgBackendResponseTime":728});
+} );</SCRIPT>
+	 </BODY></HTML>

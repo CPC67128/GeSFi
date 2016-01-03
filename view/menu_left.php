@@ -40,7 +40,7 @@ else
 ?>
 <i>BudgetFox
 <br />
-v. 15.10.25</i>
+v. 16.01.03</i>
 <br />
 <a href="../view/copyright.htm">Copyright</a>
 <br />

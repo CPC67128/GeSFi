@@ -141,7 +141,7 @@ class StatisticsBalanceHandler extends Handler
 	public $totalIncomeDuoAccountsMadeByUser;
 	public $totalIncomeDuoAccountsMadeByPartner;
 	
-	function GetTotaltotalIncomeDuoAccountsByUser($userId, &$value)
+	function GetTotalIncomeDuoAccountsByUser($userId, &$value)
 	{
 		$query = "select sum(amount) as total
 			from {TABLEPREFIX}record
@@ -404,14 +404,14 @@ class StatisticsBalanceHandler extends Handler
 		$this->totalExpensesChargedToUser += $this->totalExpensesFromPrivateAccountsToDuoCategoriesMadeByPartnerChargedToUser + $this->totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByPartnerChargedToUser;
 		$this->totalExpensesChargedToPartner += $this->totalExpensesFromPrivateAccountsToDuoCategoriesMadeByPartnerChargedToPartner + $this->totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByPartnerChargedToPartner;
 
-		$this->GetTotaltotalIncomeDuoAccountsByUser($this->user->get('userId'), $this->totalIncomeDuoAccountsMadeByUser);
-		$this->GetTotaltotalIncomeDuoAccountsByUser($this->user->GetPartnerId(), $this->totalIncomeDuoAccountsMadeByPartner);
+		$this->GetTotalIncomeDuoAccountsByUser($this->user->get('userId'), $this->totalIncomeDuoAccountsMadeByUser);
+		$this->GetTotalIncomeDuoAccountsByUser($this->user->GetPartnerId(), $this->totalIncomeDuoAccountsMadeByPartner);
 		if ($this->debug) print '<br/>'.$this->totalIncomeDuoAccountsMadeByUser.'<br/>'.$this->totalIncomeDuoAccountsMadeByPartner.'<br/>';
 
-		$this->GetTotalDepositFromOutsideToDuoAccountsForUser($this->user->get('userId'), $this->totaltotalIncomeDuoAccountsOutsidePartnersForUser);
-		$this->GetTotalDepositFromOutsideToDuoAccountsForUser($this->user->GetPartnerId(), $this->totaltotalIncomeDuoAccountsOutsidePartnersForPartner);
-		$this->totaltotalIncomeDuoAccountsOutsidePartners = $this->totaltotalIncomeDuoAccountsOutsidePartnersForUser + $this->totaltotalIncomeDuoAccountsOutsidePartnersForPartner;
-		if ($this->debug) print '<br/>'.$this->totaltotalIncomeDuoAccountsOutsidePartners.'<br/>'.$this->totaltotalIncomeDuoAccountsOutsidePartnersForUser.'<br/>'.$this->totaltotalIncomeDuoAccountsOutsidePartnersForPartner.'<br/>';
+		$this->GetTotalDepositFromOutsideToDuoAccountsForUser($this->user->get('userId'), $this->totalIncomeDuoAccountsOutsidePartnersForUser);
+		$this->GetTotalDepositFromOutsideToDuoAccountsForUser($this->user->GetPartnerId(), $this->totalIncomeDuoAccountsOutsidePartnersForPartner);
+		$this->totalIncomeDuoAccountsOutsidePartners = $this->totalIncomeDuoAccountsOutsidePartnersForUser + $this->totalIncomeDuoAccountsOutsidePartnersForPartner;
+		if ($this->debug) print '<br/>'.$this->totalIncomeDuoAccountsOutsidePartners.'<br/>'.$this->totalIncomeDuoAccountsOutsidePartnersForUser.'<br/>'.$this->totalIncomeDuoAccountsOutsidePartnersForPartner.'<br/>';
 
 		$this->GetTotalOutcomeFromDuoAccountsByUser($this->user->get('userId'), $this->totalOutcomeDuoAccountsMadeByUser);
 		$this->GetTotalOutcomeFromDuoAccountsByUser($this->user->GetPartnerId(), $this->totalOutcomeDuoAccountsMadeByPartner);
@@ -422,8 +422,8 @@ class StatisticsBalanceHandler extends Handler
 		$this->GetTotalExpenseDuoAccountsChargedForUser($this->user->GetPartnerId(), $this->totalExpensesDuoAccountsChargedForPartner);
 		if ($this->debug) print '<br/>'.$this->totalExpensesDuoAccounts.'<br/>'.$this->totalExpensesDuoAccountsChargedForUser.'<br/>'.$this->totalExpensesDuoAccountsChargedForPartner.'<br/>';
 		
-		$this->totalContributionOfUser += $this->totalIncomeDuoAccountsMadeByUser - $this->totalOutcomeDuoAccountsMadeByUser + $this->totaltotalIncomeDuoAccountsOutsidePartnersForUser;
-		$this->totalContributionOfPartner += $this->totalIncomeDuoAccountsMadeByPartner - $this->totalOutcomeDuoAccountsMadeByPartner + $this->totaltotalIncomeDuoAccountsOutsidePartnersForPartner;
+		$this->totalContributionOfUser += $this->totalIncomeDuoAccountsMadeByUser - $this->totalOutcomeDuoAccountsMadeByUser + $this->totalIncomeDuoAccountsOutsidePartnersForUser;
+		$this->totalContributionOfPartner += $this->totalIncomeDuoAccountsMadeByPartner - $this->totalOutcomeDuoAccountsMadeByPartner + $this->totalIncomeDuoAccountsOutsidePartnersForPartner;
 		$this->totalExpenses += $this->totalExpensesDuoAccounts;
 		$this->totalExpensesChargedToUser += $this->totalExpensesDuoAccountsChargedForUser;
 		$this->totalExpensesChargedToPartner += $this->totalExpensesDuoAccountsChargedForPartner;

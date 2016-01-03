@@ -9,9 +9,12 @@ $partner = $usersHandler->GetUser($user->GetPartnerId());
 
 $statisticsHandler = new StatisticsHandler();
 $translator = new Translator();
+/*
 for ($year = 2014; $year < 2016; $year++)
 	for ($month = 1; $month <= 12; $month++)
 		$balance = new StatisticsBalanceHandler($year, $month, false);
+*/
+$balance = new StatisticsBalanceHandler(2016, 01, true);
 
 ?>
 Situation des comptes entre <?= $user->get('name') ?> et <?= $partner->get('name') ?>

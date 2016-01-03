@@ -16,4 +16,5 @@ foreach ($accounts as $account)
 
 $isConfigurationSelected = ($page == 'administration');
 
+AddMenuTopItem(!$isConfigurationSelected, $translator->getTranslation('Suivi'), 'repayments_monitoring', 'record', '', '', true);
 AddMenuTopItem(!$isConfigurationSelected, $translator->getTranslation('Administration'), 'administration', 'administration', '', '', false);

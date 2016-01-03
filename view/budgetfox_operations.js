@@ -39,6 +39,23 @@ function ConfirmRecord(recordIdToConfirm, sender)
 	);
 }
 
+function FlagRecord(recordIdToConfirm, sender, flag)
+{
+	if (sender.checked)
+		confirmation = 1;
+	else
+		confirmation = 0;
+
+	sender.disabled = true;
+	$.post (
+			'../controller/controller.php?action=record_flag',
+			{ recordId: recordIdToConfirm , confirmed: confirmation , flag: flag },
+			function(response, status) {
+				sender.disabled = false;
+			}
+	);
+}
+
 function LoadRecords_All()
 {
 	$('#content').html('<img src="../media/loading.gif" />');

@@ -1,8 +1,8 @@
-ALTER TABLE `budgetfox`.`bf_record` DROP INDEX `category`;
+ALTER TABLE `{TABLEPREFIX}record` DROP INDEX `category`;
 
-ALTER TABLE `budgetfox`.`bf_record` ADD INDEX `category_id` (`category_id`) USING BTREE;
+ALTER TABLE `{TABLEPREFIX}record` ADD INDEX `category_id` (`category_id`) USING BTREE;
 
-ANALYZE TABLE `bf_record` ;
+ANALYZE TABLE `{TABLEPREFIX}record` ;
 
-OPTIMIZE TABLE `bf_record` ;
+OPTIMIZE TABLE `{TABLEPREFIX}record` ;
 

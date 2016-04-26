@@ -114,6 +114,9 @@ function LoadPage() {
 	// alert('LoadPage() : ' + 'page=' + currentContext.page + ', ' + 'area=' + currentContext.area + ', id=' + currentContext.id + ', data=' + currentContext.data);
 
 	$('#content').html('<img src="../media/loading.gif" />');
+
+    LoadLeftMenu();
+	LoadTopMenu();
 	$.ajax({
         type : 'POST',
         url : 'page.php?page=' + currentContext.page + '&area=' + currentContext.area + '&id=' + currentContext.id + '&data=' + currentContext.data,
@@ -125,8 +128,6 @@ function LoadPage() {
         },
         dataType: 'html',
         success : function(data) {
-            LoadTopMenu();
-            LoadLeftMenu();
             $('#content').html(data);
         }
     });
@@ -168,6 +169,7 @@ function LoadTopMenu() {
 
 function LoadLeftMenu()
 {
+	$('#leftMenu').html('');
 	$.ajax({
         type : 'POST',
         url : 'menu_left.php',

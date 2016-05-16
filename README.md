@@ -3,4 +3,4 @@ GeSFi
 
 http://stevefuchs.fr/wordpress/gesfi/
 
-TEST
+Changes made in master branch to check how it works

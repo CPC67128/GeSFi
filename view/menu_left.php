@@ -22,7 +22,7 @@ else if ($area == 'investment')
 	AddMenuLeftItem("investment_record_value");
 	AddMenuLeftItem("investment_record_deposit");
 	AddMenuLeftItem("investment_record_withdrawal");
-	if ($account->get('generateIncome'))
+	if ($account->getIfSetOrDefault('generateIncome', false))
 		AddMenuLeftItem("investment_record_income");
 	AddMenuLeftItem("investment_record_remark");
 	AddMenuLeftItem("investment_record_statistics");

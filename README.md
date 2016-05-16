@@ -3,4 +3,8 @@ GeSFi
 
 http://stevefuchs.fr/wordpress/gesfi/
 
-Not pushed to production yet
+
+
+
+WARNING:
+This will be pushed to production very shortly

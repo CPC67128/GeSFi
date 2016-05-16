@@ -50,11 +50,12 @@ class DB
 
 	function ConvertStringForSqlInjection($data)
 	{
-		if (get_magic_quotes_gpc())
+/*		if (get_magic_quotes_gpc())
 		{
 			$data = stripslashes($data); // Removes magic_quotes_gpc slashes
-		}
-		$data = mysql_real_escape_string($data);
+		}*/
+
+		$data = $this->_connection->quote($data);
 
 		return $data;
 	}
@@ -77,7 +78,7 @@ class DB
 	{
 		$query = sprintf('select * from '.$this->_dbTablePrefix.'configuration where user_id = \'%s\'',
 				$this->_userId);
-		$result = $this->_connection->query($query) or die('Erreur SQL ! '.$query.'<br />'.mysql_error());
+		$result = $this->_connection->query($query) or die('Erreur SQL ! '.$query.'<br />'.print_r($this->_connection->errorInfo(), true));
 
 		return $result->fetch();
 	}
@@ -109,7 +110,7 @@ class DB
 			throw new Exception($query);
 		else
 		{
-			$result = $this->_connection->query($query) or die('Erreur SQL ! '.$query.'<br />'.mysql_error());
+			$result = $this->_connection->query($query) or die('Erreur SQL ! '.$query.'<br />'.print_r($this->_connection->errorInfo(), true));
 			return $result->fetch();
 		}
 	}
@@ -128,7 +129,7 @@ class DB
 			throw new Exception($query);
 		else
 		{
-			$result = $this->_connection->query($query) or die('Erreur SQL ! '.$query.'<br />'.mysql_error());
+			$result = $this->_connection->query($query) or die('Erreur SQL ! '.$query.'<br />'.print_r($this->_connection->errorInfo(), true));
 			return $result;
 		}
 	}
@@ -144,7 +145,7 @@ class DB
 	function GenerateUUID()
 	{
 		$query = sprintf('select uuid()');
-		$result = $this->_connection->query($query) or die('Erreur SQL ! '.$query.'<br />'.mysql_error());
+		$result = $this->_connection->query($query) or die('Erreur SQL ! '.$query.'<br />'.print_r($this->_connection->errorInfo(), true));
 		$row = $result->fetch();
 
 		return $row[0];
@@ -156,7 +157,7 @@ class DB
 			return 0;
 
 		$query = 'select category'.$category1.' from '.$this->_dbTablePrefix.'configuration where user_id = \''.$this->_userId.'\'';
-		$result = $this->_connection->query($query) or die('Erreur SQL ! '.$query.'<br />'.mysql_error());
+		$result = $this->_connection->query($query) or die('Erreur SQL ! '.$query.'<br />'.print_r($this->_connection->errorInfo(), true));
 		$row = $result->fetch();
 		$category1Name = $row['category'.$category1];
 		

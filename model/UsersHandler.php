@@ -223,7 +223,7 @@ class UsersHandler extends Handler
 	
 		$escaped_browser = $db->ConvertStringForSqlInjection($_SERVER['HTTP_USER_AGENT']);
 	
-		$query = sprintf("insert into {TABLEPREFIX}user_connection (user_id, connection_date_time, ip_address, browser) values('{USERID}', now(), '%s', '%s')",
+		$query = sprintf("insert into {TABLEPREFIX}user_connection (user_id, connection_date_time, ip_address, browser) values('{USERID}', now(), '%s', %s)",
 				$_SERVER['REMOTE_ADDR'],
 				$escaped_browser);
 

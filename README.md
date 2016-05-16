@@ -1,4 +1,4 @@
-BudgetFox
-=========
+GeSFi
+=====
 
-http://stevefuchs.fr/wordpress/budgetfox/
+http://stevefuchs.fr/wordpress/gesfi/

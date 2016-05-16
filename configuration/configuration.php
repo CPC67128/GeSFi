@@ -14,11 +14,11 @@
  */
 
 $DB_HOST = "localhost";
-$DB_NAME = "budgetfox";
+$DB_NAME = "gesfi";
 $DB_USER = "root";
 $DB_PASSWORD = "";
 
-$DB_TABLE_PREFIX = "bf_";
+$DB_TABLE_PREFIX = "gf_";
 
 /* Emailing Configuration:
  * -----------------------

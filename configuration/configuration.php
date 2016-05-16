@@ -18,7 +18,7 @@ $DB_NAME = "gesfi";
 $DB_USER = "root";
 $DB_PASSWORD = "";
 
-$DB_TABLE_PREFIX = "gf_";
+$DB_TABLE_PREFIX = "bf_";
 
 /* Emailing Configuration:
  * -----------------------

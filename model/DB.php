@@ -87,7 +87,7 @@ class DB
 		$query = str_replace('{USERID}', $this->_userId, $query);
 		$query = str_replace('{ACCOUNTID}', $this->_accountId, $query);
 		$query = str_replace('{TABLEPREFIX}', $this->_dbTablePrefix, $query);
-		$result = $this->_connection->query($query) or die('Erreur SQL ! '.$query.'<br />'.mysql_error());
+		$result = $this->_connection->query($query) or die('Erreur SQL ! '.$query.'<br />'.print_r($this->_connection->errorInfo(), true));
 	
 		return $result->fetch();
 	}

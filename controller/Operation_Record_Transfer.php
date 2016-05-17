@@ -55,7 +55,7 @@ class Operation_Record_Transfer extends Operation_Record
 			$currentDate = Date('Y-m-d', strtotime($this->_date." +".$currentMonth." month"));
 			$uuid = $this->_db->GenerateUUID();
 
-			$this->_db->InsertRecord_AmountTransfer(
+			$this->_recordsHandler->InsertRecord_AmountTransfer(
 				$fromAccountId,
 				$fromUserId,
 				$currentDate,
@@ -64,7 +64,7 @@ class Operation_Record_Transfer extends Operation_Record
 				$recordTypeOutcome,
 				$uuid);
 
-			$this->_db->InsertRecord_AmountTransfer( 
+			$this->_recordsHandler->InsertRecord_AmountTransfer( 
 				$toAccountId,
 				$toUserId,
 				$currentDate,

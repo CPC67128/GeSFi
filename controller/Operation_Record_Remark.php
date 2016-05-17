@@ -9,10 +9,13 @@ class Operation_Record_Remark extends Operation_Record
 
 	public function Save()
 	{
-		$this->_db->InsertRecord_Remark(
-				$this->_currentAccountId,
-				$this->_currentUserId,
-				$this->_date,
-				$this->_designation);
+		$newRecord = new Record();
+		$newRecord->set('accountId', $this->_currentAccountId);
+		$newRecord->set('userId', $this->_currentUserId);
+		$newRecord->set('recordDate', $this->_date);
+		$newRecord->set('designation', $this->_designation);
+		$newRecord->set('recordType', 2);
+		
+		$this->_recordsHandler->Insert($newRecord);
 	}
 }

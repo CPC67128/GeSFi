@@ -12,6 +12,10 @@ class Entity
 		$member = '_'.$member;
 		if (isset($this->$member))
 			return $this->$member;
+
+		$function = 'get'.$member;
+		if (method_exists($this, $function))
+			return $this->$function();
 		else
 			throw new Exception('Unknow attribute '.$member);
 	}

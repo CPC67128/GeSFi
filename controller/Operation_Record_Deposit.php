@@ -31,7 +31,7 @@ class Operation_Record_Deposit extends Operation_Record
 			{
 				if (is_numeric($categoryData['amount']) && $categoryData['amount'] > 0)
 				{
-					$this->_db->InsertRecord_AmountUse(
+					$this->_recordsHandler->InsertRecord_AmountUse(
 						$toAccountId,
 						$user->get('userId'),
 						$currentDate,

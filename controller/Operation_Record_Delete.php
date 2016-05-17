@@ -8,6 +8,6 @@ class Operation_Record_Delete extends Operation_Record
 
 	public function Execute()
 	{
-		$this->_db->DeleteRecord($this->_recordId);
+		$this->_recordsHandler->DeleteRecord($this->_recordId);
 	}
 }

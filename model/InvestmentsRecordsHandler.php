@@ -138,5 +138,136 @@ class InvestmentsRecordsHandler extends Handler
 			$db->Execute($query);
 		}
 	}
+
+
+	/***** investment_record *****/
+
+
+	function InsertInvestmentRecord($accountId,
+			$recordGroupId,
+			$recordDate,
+			$designation,
+			$payment,
+			$paymentInvested,
+			$value,
+			$recordType,
+			$withdrawal,
+			$income)
+	{
+		$db = new DB();
+	
+		$query = sprintf("insert into ".$this->_dbTablePrefix."record (account_id, record_group_id, record_date, designation, amount, amount_invested, value, record_id, record_type, withdrawal, income)
+				values ('%s', '%s', '%s', '%s', %s, %s, %s, uuid(), %s, %s, %s)",
+				$accountId,
+				$recordGroupId == null ? "" : $recordGroupId,
+				$recordDate,
+				$this->ConvertStringForSqlInjection($designation),
+				$payment == null ? "null" : $payment,
+				$paymentInvested == null ? "null" : $paymentInvested,
+				$value == null ? "null" : $value,
+				$recordType == null ? "0" : $recordType,
+				$withdrawal == null ? "null" : $withdrawal,
+				$income == null ? "null" : $income);
+		//throw new Exception($query);
+	
+		$result = $this->_connection->exec($query);
+	
+		return $result;
+	}
+
+	function InsertInvestmentRecord_Remark($accountId, $recordDate, $designation)
+	{
+		return $this->InsertInvestmentRecord($accountId,
+				null,
+				$recordDate,
+				$designation,
+				null,
+				null,
+				null,
+				2,
+				null,
+				null);
+	}
+	
+	function InsertInvestmentRecord_Income($accountId, $recordGroupId, $recordDate, $designation, $payment, $paymentInvested)
+	{
+		return $this->InsertInvestmentRecord($accountId,
+				$recordGroupId,
+				$recordDate,
+				$designation,
+				$payment,
+				$paymentInvested,
+				null,
+				10,
+				null,
+				null);
+	}
+	
+	function InsertInvestmentRecord_Withdrawal($accountId, $recordGroupId, $recordDate, $designation, $withdrawal)
+	{
+		return $this->InsertInvestmentRecord($accountId,
+				$recordGroupId,
+				$recordDate,
+				$designation,
+				null,
+				null,
+				null,
+				20,
+				$withdrawal,
+				null);
+	}
+	
+	function InsertInvestmentRecord_Value($accountId, $recordDate, $designation, $value)
+	{
+		return $this->InsertInvestmentRecord($accountId,
+				null,
+				$recordDate,
+				$designation,
+				null,
+				null,
+				$value,
+				30,
+				null,
+				null);
+	}
+	
+	function InsertInvestmentRecord_IncomeSpecial($accountId, $recordGroupId, $recordDate, $designation, $income)
+	{
+		return $this->InsertInvestmentRecord($accountId,
+				$recordGroupId,
+				$recordDate,
+				$designation,
+				null,
+				null,
+				null,
+				40,
+				null,
+				$income);
+	}
+	
+	function DeleteInvestmentRecord($recordId)
+	{
+		$db = new DB();
+	
+		$sql = "select record_group_id from {TABLEPREFIX}record where record_id = '".$recordId."'";
+		$row = $this->SelectRow($sql);
+		if (strlen($row['record_group_id']) > 0)
+		{
+			$sql = "update {TABLEPREFIX}record set marked_as_deleted = 1 where record_group_id = '".$row['record_group_id']."'";
+		}
+		else
+		{
+			$sql = "update {TABLEPREFIX}record set marked_as_deleted = 1 where record_id = '".$recordId."' and account_id = '{ACCOUNTID}'";
+		}
+		$result = $this->Execute($sql);
+	
+		if (strlen($row['record_group_id']) > 0)
+		{
+			$sql = "update {TABLEPREFIX}record set marked_as_deleted = 1 where record_group_id = '".$row['record_group_id']."'";
+		}
+		$result = $this->Execute($sql);
+	
+		return $result;
+	}
 }
 

@@ -33,7 +33,7 @@ class Operation_Record_Payment extends Operation_Record
 			{
 				if (is_numeric($categoryData['amount']) && $categoryData['amount'] > 0)
 				{
-					$this->_db->InsertRecord_AmountUse(
+					$this->_recordsHandler->InsertRecord_AmountUse(
 						$fromAccountId,
 						$fromUserId,
 						$currentDate,

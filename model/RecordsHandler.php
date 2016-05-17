@@ -18,6 +18,154 @@ class RecordsHandler extends Handler
 		return $types;
 	}
 
+	/*****************/
+
+	function Insert($record)
+	{
+		$db = new DB();
+
+		$query = sprintf("insert into {TABLEPREFIX}record (account_id, record_id, record_group_id,
+				user_id, record_date, record_date_month, record_date_year, marked_as_deleted,
+				designation, record_type, amount, amount_invested, value, withdrawal, income,
+				charge, category_id, actor, confirmed)
+
+				values ('%s', uuid(), '%s',
+				'%s', '%s', %s, %s, %s,
+				%s, %s, %s, %s, %s, %s, %s,
+				%s, '%s', %s, %s)",
+	
+				$record->get('accountId'),
+				$record->getIfSetOrDefault('recordGroupId', ''),
+				
+				$record->getIfSetOrDefault('userId', ''),
+				$record->get('recordDate'),
+				$record->get('recordDateMonth'),
+				$record->get('recordDateYear'),
+				$record->getIfSetOrDefault('markedAsDeleted', '0'),
+
+				$db->ConvertStringForSqlInjection($record->get('designation')),
+				$record->get('recordType'),
+				$record->getIfSetOrDefault('amount', 'null'),
+				$record->getIfSetOrDefault('amountInvested', 'null'),
+				$record->getIfSetOrDefault('value', 'null'),
+				$record->getIfSetOrDefault('withdrawal', 'null'),
+				$record->getIfSetOrDefault('income', 'null'),
+
+				$record->getIfSetOrDefault('charge', '0'),
+				$record->getIfSetOrDefault('category', ''),
+				$record->getIfSetOrDefault('actor', '0'),
+				$record->getIfSetOrDefault('confirmed', '0')
+				);
+		//throw new Exception($query);
+		$result = $db->Execute($query);
+	
+		return $result;
+	}
+
+
+
+	function InsertRecord($accountId,
+			$userId,
+			$actor,
+			$recordDate,
+			$amount,
+			$designation,
+			$charge,
+			$category,
+			$recordType,
+			$confirmed,
+			$recordGroupId)
+	{
+		$db = new DB();
+	
+		$query = sprintf("insert into {TABLEPREFIX}record (account_id, user_id, record_date, marked_as_deleted, designation, record_type, amount, actor, charge, category_id, record_group_id, record_id, confirmed)
+				values ('%s', '%s', '%s', 0, %s, %s, %s, %s, %s, '%s', '%s', uuid(), %s)",
+				$accountId,
+				$userId,
+				$recordDate,
+				$db->ConvertStringForSqlInjection($designation),
+				$recordType,
+				$amount,
+				$actor == null ? 0 : $actor,
+				$charge,
+				$category == null ? "" : $category,
+				$recordGroupId == null ? "" : $recordGroupId,
+				$confirmed);
+		$result = $db->Execute($query);
+	
+		$queryMonthYearFill = "update {TABLEPREFIX}record set record_date_month = month(record_date), record_date_year = year(record_date) where record_date_month = -1";
+		$resultMonthYearFill = $db->Execute($queryMonthYearFill);
+	
+		return $result;
+	}
+
+	function InsertRecord_Remark($accountId, $userId, $recordDate, $designation)
+	{
+		return $this->InsertRecord($accountId,
+				$userId,
+				null,
+				$recordDate,
+				0,
+				$designation,
+				0,
+				null,
+				2,
+				0,
+				null);
+	}
+	
+	function InsertRecord_AmountTransfer($accountId, $userId, $recordDate, $amount, $designation, $recordType, $recordGroupId)
+	{
+		return $this->InsertRecord($accountId,
+				$userId,
+				null,
+				$recordDate,
+				$amount,
+				$designation,
+				0,
+				null,
+				$recordType,
+				0,
+				$recordGroupId);
+	}
+	
+	function InsertRecord_AmountUse($accountId, $userId, $recordDate, $amount, $designation, $charge, $category, $recordType, $confirmed, $recordGroupId)
+	{
+		return $this->InsertRecord(
+				$accountId,
+				$userId,
+				null,
+				$recordDate,
+				$amount,
+				$designation,
+				$charge,
+				$category,
+				$recordType,
+				$confirmed,
+				$recordGroupId);
+	}
+	
+	function DeleteRecord($recordId)
+	{
+		$db = new DB();
+
+		$sql = "select record_group_id from {TABLEPREFIX}record where record_id = '".$recordId."'";
+		$row = $db->SelectRow($sql);
+
+		if (strlen($row['record_group_id']) > 0)
+		{
+			$sql = "update {TABLEPREFIX}record set marked_as_deleted = 1 where record_group_id = '".$row['record_group_id']."'";
+		}
+		else
+		{
+			$sql = "update {TABLEPREFIX}record set marked_as_deleted = 1 where record_id = '".$recordId."'";
+		}
+		$result = $db->Execute($sql);
+
+		return $result;
+	}
+	/***************************/
+
 	function GetRecordTypeGroup($recordType)
 	{
 		return $this->GetRecordTypeGroups()[$recordType];
@@ -175,135 +323,6 @@ class RecordsHandler extends Handler
 	
 		$result = $db->Select($query);
 		return $result;
-	}
-
-	// OBSOLETE Total of outcome to duo account
-	function GetTotalOutcomeToDuoAccount($month, $year)
-	{
-		$total = 0;
-
-		$db = new DB();
-
-		/* Virtual account
-		$query = "select sum(amount) as total
-			from {TABLEPREFIX}record
-			where record_type in (12)
-			and marked_as_deleted = 0
-			and record_date <= curdate()
-			and record_date_month = ".$month."
-			and record_date_year = ".$year."
-			and actor = 1
-			and account_id in (select account_id from {TABLEPREFIX}account where type = 2 and owner_user_id = '".$_SESSION['user_id']."')";
-		$row = $db->SelectRow($query);
-		$total += $row['total'];
-		
-		$query = "select sum(amount) as total
-			from {TABLEPREFIX}record
-			where record_type in (12)
-			and marked_as_deleted = 0
-			and record_date <= curdate()
-			and record_date_month = ".$month."
-			and record_date_year = ".$year."
-			and actor = 2
-			and account_id in (select account_id from {TABLEPREFIX}account where type = 2 and coowner_user_id = '".$_SESSION['user_id']."')";
-		$row = $db->SelectRow($query);
-		$total += $row['total'];
-		*/
-
-		// Total deposits from the current user to a duo account
-		$query = "select sum(amount) as total
-			from {TABLEPREFIX}record
-			where record_type in (20)
-			and marked_as_deleted = 0
-			and record_date <= curdate()
-			and record_date_month = ".$month."
-			and record_date_year = ".$year."
-			and record_group_id in
-				(
-					select record_group_id
-					from {TABLEPREFIX}record
-					where record_type in (10)
-					and account_id in (select account_id from {TABLEPREFIX}account where type in (2, 3) and (owner_user_id = '{USERID}' or coowner_user_id = '{USERID}'))
-				)
-			and
-				(
-					account_id in
-					(
-						select account_id
-						from {TABLEPREFIX}account
-						where type not in (2, 3, 5, 12) and owner_user_id = '{USERID}'
-					)
-					or
-					account_id = ''
-				)";
-		$row = $db->SelectRow($query);
-		$total += $row['total'];
-
-		$usersHandler = new UsersHandler();
-		$user = $usersHandler->GetUser($_SESSION['user_id']);
-
-		// Total payments from the current user to a duo category 
-		$query = "select sum(amount * (charge / 100)) as total
-			from {TABLEPREFIX}record
-			where record_type in (22)
-			and marked_as_deleted = 0
-			and category_id in (select category_id from {TABLEPREFIX}category where link_type = 'DUO' and link_id = '".$user->getDuoId()."')
-			and record_date <= curdate()
-			and record_date_month = ".$month."
-			and record_date_year = ".$year."
-			and user_id = '{USERID}'
-			and account_id not in (select account_id from {TABLEPREFIX}account where type in (2, 3, 5, 12))";
-		$row = $db->SelectRow($query);
-		$total += $row['total'];
-
-		// Total payments from the current user to a private category that is not his 
-		$query = "select sum(amount * (charge / 100)) as total
-			from {TABLEPREFIX}record
-			where record_type in (22)
-			and marked_as_deleted = 0
-			and category_id in (select category_id from {TABLEPREFIX}category where link_type = 'USER' and link_id != '{USERID}')
-			and record_date <= curdate()
-			and record_date_month = ".$month."
-			and record_date_year = ".$year."
-			and user_id = '{USERID}'
-			and account_id not in (select account_id from {TABLEPREFIX}account where type in (2, 3, 5, 12))";
-		$row = $db->SelectRow($query);
-		$total += $row['total'];
-
-		return $total;
-	}
-
-	// OBSOLETE
-	function GetTotalIncomeFromDuoAccount($month, $year)
-	{
-		$total = 0;
-
-		$db = new DB();
-
-		$query = "select sum(amount) as total
-			from {TABLEPREFIX}record
-			where record_type in (10)
-			and marked_as_deleted = 0
-			and record_date <= curdate()
-			and record_date_month = ".$month."
-			and record_date_year = ".$year."
-			and record_group_id in
-				(
-					select record_group_id
-					from {TABLEPREFIX}record
-					where record_type in (20)
-					and account_id in (select account_id from {TABLEPREFIX}account where type in (2, 3) and (owner_user_id = '".$_SESSION['user_id']."' or coowner_user_id = '".$_SESSION['user_id']."'))
-				)
-			and account_id in
-				(
-					select account_id
-					from {TABLEPREFIX}account
-					where type not in (2, 3, 5, 12) and owner_user_id = '{USERID}'
-				)";
-		$row = $db->SelectRow($query);
-		$total += $row['total'];
-
-		return $total;
 	}
 
 	function ListDesignation($searchString, $type)

@@ -4,7 +4,7 @@ function DeleteRecord(recordIdToDelete)
 	$.post (
 			'../controller/controller.php?action=record_delete',
 			{ recordId: recordIdToDelete },
-			function(response, status) {
+			function(response) {
 				LoadRecords_Normal()
 			}
 	);

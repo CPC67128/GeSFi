@@ -42,6 +42,16 @@ Private real account allowed operations:
 
 == Glossaire de l'application ==
 
+
+Balance
+Transfer
+Credit
+Debit
+Payment
+Income
+
+
+
 Record
 
 Account : compte bancaire (comptes d'utilisation courante)

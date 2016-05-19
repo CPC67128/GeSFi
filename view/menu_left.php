@@ -20,7 +20,7 @@ else if ($area == 'investment')
 
 	AddMenuLeftItem("investment_record");
 	AddMenuLeftItem("investment_record_value");
-	AddMenuLeftItem("investment_record_deposit");
+	AddMenuLeftItem("investment_record_credit");
 	AddMenuLeftItem("investment_record_withdrawal");
 	if ($account->getIfSetOrDefault('generateIncome', false))
 		AddMenuLeftItem("investment_record_income");
@@ -31,7 +31,7 @@ else
 {
 	AddMenuLeftItem("record");
 	AddMenuLeftItem("record_payment");
-	AddMenuLeftItem("record_deposit");
+	AddMenuLeftItem("record_income");
 	AddMenuLeftItem("record_transfer");
 	AddMenuLeftItem("record_remark");
 	AddMenuLeftItem("record_balance");

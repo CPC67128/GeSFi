@@ -55,23 +55,25 @@ class Operation_Record_Transfer extends Operation_Record
 			$currentDate = Date('Y-m-d', strtotime($this->_date." +".$currentMonth." month"));
 			$uuid = $this->_db->GenerateUUID();
 
-			$this->_recordsHandler->InsertRecord_AmountTransfer(
-				$fromAccountId,
-				$fromUserId,
-				$currentDate,
-				$amountOutcome,
-				$this->_designation,
-				$recordTypeOutcome,
-				$uuid);
+			$newRecord = new Record_Transfer_Debit(
+					$fromAccountId,
+					$fromUserId,
+					$currentDate,
+					$amountOutcome,
+					$this->_designation,
+					$uuid
+			);
+			$this->_recordsHandler->Insert($newRecord);
 
-			$this->_recordsHandler->InsertRecord_AmountTransfer( 
-				$toAccountId,
-				$toUserId,
-				$currentDate,
-				$amountIncome,
-				$this->_designation,
-				$recordTypeIncome,
-				$uuid);
+			$newRecord = new Record_Transfer_Credit(
+					$toAccountId,
+					$toUserId,
+					$currentDate,
+					$amountIncome,
+					$this->_designation,
+					$uuid
+			);
+			$this->_recordsHandler->Insert($newRecord);
 		}
 	}
 }

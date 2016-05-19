@@ -1,25 +1,25 @@
 <?php
 class Record extends Entity
 {
-	protected $_accountId;
-	protected $_recordId;
-	protected $_recordGroupId;
-	protected $_userId;
-	protected $_recordDate;
-	protected $_markedAsDeleted;
-	protected $_designation;
-	protected $_recordType;
-	protected $_amount;
-	protected $_amountInvested;
-	protected $_value;
-	protected $_withdrawal;
-	protected $_income;
-	protected $_charge;
-	protected $_category;
-	protected $_categoryId;
-	protected $_actor;
-	protected $_confirmed;
-	protected $_creationDate;
+	protected $accountId;
+	protected $recordId;
+	protected $recordGroupId;
+	protected $userId;
+	protected $recordDate;
+	protected $markedAsDeleted;
+	protected $designation;
+	protected $recordType;
+	protected $amount;
+	protected $amountInvested;
+	protected $value;
+	protected $withdrawal;
+	protected $income;
+	protected $charge;
+	protected $category;
+	protected $categoryId;
+	protected $actor;
+	protected $confirmed;
+	protected $creationDate;
 
 	public function __construct()
 	{

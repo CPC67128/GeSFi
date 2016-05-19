@@ -60,7 +60,7 @@ $menus = array(
 				'image_original' => 'valueMenuIcon.gif',
 				'text' => 'Valorisation'
 		),
-		'investment_record_deposit' => array(
+		'investment_record_credit' => array(
 				'image' => 'freeiconmaker_3.png',
 				'image_original' => 'depositMenuIcon.gif',
 				'text' => 'Dépôt'
@@ -96,7 +96,7 @@ $menus = array(
 				'image_original' => 'paymentMenuIcon.png',
 				'text' => 'Dépense'
 		),
-		'record_deposit' => array(
+		'record_income' => array(
 				'image' => 'freeiconmaker_21.png',
 				'image_original' => 'depositMenuIcon.gif',
 				'text' => 'Revenu'

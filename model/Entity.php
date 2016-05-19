@@ -9,6 +9,9 @@ class Entity
 	
 	public function get($member)
 	{
+		if (isset($this->$member))
+			return $this->$member;
+
 		$member = '_'.$member;
 		if (isset($this->$member))
 			return $this->$member;
@@ -22,6 +25,9 @@ class Entity
 	
 	public function getIfSetOrDefault($member, $default)
 	{
+		if (isset($this->$member))
+			return $this->$member;
+
 		$member = '_'.$member;
 		if (isset($this->$member))
 			return $this->$member;

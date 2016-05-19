@@ -97,9 +97,9 @@ switch ($pageName)
 	case 'record_remark':
 	case 'record_transfer':
 	case 'record_payment':
-	case 'record_deposit':
+	case 'record_income':
 	case 'investment_record_value':
-	case 'investment_record_deposit';
+	case 'investment_record_credit';
 	case 'investment_record_withdrawal';
 	case 'investment_record_income';
 	case 'investment_record_remark';

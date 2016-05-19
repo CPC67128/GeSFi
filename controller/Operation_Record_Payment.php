@@ -33,17 +33,18 @@ class Operation_Record_Payment extends Operation_Record
 			{
 				if (is_numeric($categoryData['amount']) && $categoryData['amount'] > 0)
 				{
-					$this->_recordsHandler->InsertRecord_AmountUse(
-						$fromAccountId,
-						$fromUserId,
-						$currentDate,
-						$categoryData['amount'],
-						$this->_designation,
-						$categoryData['chargeLevel'],
-						$categoryData['categoryId'],
-						$recordType,
-						$this->_confirmed,
-						$uuid);
+					$newRecord = new Record_Transfer_Payment(
+							$fromAccountId,
+							$fromUserId,
+							$currentDate,
+							$categoryData['amount'],
+							$this->_designation,
+							$categoryData['chargeLevel'],
+							$categoryData['categoryId'],
+							$this->_confirmed,
+							$uuid
+					);
+					$this->_recordsHandler->Insert($newRecord);
 				}
 			}
 		}

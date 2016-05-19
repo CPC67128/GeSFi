@@ -98,7 +98,7 @@ class RecordsHandler extends Handler
 	
 		return $result;
 	}
-
+/*
 	function InsertRecord_Remark($accountId, $userId, $recordDate, $designation)
 	{
 		return $this->InsertRecord($accountId,
@@ -113,6 +113,7 @@ class RecordsHandler extends Handler
 				0,
 				null);
 	}
+*/
 	
 	function InsertRecord_AmountTransfer($accountId, $userId, $recordDate, $amount, $designation, $recordType, $recordGroupId)
 	{
@@ -126,22 +127,6 @@ class RecordsHandler extends Handler
 				null,
 				$recordType,
 				0,
-				$recordGroupId);
-	}
-	
-	function InsertRecord_AmountUse($accountId, $userId, $recordDate, $amount, $designation, $charge, $category, $recordType, $confirmed, $recordGroupId)
-	{
-		return $this->InsertRecord(
-				$accountId,
-				$userId,
-				null,
-				$recordDate,
-				$amount,
-				$designation,
-				$charge,
-				$category,
-				$recordType,
-				$confirmed,
 				$recordGroupId);
 	}
 	
@@ -331,7 +316,7 @@ class RecordsHandler extends Handler
 		$user = $usersHandler->GetCurrentUser();
 	
 		$db = new DB();
-		$searchString = $db->ConvertStringForSqlInjection($searchString);
+		$searchString = $db->ConvertStringForSqlInjection('%'.$searchString.'%');
 
 		$typeStart = $type.'0';
 		$typeEnd = $type.'9';
@@ -344,7 +329,7 @@ class RecordsHandler extends Handler
 
 		$query = "select designation, count(*) as total
 			from {TABLEPREFIX}record
-			where designation like '%".$searchString."%'
+			where designation like ".$searchString."
 			and record_type >= ".$typeStart." and record_type <= ".$typeEnd."
 			and account_id in (select account_id from {TABLEPREFIX}account where owner_user_id = '".$user->get('userId')."' or coowner_user_id = '".$user->get('userId')."')
 			group by designation

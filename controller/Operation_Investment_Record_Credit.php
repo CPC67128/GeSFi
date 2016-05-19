@@ -1,5 +1,5 @@
 <?php
-class Operation_Investment_Record_Deposit extends Operation_Investment_Record
+class Operation_Investment_Record_Credit extends Operation_Investment_Record
 {
 	public function Validate()
 	{
@@ -36,14 +36,17 @@ class Operation_Investment_Record_Deposit extends Operation_Investment_Record
 						$recordTypeOutcome,
 						$uuid);
 			}
-	
-			$this->_db->InsertInvestmentRecord_Income(
+
+			$newRecord = new Record_Transfer_Credit_Investment(
 					$this->_toAccount,
-					$uuid,
+					$this->_currentUserId,
 					$toDate,
-					$this->_designation,
 					$this->_amount,
-					$this->_amountInvested);
+					$this->_amountInvested,
+					$this->_designation,
+					$uuid
+			);
+			$this->_recordsHandler->Insert($newRecord);
 		}
 	}
 }

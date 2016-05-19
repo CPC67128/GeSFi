@@ -1,5 +1,5 @@
 <?php
-class Operation_Record_Deposit extends Operation_Record
+class Operation_Record_Income extends Operation_Record
 {
 	public function Validate()
 	{
@@ -31,17 +31,18 @@ class Operation_Record_Deposit extends Operation_Record
 			{
 				if (is_numeric($categoryData['amount']) && $categoryData['amount'] > 0)
 				{
-					$this->_recordsHandler->InsertRecord_AmountUse(
-						$toAccountId,
-						$user->get('userId'),
-						$currentDate,
-						$categoryData['amount'],
-						$this->_designation,
-						$categoryData['chargeLevel'],
-						$categoryData['categoryId'],
-						12,
-						0,
-						$uuid);
+					$newRecord = new Record_Transfer_Income(
+							$toAccountId,
+							$user->get('userId'),
+							$currentDate,
+							$categoryData['amount'],
+							$this->_designation,
+							$categoryData['chargeLevel'],
+							$categoryData['categoryId'],
+							0,
+							$uuid
+					);
+					$this->_recordsHandler->Insert($newRecord);
 				}
 			}
 		}

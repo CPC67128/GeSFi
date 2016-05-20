@@ -10,10 +10,13 @@ class Operation_Investment_Record_Value extends Operation_Investment_Record
 
 	public function Save()
 	{
-		$this->_db->InsertInvestmentRecord_Value(
+		$newRecord = new Record_Remark_Value(
 				$this->_currentAccountId,
+				$this->_currentUserId,
 				$this->_date,
 				$this->_designation,
-				$this->_value);
+				$this->_value
+		);
+		$this->_recordsHandler->Insert($newRecord);
 	}
 }

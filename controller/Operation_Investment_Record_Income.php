@@ -25,14 +25,15 @@ class Operation_Investment_Record_Income extends Operation_Investment_Record
 
 		if ($this->_toAccount != '')
 		{
-			$this->_db->InsertRecord_AmountTransfer(
+			$newRecord = new Record_Transfer_Income(
 					$this->_toAccount,
 					$this->_currentUserId,
 					$this->_toDate,
 					$this->_amountDisinvested,
 					$this->_designation,
-					$recordTypeIncome,
-					$uuid);
+					$uuid
+			);
+			$this->_recordsHandler->Insert($newRecord);
 		}
 	}
 }

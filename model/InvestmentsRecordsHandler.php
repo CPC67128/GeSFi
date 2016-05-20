@@ -175,34 +175,6 @@ class InvestmentsRecordsHandler extends Handler
 		return $result;
 	}
 
-	function InsertInvestmentRecord_Withdrawal($accountId, $recordGroupId, $recordDate, $designation, $withdrawal)
-	{
-		return $this->InsertInvestmentRecord($accountId,
-				$recordGroupId,
-				$recordDate,
-				$designation,
-				null,
-				null,
-				null,
-				20,
-				$withdrawal,
-				null);
-	}
-	
-	function InsertInvestmentRecord_Value($accountId, $recordDate, $designation, $value)
-	{
-		return $this->InsertInvestmentRecord($accountId,
-				null,
-				$recordDate,
-				$designation,
-				null,
-				null,
-				$value,
-				30,
-				null,
-				null);
-	}
-	
 	function InsertInvestmentRecord_IncomeSpecial($accountId, $recordGroupId, $recordDate, $designation, $income)
 	{
 		return $this->InsertInvestmentRecord($accountId,

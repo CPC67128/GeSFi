@@ -38,26 +38,9 @@ class RecordsHandler extends Handler
 				$record->getIfSetOrDefault('confirmed', '0')
 				);
 		$result = $db->Execute($query);
-	
-		return $result;
-	}
 
-	function DeleteRecord($recordId)
-	{
-		$db = new DB();
-
-		$sql = "select record_group_id from {TABLEPREFIX}record where record_id = '".$recordId."'";
-		$row = $db->SelectRow($sql);
-
-		if (strlen($row['record_group_id']) > 0)
-		{
-			$sql = "update {TABLEPREFIX}record set marked_as_deleted = 1 where record_group_id = '".$row['record_group_id']."'";
-		}
-		else
-		{
-			$sql = "update {TABLEPREFIX}record set marked_as_deleted = 1 where record_id = '".$recordId."'";
-		}
-		$result = $db->Execute($sql);
+		$accountsHandlerBalance = new AccountsHandlerBalance();
+		$accountsHandlerBalance->CalculateAccountBalances($record->get('accountId'));
 
 		return $result;
 	}

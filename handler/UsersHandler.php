@@ -86,7 +86,7 @@ class UsersHandler extends Handler
 		$newUser = new User();
 
 		$db = new DB();
-	
+
 		$query = "select *
 			from {TABLEPREFIX}user
 			where user_id = '{USERID}'";

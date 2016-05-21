@@ -3,11 +3,20 @@ class Entity
 {
 	public function set($member, $value)
 	{
-		$member = '_'.$member;
-		$this->$member = $value;
-
-		if (!isset($this->$member))
-			throw new Exception('Unknow attribute '.$member);
+		if (property_exists($this, $member))
+			$this->$member = $value;
+		else
+		{
+			$member = '_'.$member;
+			if (property_exists($this, $member))
+				$this->$member = $value;
+			else
+			{
+				var_dump($member);
+				var_dump($value);
+				throw new Exception('Unknow attribute '.$member);
+			}
+		}
 	}
 	
 	public function get($member)
@@ -43,7 +52,8 @@ class Entity
 		foreach ($data as $key => $value)
 		{
 			$key = $this->GetMemberNameFromFieldName($key);
-			$this->set($key, $value);
+			if (!is_numeric($key))
+				$this->set($key, $value);
 		}
 	}
 

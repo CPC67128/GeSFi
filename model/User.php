@@ -10,6 +10,7 @@ class User extends Entity
 	protected $_name;
 	protected $_culture;
 	protected $_duoId;
+	protected $_active;
 	
 	// -------------------------------------------------------------------------------------------------------------------
 
@@ -18,15 +19,15 @@ class User extends Entity
 		return !isset($this->_userId);
 	}
 
-	function GetPartnerId()
+	public function GetPartnerId()
 	{
 		$db = new DB();
 
 		$query = "select user_id
 			from {TABLEPREFIX}user
 			where duo_id != ''
-			and duo_id = '".$this->_duoId."'
-			and user_id != '".$this->_userId."'";
+			and duo_id = '".$this->get('duoId')."'
+			and user_id != '".$this->get('userId')."'";
 		$row = $db->SelectRow($query);
 
 		if ($row)
@@ -44,8 +45,8 @@ class User extends Entity
 		$query = "select name
 		from {TABLEPREFIX}user
 		where duo_id != ''
-		and duo_id = '".$this->_duoId."'
-		and user_id != '".$this->_userId."'";
+		and duo_id = '".$this->get('duoId')."'
+		and user_id != '".$this->get('userId')."'";
 		$row = $db->SelectRow($query);
 	
 		if ($row)

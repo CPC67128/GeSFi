@@ -517,4 +517,64 @@ class AccountsHandler extends Handler
 
 		return $result;
 	}
+
+	public function FillInvestmentFieldsForAccount($account)
+	{
+		$db = new DB();
+	
+		$query = "select record_date
+				from {TABLEPREFIX}record
+				where account_id = '".$account->get('accountId')."'
+				and value is not null
+				and marked_as_deleted = 0
+				order by record_date desc
+				limit 1";
+		$row = $db->SelectRow($query);
+		$account->set('lastValueDate', $row['record_date']);
+
+		$query = "select CALC_yield_average
+			from {TABLEPREFIX}record
+			where account_id = '".$account->get('accountId')."'
+			and CALC_yield_average is not null
+			and marked_as_deleted = 0
+			order by record_date desc
+			limit 1";
+		$row = $db->SelectRow($query);
+		$account->set('yieldAverage', $row['CALC_yield_average']);
+
+		$query = "select CALC_yield
+			from {TABLEPREFIX}record
+			where account_id = '".$account->get('accountId')."'
+			and CALC_yield is not null
+			and marked_as_deleted = 0
+			order by record_date desc
+			limit 1";
+		$row = $db->SelectRow($query);
+		$account->set('yield', $row['CALC_yield']);
+
+		$db = new DB();
+		
+		$query = "select value
+			from {TABLEPREFIX}record
+			where account_id = '".$account->get('accountId')."'
+			and value is not null
+			and marked_as_deleted = 0
+			order by record_date desc, creation_date desc
+			limit 1";
+		$row = $db->SelectRow($query);
+		if (isset($row['value']))
+			$account->set('lastValue', $row['value']);
+		else
+		{
+			$query = "select CALC_amount_invested_accumulated
+				from {TABLEPREFIX}record
+				where account_id = '".$account->get('accountId')."'
+				and value is null
+				and marked_as_deleted = 0
+				order by record_date desc, creation_date desc
+				limit 1";
+			$row = $db->SelectRow($query);
+			$account->set('lastValue', $row['CALC_amount_invested_accumulated']);
+		}
+	}
 }

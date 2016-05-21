@@ -1,7 +1,7 @@
 <?php
-/* ================================
- * BudgetFox configuration.php file
- * ================================
+/* ============================
+ * GeSFi configuration.php file
+ * ============================
  */ 
 
 /* Database Connection Information:
@@ -10,7 +10,7 @@
  * - DB_NAME: Database name on the server
  * - DB_USER: Database user
  * - DB_PASSWORD: User's password
- * - DB_TABLE_PREFIX: BudgetFox database tables prefix (for database hosting several web applications) 
+ * - DB_TABLE_PREFIX: GeSFi database tables prefix (for database hosting several web applications) 
  */
 
 $DB_HOST = "localhost";

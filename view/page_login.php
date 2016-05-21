@@ -3,16 +3,16 @@
 <html>
 <head>
 <?php include '../component/component_head.php'; ?>
-<title><?= $translator->getTranslation("BudgetFox / Login") ?></title>
-<link href="budgetfox_login.css" rel="stylesheet" />
+<title><?= $translator->getTranslation("GeSFi / Login") ?></title>
+<link href="gesfi_login.css" rel="stylesheet" />
 <script src="../3rd_party/md5.js"></script>
-<script src="budgetfox_login.js"></script>
+<script src="gesfi_login.js"></script>
 </head>
 <body>
 <table width="100%">
 <tr>
 <td valign="top" align="left">
-<img src="../media/gfc.ico" /> BudgetFox par <a href="http://stevefuchs.fr/">Steve Fuchs</a><br />
+<img src="../media/gfc.ico" /> GeSFi par <a href="http://stevefuchs.fr/">Steve Fuchs</a><br />
 <br />
 <a href="copyright.htm" target="blank">Licence et droit d’auteur</a>
 </td>

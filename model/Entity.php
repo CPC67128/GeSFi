@@ -5,6 +5,9 @@ class Entity
 	{
 		$member = '_'.$member;
 		$this->$member = $value;
+
+		if (!isset($this->$member))
+			throw new Exception('Unknow attribute '.$member);
 	}
 	
 	public function get($member)

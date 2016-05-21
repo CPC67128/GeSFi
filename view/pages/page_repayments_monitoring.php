@@ -109,7 +109,7 @@ function PrintCategory($row)
 	{
 		$user = $usersHandler->GetUser(substr($row['category_id'], 5, 36));
 	
-		echo 'Non définie / '.$user->getName();
+		echo 'Non définie / '.$user->get('name');
 	}
 }
 
@@ -168,7 +168,7 @@ function AddRow($index, $row, $mergeRow)
 <td <?php PrintModifyRecordDesignationFunction($mergeRow, $row) ?>><?= !$mergeRow ? $row['designation'] : '' ?></td>
 <td><?= !$mergeRow ? $row['account_name'] : '' ?></td>
 <td><?php PrintConfirmedBox($mergeRow, $row, $activeAccount) ?></td>
-<td class="amount<?= $recordsHandler->GetRecordTypeGroup($row['record_type']) ?>" <?php PrintModifyRecordAmountFunction($row) ?>><?php PrintAmount($row) ?></td>
+<td class="amount<?= Record::GetRecordTypeGroup($row['record_type']) ?>" <?php PrintModifyRecordAmountFunction($row) ?>><?php PrintAmount($row) ?></td>
 <td class="category<?= $row['link_type'] ?>"><?php PrintCategory($row); ?></td>
 <?php PrintMonitoringFlags($row); ?>
 </tr>

@@ -6,7 +6,7 @@ $translator = new Translator();
 <html>
 <head>
 <?php include '../component/component_head.php'; ?>
-<title><?= $translator->getTranslation("BudgetFox / Inscription") ?></title>
+<title><?= $translator->getTranslation("GeSFi / Inscription") ?></title>
 <link href="page_subscription.css" rel="stylesheet" />
 <script src="../3rd_party/md5.js"></script>
 <script src="page_subscription.js"></script>

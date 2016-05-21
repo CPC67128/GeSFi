@@ -81,7 +81,7 @@ foreach ($categories as $category)
 }
 ?>
 <tr>
-<td colspan=4><b><i><?= $translator->getTranslation('Catégories privées de ') ?><?= $activeUser->getName() ?></i></b></td>
+<td colspan=4><b><i><?= $translator->getTranslation('Catégories privées de ') ?><?= $activeUser->get('name') ?></i></b></td>
 </tr>
 <?php
 $categories = $categoriesHandler->GetIncomeCategoriesForUser($activeUser->get('userId'));

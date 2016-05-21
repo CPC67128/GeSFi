@@ -16,12 +16,15 @@ class Operation_Investment_Record_Income extends Operation_Investment_Record
 
 		$uuid = $this->_db->GenerateUUID();
 
-		$this->_db->InsertInvestmentRecord_IncomeSpecial(
+		$newRecord = new Record_Transfer_Income_Investment(
 				$this->_fromAccount,
-				$uuid,
+				$this->_currentUserId,
 				$this->_fromDate,
+				$this->_amountDisinvested,
 				$this->_designation,
-				$this->_amountDisinvested);
+				$uuid
+		);
+		$this->_recordsHandler->Insert($newRecord);
 
 		if ($this->_toAccount != '')
 		{

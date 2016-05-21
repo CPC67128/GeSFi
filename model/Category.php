@@ -12,7 +12,7 @@ class Category extends Entity
 
 	// -------------------------------------------------------------------------------------------------------------------
 
-	public function GetTotalExpenseByMonthAndYear($month, $year) // OBSOLETE ?
+	public function GetTotalExpenseByMonthAndYear($month, $year)
 	{
 		$db = new DB();
 
@@ -29,7 +29,7 @@ class Category extends Entity
 		return $row['total'];
 	}
 
-	public function GetTotalIncomeByMonthAndYear($month, $year) // OBSOLETE ?
+	public function GetTotalIncomeByMonthAndYear($month, $year)
 	{
 		$db = new DB();
 
@@ -145,39 +145,6 @@ class Category extends Entity
 		$query = "select sum(amount) as total
 			from {TABLEPREFIX}record
 			where record_type in (22)
-			and marked_as_deleted = 0
-			and record_date <= curdate()
-			and category_id = '".$this->_categoryId."'";
-		$row = $db->SelectRow($query);
-		$total = $row['total'];
-
-		$query = "select timestampdiff(day, active_from, curdate()) + 1 as nb_days
-			from {TABLEPREFIX}category
-			where category_id = '".$this->_categoryId."'";
-		$row = $db->SelectRow($query);
-		$nbJours = $row['nb_days'];
-
-		if ($nbJours > 0)
-		{
-			if ($nbJours < 30)
-				$result = ($total / $nbJours);
-			else
-				$result = ($total / $nbJours) * 30;
-		} 
-
-		return $result;
-	}
-
-	// OBSOLETE
-	public function GetAverageRevenueByMonth()
-	{
-		$result = 0;
-
-		$db = new DB();
-	
-		$query = "select sum(amount) as total
-			from {TABLEPREFIX}record
-			where record_type in (12)
 			and marked_as_deleted = 0
 			and record_date <= curdate()
 			and category_id = '".$this->_categoryId."'";

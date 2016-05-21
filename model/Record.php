@@ -21,6 +21,18 @@ class Record extends Entity
 	protected $confirmed;
 	protected $creationDate;
 
+	public static $types = array
+	(
+			0 => 'In',
+			3 => 'In',
+			10 => 'TrIn',
+			11 => 'TrIn',
+			12 => 'In',
+			20 => 'TrOut',
+			21 => 'TrOut',
+			22 => 'Out'
+	);
+
 	public function __construct()
 	{
 	}
@@ -33,5 +45,10 @@ class Record extends Entity
 	public function get_recordDateYear()
 	{
 		return date('Y', strtotime($this->get('recordDate')));
+	}
+	
+	public static function GetRecordTypeGroup($recordType)
+	{
+		return self::$types[$recordType];
 	}
 }

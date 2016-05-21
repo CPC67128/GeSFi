@@ -38,7 +38,7 @@ else
 	AddMenuLeftItem("statistics");
 }
 ?>
-<i>BudgetFox
+<i>GeSFi
 <br />
 v. 16.01.03</i>
 <br />

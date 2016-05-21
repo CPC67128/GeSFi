@@ -1,6 +1,5 @@
 <?php
 session_start();
-//include_once '../dal/dal_appzone.php';
 include_once('component_mail.php');
 
 function RedirectToLoginPage()

@@ -71,7 +71,7 @@ foreach ($categories as $category)
 	<?php
 	if ($totalForAverage > 0 && $currentMonth > 0)
 	{
-		$average = $totalForAverage / ($currentMonth - 1); //$category->GetAverageRevenueByMonth();
+		$average = $totalForAverage / ($currentMonth - 1);
 		$totalAverage += $average;
 		echo $translator->getCurrencyValuePresentation($average);
 	}

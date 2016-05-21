@@ -23,7 +23,7 @@ class Operation_User_Login extends Operation_User
 		$_SESSION['user_name'] = $user->get('userName');
 		$_SESSION['email'] = $user->get('email');
 		$_SESSION['user_id'] = $user->get('userId');
-		$_SESSION['full_name'] = $user->getName();
+		$_SESSION['full_name'] = $user->get('name');
 		$_SESSION['read_only'] = 0;
 
 		$this->_usersHandler->RecordUserConnection($user->get('userId'), $_SERVER['REMOTE_ADDR'], $_SERVER['HTTP_USER_AGENT']);

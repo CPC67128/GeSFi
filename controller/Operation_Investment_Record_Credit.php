@@ -27,14 +27,15 @@ class Operation_Investment_Record_Credit extends Operation_Investment_Record
 			// Outcome
 			if ($this->_fromAccount != '')
 			{
-				$this->_db->InsertRecord_AmountTransfer(
+				$newRecord = new Record_Transfer_Debit(
 						$this->_fromAccount,
 						$this->_currentUserId,
 						$fromDate,
 						$this->_amount,
 						$this->_designation,
-						$recordTypeOutcome,
-						$uuid);
+						$uuid
+				);
+				$this->_recordsHandler->Insert($newRecord);
 			}
 
 			$newRecord = new Record_Transfer_Credit_Investment(

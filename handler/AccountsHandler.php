@@ -449,7 +449,7 @@ class AccountsHandler extends Handler
 	{
 		$db = new DB();
 
-		$query = sprintf("update {TABLEPREFIX}account set name = '%s', description='%s', opening_balance = %s, expected_minimum_balance = %s, minimum_check_period = %s, creation_date = '%s', availability_date = '%s', record_confirmation = %s, not_displayed_in_menu = %s, generate_income = %s where account_id = '%s'",
+		$query = sprintf("update {TABLEPREFIX}account set name = %s, description=%s, opening_balance = %s, expected_minimum_balance = %s, minimum_check_period = %s, creation_date = '%s', availability_date = '%s', record_confirmation = %s, not_displayed_in_menu = %s, generate_income = %s where account_id = '%s'",
 				$db->ConvertStringForSqlInjection($name),
 				$db->ConvertStringForSqlInjection($description),
 				$openingBalance,

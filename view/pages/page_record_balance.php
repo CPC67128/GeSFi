@@ -305,7 +305,7 @@ foreach ($accounts as $account)
 
 	if ($account->get('type') != 2 && $account->get('type') != 4)
 	{
-		$balance = $account->GetBalance();
+		$balance = $account->GetBalance()
 		?>
 	
 		<tr>

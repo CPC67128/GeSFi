@@ -32,7 +32,9 @@ class StatisticsBalanceHandler extends Handler
 
 		$this->aggregate = $aggregate;
 		if ($aggregate)
-			$this->recordFilter = "and (record_date_year < ".$this->year." or (record_date_month <= ".$this->month." and record_date_year = ".$this->year."))";
+			//$this->recordFilter = "and (record_date_year < ".$this->year." or (record_date_month <= ".$this->month." and record_date_year = ".$this->year."))";
+			// Problem because numbers are not displayed correctly during the month
+			$this->recordFilter = "and record_date_year < curdate()";
 		else
 			$this->recordFilter = "and record_date_year = ".$this->year." and record_date_month = ".$this->month;
 

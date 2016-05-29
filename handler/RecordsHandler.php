@@ -65,11 +65,12 @@ class RecordsHandler extends Handler
 			and r.user_id = '".$user->get('userId')."'
 			and
 			(
-				r.account_id in (select account_id from {TABLEPREFIX}account where owner_user_id = '".$user->get('userId')."' or coowner_user_id = '".$user->get('userId')."')
+				r.account_id in (select account_id from {TABLEPREFIX}account where type not in (10) and (owner_user_id = '".$user->get('userId')."' or coowner_user_id = '".$user->get('userId')."'))
 				or
 				r.account_id = ''
 			) 
 			and record_date > adddate((select max(record_date) from {TABLEPREFIX}record where record_date <= curdate() and user_id = '{USERID}'), interval -".$month." month)
+			
 
 			union all
 
@@ -83,7 +84,7 @@ class RecordsHandler extends Handler
 			and r.user_id = '".$user->GetPartnerId()."'
 			and
 			(
-				r.account_id in (select account_id from {TABLEPREFIX}account where owner_user_id = '".$user->get('userId')."' or coowner_user_id = '".$user->get('userId')."')
+				r.account_id in (select account_id from {TABLEPREFIX}account where type not in (10) and (owner_user_id = '".$user->get('userId')."' or coowner_user_id = '".$user->get('userId')."'))
 				or
 				r.account_id = ''
 			) 

@@ -22,8 +22,8 @@ try
 }
 catch(Exception $exception)
 {
-	echo $translator->getTranslation("Il n'est pas possible de générer un graphique par manque de données");
-	// print_r($exception);
+	//echo $translator->getTranslation("Il n'est pas possible de générer un graphique par manque de données");
+	print_r($exception);
 }
 ?><br /><br /><?php
 try

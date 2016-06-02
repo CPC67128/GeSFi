@@ -8,6 +8,7 @@ class AccountsHandler extends Handler
 			1 => 'Compte privé',
 			3 => 'Compte joint',
 			5 => 'Prêt en indivision',
+			6 => 'Crédit renouvelable',
 			10 => 'Placement bancaire',
 			12 => 'Immobilier en indivision'
 		);
@@ -353,7 +354,7 @@ class AccountsHandler extends Handler
 		left join {TABLEPREFIX}account_user_preference as PRF on ACC.account_id = PRF.account_id and PRF.user_id = '{USERID}'
 		where (ACC.owner_user_id = '{USERID}' or ACC.coowner_user_id = '{USERID}')
 		and marked_as_closed = 0
-		and type in (5)
+		and type in (5, 6)
 		order by PRF.sort_order";
 
 		$result = $db->Select($query);

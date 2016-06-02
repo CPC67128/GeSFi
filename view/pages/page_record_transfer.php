@@ -15,6 +15,12 @@ foreach ($accounts as $account)
 
 <input type="radio" name="fromAccount" value="USER/<?= $activeUser->get('userId') ?>"><i><?= $activeUser->get('name') ?> / Compte inconnu</i><br />
 <?php
+$accounts = $accountsHandler->GetAllSharedLoans();
+foreach ($accounts as $account)
+{ ?>
+<input type="radio" name="fromAccount" <?= $account->get('accountId') == $_SESSION['account_id'] ? 'checked' : '' ?> value="<?= $account->get('accountId') ?>"><?= $activeUser->get('name') ?> / <?= $account->get('name') ?><br />
+<?php } ?>
+<?php
 $accounts = $accountsHandler->GetAllPrivateAccounts();
 foreach ($accounts as $account)
 { ?>

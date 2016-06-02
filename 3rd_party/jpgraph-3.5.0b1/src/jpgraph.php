@@ -245,8 +245,8 @@ function CheckPHPVersion($aMinVersion) {
 // Make sure PHP version is high enough
 //
 if( !CheckPHPVersion(MIN_PHPVERSION) ) {
-    JpGraphError::RaiseL(13,PHP_VERSION,MIN_PHPVERSION);
-    die();
+    //JpGraphError::RaiseL(13,PHP_VERSION,MIN_PHPVERSION);
+    //die();
 }
 
 //

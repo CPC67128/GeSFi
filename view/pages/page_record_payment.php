@@ -42,7 +42,7 @@ foreach ($accounts as $account)
 <?= $translator->getTranslation('Date') ?> <input title="aaaa-mm-jj hh:mm:ss" size="10" id="datePicker" name="date" value="<?php echo date("Y-m-d") ?>"><br/>
 Montant <input type="text" name="amount" tabindex="-1" size="6" style='background-color : #d1d1d1;' readonly>&nbsp;&euro;<br />
 
-<?= $translator->getTranslation('Désignation') ?> <input type="text" name="designation" id="designation" size="30"><br/>
+<?= $translator->getTranslation('Désignation') ?> <input class="ui-autocomplete-input" type="text" name="designation" id="designation" size="30"><br/>
 <br/>
 <?= $translator->getTranslation("Confirmer l'opération") ?> <input type="checkbox" name="confirmed" id="confirmed" />
 
@@ -163,8 +163,6 @@ foreach ($categories as $category)
 <div id="formResult"></div>
 </form>
 <script type='text/javascript'>
-$("#designation").addClass('search-textbox-label');
-
 $("#designation").autocomplete({
 	source: function( request, response ) {
 		$.ajax({
@@ -194,92 +192,5 @@ $("#designation").autocomplete({
 	select: function( event, ui ) {
 	}
 });
-
-$("#designation").focus(function(){
-    if(this.value == $(this).attr('title')) {
-        this.value = '';
-        $(this).removeClass('search-textbox-label');
-    }
-});
-
-function InterpretMinusFormula(text) {
-	var value = 0;
-
-	if (text.length == 0)
-		return 0;
-
-	var splits = text.split("-");
-	if (splits.length > 0)
-		value = GetDecimalValue(splits[0]);
-	for (var i = 1; i < splits.length; i++)
-		value -= GetDecimalValue(splits[i]);
-
-	return value;
-}
-
-function InterpretPlusFormula(text) {
-	var value = 0;
-
-	if (text.length == 0)
-		return 0;
-
-	var splits = text.split("+");
-	for (var i = 0; i < splits.length; i++)
-		value += InterpretMinusFormula(splits[i]);
-	return value;
-}
-
-function InterpretInlineFormula(text) {
-	var value = 0;
-
-	if (text.match("--" + "$") == "--") // this will be processed later
-		return value;
-
-	value = InterpretPlusFormula(text);
-	return value;
-}
-
-function InterpretGlobalFormula(text, total) {
-	var value = 0;
-
-	if (text.match("--" + "$") == "--")
-	{
-		var splits = text.split("-");
-		if (splits.length > 0)
-			value = GetDecimalValue(splits[0]);
-		value -= total;
-	}
-
-	return value;
-}
-
-function CalculateAllAmounts() {
-	var value = 0;
-	var total = 0;
-
-	for (var i=1;i<=<?= $i-1 ?>;i++) {
-		if (document.getElementsByName('category'+i+'Formula').length > 0) {
-			value = InterpretInlineFormula($("input[name='category"+i+"Formula']").val());
-			total += value;
-	
-			if (value != 0)
-				$("input[name='category"+i+"Amount']").val( value );
-			else
-				$("input[name='category"+i+"Amount']").val('');
-		}
-	}
-
-	for (i=1;i<=<?= $i-1 ?>;i++) {
-		if (document.getElementsByName('category'+i+'Formula').length > 0) {
-			value = InterpretGlobalFormula($("input[name='category"+i+"Formula']").val(), total);
-			total += value;
-	
-			if (value != 0)
-				$("input[name='category"+i+"Amount']").val( value );
-		}
-	}
-
-	$("input[name='amount']").val(total);
-};
 
 </script>

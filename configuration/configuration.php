@@ -22,7 +22,7 @@ $DB_HOST = "192.168.0.200";
 $DB_NAME = "gesfi";
 $DB_USER = "gesfi";
 $DB_PASSWORD = "gesfi";
-
+	
 $DB_TABLE_PREFIX = "bf_";
 
 /* Emailing Configuration:

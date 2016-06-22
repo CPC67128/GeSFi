@@ -73,6 +73,7 @@ class InvestmentsRecordsHandler extends Handler
 			where record_id = '%s'";
 
 		unset($creationDate);
+		$lastKnowValue = null;
 		while ($record = $records->fetch())
 		{
 			if (!isset($creationDate))
@@ -89,11 +90,13 @@ class InvestmentsRecordsHandler extends Handler
 			unset($yieldAverage);
 			if (isset($record['value']))
 			{
+				$lastKnowValue = $record['value'];
+
 				$gain = $record['value'] + $withdrawalSum - $amountAccumulated;
 
 				if ($amountAccumulated != 0 && $amountInvestedAccumulated > 0)
 				{
-					$yield = ($record['value'] + $withdrawalSum) / $amountAccumulated;
+					$yield = ($record['value'] + $withdrawalSum + $incomeSum) / $amountAccumulated;
 					//$yield = (($record['value'] / $amountAccumulated) - 1) * 100;
 				}
 
@@ -109,6 +112,33 @@ class InvestmentsRecordsHandler extends Handler
 						//pow(abs($yield), (1 / $yearsSinceCreation)) * ($yield < 0 ? -1 : 1);
 					}
 				}
+			}
+			elseif (isset($record['income']) && isset($lastKnowValue))
+			{
+				$gain = $lastKnowValue + $withdrawalSum - $amountAccumulated;
+			
+				if ($amountAccumulated != 0 && $amountInvestedAccumulated > 0)
+				{
+					$yield = ($lastKnowValue + $withdrawalSum + $incomeSum) / $amountAccumulated;
+					//$yield = (($record['value'] / $amountAccumulated) - 1) * 100;
+				}
+			
+				$yearsSinceCreation = $daysSinceCreation / 365.25;
+			
+				// Calculation of the average yield
+				unset($yieldAverage);
+				if (floor($yearsSinceCreation) > 0)
+				{
+					if ($amountInvestedAccumulated > 0)
+					{
+						$yieldAverage = pow($yield, (1 / $yearsSinceCreation));
+						//pow(abs($yield), (1 / $yearsSinceCreation)) * ($yield < 0 ? -1 : 1);
+					}
+				}
+			}
+			elseif (!isset($record['income']) && !isset($record['value']) && isset($lastKnowValue))
+			{
+				$lastKnowValue += $record['amount'];
 			}
 
 			$query = sprintf($updateQueryString,

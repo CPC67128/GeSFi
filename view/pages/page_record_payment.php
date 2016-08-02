@@ -193,4 +193,34 @@ $("#designation").autocomplete({
 	}
 });
 
+function CalculateAllAmounts() {
+	var value = 0;
+	var total = 0;
+
+	for (var i=1;i<=60;i++) { // TODO 60 to replace with proper search
+		if (document.getElementsByName('category'+i+'Formula').length > 0) {
+			value = InterpretInlineFormula($("input[name='category"+i+"Formula']").val());
+			total += value;
+	
+			if (value != 0)
+				$("input[name='category"+i+"Amount']").val( value );
+			else
+				$("input[name='category"+i+"Amount']").val('');
+		}
+	}
+
+	for (i=1;i<=60;i++) { // TODO 60 to replace with proper search
+		if (document.getElementsByName('category'+i+'Formula').length > 0) {
+			value = InterpretGlobalFormula($("input[name='category"+i+"Formula']").val(), total);
+			total += value;
+	
+			if (value != 0)
+				$("input[name='category"+i+"Amount']").val( value );
+		}
+	}
+
+	$("input[name='amount']").val(total);
+}
+
+
 </script>

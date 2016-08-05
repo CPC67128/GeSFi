@@ -34,8 +34,12 @@ class Operation_Investment_Record_Income extends Operation_Investment_Record
 					$this->_toDate,
 					$this->_amountDisinvested,
 					$this->_designation,
+					100,
+					null,
+					true,
 					$uuid
 			);
+
 			$this->_recordsHandler->Insert($newRecord);
 		}
 	}

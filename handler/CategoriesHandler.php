@@ -135,7 +135,7 @@ class CategoriesHandler extends Handler
 		$db = new DB();
 	
 		$query = sprintf("insert into {TABLEPREFIX}category (category_id, link_type, link_id, type, category, active_from, sort_order, marked_as_inactive)
-				values (uuid(), '%s', '%s', %s, '%s', CURRENT_TIMESTAMP(), %s, 0)",
+				values (uuid(), '%s', '%s', %s, %s, CURRENT_TIMESTAMP(), %s, 0)",
 				$linkType,
 				$linkType == 'USER' ? '{USERID}' : $currentUser->get('duoId'),
 				$type,
@@ -196,7 +196,7 @@ class CategoriesHandler extends Handler
 		// Update the category
 		$sortOrder = $originalSortOrder;
 
-		$query = sprintf("update {TABLEPREFIX}category set category = '%s', sort_order = %s, marked_as_inactive = %s where category_id = '%s'",
+		$query = sprintf("update {TABLEPREFIX}category set category = %s, sort_order = %s, marked_as_inactive = %s where category_id = '%s'",
 				$db->ConvertStringForSqlInjection($category),
 				$sortOrder,
 				$isInactive ? "1" : "0",

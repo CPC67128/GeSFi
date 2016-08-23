@@ -115,8 +115,8 @@ class Operation_Record extends Operation
 		$this->_amount = str_replace(",", ".", $this->_amount);
 		if (!is_numeric($this->_amount))
 			throw new Exception('Merci de renseigner correctement le montant');
-		if ($this->_amount < 0)
-			throw new Exception('Merci de renseigner correctement le montant');
+		/*if ($this->_amount < 0)
+			throw new Exception('Merci de renseigner correctement le montant');*/
 	}
 	
 	public function ValidateFromAccount()

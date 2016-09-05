@@ -5,9 +5,8 @@ class UsersHandler extends Handler
 	{
 		$types = array
 		(
-				0 => 'Lecteur',
-				1 => 'Utilisateur',
-				2 => 'Administrateur'
+				0 => 'Utilisateur',
+				1 => 'Administrateur'
 		);
 	
 		return $types;

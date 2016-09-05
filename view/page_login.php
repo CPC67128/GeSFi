@@ -6,7 +6,7 @@
 <title><?= $translator->getTranslation("GeSFi / Login") ?></title>
 <link href="gesfi_login.css" rel="stylesheet" />
 <script src="../3rd_party/md5.js"></script>
-<script src="gesfi_login.js"></script>
+
 </head>
 <body>
 <table width="100%">
@@ -30,8 +30,11 @@
 <td colspan="2">
 <table>
 <tr>
-	<td>Nom d'utilisateur</td>
-	<td><input type="text" name="email" size="35" /></td>
+	<td>Utilisateur</td>
+	<td>
+	<input type="radio" name="email" value="Homme" checked> Homme<br>
+	<input type="radio" name="email" value="Femme"> Femme<br>
+	</td>
 </tr>
 <tr>
 	<td>Mot de passe</td>
@@ -58,4 +61,62 @@
 
 </div>
 </body>
+
+<script>
+
+
+function HashPassword() {
+	pw = $("#password").val();
+	md5 = MD5(pw);
+	$("#passwordMD5").val(md5);
+}
+
+$(function () {
+	$('#password').keyup(function() {
+		HashPassword();
+	});
+
+	$("#saasLoginForm").submit(function() {
+		HashPassword();
+		$("#password").val('');
+	
+		$.post(
+				'../controller/controller.php?action=user_login',
+				$(this).serialize(),
+				function(response, status){
+					$("#saasLoginFormResult").stop().show();
+					if (status == 'success') {
+						$("#saasLoginFormResult").html(response);
+						if (response.indexOf("<!-- ERROR -->") < 0) {
+							window.location="index.php";
+						}
+					}
+					else {
+						$("#saasLoginFormResult").html(CreateUnexpectedErrorWeb("Status = " + status));
+					}
+	
+					setTimeout(function() {
+						$("#saasLoginFormResult").fadeOut("slow", function () {
+							$('#saasLoginFormResult').empty();
+						})
+					}, 4000);
+				}
+		);
+		return false;
+	});
+});
+
+HashPassword();
+
+function CreateUnexpectedErrorWeb($error)
+{
+	var html = '<div class="ui-widget">';
+	html += '<div class="ui-state-error ui-corner-all" style="margin-top: 20px; margin-bottom: 20px; padding: 0 .7em;">';
+	html += '<p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>';
+	html += '<strong>Unexpected error</strong>' + $error + '</p>';
+	html += '</div></div>';
+	return html;
+}
+</script>
+
 </html>

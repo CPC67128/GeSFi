@@ -50,9 +50,9 @@ class RecordsHandlerUpdate extends Handler
 				$sql = "select account_id from {TABLEPREFIX}record where record_id = '".$recordId."'";
 			$result = $db->Select($sql);
 		
-			$accountsHandlerBalance = new AccountsHandlerBalance();
+			$accountsHandler = new AccountsHandler();
 			while ($row = $result->fetch())
-				$accountsHandlerBalance->CalculateAccountBalances($row['account_id']);
+				$accountsHandler->CalculateAccountBalances($row['account_id']);
 		}
 
 		return $result;

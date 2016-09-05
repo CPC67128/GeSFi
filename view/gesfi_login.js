@@ -4,12 +4,20 @@ function HashPassword() {
 	$("#passwordMD5").val(md5);
 }
 
-$(function() {
+$('#password').keyup(function() {
+	alert('bob');
+	HashPassword();
+});
+
+
+$({
+	alert('bob');
 	$('#password').keyup(function() {
 		HashPassword();
 	});
 
 	$("#saasLoginForm").submit(function() {
+		alert('bob');
 		HashPassword();
 		$("#password").val('');
 

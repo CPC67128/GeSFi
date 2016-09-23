@@ -7,6 +7,8 @@ class Record_Transfer_Income extends Record_Transfer
 		//$this->charge = $charge;
 		//$this->category = $category;
 		$this->confirmed = $confirmed;
-		$this->recordType = 10; //12;
+		$this->recordType = 12;
+		$this->category = $category;
+		$this->charge = $charge;
 	}
 }

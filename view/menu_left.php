@@ -40,7 +40,7 @@ else
 ?>
 <i>GeSFi
 <br />
-v. 16.01.03</i>
+v. 16.10.09</i>
 <br />
 <a href="../view/copyright.htm">Copyright</a>
 <br />

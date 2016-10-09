@@ -62,7 +62,8 @@ foreach ($types as $key => $value)
 <?= $translator->getTranslation('Période de vérification minimale') ?> <input name="minimumCheckPeriod" type="text" size="4" value="<?= IfNullReturnDefault($account, 'minimumCheckPeriod', '30') ?>"><br/>
 <?= $translator->getTranslation('Ordre') ?> <input name='sortOrder' type='text' size='5' value="<?= is_null($account) ? '' : $account->getIfSetOrDefault('sortOrder', 0) ?>" /><br />
 <?= $translator->getTranslation('Confirmation des lignes') ?> <input name='recordConfirmation' type='checkbox' <?= is_null($account) ? '' : ($account->get('recordConfirmation') == "1" ? 'checked' : '') ?> /> <i><?= $translator->getTranslation('(Les lignes doivent être confirmées pour être prises en comptes)') ?></i><br />
-<?= $translator->getTranslation('Ne pas afficher dans le menu') ?> <input name='notDisplayedInMenu' type='checkbox' <?= is_null($account) ? '' : ($account->get('notDisplayedInMenu') == "1" ? 'checked' : '') ?> /> <i><?= $translator->getTranslation('') ?></i><br /><br />
+<?= $translator->getTranslation('Ne pas afficher dans le menu') ?> <input name='notDisplayedInMenu' type='checkbox' <?= is_null($account) ? '' : ($account->get('notDisplayedInMenu') == "1" ? 'checked' : '') ?> /> <i><?= $translator->getTranslation('') ?></i><br />
+<?= $translator->getTranslation('Ne pas colorier dans le récapitulatif gestion patrimoniale') ?> <input name='noColorInDashboard' type='checkbox' <?= is_null($account) ? '' : ($account->get('noColorInDashboard') == "1" ? 'checked' : '') ?> /> <i><?= $translator->getTranslation('') ?></i><br /><br />
 <?= $translator->getTranslation('Peut générer des revenus') ?> <input name='generateIncome' type='checkbox' <?= is_null($account) ? '' : ($account->get('generateIncome') == "1" ? 'checked' : '') ?> /> <i><?= $translator->getTranslation('') ?></i><br /><br />
 
 <?php if (!is_null($account)) { ?>

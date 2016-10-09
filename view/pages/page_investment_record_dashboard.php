@@ -57,24 +57,35 @@ function PrintTDStyleAttributeForAccountName($yieldAverage, $yield)
 {
 	if (strlen($yieldAverage) != 0)
 	{
-		if ($yieldAverage < 0)
-			echo 'bgcolor="red"';
-		elseif ($yieldAverage > 3)
-			echo 'bgcolor="lightgreen"';
+		if ($yieldAverage < -1)
+			echo 'bgcolor="Red"';
+		elseif ($yieldAverage < 0)
+			echo 'bgcolor="Tomato"';
 		elseif ($yieldAverage < 1)
 			echo 'bgcolor="orange"';
+		elseif ($yieldAverage < 3)
+			echo 'bgcolor="lightgreen"';
+		elseif ($yieldAverage >= 3)
+			echo 'bgcolor="GreenYellow"';
 	}
 	else if (strlen($yield) != 0)
 	{
-		if ($yield < 0)
-			echo 'bgcolor="red"';
+		if ($yield < -1)
+			echo 'bgcolor="Red"';
+		elseif ($yield < 0)
+			echo 'bgcolor="Tomato"';
 	}
 }
 
 function PrintTDStyleAttributeForYield($value)
 {
-	if ($value < 0)
-		echo 'bgcolor="red"';
+	if (strlen($value) != 0)
+	{
+		if ($value < -1)
+			echo 'bgcolor="Red"';
+		elseif ($value < 0)
+			echo 'bgcolor="Tomato"';
+	}
 }
 
 function PrintTDStyleAttributeForYieldAverage($value)
@@ -82,12 +93,16 @@ function PrintTDStyleAttributeForYieldAverage($value)
 	if (strlen($value) == 0)
 		return;
 
-	if ($value < 0)
-		echo 'bgcolor="red"';
-	elseif ($value > 3)
-		echo 'bgcolor="lightgreen"';
+	if ($value < -1)
+		echo 'bgcolor="Red"';
+	elseif ($value < 0)
+		echo 'bgcolor="Tomato"';
 	elseif ($value < 1)
 		echo 'bgcolor="orange"';
+	elseif ($value < 3)
+		echo 'bgcolor="lightgreen"';
+	elseif ($value >= 3)
+		echo 'bgcolor="GreenYellow"';
 }
 
 foreach ($accounts as $account)
@@ -101,12 +116,12 @@ foreach ($accounts as $account)
 	$availabilityDateToDisplay = ($account->get('availabilityDate') != '' && $availabilityYear > date("Y"));
 ?>
 <tr>
-<td <?php PrintTDStyleAttributeForAccountName($account->GetInvestmentLastYieldAverage(), $account->GetInvestmentLastYield()); ?>><a href="#" onclick="javascript:ChangeContext('record','investment','<?= $account->get('accountId')?>',''); return false;"><?= $account->get('name') ?></a></td>
+<td <?php if (!$account->get('noColorInDashboard')) { PrintTDStyleAttributeForAccountName($account->GetInvestmentLastYieldAverage(), $account->GetInvestmentLastYield()); } ?>><a href="#" onclick="javascript:ChangeContext('record','investment','<?= $account->get('accountId')?>',''); return false;"><?= $account->get('name') ?></a></td>
 <td style='text-align: right;'><?= $valueToUpdate ? '<i>' : '' ?><?= $translator->getCurrencyValuePresentation($account->GetInvestmentLastValue()) ?><?= $valueToUpdate ? '</i>' : '' ?></td>
 <td><?= $account->get('description') ?></td>
 <td style='text-align: right;'><?= $openingDateToDisplay ? $openingYear : '' ?></td>
-<td style='text-align: right;' <?php PrintTDStyleAttributeForYield($account->GetInvestmentLastYield()); ?>><?= $translator->getPercentagePresentation($account->GetInvestmentLastYield()) ?></td>
-<td style='text-align: right;' <?php PrintTDStyleAttributeForYieldAverage($account->GetInvestmentLastYieldAverage()); ?>><?= $translator->getPercentagePresentation($account->GetInvestmentLastYieldAverage()) ?></td>
+<td style='text-align: right;' <?php if (!$account->get('noColorInDashboard')) { PrintTDStyleAttributeForYield($account->GetInvestmentLastYield()); } ?>><?= $translator->getPercentagePresentation($account->GetInvestmentLastYield()) ?></td>
+<td style='text-align: right;' <?php if (!$account->get('noColorInDashboard')) { PrintTDStyleAttributeForYieldAverage($account->GetInvestmentLastYieldAverage()); } ?>><?= $translator->getPercentagePresentation($account->GetInvestmentLastYieldAverage()) ?></td>
 <td style='text-align: right;'><?= $availabilityDateToDisplay ? $availabilityYear : '' ?></td>
 </tr>
 <?php

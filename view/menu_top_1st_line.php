@@ -18,9 +18,6 @@ foreach ($accounts as $account)
 $isRepaymentsMonitoringSelected = ($page == 'repayments_monitoring');
 AddMenuTopItem(!$isRepaymentsMonitoringSelected, $translator->getTranslation('Suivi'), 'repayments_monitoring', 'record', '', '', true);
 
-$isSyncSelected = ($page == 'sync');
-AddMenuTopItem(!$isSyncSelected, $translator->getTranslation('Sync'), 'sync', 'sync', '', '', true);
-
 $isConfigurationSelected = ($page == 'administration');
 AddMenuTopItem(!$isConfigurationSelected, $translator->getTranslation('Administration'), 'administration', 'administration', '', '', false);
 

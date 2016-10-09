@@ -40,7 +40,7 @@ class RecordsHandler extends Handler
 		$result = $db->Execute($query);
 
 		$accountsHandler = new AccountsHandler();
-		$accountsHandler->CalculateAccountBalances($record->get('accountId'));
+		$accountsHandler->CalculateAccountBalance($record->get('accountId'));
 
 		return $result;
 	}

@@ -386,7 +386,7 @@ class AccountsHandler extends Handler
 	}
 
 	/***** Insert *****/
-	function InsertAccount($name, $owner, $coowner, $type, $openingBalance, $expectedMinimumBalance, $sortOrder, $minimumCheckPeriod, $recordConfirmation, $notDisplayedInMenu, $generateIncome)
+	function InsertAccount($name, $owner, $coowner, $type, $openingBalance, $expectedMinimumBalance, $sortOrder, $minimumCheckPeriod, $recordConfirmation, $notDisplayedInMenu, $noColorIndDashboard, $generateIncome)
 	{
 		$db = new DB();
 
@@ -400,8 +400,8 @@ class AccountsHandler extends Handler
 		if (!empty($row['max_order']))
 			$tempSortOrder = $row['max_order'];
 		
-		$query = sprintf("insert into {TABLEPREFIX}account (account_id, name, type, owner_user_id, coowner_user_id, opening_balance, expected_minimum_balance, minimum_check_period, creation_date, record_confirmation, not_displayed_in_menu, generate_income)
-				values ('%s', '%s', %s, '%s', '%s', %s, %s, %s, CURRENT_TIMESTAMP(), %s, %s, %s)",
+		$query = sprintf("insert into {TABLEPREFIX}account (account_id, name, type, owner_user_id, coowner_user_id, opening_balance, expected_minimum_balance, minimum_check_period, creation_date, record_confirmation, not_displayed_in_menu, no_color_in_dashboard, generate_income)
+				values ('%s', '%s', %s, '%s', '%s', %s, %s, %s, CURRENT_TIMESTAMP(), %s, %s, %s, %s)",
 				$uuid,
 				$name,
 				$type,
@@ -412,6 +412,7 @@ class AccountsHandler extends Handler
 				$minimumCheckPeriod,
 				$recordConfirmation,
 				$notDisplayedInMenu,
+				$noColorIndDashboard,
 				$generateIncome);
 		$result = $db->Execute($query);
 
@@ -446,11 +447,11 @@ class AccountsHandler extends Handler
 	}
 
 	/***** Update *****/
-	function UpdateAccount($accountId, $name, $description, $openingBalance, $expectedMinimumBalance, $sortOrder, $minimumCheckPeriod, $creationDate, $availabilityDate, $recordConfirmation, $notDisplayedInMenu, $generateIncome)
+	function UpdateAccount($accountId, $name, $description, $openingBalance, $expectedMinimumBalance, $sortOrder, $minimumCheckPeriod, $creationDate, $availabilityDate, $recordConfirmation, $notDisplayedInMenu, $noColorIndDashboard, $generateIncome)
 	{
 		$db = new DB();
 
-		$query = sprintf("update {TABLEPREFIX}account set name = %s, description=%s, opening_balance = %s, expected_minimum_balance = %s, minimum_check_period = %s, creation_date = '%s', availability_date = '%s', record_confirmation = %s, not_displayed_in_menu = %s, generate_income = %s where account_id = '%s'",
+		$query = sprintf("update {TABLEPREFIX}account set name = %s, description=%s, opening_balance = %s, expected_minimum_balance = %s, minimum_check_period = %s, creation_date = '%s', availability_date = '%s', record_confirmation = %s, not_displayed_in_menu = %s, no_color_in_dashboard = %s, generate_income = %s where account_id = '%s'",
 				$db->ConvertStringForSqlInjection($name),
 				$db->ConvertStringForSqlInjection($description),
 				$openingBalance,
@@ -460,6 +461,7 @@ class AccountsHandler extends Handler
 				$availabilityDate,
 				$recordConfirmation,
 				$notDisplayedInMenu,
+				$noColorIndDashboard,
 				$generateIncome,
 				$accountId);
 		
@@ -579,7 +581,7 @@ class AccountsHandler extends Handler
 		}
 	}
 
-	public function CalculateAccountBalances($accountId)
+	public function CalculateAccountBalance($accountId)
 	{
 		$db = new DB();
 	

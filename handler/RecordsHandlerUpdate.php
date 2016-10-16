@@ -56,7 +56,7 @@ class RecordsHandlerUpdate extends Handler
 		
 			$accountsHandler = new AccountsHandler();
 			while ($row = $result->fetch())
-				$accountsHandler->CalculateAccountBalances($row['account_id']);
+				$accountsHandler->CalculateAccountBalance($row['account_id']);
 		}
 
 		return $result;

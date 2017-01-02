@@ -1,4 +1,6 @@
 <?php
+echo 'START DEBUG<br />';
+
 include '../configuration/configuration.php';
 
 $dns = 'mysql:host=' . $DB_HOST . ';dbname=' . $DB_NAME;

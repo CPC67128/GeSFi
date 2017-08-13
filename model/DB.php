@@ -30,7 +30,7 @@ class DB
 		{
 			include '../configuration/configuration.php';
 
-			$dns = 'mysql:host=' . $DB_HOST . ';dbname=' . $DB_NAME;
+			$dns = 'mysql:host=' . $DB_HOST . ';port=3307;dbname=' . $DB_NAME;
 			$utilisateur = $DB_USER;
 			$motDePasse = $DB_PASSWORD;
 			$this->_connection = new PDO( $dns, $utilisateur, $motDePasse );

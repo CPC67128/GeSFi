@@ -530,6 +530,7 @@ class AccountsHandler extends Handler
 				where account_id = '".$account->get('accountId')."'
 				and value is not null
 				and marked_as_deleted = 0
+				and record_date <= curdate()
 				order by record_date desc
 				limit 1";
 		$row = $db->SelectRow($query);
@@ -540,6 +541,7 @@ class AccountsHandler extends Handler
 			where account_id = '".$account->get('accountId')."'
 			and CALC_yield_average is not null
 			and marked_as_deleted = 0
+			and record_date <= curdate()
 			order by record_date desc
 			limit 1";
 		$row = $db->SelectRow($query);
@@ -550,6 +552,7 @@ class AccountsHandler extends Handler
 			where account_id = '".$account->get('accountId')."'
 			and CALC_yield is not null
 			and marked_as_deleted = 0
+			and record_date <= curdate()
 			order by record_date desc
 			limit 1";
 		$row = $db->SelectRow($query);
@@ -562,6 +565,7 @@ class AccountsHandler extends Handler
 			where account_id = '".$account->get('accountId')."'
 			and value is not null
 			and marked_as_deleted = 0
+			and record_date <= curdate()
 			order by record_date desc, creation_date desc
 			limit 1";
 		$row = $db->SelectRow($query);
@@ -574,11 +578,34 @@ class AccountsHandler extends Handler
 				where account_id = '".$account->get('accountId')."'
 				and value is null
 				and marked_as_deleted = 0
+				and record_date <= curdate()
 				order by record_date desc, creation_date desc
 				limit 1";
 			$row = $db->SelectRow($query);
 			$account->set('lastValue', $row['CALC_amount_invested_accumulated']);
 		}
+
+		$query = "select CALC_amount_invested_accumulated
+			from {TABLEPREFIX}record
+			where account_id = '".$account->get('accountId')."'
+			and value is null
+			and marked_as_deleted = 0
+			and record_date <= curdate()
+			order by record_date desc, creation_date desc
+			limit 1";
+		$row = $db->SelectRow($query);
+		$account->set('amountInvestedAccumulated', $row['CALC_amount_invested_accumulated']);
+
+		$query = "select CALC_withdrawal_sum
+			from {TABLEPREFIX}record
+			where account_id = '".$account->get('accountId')."'
+			and value is null
+			and marked_as_deleted = 0
+			and record_date <= curdate()
+			order by record_date desc, creation_date desc
+			limit 1";
+		$row = $db->SelectRow($query);
+		$account->set('withdrawalSum', $row['CALC_withdrawal_sum']);
 	}
 
 	public function CalculateAccountBalance($accountId)

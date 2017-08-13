@@ -125,6 +125,8 @@ class Account extends Entity
 	protected $yield;
 	protected $lastValueDate;
 	protected $lastValue;
+	protected $amountInvestedAccumulated;
+	protected $withdrawalSum;
 
 	public function FillInvestmentAccountFields($field)
 	{
@@ -157,5 +159,17 @@ class Account extends Entity
 	{
 		$this->FillInvestmentAccountFields($this->lastValue);
 		return $this->lastValue;
+	}
+
+	public function GetInvestmentAmountInvestedAccumulated()
+	{
+		$this->FillInvestmentAccountFields($this->amountInvestedAccumulated);
+		return $this->amountInvestedAccumulated;
+	}
+
+	public function GetInvestmentWithdrawalSum()
+	{
+		$this->FillInvestmentAccountFields($this->withdrawalSum);
+		return $this->withdrawalSum;
 	}
 }

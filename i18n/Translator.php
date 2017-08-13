@@ -6,8 +6,10 @@ class Translator
 		return $text;
 	}
 
-	public function getCurrencyValuePresentation($amount)
+	public function getCurrencyValuePresentation($amount, $excelFriendly = false)
 	{
+		if ($excelFriendly)
+			return number_format($amount,2, ',', '');; 
 		return number_format($amount,2, ',', ' ').'&nbsp;&euro;';
 	}
 

@@ -10,7 +10,7 @@
 
 			<table class="summaryTable">
 				<tr>
-					<td colspan="7"><b><?= $translator->getTranslation('Gestion courante') ?></b></td>
+					<td colspan="9"><b><?= $translator->getTranslation('Gestion courante') ?></b></td>
 				</tr>
 <?php
 /***** Private Assets *****/
@@ -44,9 +44,20 @@ foreach ($accounts as $account)
 
 
 				<tr>
-					<td colspan="7"><b><?= $translator->getTranslation('Placements') ?></b></td>
+					<td colspan="9"><b><?= $translator->getTranslation('Placements') ?></b></td>
 				</tr>
-<?php
+				<tr>
+					<td><small>Nom</small></td>
+					<td><small>Valorisation</small></td>
+					<td><small>Description</small></td>
+					<td><small>Ouv.</small></td>
+					<td><small>Invest.</small></td>
+					<td><small>+/-</small></td>
+					<td><small>Perf.</small></td>
+					<td><small>Perf. an.</small></td>
+					<td><small>Dispo.</small></td>
+				</tr>
+				<?php
 $accounts = $accountsHandler->GetAllPrivateInvestmentAccounts();
 
 $sumGlobal += $sum;
@@ -120,6 +131,8 @@ foreach ($accounts as $account)
 <td style='text-align: right;'><?= $valueToUpdate ? '<i>' : '' ?><?= $translator->getCurrencyValuePresentation($account->GetInvestmentLastValue()) ?><?= $valueToUpdate ? '</i>' : '' ?></td>
 <td><?= $account->get('description') ?></td>
 <td style='text-align: right;'><?= $openingDateToDisplay ? $openingYear : '' ?></td>
+<td style='text-align: right;'><?= $translator->getCurrencyValuePresentation($account->GetInvestmentAmountInvestedAccumulated() - $account->GetInvestmentWithdrawalSum()) ?></td>
+<td style='text-align: right;'><?= $translator->getCurrencyValuePresentation($account->GetInvestmentLastValue() - $account->GetInvestmentAmountInvestedAccumulated() + $account->GetInvestmentWithdrawalSum()) ?></td>
 <td style='text-align: right;' <?php if (!$account->get('noColorInDashboard')) { PrintTDStyleAttributeForYield($account->GetInvestmentLastYield()); } ?>><?= $translator->getPercentagePresentation($account->GetInvestmentLastYield()) ?></td>
 <td style='text-align: right;' <?php if (!$account->get('noColorInDashboard')) { PrintTDStyleAttributeForYieldAverage($account->GetInvestmentLastYieldAverage()); } ?>><?= $translator->getPercentagePresentation($account->GetInvestmentLastYieldAverage()) ?></td>
 <td style='text-align: right;'><?= $availabilityDateToDisplay ? $availabilityYear : '' ?></td>

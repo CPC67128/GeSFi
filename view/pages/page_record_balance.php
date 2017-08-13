@@ -41,10 +41,16 @@ Situation des comptes entre <?= $user->get('name') ?> et <?= $partner->get('name
 <td>Dépenses <?= $user->get('name') ?> > catégories <?= $partner->get('name') ?></td>
 </tr>
 <tr>
+<td>Dépenses <?= $user->get('name') ?> > catégories <?= $user->get('name') ?></td>
+</tr>
+<tr>
 <td>Dépenses <?= $partner->get('name') ?> > catégories duo</td>
 </tr>
 <tr>
 <td>Dépenses <?= $partner->get('name') ?> > catégories <?= $user->get('name') ?></td>
+</tr>
+<tr>
+<td>Dépenses <?= $partner->get('name') ?> > catégories <?= $partner->get('name') ?></td>
 </tr>
 <tr>
 <td>Versements sur comptes duo</td>
@@ -100,9 +106,19 @@ Situation des comptes entre <?= $user->get('name') ?> et <?= $partner->get('name
 <td>&nbsp;</td>
 </tr>
 <tr>
+<td align="right"><?= $translator->getCurrencyValuePresentation($balance->totalExpensesFromPrivateAccountsToUserCategoriesMadeByUser) ?></td>
+<td align="right"><?= $translator->getCurrencyValuePresentation($balance->totalExpensesFromPrivateAccountsToUserCategoriesMadeByUser) ?></td>
+<td>&nbsp;</td>
+</tr>
+<tr>
 <td align="right"><?= $translator->getCurrencyValuePresentation($balance->totalExpensesFromPrivateAccountsToDuoCategoriesMadeByPartner) ?></td>
 <td>&nbsp;</td>
 <td align="right"><?= $translator->getCurrencyValuePresentation($balance->totalExpensesFromPrivateAccountsToDuoCategoriesMadeByPartner) ?></td>
+</tr>
+<tr>
+<td align="right"><?= $translator->getCurrencyValuePresentation($balance->totalExpensesFromPrivateAccountsToUserCategoriesMadeByPartner) ?></td>
+<td>&nbsp;</td>
+<td align="right"><?= $translator->getCurrencyValuePresentation($balance->totalExpensesFromPrivateAccountsToUserCategoriesMadeByPartner) ?></td>
 </tr>
 <tr>
 <td align="right"><?= $translator->getCurrencyValuePresentation($balance->totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByPartner) ?></td>
@@ -185,9 +201,19 @@ Situation des comptes entre <?= $user->get('name') ?> et <?= $partner->get('name
 <td align="right"><?= $translator->getCurrencyValuePresentation($balance->totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByUserChargedToPartner) ?></td>
 </tr>
 <tr>
+<td align="right"><?= $translator->getCurrencyValuePresentation($balance->totalExpensesFromPrivateAccountsToUserCategoriesMadeByUser) ?></td>
+<td align="right"><?= $translator->getCurrencyValuePresentation($balance->totalExpensesFromPrivateAccountsToUserCategoriesMadeByUserChargedToUser) ?></td>
+<td align="right"><?= $translator->getCurrencyValuePresentation($balance->totalExpensesFromPrivateAccountsToUserCategoriesMadeByUserChargedToPartner) ?></td>
+</tr>
+<tr>
 <td align="right"><?= $translator->getCurrencyValuePresentation($balance->totalExpensesFromPrivateAccountsToDuoCategoriesMadeByPartner) ?></td>
 <td align="right"><?= $translator->getCurrencyValuePresentation($balance->totalExpensesFromPrivateAccountsToDuoCategoriesMadeByPartnerChargedToUser) ?></td>
 <td align="right"><?= $translator->getCurrencyValuePresentation($balance->totalExpensesFromPrivateAccountsToDuoCategoriesMadeByPartnerChargedToPartner) ?></td>
+</tr>
+<tr>
+<td align="right"><?= $translator->getCurrencyValuePresentation($balance->totalExpensesFromPrivateAccountsToUserCategoriesMadeByPartner) ?></td>
+<td align="right"><?= $translator->getCurrencyValuePresentation($balance->totalExpensesFromPrivateAccountsToUserCategoriesMadeByPartnerChargedToUser) ?></td>
+<td align="right"><?= $translator->getCurrencyValuePresentation($balance->totalExpensesFromPrivateAccountsToUserCategoriesMadeByPartnerChargedToPartner) ?></td>
 </tr>
 <tr>
 <td align="right"><?= $translator->getCurrencyValuePresentation($balance->totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByPartner) ?></td>

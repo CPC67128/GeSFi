@@ -90,6 +90,34 @@ class StatisticsBalanceHandler extends Handler
 		$this->totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByUserChargedToPartner = $this->totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByUser - $this->totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByUserChargedToUser;
 	}
 
+	//TODO en cours
+	public $totalExpensesFromPrivateAccountsToUserCategoriesMadeByUser = 0;
+	public $totalExpensesFromPrivateAccountsToUserCategoriesMadeByUserChargedToUser = 0;
+	public $totalExpensesFromPrivateAccountsToUserCategoriesMadeByUserChargedToPartner = 0;
+
+	function ExpenseFromPrivateAccountToUserCategories()
+	{
+		$query = "select sum(amount) as total, sum(amount * (charge / 100)) as totalCharged
+				from {TABLEPREFIX}record
+				where record_type in (22)
+				and marked_as_deleted = 0
+				and
+				(
+					category_id in (select category_id from {TABLEPREFIX}category where link_type = 'USER' and link_id = '".$this->userId."')
+					or
+					category_id = 'USER/".$this->userId."'
+				)
+				and record_date <= curdate()
+				".$this->recordFilter."
+				and account_id in (select account_id from {TABLEPREFIX}account where type in (1))
+				and user_id = '".$this->userId."'";
+		$row = $this->db->SelectRow($query);
+	
+		$this->totalExpensesFromPrivateAccountsToUserCategoriesMadeByUser = $row['total'] ?: 0;
+		$this->totalExpensesFromPrivateAccountsToUserCategoriesMadeByUserChargedToUser = $row['totalCharged'] ?: 0;
+		$this->totalExpensesFromPrivateAccountsToUserCategoriesMadeByUserChargedToPartner = $this->totalExpensesFromPrivateAccountsToUserCategoriesMadeByUser - $this->totalExpensesFromPrivateAccountsToUserCategoriesMadeByUserChargedToUser;
+	}
+
 	public $totalExpensesFromPrivateAccountsToDuoCategoriesMadeByPartner;
 	public $totalExpensesFromPrivateAccountsToDuoCategoriesMadeByPartnerChargedToPartner;
 	public $totalExpensesFromPrivateAccountsToDuoCategoriesMadeByPartnerChargedToUser;
@@ -113,11 +141,11 @@ class StatisticsBalanceHandler extends Handler
 		$this->totalExpensesFromPrivateAccountsToDuoCategoriesMadeByPartnerChargedToUser = $this->totalExpensesFromPrivateAccountsToDuoCategoriesMadeByPartner - $this->totalExpensesFromPrivateAccountsToDuoCategoriesMadeByPartnerChargedToPartner;
 	}
 
-	public $totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByPartner;
-	public $totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByPartnerChargedToPartner;
-	public $totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByPartnerChargedToUser;
+	public $totalExpensesFromPrivateAccountsToUserCategoriesMadeByPartner;
+	public $totalExpensesFromPrivateAccountsToUserCategoriesMadeByPartnerChargedToPartner;
+	public $totalExpensesFromPrivateAccountsToUserCategoriesMadeByPartnerChargedToUser;
 
-	function ExpenseFromPrivateAccountToPartnerCategoriesMadeByPartner()
+	function ExpenseFromPrivateAccountToUserCategoriesMadeByPartner()
 	{
 		$query = "select sum(amount) as total, sum(amount * (charge / 100)) as totalCharged
 				from {TABLEPREFIX}record
@@ -132,6 +160,33 @@ class StatisticsBalanceHandler extends Handler
 				and record_date <= curdate()
 				".$this->recordFilter."
 				and account_id not in (select account_id from {TABLEPREFIX}account where type in (2, 3, 5, 12))
+				and user_id = '".$this->partner->get('userId')."'";
+		$row = $this->db->SelectRow($query);
+	
+		$this->totalExpensesFromPrivateAccountsToUserCategoriesMadeByPartner = $row['total'] ?: 0;
+		$this->totalExpensesFromPrivateAccountsToUserCategoriesMadeByPartnerChargedToPartner = $row['totalCharged'] ?: 0;
+		$this->totalExpensesFromPrivateAccountsToUserCategoriesMadeByPartnerChargedToUser = $this->totalExpensesFromPrivateAccountsToUserCategoriesMadeByPartner - $this->totalExpensesFromPrivateAccountsToUserCategoriesMadeByPartnerChargedToPartner;
+	}
+
+	public $totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByPartner;
+	public $totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByPartnerChargedToPartner;
+	public $totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByPartnerChargedToUser;
+
+	function ExpenseFromPrivateAccountToPartnerCategoriesMadeByPartner()
+	{
+		$query = "select sum(amount) as total, sum(amount * (charge / 100)) as totalCharged
+				from {TABLEPREFIX}record
+				where record_type in (22)
+				and marked_as_deleted = 0
+				and
+				(
+					category_id in (select category_id from {TABLEPREFIX}category where link_type = 'USER' and link_id = '".$this->user->GetPartnerId()."')
+					or
+					category_id = 'USER/".$this->user->GetPartnerId()."'
+				)
+				and record_date <= curdate()
+				".$this->recordFilter."
+				and account_id in (select account_id from {TABLEPREFIX}account where type in (1))
 				and user_id = '".$this->partner->get('userId')."'";
 		$row = $this->db->SelectRow($query);
 	
@@ -389,22 +444,25 @@ class StatisticsBalanceHandler extends Handler
 		if ($this->debug) print '<br/>'.$this->totalExpensesFromPrivateAccountsToDuoCategoriesMadeByUser.'<br/>'.$this->totalExpensesFromPrivateAccountsToDuoCategoriesMadeByUserChargedToUser.'<br/>'.$this->totalExpensesFromPrivateAccountsToDuoCategoriesMadeByUserChargedToPartner.'<br/>';
 		$this->ExpenseFromPrivateAccountToPartnerCategories();
 		if ($this->debug) print '<br/>'.$this->totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByUser.'<br/>'.$this->totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByUserChargedToUser.'<br/>'.$this->totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByUserChargedToPartner.'<br/>';
+		$this->ExpenseFromPrivateAccountToUserCategories();
+		if ($this->debug) print '<br/>'.$this->totalExpensesFromPrivateAccountsToUserCategoriesMadeByUser.'<br/>'.$this->totalExpensesFromPrivateAccountsToUserCategoriesMadeByUserChargedToUser.'<br/>'.$this->totalExpensesFromPrivateAccountsToUserCategoriesMadeByUserChargedToPartner.'<br/>';
 
-		$this->totalContributionOfUser += $this->totalExpensesFromPrivateAccountsToDuoCategoriesMadeByUser + $this->totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByUser;
-		$this->totalExpenses += $this->totalExpensesFromPrivateAccountsToDuoCategoriesMadeByUser + $this->totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByUser;
-		$this->totalExpensesChargedToUser += $this->totalExpensesFromPrivateAccountsToDuoCategoriesMadeByUserChargedToUser + $this->totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByUserChargedToUser;
-		$this->totalExpensesChargedToPartner += $this->totalExpensesFromPrivateAccountsToDuoCategoriesMadeByUserChargedToPartner + $this->totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByUserChargedToPartner;
+		$this->totalContributionOfUser += $this->totalExpensesFromPrivateAccountsToDuoCategoriesMadeByUser + $this->totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByUser + $this->totalExpensesFromPrivateAccountsToUserCategoriesMadeByUser;
+		$this->totalExpenses += $this->totalExpensesFromPrivateAccountsToDuoCategoriesMadeByUser + $this->totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByUser + $this->totalExpensesFromPrivateAccountsToUserCategoriesMadeByUser;
+		$this->totalExpensesChargedToUser += $this->totalExpensesFromPrivateAccountsToDuoCategoriesMadeByUserChargedToUser + $this->totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByUserChargedToUser + $this->totalExpensesFromPrivateAccountsToUserCategoriesMadeByUserChargedToUser;
+		$this->totalExpensesChargedToPartner += $this->totalExpensesFromPrivateAccountsToDuoCategoriesMadeByUserChargedToPartner + $this->totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByUserChargedToPartner + $this->totalExpensesFromPrivateAccountsToUserCategoriesMadeByUserChargedToPartner;
 
 		$this->ExpenseFromPrivateAccountsToDuoCategoriesMadeByPartner();
 		if ($this->debug) print '<br/>'.$this->totalExpensesFromPrivateAccountsToDuoCategoriesMadeByPartner.'<br/>'.$this->totalExpensesFromPrivateAccountsToDuoCategoriesMadeByPartnerChargedToPartner.'<br/>'.$this->totalExpensesFromPrivateAccountsToDuoCategoriesMadeByPartnerChargedToUser.'<br/>';
-
-		$this->ExpenseFromPrivateAccountToPartnerCategoriesMadeByPartner();
-		if ($this->debug) print '<br/>'.$this->totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByPartner.'<br/>'.$this->totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByPartnerChargedToPartner.'<br/>'.$this->totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByPartnerChargedToUser.'<br/>';
-
-		$this->totalContributionOfPartner += $this->totalExpensesFromPrivateAccountsToDuoCategoriesMadeByPartner + $this->totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByPartner;
-		$this->totalExpenses += $this->totalExpensesFromPrivateAccountsToDuoCategoriesMadeByPartner + $this->totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByPartner;
-		$this->totalExpensesChargedToUser += $this->totalExpensesFromPrivateAccountsToDuoCategoriesMadeByPartnerChargedToUser + $this->totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByPartnerChargedToUser;
-		$this->totalExpensesChargedToPartner += $this->totalExpensesFromPrivateAccountsToDuoCategoriesMadeByPartnerChargedToPartner + $this->totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByPartnerChargedToPartner;
+		$this->ExpenseFromPrivateAccountToUserCategoriesMadeByPartner();
+		if ($this->debug) print '<br/>'.$this->totalExpensesFromPrivateAccountsToUserCategoriesMadeByPartner.'<br/>'.$this->totalExpensesFromPrivateAccountsToUserCategoriesMadeByPartnerChargedToPartner.'<br/>'.$this->totalExpensesFromPrivateAccountsToUserCategoriesMadeByPartnerChargedToUser.'<br/>';
+		$this->ExpenseFromPrivateAccountToPartnerCategories();
+		if ($this->debug) print '<br/>'.$this->totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByUser.'<br/>'.$this->totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByUserChargedToUser.'<br/>'.$this->totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByUserChargedToPartner.'<br/>';
+		
+		$this->totalContributionOfPartner += $this->totalExpensesFromPrivateAccountsToDuoCategoriesMadeByPartner + $this->totalExpensesFromPrivateAccountsToUserCategoriesMadeByPartner + $this->totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByPartner;
+		$this->totalExpenses += $this->totalExpensesFromPrivateAccountsToDuoCategoriesMadeByPartner + $this->totalExpensesFromPrivateAccountsToUserCategoriesMadeByPartner + $this->totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByPartner;
+		$this->totalExpensesChargedToUser += $this->totalExpensesFromPrivateAccountsToDuoCategoriesMadeByPartnerChargedToUser + $this->totalExpensesFromPrivateAccountsToUserCategoriesMadeByPartnerChargedToUser + $this->totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByPartnerChargedToUser;
+		$this->totalExpensesChargedToPartner += $this->totalExpensesFromPrivateAccountsToDuoCategoriesMadeByPartnerChargedToPartner + $this->totalExpensesFromPrivateAccountsToUserCategoriesMadeByPartnerChargedToPartner + $this->totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByPartnerChargedToPartner;
 
 		$this->GetTotalIncomeDuoAccountsByUser($this->user->get('userId'), $this->totalIncomeDuoAccountsMadeByUser);
 		$this->GetTotalIncomeDuoAccountsByUser($this->user->GetPartnerId(), $this->totalIncomeDuoAccountsMadeByPartner);

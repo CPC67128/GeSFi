@@ -27,9 +27,9 @@ while ($row = $result->fetch())
 }
 
 // content="text/plain; charset=utf-8"
-require_once ('../3rd_party/jpgraph-3.5.0b1/src/jpgraph.php');
-require_once ('../3rd_party/jpgraph-3.5.0b1/src/jpgraph_line.php');
-require_once ('../3rd_party/jpgraph-3.5.0b1/src/jpgraph_date.php');
+require_once ('../3rd_party/jpgraph-4.0.2/src/jpgraph.php');
+require_once ('../3rd_party/jpgraph-4.0.2/src/jpgraph_line.php');
+require_once ('../3rd_party/jpgraph-4.0.2/src/jpgraph_date.php');
 
 // Create a data set in range (50,70) and X-positions
 /*
@@ -48,7 +48,7 @@ $graph->SetMargin(40,40,30,30);
 
 // Fix the Y-scale to go between [0,100] and use date for the x-axis
 $graph->SetScale('datlin');
-$graph->title->Set($translator->getTranslation("Rendement annuel"));
+$graph->title->Set($translator->getTranslation("Rendement annualisé"));
 
 // Set the angle for the labels to 90 degrees
 $graph->xaxis->SetLabelAngle(0);

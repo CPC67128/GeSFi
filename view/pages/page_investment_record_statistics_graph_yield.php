@@ -27,9 +27,9 @@ while ($row = $result->fetch())
 }
 
 // content="text/plain; charset=utf-8"
-require_once ('../3rd_party/jpgraph-3.5.0b1/src/jpgraph.php');
-require_once ('../3rd_party/jpgraph-3.5.0b1/src/jpgraph_line.php');
-require_once ('../3rd_party/jpgraph-3.5.0b1/src/jpgraph_date.php');
+require_once ('../3rd_party/jpgraph-4.0.2/src/jpgraph.php');
+require_once ('../3rd_party/jpgraph-4.0.2/src/jpgraph_line.php');
+require_once ('../3rd_party/jpgraph-4.0.2/src/jpgraph_date.php');
 
 // Create a data set in range (50,70) and X-positions
 /*

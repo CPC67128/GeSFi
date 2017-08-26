@@ -5,12 +5,9 @@ class User extends Entity
 	protected $_userName;
 	protected $_email;
 	protected $_password;
-	protected $_subscriptionDate;
 	protected $_role;
-	protected $_name;
-	protected $_culture;
-	protected $_duoId;
 	protected $_active;
+	protected $_name;
 	
 	// -------------------------------------------------------------------------------------------------------------------
 
@@ -25,9 +22,7 @@ class User extends Entity
 
 		$query = "select user_id
 			from {TABLEPREFIX}user
-			where duo_id != ''
-			and duo_id = '".$this->get('duoId')."'
-			and user_id != '".$this->get('userId')."'";
+			where user_id != '".$this->get('userId')."'";
 		$row = $db->SelectRow($query);
 
 		if ($row)
@@ -44,9 +39,7 @@ class User extends Entity
 	
 		$query = "select name
 		from {TABLEPREFIX}user
-		where duo_id != ''
-		and duo_id = '".$this->get('duoId')."'
-		and user_id != '".$this->get('userId')."'";
+		where user_id != '".$this->get('userId')."'";
 		$row = $db->SelectRow($query);
 	
 		if ($row)

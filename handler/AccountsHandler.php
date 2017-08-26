@@ -25,8 +25,7 @@ class AccountsHandler extends Handler
 		$query = 'select ACC.*, PRF.sort_order
 			from {TABLEPREFIX}account as ACC
 			left join {TABLEPREFIX}account_user_preference as PRF on ACC.account_id = PRF.account_id and PRF.user_id = \'{USERID}\' 
-			where (ACC.owner_user_id = \'{USERID}\'
-			or ACC.coowner_user_id = \'{USERID}\')
+			where (ACC.owner_user_id = \'{USERID}\' or ACC.type in (3, 12))
 			and marked_as_closed = 0
 			order by PRF.sort_order';
 		$result = $db->Select($query);
@@ -49,8 +48,7 @@ class AccountsHandler extends Handler
 		$query = 'select ACC.*, PRF.sort_order
 			from {TABLEPREFIX}account as ACC
 			left join {TABLEPREFIX}account_user_preference as PRF on ACC.account_id = PRF.account_id and PRF.user_id = \'{USERID}\' 
-			where (ACC.owner_user_id = \'{USERID}\'
-			or ACC.coowner_user_id = \'{USERID}\')
+			where (ACC.owner_user_id = \'{USERID}\' or ACC.type in (3, 12))
 			and ACC.type < 10 
 			and marked_as_closed = 0
 			order by PRF.sort_order';
@@ -74,8 +72,7 @@ class AccountsHandler extends Handler
 		$query = 'select ACC.*, PRF.sort_order
 			from {TABLEPREFIX}account as ACC
 			left join {TABLEPREFIX}account_user_preference as PRF on ACC.account_id = PRF.account_id and PRF.user_id = \'{USERID}\' 
-			where (ACC.owner_user_id = \'{USERID}\'
-			or ACC.coowner_user_id = \'{USERID}\')
+			where (ACC.owner_user_id = \'{USERID}\' or ACC.type in (3, 12))
 			and ACC.type >= 10 and ACC.type <= 19
 			and marked_as_closed = 0
 			order by PRF.sort_order';
@@ -99,8 +96,7 @@ class AccountsHandler extends Handler
 		$query = 'select ACC.*, PRF.sort_order
 			from {TABLEPREFIX}account as ACC
 			left join {TABLEPREFIX}account_user_preference as PRF on ACC.account_id = PRF.account_id and PRF.user_id = \'{USERID}\' 
-			where (ACC.owner_user_id = \'{USERID}\'
-			or ACC.coowner_user_id = \'{USERID}\')
+			where (ACC.owner_user_id = \'{USERID}\' or ACC.type in (3, 12))
 			and ACC.type >= 10 and ACC.type <= 19
 			and marked_as_closed = 0
 			and generate_income = 1
@@ -125,8 +121,7 @@ class AccountsHandler extends Handler
 		$query = 'select ACC.*, PRF.sort_order
 			from {TABLEPREFIX}account as ACC
 			left join {TABLEPREFIX}account_user_preference as PRF on ACC.account_id = PRF.account_id and PRF.user_id = \'{USERID}\' 
-			where (ACC.owner_user_id = \'{USERID}\'
-			or ACC.coowner_user_id = \'{USERID}\')
+			where (ACC.owner_user_id = \'{USERID}\' or ACC.type in (3, 12))
 			and ACC.type >= 10 and ACC.type <= 19
 			and marked_as_closed = 0
 			and not_displayed_in_menu = 0 
@@ -151,8 +146,7 @@ class AccountsHandler extends Handler
 		$query = 'select ACC.*, PRF.sort_order
 		from {TABLEPREFIX}account as ACC
 		left join {TABLEPREFIX}account_user_preference as PRF on ACC.account_id = PRF.account_id and PRF.user_id = \'{USERID}\'
-		where (ACC.owner_user_id = \'{USERID}\'
-		or ACC.coowner_user_id = \'{USERID}\')
+		where (ACC.owner_user_id = \'{USERID}\' or ACC.type in (3, 12))
 		and ACC.type >= 10 and ACC.type <= 11
 		and marked_as_closed = 0
 		order by PRF.sort_order';
@@ -176,8 +170,7 @@ class AccountsHandler extends Handler
 		$query = 'select ACC.*, PRF.sort_order
 			from {TABLEPREFIX}account as ACC
 			left join {TABLEPREFIX}account_user_preference as PRF on ACC.account_id = PRF.account_id and PRF.user_id = \'{USERID}\' 
-			where (ACC.owner_user_id = \'{USERID}\'
-			or ACC.coowner_user_id = \'{USERID}\')
+			where (ACC.owner_user_id = \'{USERID}\' or ACC.type in (3, 12))
 			and ACC.type in (12)
 			and marked_as_closed = 0
 			order by PRF.sort_order';
@@ -200,8 +193,7 @@ class AccountsHandler extends Handler
 
 		$query = 'select *
 			from {TABLEPREFIX}account
-			where (owner_user_id = \'{USERID}\'
-			or coowner_user_id = \'{USERID}\')
+			where (ACC.owner_user_id = \'{USERID}\' or ACC.type in (3, 12))
 			and marked_as_closed = 0';
 		$result = $db->Select($query);
 		if ($row = $result->fetch())
@@ -252,7 +244,7 @@ class AccountsHandler extends Handler
 		
 			$query = 'select *
 				from {TABLEPREFIX}account
-				where (owner_user_id = \'{USERID}\' or coowner_user_id = \'{USERID}\')
+				where (owner_user_id = \'{USERID}\' or type in (3, 12))
 				and account_id = \'{ACCOUNTID}\'
 				and marked_as_closed = 0';
 			$row = $db->SelectRow($query);
@@ -276,8 +268,6 @@ class AccountsHandler extends Handler
 			where
 			(
 			owner_user_id = (select owner_user_id from {TABLEPREFIX}account where account_id = \''.$idDuoAccount.'\')
-			or
-			owner_user_id = (select coowner_user_id from {TABLEPREFIX}account where account_id = \''.$idDuoAccount.'\')
 			)
 			and marked_as_closed = 0
 			and type = 1';
@@ -327,8 +317,7 @@ class AccountsHandler extends Handler
 		$query = "select ACC.*, PRF.sort_order
 		from {TABLEPREFIX}account as ACC
 		left join {TABLEPREFIX}account_user_preference as PRF on ACC.account_id = PRF.account_id and PRF.user_id = '{USERID}'
-		where (ACC.owner_user_id = '{USERID}' or ACC.coowner_user_id = '{USERID}')
-		and marked_as_closed = 0
+		where marked_as_closed = 0
 		and type in (2, 3)
 		order by PRF.sort_order";
 
@@ -352,7 +341,7 @@ class AccountsHandler extends Handler
 		$query = "select ACC.*, PRF.sort_order
 		from {TABLEPREFIX}account as ACC
 		left join {TABLEPREFIX}account_user_preference as PRF on ACC.account_id = PRF.account_id and PRF.user_id = '{USERID}'
-		where (ACC.owner_user_id = '{USERID}' or ACC.coowner_user_id = '{USERID}')
+		where (ACC.owner_user_id = '{USERID}' or type in (3, 12))
 		and marked_as_closed = 0
 		and type in (5, 6)
 		order by PRF.sort_order";

@@ -4,10 +4,8 @@ class Account extends Entity
 	protected $_accountId;
 	protected $_name;
 	protected $_description;
-	protected $_information;
 	protected $_type;
 	protected $_ownerUserId;
-	protected $_coownerUserId;
 	protected $_openingBalance;
 	protected $_expectedMinimumBalance;
 	protected $_creationDate;
@@ -38,9 +36,9 @@ class Account extends Entity
 		$types = array
 		(
 			1 => 'Compte privé',
-			2 => 'Compte duo virtuel',
+			2 => 'Compte duo virtuel', // OBSOLETE
 			3 => 'Compte duo',
-			4 => 'Compte d\'optimisation financière',
+			4 => 'Compte d\'optimisation financière', // OBSOLETE
 			5 => 'Prêt', // TODO : créér distinction entre prêt en indivision
 			10 => 'Placement bancaire',
 			11 => 'Immobilier',
@@ -100,22 +98,16 @@ class Account extends Entity
 	public function GetOwnerName()
 	{
 		$db = new DB();
-	
-		$query = 'select name from {TABLEPREFIX}user
-		where user_id = \''.$this->_ownerUserId.'\'';
+		$query = "select name from {TABLEPREFIX}user where user_id = '".$this->_ownerUserId."'";
 		$row = $db->SelectRow($query);
-	
 		return $row['name'];
 	}
 
 	public function GetCoownerName()
 	{
 		$db = new DB();
-	
-		$query = 'select name from {TABLEPREFIX}user
-		where user_id = \''.$this->_coownerUserId.'\'';
+		$query = "select name from {TABLEPREFIX}user where user_id != '".$this->_ownerUserId."'";
 		$row = $db->SelectRow($query);
-	
 		return $row['name'];
 	}
 

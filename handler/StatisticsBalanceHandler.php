@@ -51,7 +51,7 @@ class StatisticsBalanceHandler extends Handler
 			from {TABLEPREFIX}record
 			where record_type in (22)
 			and marked_as_deleted = 0
-			and category_id in (select category_id from {TABLEPREFIX}category where link_type = 'DUO' and link_id = '".$this->user->get('duoId')."')
+			and category_id in (select category_id from {TABLEPREFIX}category where link_type = 'DUO')
 			and record_date <= curdate()
 			and account_id not in (select account_id from {TABLEPREFIX}account where type in (2, 3, 5, 12))
 			".$this->recordFilter."
@@ -129,7 +129,7 @@ class StatisticsBalanceHandler extends Handler
 			from {TABLEPREFIX}record
 			where record_type in (22)
 			and marked_as_deleted = 0
-			and category_id in (select category_id from {TABLEPREFIX}category where link_type = 'DUO' and link_id = '".$this->user->get('duoId')."')
+			and category_id in (select category_id from {TABLEPREFIX}category where link_type = 'DUO')
 			and record_date <= curdate()
 			and account_id not in (select account_id from {TABLEPREFIX}account where type in (2, 3, 5, 12))
 			".$this->recordFilter."
@@ -204,7 +204,7 @@ class StatisticsBalanceHandler extends Handler
 			from {TABLEPREFIX}record
 			where record_type in (10)
 			and marked_as_deleted = 0
-			and account_id in (select account_id from {TABLEPREFIX}account where type in (2, 3) and (owner_user_id = '".$userId."' or coowner_user_id = '".$userId."'))
+			and account_id in (select account_id from {TABLEPREFIX}account where type in (2, 3) and (owner_user_id = '".$userId."' or type in (3, 12)))
 			and
 			(
 				record_group_id in
@@ -273,7 +273,7 @@ class StatisticsBalanceHandler extends Handler
 			from {TABLEPREFIX}record
 			where record_type in (12)
 			and marked_as_deleted = 0
-			and account_id in (select account_id from {TABLEPREFIX}account where type in (2, 3) and (owner_user_id = '{USERID}' or coowner_user_id = '{USERID}'))
+			and account_id in (select account_id from {TABLEPREFIX}account where type in (2, 3) and (owner_user_id = '{USERID}' or type in (3, 12)))
 			and record_date <= curdate()
 			".$this->recordFilter."
 			and user_id = '".$userId."'";
@@ -284,7 +284,7 @@ class StatisticsBalanceHandler extends Handler
 			from {TABLEPREFIX}record
 			where record_type in (12)
 			and marked_as_deleted = 0
-			and account_id in (select account_id from {TABLEPREFIX}account where type in (2, 3) and (owner_user_id = '{USERID}' or coowner_user_id = '{USERID}'))
+			and account_id in (select account_id from {TABLEPREFIX}account where type in (2, 3) and (owner_user_id = '{USERID}' or type in (3, 12)))
 			and record_date <= curdate()
 			".$this->recordFilter."
 			and user_id != '".$userId."'";
@@ -307,7 +307,7 @@ class StatisticsBalanceHandler extends Handler
 			from {TABLEPREFIX}record
 			where record_type in (20)
 			and marked_as_deleted = 0
-			and account_id in (select account_id from {TABLEPREFIX}account where type in (2, 3) and (owner_user_id = '".$userId."' or coowner_user_id = '".$userId."'))
+			and account_id in (select account_id from {TABLEPREFIX}account where type in (2, 3) and (owner_user_id = '".$userId."' or type in (3, 12)))
 			and
 			(
 				record_group_id in
@@ -352,7 +352,7 @@ class StatisticsBalanceHandler extends Handler
 			from {TABLEPREFIX}record
 			where record_type in (22)
 			and marked_as_deleted = 0
-			and account_id in (select account_id from {TABLEPREFIX}account where type in (2, 3) and (owner_user_id = '".$userId."' or coowner_user_id = '".$userId."'))
+			and account_id in (select account_id from {TABLEPREFIX}account where type in (2, 3) and (owner_user_id = '".$userId."' or type in (3, 12)))
 			".$this->recordFilter."
 			and record_date <= curdate()
 			and user_id = '".$userId."'";
@@ -363,7 +363,7 @@ class StatisticsBalanceHandler extends Handler
 			from {TABLEPREFIX}record
 			where record_type in (22)
 			and marked_as_deleted = 0
-			and account_id in (select account_id from {TABLEPREFIX}account where type in (2, 3) and (owner_user_id = '".$userId."' or coowner_user_id = '".$userId."'))
+			and account_id in (select account_id from {TABLEPREFIX}account where type in (2, 3) and (owner_user_id = '".$userId."' or type in (3, 12)))
 			".$this->recordFilter."
 			and record_date <= curdate()
 			and user_id != '".$userId."'";
@@ -382,7 +382,7 @@ class StatisticsBalanceHandler extends Handler
 			from {TABLEPREFIX}record
 			where record_type = 22
 			and marked_as_deleted = 0
-			and account_id in (select account_id from {TABLEPREFIX}account where type in (2, 3) and (owner_user_id = '{USERID}' or coowner_user_id = '{USERID}'))
+			and account_id in (select account_id from {TABLEPREFIX}account where type in (2, 3) and (owner_user_id = '{USERID}' or type in (3, 12)))
 				".$this->recordFilter."
 			and record_date <= curdate()";
 		$row = $db->SelectRow($query);
@@ -428,7 +428,7 @@ class StatisticsBalanceHandler extends Handler
 			from {TABLEPREFIX}record
 			where record_type = 12
 			and marked_as_deleted = 0
-			and category_id in (select category_id from {TABLEPREFIX}category where link_type = 'DUO' and link_id = '".$this->user->get('duoId')."')
+			and category_id in (select category_id from {TABLEPREFIX}category where link_type = 'DUO')
 			and account_id in (select account_id from {TABLEPREFIX}account where marked_as_closed = 0 and type in (1) and owner_user_id = '".$userId."')
 			".$this->recordFilter."
 			and record_date <= curdate()";
@@ -502,42 +502,5 @@ class StatisticsBalanceHandler extends Handler
 		
 		$this->totalContributionOfUser += $this->totalIncomeOutsidePartnersToPartner / 2 - $this->totalIncomeOutsidePartnersToUser / 2;
 		$this->totalContributionOfPartner += $this->totalIncomeOutsidePartnersToUser / 2 - $this->totalIncomeOutsidePartnersToPartner / 2;
-		
-		
-		$sql = 'delete from {TABLEPREFIX}statistics_balance where year='.$this->year.' and month='.$this->month;
-		$this->db->Execute($sql);
-		
-		$query = 'insert into {TABLEPREFIX}statistics_balance
-				(
-				year,month,update_date,aggregate,
-				expFromPrivateAccountsToDuoCategoriesMadeByUser,expFromPrivateAccountsToDuoCategoriesMadeByUserChargedToUser,expFromPrivateAccountsToDuoCategoriesMadeByUserChargedToPartner,
-				expFromPrivateAccountsToParCategoriesMadeByUser,expFromPrivateAccountsToParCategoriesMadeByUserChargedToUser,expFromPrivateAccountsToParCategoriesMadeByUserChargedToPartner,
-				contribution_user, contribution_partner
-				)
-				values
-				(
-				%s,%s,now(),%s,
-				%s,%s,%s,
-				%s,%s,%s,
-				%s,%s
-				)';
-		$sql = sprintf($query,
-				$this->year,$this->month,$this->aggregate ? 1 : 0,
-				$this->totalExpensesFromPrivateAccountsToDuoCategoriesMadeByUser,$this->totalExpensesFromPrivateAccountsToDuoCategoriesMadeByUserChargedToUser,$this->totalExpensesFromPrivateAccountsToDuoCategoriesMadeByUserChargedToPartner,
-				$this->totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByUser,$this->totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByUserChargedToUser,$this->totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByUserChargedToPartner,
-				$this->totalContributionOfUser - $this->totalExpensesChargedToUser, $this->totalContributionOfPartner - $this->totalExpensesChargedToPartner
-		);
-		$this->db->Execute($sql);
-/*
-SELECT
-CONCAT_WS('-', year,month),
-year,
-month,
-(select sum(contribution_user) from `bf_statistics_balance` T1 where T1.year < T.year or (T1.year = T.year and T1.month <= T.month)) as sum_contribution_user,
-
-(select sum(contribution_partner) from `bf_statistics_balance` T1 where T1.year < T.year or (T1.year = T.year and T1.month <= T.month)) as sum_contribution_partner
-FROM `bf_statistics_balance` T
-order by year desc, month desc
- */
 	}
 }

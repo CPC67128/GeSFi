@@ -164,7 +164,7 @@ class RecordsHandler extends Handler
 			from {TABLEPREFIX}record
 			where designation like ".$searchString."
 			and record_type >= ".$typeStart." and record_type <= ".$typeEnd."
-			and account_id in (select account_id from {TABLEPREFIX}account where owner_user_id = '".$user->get('userId')."' or coowner_user_id = '".$user->get('userId')."')
+			and account_id in (select account_id from {TABLEPREFIX}account where owner_user_id = '".$user->get('userId')."' or type in (3, 12))
 			group by designation
 			order by count(*) desc";
 		$result = $db->Select($query);
@@ -183,7 +183,7 @@ class RecordsHandler extends Handler
 		$query = "update {TABLEPREFIX}record
 			set designation = ".$destination."
 			where designation = ".$source."
-			and account_id in (select account_id from {TABLEPREFIX}account where owner_user_id = '".$user->get('userId')."' or coowner_user_id = '".$user->get('userId')."')";
+			and account_id in (select account_id from {TABLEPREFIX}account where owner_user_id = '".$user->get('userId')."' or type in (3, 12))";
 		$result = $db->_Execute($query, false);
 		return $result;
 	}

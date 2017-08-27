@@ -60,20 +60,32 @@ class CategoriesHandler extends Handler
 		{
 			$usersHandler = new UsersHandler();
 			$currentUser = $usersHandler->GetUser($userId);
-			$linkId = $currentUser->get('duoId');
 		}
 	
 		$categories = array();
 	
 		$db = new DB();
-	
-		$query = "select *
-			from {TABLEPREFIX}category
-			where link_type = '".$linkType."'
-			and link_id = '".$linkId."'
-			and type = ".$type."
-			and marked_as_inactive = 0
-			order by sort_order, category";
+
+		if ($linkType == 'DUO')
+		{
+			$query = "select *
+				from {TABLEPREFIX}category
+				where link_type = '".$linkType."'
+				and type = ".$type."
+				and marked_as_inactive = 0
+				order by sort_order, category";
+		}
+		else
+		{
+			$query = "select *
+				from {TABLEPREFIX}category
+				where link_type = '".$linkType."'
+				and link_id = '".$linkId."'
+				and type = ".$type."
+				and marked_as_inactive = 0
+				order by sort_order, category";
+		}
+
 		$result = $db->Select($query);
 		while ($row = $result->fetch())
 		{
@@ -106,16 +118,26 @@ class CategoriesHandler extends Handler
 		{
 			$usersHandler = new UsersHandler();
 			$currentUser = $usersHandler->GetUser($userId);
-			$linkId = $currentUser->get('duoId');
 		}
 	
 		$db = new DB();
 	
-		$query = "select *
-			from {TABLEPREFIX}category
-			where link_type = '".$type."'
-			and link_id = '".$linkId."'
-			order by type, sort_order, category";
+		if ($type == "DUO")
+		{
+			$query = "select *
+				from {TABLEPREFIX}category
+				where link_type = '".$type."'
+				order by type, sort_order, category";
+		}
+		else
+		{
+			$query = "select *
+				from {TABLEPREFIX}category
+				where link_type = '".$type."'
+				and link_id = '".$linkId."'
+				order by type, sort_order, category";
+		}
+
 		$result = $db->Select($query);
 		while ($row = $result->fetch())
 		{
@@ -137,7 +159,7 @@ class CategoriesHandler extends Handler
 		$query = sprintf("insert into {TABLEPREFIX}category (category_id, link_type, link_id, type, category, active_from, sort_order, marked_as_inactive)
 				values (uuid(), '%s', '%s', %s, %s, CURRENT_TIMESTAMP(), %s, 0)",
 				$linkType,
-				$linkType == 'USER' ? '{USERID}' : $currentUser->get('duoId'),
+				$linkType == 'USER' ? '{USERID}' : '',
 				$type,
 				$db->ConvertStringForSqlInjection($category),
 				$sortOrder == '' ? '0' : $sortOrder);
@@ -164,7 +186,7 @@ class CategoriesHandler extends Handler
 			// Check if a category already exists at the targeted position
 			$query = sprintf("select count(*) as total from {TABLEPREFIX}category where link_type = '%s' and link_id = '%s' and type = %s and sort_order = %s and category_id != '%s'",
 					$linkType,
-					$linkType == 'USER' ? '{USERID}' : $currentUser->get('duoId'),
+					$linkType == 'USER' ? '{USERID}' : '',
 					$type,
 					$sortOrder,
 					$categoryId);
@@ -178,7 +200,7 @@ class CategoriesHandler extends Handler
 				// If this is the case, I will push the category already at this position to the next position 
 				$query = sprintf("update {TABLEPREFIX}category set sort_order = sort_order + 1 where link_type = '%s' and link_id = '%s' and type = %s and sort_order = %s and category_id != '%s'",
 						$linkType,
-						$linkType == 'USER' ? '{USERID}' : $currentUser->get('duoId'),
+						$linkType == 'USER' ? '{USERID}' : '',
 						$type,
 						$sortOrder,
 						$categoryId);

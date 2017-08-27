@@ -375,7 +375,7 @@ class AccountsHandler extends Handler
 	}
 
 	/***** Insert *****/
-	function InsertAccount($name, $owner, $coowner, $type, $openingBalance, $expectedMinimumBalance, $sortOrder, $minimumCheckPeriod, $recordConfirmation, $notDisplayedInMenu, $noColorIndDashboard, $generateIncome)
+	function InsertAccount($name, $owner, $type, $openingBalance, $expectedMinimumBalance, $sortOrder, $minimumCheckPeriod, $recordConfirmation, $notDisplayedInMenu, $noColorIndDashboard, $generateIncome)
 	{
 		$db = new DB();
 
@@ -389,13 +389,12 @@ class AccountsHandler extends Handler
 		if (!empty($row['max_order']))
 			$tempSortOrder = $row['max_order'];
 		
-		$query = sprintf("insert into {TABLEPREFIX}account (account_id, name, type, owner_user_id, coowner_user_id, opening_balance, expected_minimum_balance, minimum_check_period, creation_date, record_confirmation, not_displayed_in_menu, no_color_in_dashboard, generate_income)
-				values ('%s', '%s', %s, '%s', '%s', %s, %s, %s, CURRENT_TIMESTAMP(), %s, %s, %s, %s)",
+		$query = sprintf("insert into {TABLEPREFIX}account (account_id, name, type, owner_user_id, opening_balance, expected_minimum_balance, minimum_check_period, creation_date, record_confirmation, not_displayed_in_menu, no_color_in_dashboard, generate_income)
+				values ('%s', '%s', %s, '%s', %s, %s, %s, CURRENT_TIMESTAMP(), %s, %s, %s, %s)",
 				$uuid,
 				$name,
 				$type,
 				$owner,
-				$coowner,
 				$openingBalance,
 				$expectedMinimumBalance,
 				$minimumCheckPeriod,

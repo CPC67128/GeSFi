@@ -12,7 +12,7 @@ class StatisticsHandler extends Handler
 			from {TABLEPREFIX}record
 			where record_type = 22
 			and marked_as_deleted = 0
-			and account_id in (select account_id from {TABLEPREFIX}account where type in (3) and (owner_user_id = '{USERID}' or coowner_user_id = '{USERID}'))
+			and account_id in (select account_id from {TABLEPREFIX}account where type in (3) and (owner_user_id = '{USERID}' or type in (3, 12)))
 			and record_date <= curdate()
 			and user_id = '".$user->get('userId')."'";
 		$row = $db->SelectRow($query);
@@ -29,7 +29,7 @@ class StatisticsHandler extends Handler
 			from {TABLEPREFIX}record
 			where record_type in (22)
 			and marked_as_deleted = 0
-			and account_id in (select account_id from {TABLEPREFIX}account where type in (2, 3) and (owner_user_id = '".$userId."' or coowner_user_id = '".$userId."'))
+			and account_id in (select account_id from {TABLEPREFIX}account where type in (2, 3) and (owner_user_id = '".$userId."' or type in (3, 12)))
 			and record_date <= curdate()
 			and user_id = '".$userId."'";
 		$row = $db->SelectRow($query);
@@ -39,7 +39,7 @@ class StatisticsHandler extends Handler
 			from {TABLEPREFIX}record
 			where record_type in (22)
 			and marked_as_deleted = 0
-			and account_id in (select account_id from {TABLEPREFIX}account where type in (2, 3) and (owner_user_id = '".$userId."' or coowner_user_id = '".$userId."'))
+			and account_id in (select account_id from {TABLEPREFIX}account where type in (2, 3) and (owner_user_id = '".$userId."' or type in (3, 12)))
 			and record_date <= curdate()
 			and user_id != '".$userId."'";
 		$row = $db->SelectRow($query);
@@ -57,7 +57,7 @@ class StatisticsHandler extends Handler
 			from {TABLEPREFIX}record
 			where record_type = 22
 			and marked_as_deleted = 0
-			and account_id in (select account_id from {TABLEPREFIX}account where type in (2, 3) and (owner_user_id = '{USERID}' or coowner_user_id = '{USERID}'))
+			and account_id in (select account_id from {TABLEPREFIX}account where type in (2, 3) and (owner_user_id = '{USERID}' or type in (3, 12)))
 			and record_date <= curdate()";
 		$row = $db->SelectRow($query);
 	
@@ -73,7 +73,7 @@ class StatisticsHandler extends Handler
 			from {TABLEPREFIX}record
 			where record_type = 12
 			and marked_as_deleted = 0
-			and account_id in (select account_id from {TABLEPREFIX}account where type in (2, 3) and (owner_user_id = '{USERID}' or coowner_user_id = '{USERID}'))
+			and account_id in (select account_id from {TABLEPREFIX}account where type in (2, 3) and (owner_user_id = '{USERID}' or type in (3, 12)))
 			and record_date <= curdate()";
 		$row = $db->SelectRow($query);
 
@@ -102,7 +102,7 @@ class StatisticsHandler extends Handler
 			from {TABLEPREFIX}record
 			where record_type in (12)
 			and marked_as_deleted = 0
-			and account_id in (select account_id from {TABLEPREFIX}account where type in (2, 3) and (owner_user_id = '{USERID}' or coowner_user_id = '{USERID}'))
+			and account_id in (select account_id from {TABLEPREFIX}account where type in (2, 3) and (owner_user_id = '{USERID}' or type in (3, 12)))
 			and record_date <= curdate()
 			and user_id = '".$userId."'";
 		$row = $db->SelectRow($query);
@@ -112,7 +112,7 @@ class StatisticsHandler extends Handler
 			from {TABLEPREFIX}record
 			where record_type in (12)
 			and marked_as_deleted = 0
-			and account_id in (select account_id from {TABLEPREFIX}account where type in (2, 3) and (owner_user_id = '{USERID}' or coowner_user_id = '{USERID}'))
+			and account_id in (select account_id from {TABLEPREFIX}account where type in (2, 3) and (owner_user_id = '{USERID}' or type in (3, 12)))
 			and record_date <= curdate()
 			and user_id != '".$userId."'";
 		$row = $db->SelectRow($query);
@@ -155,7 +155,7 @@ class StatisticsHandler extends Handler
 			from {TABLEPREFIX}record
 			where record_type in (10)
 			and marked_as_deleted = 0
-			and account_id in (select account_id from {TABLEPREFIX}account where type in (2, 3) and (owner_user_id = '".$userId."' or coowner_user_id = '".$userId."'))
+			and account_id in (select account_id from {TABLEPREFIX}account where type in (2, 3) and (owner_user_id = '".$userId."' or type in (3, 12)))
 			and
 			(
 				record_group_id in
@@ -197,7 +197,7 @@ class StatisticsHandler extends Handler
 			from {TABLEPREFIX}record
 			where record_type in (20)
 			and marked_as_deleted = 0
-			and account_id in (select account_id from {TABLEPREFIX}account where type in (2, 3) and (owner_user_id = '".$userId."' or coowner_user_id = '".$userId."'))
+			and account_id in (select account_id from {TABLEPREFIX}account where type in (2, 3) and (owner_user_id = '".$userId."' or type in (3, 12)))
 			and
 			(
 				record_group_id in
@@ -265,7 +265,7 @@ class StatisticsHandler extends Handler
 			where record_type = 4
 			and marked_as_deleted = 0
 			and record_date > curdate()
-			and account_id in (select account_id from {TABLEPREFIX}account where type in (2, 3) and (owner_user_id = \'{USERID}\' or coowner_user_id = \'{USERID}\'))
+			and account_id in (select account_id from {TABLEPREFIX}account where type in (2, 3) and (owner_user_id = \'{USERID}\' or type in (3, 12)))
 			and record_date < adddate(curdate(), interval +'.$numberOfDays.' day)';
 		$row = $db->SelectRow($query);
 	
@@ -375,49 +375,6 @@ class StatisticsHandler extends Handler
 		$totalExpenses += $expFromPrivateAccountsToDuoCategoriesMadeByUser + $expFromPrivateAccountsToPartnerCategoriesMadeByUser;
 		$totalExpensesChargedToUser += $totalExpensesFromPrivateAccountsToDuoCategoriesMadeByUserChargedToUser + $totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByUserChargedToUser;
 		$totalExpensesChargedToPartner += $totalExpensesFromPrivateAccountsToDuoCategoriesMadeByUserChargedToPartner + $totalExpensesFromPrivateAccountsToPartnerCategoriesMadeByUserChargedToPartner;
-
-		
-		
-		$sql = 'delete from {TABLEPREFIX}statistics_balance';
-		$db->Execute($sql);
-		
-		$query = 'insert into {TABLEPREFIX}statistics_balance
-				(
-				year,month,update_date,aggregate,
-				expFromPrivateAccountsToDuoCategoriesMadeByUser,expFromPrivateAccountsToDuoCategoriesMadeByUserChargedToUser,expFromPrivateAccountsToDuoCategoriesMadeByUserChargedToPartner,
-				expFromPrivateAccountsToParCategoriesMadeByUser,expFromPrivateAccountsToParCategoriesMadeByUserChargedToUser,expFromPrivateAccountsToParCategoriesMadeByUserChargedToPartner
-				)
-				values
-				(
-				%s,%s,now(),%s,
-				%s,%s,%s,
-				%s,%s,%s
-				)';
-		$sql = sprintf($query,
-				$year,$month,0,
-				$expFromPrivateAccountsToDuoCategoriesMadeByUser,$expFromPrivateAccountsToDuoCategoriesMadeByUserChargedToUser,$expFromPrivateAccountsToDuoCategoriesMadeByUserChargedToPartner,
-				$expFromPrivateAccountsToParCategoriesMadeByUser,$expFromPrivateAccountsToParCategoriesMadeByUserChargedToUser,$expFromPrivateAccountsToParCategoriesMadeByUserChargedToPartner
-		);
-		$db->Execute($sql);
-
-		$query = 'insert into {TABLEPREFIX}statistics_balance
-				(
-				year,month,update_date,aggregate,
-				expFromPrivateAccountsToDuoCategoriesMadeByUser,expFromPrivateAccountsToDuoCategoriesMadeByUserChargedToUser,expFromPrivateAccountsToDuoCategoriesMadeByUserChargedToPartner,
-				expFromPrivateAccountsToParCategoriesMadeByUser,expFromPrivateAccountsToParCategoriesMadeByUserChargedToUser,expFromPrivateAccountsToParCategoriesMadeByUserChargedToPartner
-				)
-				values
-				(
-				%s,%s,now(),%s,
-				%s,%s,%s,
-				%s,%s,%s
-				)';
-		$sql = sprintf($query,
-				$year,$month,1,
-				$expFromPrivateAccountsToDuoCategoriesMadeByUserAggregate,$expFromPrivateAccountsToDuoCategoriesMadeByUserChargedToUserAggregate,$expFromPrivateAccountsToDuoCategoriesMadeByUserChargedToPartnerAggregate,
-				$expFromPrivateAccountsToParCategoriesMadeByUserAggregate,$expFromPrivateAccountsToParCategoriesMadeByUserChargedToUserAggregate,$expFromPrivateAccountsToParCategoriesMadeByUserChargedToPartnerAggregate
-				);
-		$db->Execute($sql);
 	}
 
 	function GetExpensePrivateAccountsForDuoCategoriesMadeByUser($year, $month, $userId)

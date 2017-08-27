@@ -7,7 +7,6 @@ class Operation_Account_Modification extends Operation_Account
 	protected $_information;
 	protected $_type;
 	protected $_owner;
-	protected $_coowner;
 	protected $_openingBalance;
 	protected $_expectedMinimumBalance;
 	protected $_creationDate;
@@ -55,7 +54,6 @@ class Operation_Account_Modification extends Operation_Account
 			$handler->InsertAccount(
 					$this->_name,
 					$this->_owner,
-					$this->_coowner,
 					$this->_type,
 					$this->_openingBalance,
 					$this->_expectedMinimumBalance,

@@ -5,8 +5,8 @@ class UsersHandler extends Handler
 	{
 		$types = array
 		(
-				0 => 'Utilisateur',
-				1 => 'Administrateur'
+				0 => 'Administrateur',
+				1 => 'Utilisateur'
 		);
 	
 		return $types;
@@ -17,10 +17,9 @@ class UsersHandler extends Handler
 		$newUser = new User();
 
 		$db = new DB();
-	
-		$query = "select *
-			from {TABLEPREFIX}user
-			where user_id = '".$id."'";
+
+		$query = "select * from {TABLEPREFIX}user where user_id = '".$id."'";
+
 		$result = $db->Select($query);
 		if ($row = $result->fetch())
 		{
@@ -33,22 +32,20 @@ class UsersHandler extends Handler
 	function IsUserIdExisting($userId)
 	{
 		$db = new DB();
-		$query = "select count(*) as total
-			from {TABLEPREFIX}user
-			where user_id = '".$userId."'";
+		$query = "select count(*) as total from {TABLEPREFIX}user where user_id = '".$userId."'";
 		$row = $db->SelectRow($query);
 
 		return $row['total'] > 0;
 	}
 
-	function GetUserByUserName($userName)
+	function GetUserByUserName($name)
 	{
 		$newUser = null;
 	
 		$db = new DB();
 	
-		$query = sprintf("select * from {TABLEPREFIX}user where lower(user_name) = '%s'",
-				strtolower($userName));
+		$query = sprintf("select * from {TABLEPREFIX}user where lower(name) = '%s'",
+				strtolower($name));
 	
 		$result = $db->Select($query);
 		if ($row = $result->fetch())
@@ -56,27 +53,7 @@ class UsersHandler extends Handler
 			$newUser = new User();
 			$newUser->hydrate($row);
 		}
-	
-		return $newUser;
-	}
-	
 
-	function GetUserByEmail($email)
-	{
-		$newUser = null;
-	
-		$db = new DB();
-
-		$query = sprintf("select * from {TABLEPREFIX}user where lower(email) = '%s'",
-				$email);
-
-		$result = $db->Select($query);
-		if ($row = $result->fetch())
-		{
-			$newUser = new User();
-			$newUser->hydrate($row);
-		}
-	
 		return $newUser;
 	}
 
@@ -86,9 +63,7 @@ class UsersHandler extends Handler
 
 		$db = new DB();
 
-		$query = "select *
-			from {TABLEPREFIX}user
-			where user_id = '{USERID}'";
+		$query = "select * from {TABLEPREFIX}user where user_id = '{USERID}'";
 		$result = $db->Select($query);
 		if ($row = $result->fetch())
 		{
@@ -98,30 +73,11 @@ class UsersHandler extends Handler
 		return $newUser;
 	}
 
-	function InsertUser($userName, $name, $email, $passwordHash, $role)
-	{
-		$db = new DB();
-
-		$query = sprintf("insert into {TABLEPREFIX}user (user_name, name, email, password, role, subscription_date, user_id)
-				values ('%s', '%s', '%s', '%s', %s, now(), uuid())",
-				$db->ConvertStringForSqlInjection($userName),
-				$db->ConvertStringForSqlInjection($name),
-				$db->ConvertStringForSqlInjection($email),
-				$db->ConvertStringForSqlInjection($passwordHash),
-				$role);
-		//throw new Exception($query);
-	
-		$result = $db->Execute($query);
-	
-		return $result;
-	}
-
-	function UpdateUser($userId, $userName, $name, $email, $role)
+	function UpdateUser($userId, $name, $email, $role)
 	{
 		$db = new DB();
 	
-		$query = sprintf("update {TABLEPREFIX}user set user_name='%s', name='%s', email='%s', role=%s where user_id = '%s'",
-				$db->ConvertStringForSqlInjection($userName),
+		$query = sprintf("update {TABLEPREFIX}user set name=%s, email=%s, role=%s where user_id = '%s'",
 				$db->ConvertStringForSqlInjection($name),
 				$db->ConvertStringForSqlInjection($email),
 				$role,
@@ -155,40 +111,6 @@ class UsersHandler extends Handler
 	
 		$result = $db->Execute($query);
 	
-		return $result;
-	}
-
-	function UpdateDuo($userId, $partnerUserId)
-	{
-		$db = new DB();
-		
-		if ($partnerUserId == '')
-			throw new Exception("Merci de sélectionner un partenaire");
-		
-		$query = sprintf("select duo_id from {TABLEPREFIX}user where user_id = '%s'",
-				$userId);
-		$row = $db->SelectRow($query);
-		$duoId = $row['duo_id'];
-
-		$query = sprintf("select duo_id from {TABLEPREFIX}user where user_id = '%s'",
-				$partnerUserId);
-		$row = $db->SelectRow($query);
-		$partnerDuoId = $row['duo_id'];
-
-		if ($partnerDuoId != '' && $partnerDuoId != $duoId)
-			throw new Exception("Votre partenaire est déjà déclaré(e) comme étant en couple avec quelqu'un d'autre");
-
-		if ($duoId != '' && $partnerDuoId != $duoId)
-			throw new Exception("Vous êtes déjà en couple... il faut déclarer une séparation d'abord");
-
-		$uuid = $db->GenerateUUID();
-
-		$query = sprintf("update {TABLEPREFIX}user set duo_id = '%s' where user_id in ('%s', '%s')",
-				$uuid,
-				$userId,
-				$partnerUserId);
-		$result = $db->Execute($query);
-
 		return $result;
 	}
 

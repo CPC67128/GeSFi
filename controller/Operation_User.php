@@ -4,7 +4,6 @@ class Operation_User extends Operation
 	protected $_userId;
 	protected $_email;
 	protected $_name;
-	protected $_userName;
 	protected $_role;
 	protected $_active;
 	protected $_passwordMD5;
@@ -90,9 +89,9 @@ class Operation_User extends Operation
 			throw new Exception("Merci de renseigner correctement votre email");
 	}
 
-	public function ValidateUserName_Inexistence()
+	public function ValidateName_Inexistence()
 	{
-		$user = $this->_usersHandler->GetUserByUserName($_POST["userName"]);
+		$user = $this->_usersHandler->GetUserByUserName($_POST["name"]);
 	
 		if (empty($this->_userId) && $user != null)
 			throw new Exception("Ce nom d'utilisateur est déjà utilisé.");
@@ -100,10 +99,10 @@ class Operation_User extends Operation
 			throw new Exception("Ce nom d'utilisateur est déjà utilisé.");
 	}
 
-	public function ValidateUserName_Structure()
+	public function ValidateName_Structure()
 	{
-		if (!isset($this->_userName)
-				|| strlen(trim($this->_userName)) == 0)
+		if (!isset($this->_name)
+				|| strlen(trim($this->_name)) == 0)
 			throw new Exception("Merci de renseigner correctement le nom d'utilisateur");
 	}
 
@@ -125,21 +124,5 @@ class Operation_User extends Operation
 		if (!isset($this->_passwordConfirmation)
 				|| $this->_passwordConfirmation != $this->_password)
 			throw new Exception("Merci de confirmer le mot de passe");
-	}
-	
-	public function ValidateCaptcha()
-	{
-		// reCaptcha verification
-		require_once('../3rd_party/recaptcha-php/recaptchalib.php');
-		$privatekey = "6Ld6LNYSAAAAADITZeCMzL3vquoz7AqDOoeBsO3O";
-		$resp = recaptcha_check_answer ($privatekey,
-				$_SERVER["REMOTE_ADDR"],
-				$_POST["recaptcha_challenge_field"],
-				$_POST["recaptcha_response_field"]);
-		
-		if (!$resp->is_valid)
-		{
-			throw new Exception('Captcha non vérifié');
-		}
 	}
 }

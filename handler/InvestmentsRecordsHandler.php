@@ -16,7 +16,7 @@ class InvestmentsRecordsHandler extends Handler
 	}
 
 	// This function is used for the global chart
-	function GetAllRecordsForAllInvestments()
+	function GetAllRecordsForAllInvestmentsForGraphics()
 	{
 		$db = new DB();
 		$query = "select ACC.name, INR.*

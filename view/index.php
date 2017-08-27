@@ -16,9 +16,6 @@ $translator = new Translator();
 <script src="../3rd_party/jquery-2.2.4.min.js"></script>
 <script src="../3rd_party/jquery-ui-1.11.4/jquery-ui.min.js"></script>
 
-<script src="../3rd_party/highcharts-4.2.5/js/highcharts.js"></script>
-<script src="../3rd_party/highcharts-4.2.5/js/modules/exporting.js"></script>
-
 <script type="text/javascript" src="gesfi.js"></script>
 <script type="text/javascript" src="gesfi_operations.js"></script>
 </head>

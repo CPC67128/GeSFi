@@ -1,34 +1,30 @@
-<div id="container" style="min-width: 900px; height: 400px; margin: 0 auto"></div>
+<script src="../3rd_party/highcharts-5.0.14/code/highcharts.js"></script>
+<script src="../3rd_party/highcharts-5.0.14/code/modules/exporting.js"></script>
+
+<div id="container" style="min-width: 1000px; max-width: 1000px; height: 550px; margin: 0 auto"></div>
+
 <button id="checkAll">Cocher tout</button> <button id="uncheckAll">Décocher tout</button>
+
 <script type="text/javascript">
 var chart;
-$(function () {
-    chart = new Highcharts.Chart({ //$('#container').highcharts({
-        chart: {
-        	renderTo: "container",
-            type: 'spline'
-        },
-        title: {
-            text: 'Comparaison des rendements des placements'
-        },
-        xAxis: {
-        },
-        yAxis: {
-            title: {
-                text: 'Rendement'
-            },
-        },
-        tooltip: {
-            formatter: function() {
-                    return this.series.name +': '+this.y+' %';
-            }
-        },
-        
-        series: [
 
-<?php
+chart = new Highcharts.Chart('container', {
+	title: {
+		text: 'Comparaison des rendements des placements'
+	},
+	xAxis: {
+		title: { text: "Nombre de jours depuis l'ouverture" },
+	},
+	yAxis: {
+		title: { text: 'Rendement' },
+	},
+	tooltip: {
+		formatter: function() { return this.series.name +': '+this.y+' %'; }
+	},
+	series: [
+		<?php
 $investmentsRecordsHandler = new InvestmentsRecordsHandler();
-$result = $investmentsRecordsHandler->GetAllRecordsForAllInvestments();
+$result = $investmentsRecordsHandler->GetAllRecordsForAllInvestmentsForGraphics();
 
 $previousAccountId = '';
 $previousName = '';
@@ -41,13 +37,13 @@ while ($row = $result->fetch())
 	{
 		if ($previousAccountId != '')
 		{
-			echo "]},\n\n";
+			echo "]},";
 		}
 
-		echo "{\n";
-		echo "name: '".$row['name']."', ";
-		echo "visible: false, ";
-		echo "data: [\n";
+		echo "{";
+		echo "name: '".$row['name']."',";
+		// echo "visible: false,";
+		echo "data: [";
 
 		$previousAccountId = $row['account_id'];
 		$previousName = $row['name'];
@@ -62,11 +58,9 @@ while ($row = $result->fetch())
 	}
 }
 
-echo "]}\n\n";
-
-?>
-		]
-    });
+echo "]}";
+		?>
+	]
 });
 
 

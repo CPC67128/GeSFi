@@ -12,9 +12,9 @@ $translator = new Translator();
 <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
 <link type="text/css" href="gesfi.css" rel="stylesheet" />
 
-<link rel="stylesheet" href="../3rd_party/jquery-ui-1.11.4/jquery-ui.min.css">
-<script src="../3rd_party/jquery-2.2.4.min.js"></script>
-<script src="../3rd_party/jquery-ui-1.11.4/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="../3rd_party/jquery-ui-1.12.1/jquery-ui.min.css">
+<script src="../3rd_party/jquery-3.2.1.min.js"></script>
+<script src="../3rd_party/jquery-ui-1.12.1/jquery-ui.min.js"></script>
 
 <script type="text/javascript" src="gesfi.js"></script>
 <script type="text/javascript" src="gesfi_operations.js"></script>

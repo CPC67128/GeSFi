@@ -40,6 +40,13 @@ function ApplyScriptForVersion($version)
 	echo 'Apply script "'.$file.'"... ';
 
 	$sqlFileToExecute = 'scripts/'.$file;
+
+	if (!file_exists($sqlFileToExecute))
+	{
+		echo "Script not existing, bypassed.<br/>";
+		return $operationResult;
+	}
+
 	$f = fopen($sqlFileToExecute,'r');
 	$query = fread($f,filesize($sqlFileToExecute));
 	fclose($f);

@@ -1,23 +1,17 @@
 -- phpMyAdmin SQL Dump
--- version 4.0.4.1
--- http://www.phpmyadmin.net
+-- version 4.6.6
+-- https://www.phpmyadmin.net/
 --
--- Client: 127.0.0.1
--- Généré le: Jeu 28 Novembre 2013 à 14:09
--- Version du serveur: 5.5.32
--- Version de PHP: 5.4.19
+-- Client :  localhost
+-- Généré le :  Dim 27 Août 2017 à 23:04
+-- Version du serveur :  10.0.30-MariaDB
+-- Version de PHP :  5.6.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-
 --
--- Base de données: `GeSFi`
+-- Base de données :  `gesfi`
 --
 
 -- --------------------------------------------------------
@@ -26,23 +20,25 @@ SET time_zone = "+00:00";
 -- Structure de la table `{TABLEPREFIX}account`
 --
 
-DROP TABLE IF EXISTS `{TABLEPREFIX}account`;
-CREATE TABLE IF NOT EXISTS `{TABLEPREFIX}account` (
+CREATE TABLE `{TABLEPREFIX}account` (
   `account_id` varchar(36) NOT NULL,
   `name` varchar(200) NOT NULL DEFAULT '',
   `description` varchar(200) NOT NULL,
-  `information` varchar(400) NOT NULL,
   `type` int(11) NOT NULL,
   `owner_user_id` varchar(40) NOT NULL DEFAULT '',
-  `coowner_user_id` varchar(40) NOT NULL DEFAULT '',
   `opening_balance` decimal(10,2) NOT NULL DEFAULT '0.00',
   `expected_minimum_balance` decimal(10,2) NOT NULL DEFAULT '0.00',
   `creation_date` date NOT NULL,
+  `availability_date` date NOT NULL,
   `closing_date` date NOT NULL,
+  `minimum_check_period` int(11) NOT NULL DEFAULT '30',
+  `record_confirmation` tinyint(4) NOT NULL,
   `marked_as_closed` tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`account_id`),
-  KEY `owner_user_id` (`owner_user_id`),
-  KEY `coowner_user_id` (`coowner_user_id`)
+  `not_displayed_in_menu` tinyint(1) NOT NULL DEFAULT '0',
+  `no_color_in_dashboard` tinyint(1) NOT NULL DEFAULT '0',
+  `generate_income` tinyint(1) NOT NULL DEFAULT '0',
+  `CALC_balance` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `CALC_balance_confirmed` decimal(10,2) NOT NULL DEFAULT '0.00'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -51,12 +47,10 @@ CREATE TABLE IF NOT EXISTS `{TABLEPREFIX}account` (
 -- Structure de la table `{TABLEPREFIX}account_user_preference`
 --
 
-DROP TABLE IF EXISTS `{TABLEPREFIX}account_user_preference`;
-CREATE TABLE IF NOT EXISTS `{TABLEPREFIX}account_user_preference` (
+CREATE TABLE `{TABLEPREFIX}account_user_preference` (
   `user_id` varchar(36) NOT NULL,
   `account_id` varchar(36) NOT NULL,
-  `sort_order` int(11) NOT NULL,
-  PRIMARY KEY (`user_id`,`account_id`)
+  `sort_order` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -65,8 +59,7 @@ CREATE TABLE IF NOT EXISTS `{TABLEPREFIX}account_user_preference` (
 -- Structure de la table `{TABLEPREFIX}category`
 --
 
-DROP TABLE IF EXISTS `{TABLEPREFIX}category`;
-CREATE TABLE IF NOT EXISTS `{TABLEPREFIX}category` (
+CREATE TABLE `{TABLEPREFIX}category` (
   `category_id` varchar(36) NOT NULL DEFAULT 'UUID()',
   `link_type` varchar(20) NOT NULL,
   `link_id` varchar(36) NOT NULL,
@@ -74,8 +67,7 @@ CREATE TABLE IF NOT EXISTS `{TABLEPREFIX}category` (
   `category` varchar(100) NOT NULL,
   `active_from` date NOT NULL,
   `sort_order` int(11) NOT NULL,
-  `marked_as_deleted` tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`category_id`)
+  `marked_as_inactive` tinyint(4) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -84,42 +76,11 @@ CREATE TABLE IF NOT EXISTS `{TABLEPREFIX}category` (
 -- Structure de la table `{TABLEPREFIX}ccb`
 --
 
-DROP TABLE IF EXISTS `{TABLEPREFIX}ccb`;
-CREATE TABLE IF NOT EXISTS `{TABLEPREFIX}ccb` (
-  `ccb_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `{TABLEPREFIX}ccb` (
+  `ccb_id` int(11) NOT NULL,
   `database_version` int(11) NOT NULL,
-  `upgrade_date` datetime NOT NULL,
-  PRIMARY KEY (`ccb_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Gérée par le framework SF_AppZone' AUTO_INCREMENT=34 ;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `{TABLEPREFIX}investment_record`
---
-
-DROP TABLE IF EXISTS `{TABLEPREFIX}investment_record`;
-CREATE TABLE IF NOT EXISTS `{TABLEPREFIX}investment_record` (
-  `investment_record_id` varchar(36) NOT NULL,
-  `record_group_id` varchar(36) NOT NULL,
-  `creation_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `account_id` varchar(36) NOT NULL,
-  `record_date` date NOT NULL,
-  `record_type` tinyint(1) NOT NULL,
-  `designation` varchar(200) NOT NULL,
-  `payment` decimal(10,2) DEFAULT NULL,
-  `payment_invested` decimal(10,2) DEFAULT NULL,
-  `fee` decimal(10,2) DEFAULT NULL,
-  `value` decimal(10,2) DEFAULT NULL,
-  `marked_as_deleted` tinyint(1) NOT NULL DEFAULT '0',
-  `CALC_days_since_creation` int(11) NOT NULL,
-  `CALC_payment_accumulated` float DEFAULT NULL,
-  `CALC_payment_invested_accumulated` float DEFAULT NULL,
-  `CALC_gain` float DEFAULT NULL,
-  `CALC_yield` float DEFAULT NULL,
-  `CALC_yield_average` float DEFAULT NULL,
-  PRIMARY KEY (`investment_record_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `upgrade_date` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Gérée par le framework SF_AppZone';
 
 -- --------------------------------------------------------
 
@@ -127,8 +88,7 @@ CREATE TABLE IF NOT EXISTS `{TABLEPREFIX}investment_record` (
 -- Structure de la table `{TABLEPREFIX}record`
 --
 
-DROP TABLE IF EXISTS `{TABLEPREFIX}record`;
-CREATE TABLE IF NOT EXISTS `{TABLEPREFIX}record` (
+CREATE TABLE `{TABLEPREFIX}record` (
   `account_id` varchar(36) NOT NULL DEFAULT '',
   `record_id` varchar(36) NOT NULL DEFAULT '',
   `record_group_id` varchar(36) NOT NULL DEFAULT '',
@@ -139,19 +99,27 @@ CREATE TABLE IF NOT EXISTS `{TABLEPREFIX}record` (
   `marked_as_deleted` tinyint(1) NOT NULL DEFAULT '0',
   `designation` varchar(200) NOT NULL,
   `record_type` tinyint(1) NOT NULL DEFAULT '1',
-  `amount` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `amount` decimal(10,2) DEFAULT '0.00',
+  `amount_invested` decimal(10,2) DEFAULT '0.00',
+  `value` decimal(10,2) DEFAULT '0.00',
+  `withdrawal` decimal(10,2) DEFAULT '0.00',
+  `income` decimal(10,2) DEFAULT NULL,
   `charge` tinyint(4) NOT NULL,
-  `BOB_category` varchar(200) NOT NULL,
   `category_id` varchar(50) NOT NULL,
   `actor` tinyint(4) NOT NULL,
   `confirmed` tinyint(1) NOT NULL DEFAULT '0',
   `creation_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`record_id`),
-  KEY `creation_date_month` (`record_date_month`),
-  KEY `creation_date_year` (`record_date_year`),
-  KEY `actor` (`actor`),
-  KEY `category` (`BOB_category`),
-  KEY `record_type` (`record_type`)
+  `flag_1` tinyint(4) NOT NULL,
+  `flag_2` tinyint(4) NOT NULL,
+  `flag_3` tinyint(4) NOT NULL,
+  `CALC_days_since_creation` int(11) DEFAULT NULL,
+  `CALC_amount_accumulated` decimal(10,2) DEFAULT NULL,
+  `CALC_amount_invested_accumulated` decimal(10,2) DEFAULT NULL,
+  `CALC_gain` decimal(10,2) DEFAULT NULL,
+  `CALC_yield` decimal(10,2) DEFAULT NULL,
+  `CALC_yield_average` decimal(10,2) DEFAULT NULL,
+  `CALC_withdrawal_sum` decimal(10,2) DEFAULT '0.00',
+  `CALC_income_sum` decimal(10,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -160,19 +128,21 @@ CREATE TABLE IF NOT EXISTS `{TABLEPREFIX}record` (
 -- Structure de la table `{TABLEPREFIX}user`
 --
 
-DROP TABLE IF EXISTS `{TABLEPREFIX}user`;
-CREATE TABLE IF NOT EXISTS `{TABLEPREFIX}user` (
+CREATE TABLE `{TABLEPREFIX}user` (
   `user_id` varchar(40) NOT NULL,
+  `name` varchar(200) DEFAULT NULL,
   `email` varchar(200) NOT NULL,
   `password` varchar(100) NOT NULL,
-  `subscription_date` date NOT NULL,
-  `name` varchar(200) DEFAULT NULL,
-  `culture` varchar(10) NOT NULL DEFAULT 'fr-FR',
-  `read_only` tinyint(1) NOT NULL DEFAULT '0',
-  `duo_id` varchar(36) NOT NULL DEFAULT '',
-  PRIMARY KEY (`user_id`),
-  UNIQUE KEY `email` (`email`)
+  `role` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Gérée par le framework SF_AppZone';
+
+--
+-- Contenu de la table `{TABLEPREFIX}user`
+--
+
+INSERT INTO `{TABLEPREFIX}user` (`user_id`, `name`, `email`, `password`, `role`) VALUES
+('4768b151-bd52-11e2-8d63-5c260a87ddbb', 'Partenaire 1', 'partner1@nowhere.com', 'd41d8cd98f00b204e9800998ecf8427e', 0),
+('bbb3b8d1-1e44-4914-b2e7-b95896ac3983', 'Partenaire 2', 'partner2@nowhere.com', 'd41d8cd98f00b204e9800998ecf8427e', 0);
 
 -- --------------------------------------------------------
 
@@ -180,14 +150,82 @@ CREATE TABLE IF NOT EXISTS `{TABLEPREFIX}user` (
 -- Structure de la table `{TABLEPREFIX}user_connection`
 --
 
-DROP TABLE IF EXISTS `{TABLEPREFIX}user_connection`;
-CREATE TABLE IF NOT EXISTS `{TABLEPREFIX}user_connection` (
+CREATE TABLE `{TABLEPREFIX}user_connection` (
   `user_id` varchar(40) NOT NULL,
   `connection_date_time` datetime NOT NULL,
   `ip_address` varchar(100) NOT NULL,
   `browser` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Gérée par le framework SF_AppZone';
 
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+--
+-- Index pour les tables exportées
+--
+
+--
+-- Index pour la table `{TABLEPREFIX}account`
+--
+ALTER TABLE `{TABLEPREFIX}account`
+  ADD PRIMARY KEY (`account_id`),
+  ADD KEY `owner_user_id` (`owner_user_id`),
+  ADD KEY `type` (`type`);
+
+--
+-- Index pour la table `{TABLEPREFIX}account_user_preference`
+--
+ALTER TABLE `{TABLEPREFIX}account_user_preference`
+  ADD PRIMARY KEY (`user_id`,`account_id`);
+
+--
+-- Index pour la table `{TABLEPREFIX}category`
+--
+ALTER TABLE `{TABLEPREFIX}category`
+  ADD PRIMARY KEY (`category_id`),
+  ADD KEY `link_type` (`link_type`),
+  ADD KEY `link_id` (`link_id`);
+
+--
+-- Index pour la table `{TABLEPREFIX}ccb`
+--
+ALTER TABLE `{TABLEPREFIX}ccb`
+  ADD PRIMARY KEY (`ccb_id`);
+
+--
+-- Index pour la table `{TABLEPREFIX}record`
+--
+ALTER TABLE `{TABLEPREFIX}record`
+  ADD PRIMARY KEY (`record_id`),
+  ADD KEY `creation_date_month` (`record_date_month`),
+  ADD KEY `creation_date_year` (`record_date_year`),
+  ADD KEY `actor` (`actor`),
+  ADD KEY `record_type` (`record_type`),
+  ADD KEY `record_group_id` (`record_group_id`),
+  ADD KEY `account_id` (`account_id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `marked_as_deleted` (`marked_as_deleted`),
+  ADD KEY `record_date` (`record_date`),
+  ADD KEY `record_date_month` (`record_date_month`),
+  ADD KEY `record_date_year` (`record_date_year`),
+  ADD KEY `confirmed` (`confirmed`),
+  ADD KEY `category_id` (`category_id`);
+
+--
+-- Index pour la table `{TABLEPREFIX}user`
+--
+ALTER TABLE `{TABLEPREFIX}user`
+  ADD PRIMARY KEY (`user_id`);
+
+--
+-- Index pour la table `{TABLEPREFIX}user_connection`
+--
+ALTER TABLE `{TABLEPREFIX}user_connection`
+  ADD PRIMARY KEY (`user_id`,`connection_date_time`,`ip_address`,`browser`);
+
+--
+-- AUTO_INCREMENT pour les tables exportées
+--
+
+--
+-- AUTO_INCREMENT pour la table `{TABLEPREFIX}ccb`
+--
+ALTER TABLE `{TABLEPREFIX}ccb`
+  MODIFY `ccb_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;

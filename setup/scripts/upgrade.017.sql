@@ -1,9 +1,0 @@
-
-ALTER TABLE `{TABLEPREFIX}record` ADD `surrender` DECIMAL(10,2) NULL DEFAULT NULL AFTER `value`;
-ALTER TABLE `{TABLEPREFIX}record` CHANGE `surrender` `surrender` DECIMAL(10,2) NULL DEFAULT '0';
-
-ALTER TABLE `{TABLEPREFIX}record` ADD `CALC_surrender_sum` DECIMAL(10,2) NULL DEFAULT '0' AFTER `CALC_yield_average`;
-
-ALTER TABLE `{TABLEPREFIX}record` CHANGE `surrender` `withdrawal` DECIMAL(10,2) NULL DEFAULT '0.00';
-
-ALTER TABLE `{TABLEPREFIX}record` CHANGE `CALC_surrender_sum` `CALC_withdrawal_sum` DECIMAL(10,2) NULL DEFAULT '0.00';

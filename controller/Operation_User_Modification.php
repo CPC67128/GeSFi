@@ -9,11 +9,6 @@ class Operation_User_Modification extends Operation_User
 		$this->ValidateName_Structure();
 		$this->ValidateName_Inexistence();
 
-		if (!empty($this->_deactivate))
-			$this->_active = 0;
-		else
-			$this->_active = 1;
-
 		if (!empty($this->_setNewPassword))
 			$this->_setNewPassword = 1;
 		else
@@ -37,8 +32,6 @@ class Operation_User_Modification extends Operation_User
 
 			if ($this->_setNewPassword > 0)
 				$this->_usersHandler->UpdateUserPassword($this->_userId, $this->_passwordMD5);
-
-			$this->_usersHandler->UpdateUserActive($this->_userId, $this->_active);
 		}
 	}
 }

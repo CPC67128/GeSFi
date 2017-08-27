@@ -5,11 +5,11 @@ class AccountsHandler extends Handler
 	{
 		$types = array
 		(
-			1 => 'Compte privé',
+			1 => 'Compte personnel',
 			3 => 'Compte joint',
 			5 => 'Prêt en indivision',
-			6 => 'Crédit renouvelable',
-			10 => 'Placement bancaire',
+			6 => 'Crédit personnel',
+			10 => 'Placement bancaire personnel',
 			12 => 'Immobilier en indivision'
 		);
 

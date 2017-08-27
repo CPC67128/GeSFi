@@ -4,6 +4,8 @@ include '../component/component_security.php';
 
 $translator = new Translator();
 $accountsHandler = new AccountsHandler();
+$usersHandler = new UsersHandler();
+$activeUser = $usersHandler->GetCurrentUser();
 
 if (!isset($_POST))
 	exit();

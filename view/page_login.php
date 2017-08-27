@@ -1,8 +1,83 @@
-<?php include 'page_login_logic.php'; ?>
+<?php
+include '../component/component_autoload.php';
+include '../component/component_mail.php';
+include '../configuration/configuration.php';
+
+$usersHandler = new UsersHandler();
+$translator = new Translator();
+
+$usersHandler->StartSession();
+
+// ========== Single User Security Mode
+
+// In this mode, the user is automaticaly loged in using the user id defined in the configuration file
+if ($SECURITY_SINGLE_USER_MODE)
+{
+	$usersHandler->SetSessionUser($SECURITY_SINGLE_USER_MODE_USER_ID);
+	$usersHandler->RecordUserConnection();
+
+	// Redirect to index page
+	if (isset($_SESSION['go_to']) && $_SESSION['go_to'] != '')
+	{
+		header('Location: '.$_SESSION['go_to'], true, 301);
+		$_SESSION['go_to'] = '';
+	}
+	else
+		header('Location: index.php', true, 301);
+
+	exit();
+}
+
+// ========== Multiple User Security Mode
+
+// If user is already connected
+if ($usersHandler->IsSessionUserSet())
+{
+	header('Location: index.php', true, 301);
+
+    exit();
+}
+
+// Login is given as GET parameter / In this mode, the user id is given as a GET parameter
+if (!empty($_GET['autologin']))
+{
+	$user = $usersHandler->GetUser($_GET['autologin']);
+
+	if (!$user->IsNull())
+	{
+		if (!empty($_GET['autologinpwd']))
+			$pwd = $_GET['autologinpwd'];
+		else
+			$pwd = 'd41d8cd98f00b204e9800998ecf8427e';
+
+		if ($user->IsPasswordCorrect($pwd))
+		{
+			$usersHandler->SetSessionUser($user->get('userId'));
+			$usersHandler->RecordUserConnection();
+
+			SendEmailToAdministrator("Nouvelle connection", "Nouvelle connection en autlogin de ".$user->get('name'));
+		}
+
+		header("Location: index.php", true, 301);
+
+		exit();
+	}
+}
+?>
 <!doctype html>
 <html>
 <head>
-<?php include '../component/component_head.php'; ?>
+
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<meta name="Description" content="Application en ligne gratuite de gestion financière du couple (compatibilité de couple ou comptabilité commune) écrite par Steve Fuchs">
+
+
+<link rel="stylesheet" href="../3rd_party/jquery-ui-1.12.1/jquery-ui.min.css">
+<script src="../3rd_party/jquery-3.2.1.min.js"></script>
+<script src="../3rd_party/jquery-ui-1.12.1/jquery-ui.min.js"></script>
+
+<link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+
 <title><?= $translator->getTranslation("GeSFi / Login") ?></title>
 <link href="gesfi_login.css" rel="stylesheet" />
 <script src="../3rd_party/md5.js"></script>
@@ -32,8 +107,12 @@
 <tr>
 	<td>Utilisateur</td>
 	<td>
-	<input type="radio" name="email" value="Homme" checked> Homme<br>
-	<input type="radio" name="email" value="Femme"> Femme<br>
+	<?php
+	$users = $usersHandler->GetAllUsers();
+	$checked = "checked";
+	foreach ($users as $user) { ?>
+	<input type="radio" name="name" value="<?= $user->get('name') ?>" <?= $checked ?>> <?= $user->get('name') ?><br>
+	<?php $checked = ""; } ?>
 	</td>
 </tr>
 <tr>

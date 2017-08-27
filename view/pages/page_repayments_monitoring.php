@@ -196,7 +196,7 @@ $mergeRow = false;
 <?php if ($activeAccount->get('type') > 0) { ?>
 <thead>
 <tr class="headerRowLoan" style="background-color: <?= $activeAccount->GetAccountTypeColor() ?>;">
-<td colspan="9"><?= $activeAccount->GetAccountTypeName() ?> : <?= $activeAccount->get('name') ?></td>
+<td colspan="9"><?= $activeAccount->GetAccountTypeDescription() ?> : <?= $activeAccount->get('name') ?></td>
 </tr>
 </thead>
 <?php } ?>

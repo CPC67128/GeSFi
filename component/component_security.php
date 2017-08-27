@@ -23,7 +23,7 @@ if (!isset($_SESSION['user_id']))
 
 		$_SESSION['email'] = $_GET["autologin"];
 		$_SESSION['user_id'] = $user_id;
-		$_SESSION['full_name'] = $row['full_name'];
+		$_SESSION['name'] = $row['name'];
 		$_SESSION["read_only"] = $row['read_only'];
 
 		security_RecordUserConnection($user_id, $_SERVER['REMOTE_ADDR'], $_SERVER['HTTP_USER_AGENT']);
@@ -48,10 +48,10 @@ else
 {
 	$EMAIL = $_SESSION["email"];
 	$USER_ID = $_SESSION["user_id"];
-	$FULL_NAME = $_SESSION["full_name"];
+	$NAME = $_SESSION["name"];
 }
 
 define('EMAIL', $EMAIL);
 define('USER_ID', $USER_ID);
-define('FULL_NAME', $FULL_NAME);
+define('NAME', $NAME);
 

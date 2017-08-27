@@ -2,12 +2,10 @@
 class User extends Entity
 {
 	protected $_userId;
-	protected $_userName;
+	protected $_name;
 	protected $_email;
 	protected $_password;
 	protected $_role;
-	protected $_active;
-	protected $_name;
 	
 	// -------------------------------------------------------------------------------------------------------------------
 

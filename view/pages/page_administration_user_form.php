@@ -32,8 +32,6 @@ foreach ($roles as $key => $value)
 ?>
 </select><br />
 <br />
-<font color='red'><?= $translator->getTranslation("Désactiver le compte") ?> <input name='deactivate' type='checkbox' <?= $isNew ? '' : ($user->get('active') == 1 ? '' : 'checked') ?> /></font><br />
-<br />
 
 <input type="submit" id='submitFormUser' value="<?= $isNew ? $translator->getTranslation("Ajouter") : $translator->getTranslation("Mettre à jour") ?>" />
 <div id='formUserResult'></div>

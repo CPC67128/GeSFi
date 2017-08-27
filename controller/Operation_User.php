@@ -5,7 +5,6 @@ class Operation_User extends Operation
 	protected $_email;
 	protected $_name;
 	protected $_role;
-	protected $_active;
 	protected $_passwordMD5;
 	protected $_password;
 	protected $_passwordConfirmation;

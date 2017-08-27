@@ -101,19 +101,6 @@ class UsersHandler extends Handler
 		return $result;
 	}
 
-	function UpdateUserActive($userId, $active)
-	{
-		$db = new DB();
-	
-		$query = sprintf("update {TABLEPREFIX}user set active=%s where user_id='%s'",
-				$active,
-				$userId);
-	
-		$result = $db->Execute($query);
-	
-		return $result;
-	}
-
 	function RecordUserConnection()
 	{
 		$db = new DB();
@@ -140,8 +127,7 @@ class UsersHandler extends Handler
 		$user = $this->GetUser($userId);
 		$_SESSION['email'] = $user->get('email');
 		$_SESSION['user_id'] = $user->get('userId');
-		$_SESSION['full_name'] = $user->get('name');
-		$_SESSION['user_name'] = $user->get('userName');
+		$_SESSION['name'] = $user->get('name');
 	}
 
 	function GetSessionUser()

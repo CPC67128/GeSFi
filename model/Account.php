@@ -29,28 +29,6 @@ class Account extends Entity
 		return $types[$this->_type];
 	}
 
-	// -------------------------------------------------------------------------------------------------------------------
-
-	function GetAccountTypeName()
-	{
-		$types = array
-		(
-			1 => 'Compte privé',
-			2 => 'Compte duo virtuel', // OBSOLETE
-			3 => 'Compte duo',
-			4 => 'Compte d\'optimisation financière', // OBSOLETE
-			5 => 'Prêt', // TODO : créér distinction entre prêt en indivision
-			10 => 'Placement bancaire',
-			11 => 'Immobilier',
-			12 => 'Immobilier en indivision'
-		);
-
-		if (array_key_exists($this->_type, $types))
-			return $types[$this->_type];
-		else
-			return '';
-	}
-
 	function GetAccountTypeColor()
 	{
 		$types = array

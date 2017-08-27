@@ -28,8 +28,6 @@ function IfNullReturnDefault($account, $attribute, $default)
 <?= $translator->getTranslation('Nom') ?> <input type='text' name='name' size='41' value="<?= IfNullReturnEmptyString($account, 'name') ?>" /><br />
 
 <?= $translator->getTranslation('Description') ?> <input name='description' type='text' size='41' value="<?= IfNullReturnEmptyString($account, 'description') ?>" /><br /> 
-<?= $translator->getTranslation('Information') ?> <input name='information' type='text' size='41' value="<?= IfNullReturnEmptyString($account, 'information') ?>" /><br />
-
 
 <?= $translator->getTranslation('Type') ?> <select name="type" <?= strlen($selectedTypeDescription) > 0 ? 'style="background-color : #d1d1d1;"  disabled="true"' : '' ?>>
 <?php
@@ -41,17 +39,11 @@ foreach ($types as $key => $value)
 ?>
 </select><br />
 
-<?= $translator->getTranslation('Titulaire') ?> <input name='owner' type='text' size='41' style='background-color : #d1d1d1;' readonly="readonly" value="<?= is_null($account) ? $_SESSION['user_id'] : $account->get('ownerUserId') ?>" />
+<?= $translator->getTranslation('Titulaire principal') ?> <input name='owner' type='text' size='41' style='background-color : #d1d1d1;' readonly="readonly" value="<?= is_null($account) ? $_SESSION['user_id'] : $account->get('ownerUserId') ?>" />
 <?php if (!is_null($account)) { ?>
  / <input type='text' size='40' style='background-color : #d1d1d1;' readonly="readonly" value="<?= $account->GetOwnerName() ?>" />
 <?php } else  { ?>
  <i>(vous-même)</i>
-<?php } ?><br />
-<?= $translator->getTranslation('Co-titulaire') ?> <input name='coowner' type='text' size='41' <?= is_null($account) ? '' : 'style="background-color : #d1d1d1;" readonly="readonly"' ?> value="<?= IfNullReturnEmptyString($account, 'coownerUserId') ?>" />
-<?php if (!is_null($account)) { ?>
- / <input type='text' size='40' style='background-color : #d1d1d1;' readonly="readonly" value="<?= $account->GetCoownerName() ?>" />
-<?php } else  { ?>
- <i>(l'identifiant de votre partenaire)</i>
 <?php } ?><br />
 
 <?= $translator->getTranslation('Solde initial') ?> <input name='openingBalance' type='text' size='7' value="<?= IfNullReturnDefault($account, 'openingBalance', '0.00') ?>" /><?= $translator->getCurrencyPresentation() ?><br />

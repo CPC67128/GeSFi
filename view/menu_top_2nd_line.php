@@ -3,11 +3,15 @@ include 'menu.php';
 
 $isGlobalRecordSelected = ($id == '' && $area == 'investment');
 
-AddMenuTopItem(!$isGlobalRecordSelected, $translator->getTranslation('Gestion patrimoniale'), 'investment_record_dashboard', 'investment', '', '', true);
-
 $accounts = $accountsHandler->GetAllInvestmentAccountsToDisplayInMenu();
 $lastItem = end($accounts);
 reset($accounts);
+
+if ($lastItem == null)
+	AddMenuTopItem(!$isGlobalRecordSelected, $translator->getTranslation('Gestion patrimoniale'), 'investment_record_dashboard', 'investment', '', '', false);
+else
+	AddMenuTopItem(!$isGlobalRecordSelected, $translator->getTranslation('Gestion patrimoniale'), 'investment_record_dashboard', 'investment', '', '', true);
+
 
 foreach ($accounts as $account)
 {

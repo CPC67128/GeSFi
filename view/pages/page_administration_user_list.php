@@ -6,6 +6,6 @@ $users = $usersHandler->GetAllUsers();
 ?>
 <select name="usersList" size="<?= count($users) + 1 ?>" onChange="changeUser(this)">
 <?php foreach ($users as $user) { ?>
-<option value="<?= $user->get('userId') ?>"><?= $user->get('active') == 0 ? '- ' : '' ?><?= $user->get('name') ?></option>
+<option value="<?= $user->get('userId') ?>"><?= $user->get('name') ?></option>
 <?php } ?>
-</select> 
+</select>

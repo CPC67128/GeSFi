@@ -215,7 +215,11 @@ function LoadAccountStatusInPageRecord()
 	});
 }
 
-
+function GetDecimalValue(text) {
+	var value = 0;
+	value = parseFloat(text);
+	return value;
+}
 
 function InterpretMinusFormula(text) {
 	var value = 0;
@@ -271,10 +275,14 @@ function InterpretGlobalFormula(text, total) {
 function CalculateAllAmounts() {
 	var value = 0;
 	var total = 0;
+	var text;
 
 	for (var i=1;i<=60;i++) { // TODO 60 to replace with proper search
 		if (document.getElementsByName('category'+i+'Formula').length > 0) {
-			value = InterpretInlineFormula($("input[name='category"+i+"Formula']").val());
+			text = $("input[name='category"+i+"Formula']").val();
+			text = text.replace(new RegExp(' ', 'g'), '');
+			text = text.replace(new RegExp(',', 'g'), '.');
+			value = InterpretInlineFormula(text);
 			total += value;
 	
 			if (value != 0)
@@ -286,7 +294,10 @@ function CalculateAllAmounts() {
 
 	for (i=1;i<=60;i++) { // TODO 60 to replace with proper search
 		if (document.getElementsByName('category'+i+'Formula').length > 0) {
-			value = InterpretGlobalFormula($("input[name='category"+i+"Formula']").val(), total);
+			text = $("input[name='category"+i+"Formula']").val();
+			text = text.replace(new RegExp(' ', 'g'), '');
+			text = text.replace(new RegExp(',', 'g'), '.');
+			value = InterpretGlobalFormula(text, total);
 			total += value;
 	
 			if (value != 0)
@@ -296,3 +307,4 @@ function CalculateAllAmounts() {
 
 	$("input[name='amount']").val(total);
 }
+

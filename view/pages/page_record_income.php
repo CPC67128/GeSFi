@@ -173,10 +173,7 @@ $("#designation").focus(function(){
 
 function GetDecimalValue(text) {
 	var value = 0; 
-	if (!isNaN(parseFloat(text))) {
-		text = text.replace(',','.');
-		value = parseFloat(text);
-	}
+	value = parseFloat(text);
 	return value;
 }
 

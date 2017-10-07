@@ -3,7 +3,7 @@
 <form id="form" action="/">
 <table class="actionsTable">
 <tr>
-  <td style="vertical-align: middle;">
+  <td style="vertical-align: top;">
 
 <?= $translator->getTranslation('Depuis le placement') ?> :<br/>
 <?php
@@ -19,7 +19,7 @@ foreach ($accounts as $account)
 ?>
 <br/>
 
-<?= $translator->getTranslation('Date du retrait') ?> <input title="aaaa-mm-jj hh:mm:ss" size="10" class="datePicker" name="fromDate" value="<?php echo date("Y-m-d") ?>"><br/>
+<?= $translator->getTranslation('Date') ?> <input type="hidden" id="datePickerHidden" name="fromDate" value="<?php echo date("Y-m-d") ?>"><div id="datePickerInline"></div><br/>
 <br/>
 
 <?= $translator->getTranslation('Vers le compte :') ?><br/>
@@ -32,7 +32,7 @@ foreach ($accounts as $account)
 <?php } ?>
 
 <br/>
-<?= $translator->getTranslation('Date de prise en compte') ?> <input title="aaaa-mm-jj hh:mm:ss" size="10" class="datePicker" name="toDate" value="<?php echo date("Y-m-d") ?>"><br/>
+<?= $translator->getTranslation('Date') ?> <input type="hidden" id="datePickerHidden2" name="toDate" value="<?php echo date("Y-m-d") ?>"><div id="datePickerInline2"></div><br/>
 <br/>
 <?= $translator->getTranslation('Montant désinvesti') ?> <input type="text" name="amountDisinvested" size="6">&nbsp;&euro;<br/>
 <?= $translator->getTranslation('Désignation') ?> <input type="text" name="designation" id="designation" size="30" value="<?= $translator->getTranslation('Retrait depuis placement') ?>">

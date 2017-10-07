@@ -22,10 +22,10 @@ else
 <?php
 }
 ?>
-	  <?= $translator->getTranslation('Date') ?> <input title="aaaa-mm-jj hh:mm:ss" size="10" id="datePicker" name="date" value="<?php echo date("Y-m-d") ?>">
-	  <br/>
-	  <?= $translator->getTranslation('Désignation') ?> <input type="text" name="designation" size="30">
-  </td>
+<?= $translator->getTranslation('Date') ?> <input type="hidden" id="datePickerHidden" name="date" value="<?php echo date("Y-m-d") ?>"><div id="datePickerInline"></div><br/>
+<br/>
+<?= $translator->getTranslation('Remarque') ?> <input type="text" name="designation" size="30">
+</td>
 </tr>
 </table>
 <br />

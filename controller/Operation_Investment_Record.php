@@ -140,4 +140,10 @@ class Operation_Investment_Record extends Operation
 		if (!isset($this->_toDate))
 			throw new Exception('Merci de renseigner la date de l\'opération');
 	}
+
+	public function CalculateIndicators()
+	{
+		$investmentsRecordsHandler = new InvestmentsRecordsHandler();
+		$investmentsRecordsHandler->CalculateIndicators();
+	}
 }

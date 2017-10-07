@@ -18,5 +18,7 @@ class Operation_Investment_Record_Value extends Operation_Investment_Record
 				$this->_value
 		);
 		$this->_recordsHandler->Insert($newRecord);
+
+		$this->CalculateIndicators();
 	}
 }

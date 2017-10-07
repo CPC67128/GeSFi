@@ -42,5 +42,7 @@ class Operation_Investment_Record_Income extends Operation_Investment_Record
 
 			$this->_recordsHandler->Insert($newRecord);
 		}
+
+		$this->CalculateIndicators();
 	}
 }

@@ -49,5 +49,7 @@ class Operation_Investment_Record_Credit extends Operation_Investment_Record
 			);
 			$this->_recordsHandler->Insert($newRecord);
 		}
+
+		$this->CalculateIndicators();
 	}
 }

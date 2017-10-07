@@ -3,7 +3,7 @@
 <form id="form" action="/">
 <table class="actionsTable">
 <tr>
-  <td style="vertical-align: middle;">
+  <td style="vertical-align: top;">
 
 <?= $translator->getTranslation('Depuis le compte') ?> :<br/>
 <?php
@@ -57,12 +57,12 @@ foreach ($accounts as $account)
 
 <br/>
 
-<?= $translator->getTranslation('Date') ?> <input title="aaaa-mm-jj hh:mm:ss" size="10" id="datePicker" name="date" value="<?php echo date("Y-m-d") ?>"><br/>
+<?= $translator->getTranslation('Date') ?> <input type="hidden" id="datePickerHidden" name="date" value="<?php echo date("Y-m-d") ?>"><div id="datePickerInline"></div><br/>
 <?= $translator->getTranslation('Montant') ?> <input type="text" name="amount" size="6">&nbsp;&euro;<br/>
 <?= $translator->getTranslation('Désignation') ?> <input type="text" name="designation" size="30" value="<?= $translator->getTranslation('Virement bancaire') ?>">
 
 </td>
-<td style="vertical-align: middle;">
+<td style="vertical-align: top;">
   <?= $translator->getTranslation('Périodicité:') ?>
   <br/>
   <input type="radio" name="periodicity" value="unique" checked><?= $translator->getTranslation('unique') ?></input>

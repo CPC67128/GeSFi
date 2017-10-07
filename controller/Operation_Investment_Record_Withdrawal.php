@@ -38,5 +38,7 @@ class Operation_Investment_Record_Withdrawal extends Operation_Investment_Record
 			);
 			$this->_recordsHandler->Insert($newRecord);
 		}
+
+		$this->CalculateIndicators();
 	}
 }

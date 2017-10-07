@@ -3,6 +3,13 @@ include '../component/component_autoload.php';
 include '../component/component_security.php';
 
 $translator = new Translator();
+$t = $translator;
+
+function t($text)
+{
+	global $t;
+	return $t->t($text);
+}
 
 $specialPage = '';
 if (isset($_GET['special_page']))
@@ -144,6 +151,17 @@ switch ($pageName)
 
 // ------------------------------------------------------------------------------------------------
 
+function AddFormButton()
+{
+	?>
+	<div class="formButtons" style="padding-top: 15px;">
+	<input value="<?= t('Ajouter') ?>" id="submitForm" type="submit">
+	<input id="resetForm" name="reset" value="<?= t('Effacer') ?>" type="reset">
+	<div id="formResult"></div>
+	</div>
+	<?php
+}
+
 function AddFormManagementEnd($pageName)
 {
 ?>
@@ -176,6 +194,25 @@ $("#form").submit( function () {
 		}
 	);
 	return false;
+});
+
+$( "#datePickerInline" ).datepicker({
+	dateFormat: "yy-mm-dd",
+	firstDay: 1,
+	dayNamesShort: [ "Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam" ],
+	dayNamesMin: [ "Di", "Lu", "Ma", "Me", "Je", "Ve", "Sa" ],
+	dayNames: [ "Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi" ],
+	monthNames: [ "Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre" ],
+	altField : '#datePickerHidden'
+});
+$( "#datePickerInline2" ).datepicker({
+	dateFormat: "yy-mm-dd",
+	firstDay: 1,
+	dayNamesShort: [ "Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam" ],
+	dayNamesMin: [ "Di", "Lu", "Ma", "Me", "Je", "Ve", "Sa" ],
+	dayNames: [ "Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi" ],
+	monthNames: [ "Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre" ],
+	altField : '#datePickerHidden2'
 });
 
 $( "#datePicker" ).datepicker({

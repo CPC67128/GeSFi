@@ -126,6 +126,10 @@ small {
 	padding:10px;
 }
 
+.actionsTable td {
+	vertical-align: top;
+}
+
 .categoriesTable {
 	border-spacing: 1px 1px;
 	font-size: 1em;

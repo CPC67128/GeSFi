@@ -3,7 +3,7 @@
 <form action="/" id="form">
 <table class="actionsTable">
 <tr>
-<td style="vertical-align: middle;">
+<td style="vertical-align: top;">
 
 <?= $translator->getTranslation('Depuis le compte :') ?><br/>
 
@@ -39,7 +39,8 @@ foreach ($accounts as $account)
 
 <br/>
 
-<?= $translator->getTranslation('Date') ?> <input title="aaaa-mm-jj hh:mm:ss" size="10" id="datePicker" name="date" value="<?php echo date("Y-m-d") ?>"><br/>
+<?= $translator->getTranslation('Date') ?> <input type="hidden" id="datePickerHidden" name="date" value="<?php echo date("Y-m-d") ?>"><div id="datePickerInline"></div><br/>
+
 Montant <input type="text" name="amount" tabindex="-1" size="6" style='background-color : #d1d1d1;' readonly>&nbsp;&euro;<br />
 
 <?= $translator->getTranslation('Désignation') ?> <input class="ui-autocomplete-input" type="text" name="designation" id="designation" size="30"><br/>
@@ -49,7 +50,7 @@ Montant <input type="text" name="amount" tabindex="-1" size="6" style='backgroun
 
 </td>
 
-<td style="vertical-align: middle;">
+<td style="vertical-align: top;">
 
 <table class="categoriesTable">
 <thead>
@@ -147,7 +148,7 @@ foreach ($categories as $category)
 
 </table>
 
-<td style="vertical-align: middle;">
+<td style="vertical-align: top;">
 <?= $translator->getTranslation('Périodicité:') ?><br/>
 <input type="radio" name="periodicity" value="unique" checked><?= $translator->getTranslation('unique') ?></input><br />
 <input type="radio" name="periodicity" value="monthly"><?= $translator->getTranslation('tous les mois') ?></input><br />

@@ -1,8 +1,6 @@
 <?php
 
 $investmentsRecordsHandler = new InvestmentsRecordsHandler();
-
-$investmentsRecordsHandler->CalculateIndicators();
 $result = $investmentsRecordsHandler->GetAllRecords(12 * 10);
 
 $now = date('Y-m-d');
@@ -43,6 +41,22 @@ function AddTitleRow()
 	<?php
 }
 
+function PrintTRClass($row, $index)
+{
+	global $now;
+
+	echo 'tableRow';
+
+	if ($row['marked_as_deleted'])
+		echo 'Deleted';
+	else if ($row['record_date'] > $now)
+		echo 'ToCome';
+	else if ($row['record_type'] == 2)
+		echo 'Remark';
+
+	echo ($index % 2);
+}
+
 // ------ Add a data row
 function AddRow($index, $row)
 {
@@ -50,12 +64,9 @@ function AddRow($index, $row)
 	global $paymentAccumulated, $paymentInvestedAccumulated;
 	global $creationDate, $accountType, $activeAccount;
 
-	$tr = '<tr class="tableRow';
-	if ($row['record_type'] == 2) $tr .= 'Remark';
-	//if ($row['marked_as_deleted']) $tr .= 'Deleted';
-	echo $tr;
-
-	if ($index % 2 == 0) echo '0">'; else echo '1">';
+	?>
+	<tr class="<?php PrintTRClass($row, $index); ?>">
+	<?php
 
 	echo '<td>'.$row['record_date'].'</td>';
 	echo '<td style="text-align: right;">'.$row['CALC_days_since_creation'].'</td>';

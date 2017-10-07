@@ -1,6 +1,10 @@
 <?php
 class Translator
 {
+	public function t($text) {
+		return $this->getTranslation($text);
+	}
+
 	public function getTranslation($text)
 	{
 		return $text;

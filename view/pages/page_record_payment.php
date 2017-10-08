@@ -1,105 +1,49 @@
-<h1><?= t('Déclarer une dépense') ?></h1>
+<h1><?= t("Déclarer une dépense") ?></h1>
 
 <form action="/" id="form">
 <table class="actionsTable">
 <tr>
 
 <td>
-<table class="categoriesTable">
-<thead>
-<td><?= t('Catégorie') ?></td>
-<td><?= t('Formule') ?></td>
-<td><?= t('Montant') ?></td>
-<td><?= t('Prise en charge') ?></td>
-</thead>
-<thead>
-<td>&nbsp;</td>
-<td><font size=1>x-- = x - others<br>x+y-z</font></td>
-<td>&nbsp;</td>
-<td>&nbsp;</td>
-</thead>
-<tr>
-<td colspan=4><b><i><?= t('Catégories duo') ?></i></b></td>
-</tr>
-<?php
-$i = 1;
-$categories = $categoriesHandler->GetOutcomeCategoriesForDuo($activeUser->get('userId'));
-foreach ($categories as $category) {
-	DisplayCategorieLine($category);
-}
-?>
-<tr>
-<td colspan=4><b><i><?= t('Catégories privées de ') ?><?= $activeUser->get('name') ?></i></b></td>
-</tr>
-<?php
-$categories = $categoriesHandler->GetOutcomeCategoriesForUser($activeUser->get('userId'));
-foreach ($categories as $category) {
-	DisplayCategorieLine($category, "100");
-}
-
-$category = new Category();
-$category->set('categoryId', 'USER/'.$activeUser->get('userId'));
-$category->set('category', t('(Inconnue)'));
-DisplayCategorieLine($category, "100");
-?>
-<td colspan=4><b><i><?= t('Catégories privées de ') ?><?= $activeUser->GetPartnerName() ?></i></b></td>
-</tr>
-<?php
-$categories = $categoriesHandler->GetOutcomeCategoriesForUser($activeUser->GetPartnerId());
-foreach ($categories as $category) {
-	DisplayCategorieLine($category, "0");
-}
-
-$category = new Category();
-$category->set('categoryId', 'USER/'.$activeUser->GetPartnerId());
-$category->set('category', t('(Inconnue)'));
-DisplayCategorieLine($category, "0");
-?>
-</table>
+<?php include 'page_record_inc_categories_table.php'; ?>
+</td>
 
 <td>
-<?= t('Depuis le compte :') ?><br>
-<br>
+<?= t("Depuis le compte") ?><br><br>
 <?php
 $accounts = $accountsHandler->GetAllDuoAccounts();
-foreach ($accounts as $account)
-{ ?>
-<input type="radio" name="fromAccount" <?= $account->get('accountId') == $activeAccount->get('accountId') ? 'checked' : '' ?> value="<?= $account->get('accountId') ?>"><?= $account->get('name') ?><br>
-<?php } ?>
-<?php
+foreach ($accounts as $account) { ?>
+<input type="radio" name="fromAccount" <?= $account->get("accountId") == $activeAccount->get("accountId") ? 'checked' : '' ?> value="<?= $account->get("accountId") ?>"><?= $account->get("name") ?><br>
+<?php }
 $accounts = $accountsHandler->GetAllSharedLoans();
-foreach ($accounts as $account)
-{ ?>
-<input type="radio" name="fromAccount" <?= $account->get('accountId') == $activeAccount->get('accountId') ? 'checked' : '' ?> value="<?= $account->get('accountId') ?>"><?= $account->get('name') ?><br>
+foreach ($accounts as $account) { ?>
+<input type="radio" name="fromAccount" <?= $account->get("accountId") == $activeAccount->get("accountId") ? 'checked' : '' ?> value="<?= $account->get("accountId") ?>"><?= $account->get("name") ?><br>
 <?php } ?>
 <br>
-<input type="radio" name="fromAccount" value="USER/<?= $activeUser->get('userId') ?>"><i><?= $activeUser->get('name') ?> / Compte inconnu</i><br>
+<input type="radio" name="fromAccount" value="USER/<?= $activeUser->get("userId") ?>"><i><?= $activeUser->get("name") ?> / Compte inconnu</i><br>
 <?php
 $accounts = $accountsHandler->GetAllPrivateAccounts();
-foreach ($accounts as $account)
-{ ?>
-<input type="radio" name="fromAccount" <?= $account->get('accountId') == $activeAccount->get('accountId') ? 'checked' : '' ?> value="<?= $account->get('accountId') ?>"><?= $activeUser->get('name') ?> / <?= $account->get('name') ?><br>
+foreach ($accounts as $account) { ?>
+<input type="radio" name="fromAccount" <?= $account->get("accountId") == $activeAccount->get("accountId") ? 'checked' : '' ?> value="<?= $account->get("accountId") ?>"><?= $activeUser->get("name") ?> / <?= $account->get("name") ?><br>
 <?php } ?>
 <br>
 <input type="radio" name="fromAccount" value="USER/<?= $activeUser->GetPartnerId() ?>"><i><?= $activeUser->GetPartnerName() ?> / Compte inconnu</i><br>
-<br>
-<?= t('Date') ?> <input type="hidden" id="datePickerHidden" name="date" value="<?php echo date("Y-m-d") ?>"><div id="datePickerInline"></div><br>
+</td>
 
-Montant <input type="text" name="amount" tabindex="-1" size="6" style='background-color : #d1d1d1;' readonly>&nbsp;&euro;<br>
-
-<?= t('Désignation') ?> <input class="ui-autocomplete-input" type="text" name="designation" id="designation" size="30"><br>
-<br>
+<td>
+<?= t("Date") ?> <input type="hidden" id="datePickerHidden" name="date" value="<?php echo date("Y-m-d") ?>"><div id="datePickerInline"></div><br>
+<?= t("Montant") ?> <input type="text" name="amount" tabindex="-1" size="6" style='background-color : #d1d1d1;' readonly>&nbsp;&euro;<br>
+<?= t("Désignation") ?> <input class="ui-autocomplete-input" type="text" name="designation" id="designation" size="30"><br><br>
 <?= t("Confirmer l'opération") ?> <input type="checkbox" name="confirmed" id="confirmed" />
 <?php AddFormButton(); ?>
 </td>
 
 <td>
-<?= t('Périodicité:') ?><br>
-<input type="radio" name="periodicity" value="unique" checked><?= t('unique') ?></input><br>
-<input type="radio" name="periodicity" value="monthly"><?= t('tous les mois') ?></input><br>
-<?= t('pendant') ?> <input type="text" name="periodicityNumber" size="3"> <?= t('mois') ?>
+<?php AddReccurenceSubForm(); ?>
 </td>
-</tr>
 
+</tr>
 </table>
 </form>
+
+<?php include 'page_record_inc_designation_autocomplete.php'; ?>

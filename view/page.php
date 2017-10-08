@@ -162,6 +162,16 @@ function AddFormButton()
 	<?php
 }
 
+function AddReccurenceSubForm()
+{
+	?>
+	<?= t('Périodicité:') ?><br>
+	<input type="radio" name="periodicity" value="unique" checked><?= t('unique') ?></input><br>
+	<input type="radio" name="periodicity" value="monthly"><?= t('tous les mois') ?></input><br>
+	<?= t('pendant') ?> <input type="text" name="periodicityNumber" size="3"> <?= t('mois') ?>
+	<?php
+}
+
 function AddFormManagementEnd($pageName)
 {
 ?>

@@ -10,6 +10,7 @@ class Operation_Record_Transfer extends Operation_Record
 		$this->ValidateRecordDate();
 		$this->ValidatePeriodicity();
 		$this->ValidatePeriodicityNumber();
+		$this->ValidateConfirmed();
 	}
 
 	public function Save()
@@ -61,6 +62,7 @@ class Operation_Record_Transfer extends Operation_Record
 					$currentDate,
 					$amountOutcome,
 					$this->_designation,
+					$this->_confirmed,
 					$uuid
 			);
 			$this->_recordsHandler->Insert($newRecord);
@@ -71,6 +73,7 @@ class Operation_Record_Transfer extends Operation_Record
 					$currentDate,
 					$amountIncome,
 					$this->_designation,
+					$this->_confirmed,
 					$uuid
 			);
 			$this->_recordsHandler->Insert($newRecord);

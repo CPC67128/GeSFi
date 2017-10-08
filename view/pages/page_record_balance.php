@@ -1,14 +1,10 @@
 <?php
-$accountsHandler = new AccountsHandler();
 $accounts = $accountsHandler->GetAllDuoAccounts();
 $activeAccount = $accounts[0];
 
-$usersHandler = new UsersHandler();
 $user = $usersHandler->GetCurrentUser();
 $partner = $usersHandler->GetUser($user->GetPartnerId());
 
-$statisticsHandler = new StatisticsHandler();
-$translator = new Translator();
 /*
 for ($year = 2014; $year < 2016; $year++)
 	for ($month = 1; $month <= 12; $month++)

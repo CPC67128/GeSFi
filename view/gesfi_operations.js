@@ -204,7 +204,7 @@ function LoadAccountStatusInPageRecord()
 		type : 'POST',
 		url : 'page.php',
 		data: {
-			'page': 'record_account_status',
+			'page': 'record_inc_account_status',
 			'area': '',
 			'id': currentContext.id
 		},
@@ -308,6 +308,7 @@ function CalculateAllAmounts() {
 	$("input[name='amount']").val(total);
 }
 
+/*
 $("#designation").autocomplete({
 	source: function( request, response ) {
 		$.ajax({
@@ -337,3 +338,4 @@ $("#designation").autocomplete({
 	select: function( event, ui ) {
 	}
 });
+*/

@@ -1,8 +1,6 @@
-<div id="accountStatus"></div>
+<div id="accountStatus">&nbsp;<br><br></div>
 
 <?php
-$recordsHandler = new RecordsHandler();
-
 if ($fullRecordsView)
 	$result = $recordsHandler->GetAllRecords(12 * 5);
 else
@@ -16,14 +14,14 @@ function AddTitleRow()
 	global $translator;
 	?>
 	<tr class="titleRow">
-	<td><?= $translator->getTranslation('Date') ?></td>
-	<td><?= $translator->getTranslation('Désignation') ?></td>
-	<td><?= $translator->getTranslation('Effectuée par') ?></td>
-	<td><?= $translator->getTranslation('Compte') ?></td>
-	<td><?= $translator->getTranslation('Cnf') ?></td>
-	<td><?= $translator->getTranslation('Montant') ?></td>
-	<td><?= $translator->getTranslation('Catégorie') ?></td>
-	<td><?= $translator->getTranslation('Prise en charge') ?></td>
+	<td><?= t('Date') ?></td>
+	<td><?= t('Désignation') ?></td>
+	<td><?= t('Effectuée par') ?></td>
+	<td><?= t('Compte') ?></td>
+	<td><?= t('Cnf') ?></td>
+	<td><?= t('Montant') ?></td>
+	<td><?= t('Catégorie') ?></td>
+	<td><?= t('Prise en charge') ?></td>
 	<td></td>
 	</tr>
 	<?php
@@ -156,7 +154,7 @@ function AddRow($index, $row, $mergeRow)
 <td class="amount<?= Record::GetRecordTypeGroup($row['record_type']) ?>" <?php PrintModifyRecordAmountFunction($row) ?>><?php PrintAmount($row) ?></td>
 <td class="category<?= $row['link_type'] ?>"><?php PrintCategory($row); ?></td>
 <td <?php PrintModifyRecordChargeFunction($row); ?>><?php PrintCharge($row); ?></td>
-<td style='text-align: center;'><span class='ui-icon ui-icon-trash' onclick='if (confirm("<?= $translator->getTranslation('Etes-vous sûr de vouloir supprimer cette entrée ?')?>")) { DeleteRecord("<?= $row['record_id']?>"); }'></span></td>
+<td style='text-align: center;'><span class='ui-icon ui-icon-trash' onclick='if (confirm("<?= t('Etes-vous sûr de vouloir supprimer cette entrée ?')?>")) { DeleteRecord("<?= $row['record_id']?>"); }'></span></td>
 </tr>
 	<?php
 }
@@ -179,7 +177,7 @@ function AddSubTotalRow($index, $row, $subtotal)
 <td></td><td></td><td></td><td></td><td></td>
 <td class="<?= PrintAmountSumClass($row) ?>">= <?= $translator->getCurrencyValuePresentation($subtotal) ?></td>
 <td></td><td></td>
-<td style="text-align: center;"><span class="ui-icon ui-icon-trash" onclick="if (confirm(\''.$translator->getTranslation('Etes-vous sûr de vouloir supprimer cette entrée ?').'\')) { DeleteRecord(\''.$row['record_id'].'\'); }"></span></td>
+<td style="text-align: center;"><span class="ui-icon ui-icon-trash" onclick="if (confirm(\''.t('Etes-vous sûr de vouloir supprimer cette entrée ?').'\')) { DeleteRecord(\''.$row['record_id'].'\'); }"></span></td>
 </tr>
 <?php
 }
@@ -321,7 +319,7 @@ LoadAccountStatusInPageRecord();
 
 </script>
 
-<div id="dialog-form-modifyValue" title="<?= $translator->getTranslation('Modifier') ?>">
+<div id="dialog-form-modifyValue" title="<?= t('Modifier') ?>">
   <form>
   <fieldset>
     <label for="charge">Nouvelle valeur</label>

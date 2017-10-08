@@ -19,26 +19,13 @@
 <td>&nbsp;</td>
 </thead>
 <tr>
-
 <td colspan=4><b><i><?= t('Catégories duo') ?></i></b></td>
 </tr>
 <?php
-$categoriesHandler = new CategoriesHandler();
-$categories = $categoriesHandler->GetOutcomeCategoriesForDuo($activeUser->get('userId'));
 $i = 1;
-foreach ($categories as $category)
-{
-	$categoryId = $category->get('categoryId');
-	$category = $category->get('category');
-?>
-<tr>
-<td><?= $category ?></td>
-<td><input type="text" name="category<?= $i ?>Formula" tabindex="<?= ($i * 2) ?>" size="12" onkeyup="javascript: CalculateAllAmounts();">&nbsp;=&nbsp;</td>
-<td><input type="text" name="category<?= $i ?>Amount"  tabindex="-1" size="6" readonly> &euro;<input type="hidden" name="category<?= $i ?>CategoryId" tabindex="-1" size="6" readonly value='<?= $categoryId ?>'></td>
-<td align="center"><input type="text" name="category<?= $i ?>ChargeLevel" tabindex="<?= (($i * 2) + 1) ?>" value="50" size="2"> %</td>
-</tr>
-<?php
-	$i++;
+$categories = $categoriesHandler->GetOutcomeCategoriesForDuo($activeUser->get('userId'));
+foreach ($categories as $category) {
+	DisplayCategorieLine($category);
 }
 ?>
 <tr>
@@ -46,62 +33,29 @@ foreach ($categories as $category)
 </tr>
 <?php
 $categories = $categoriesHandler->GetOutcomeCategoriesForUser($activeUser->get('userId'));
-
-foreach ($categories as $category)
-{
-	$categoryId = $category->get('categoryId');
-	$category = $category->get('category');
-	?>
-<tr>
-<td><?= $category ?></td>
-<td><input type="text" name="category<?= $i ?>Formula" tabindex="<?= ($i * 2) ?>" size="12" onkeyup="javascript: CalculateAllAmounts();">&nbsp;=&nbsp;</td>
-<td><input type="text" name="category<?= $i ?>Amount"  tabindex="-1" size="6" readonly> &euro;<input type="hidden" name="category<?= $i ?>CategoryId" tabindex="-1" size="6" readonly value='<?= $categoryId ?>'></td>
-<td align="center"><input type="text" name="category<?= $i ?>ChargeLevel" tabindex="<?= (($i * 2) + 1) ?>" value="100" size="2"> %</td>
-</tr>
-<?php
-	$i++;
+foreach ($categories as $category) {
+	DisplayCategorieLine($category, "100");
 }
-?>
-<tr>
-<td><i><?= t('(Inconnue)') ?></i></td>
-<td><input type="text" name="category<?= $i ?>Formula" tabindex="<?= ($i * 2) ?>" size="12" onkeyup="javascript: CalculateAllAmounts();">&nbsp;=&nbsp;</td>
-<td><input type="text" name="category<?= $i ?>Amount"  tabindex="-1" size="6" readonly> &euro;<input type="hidden" name="category<?= $i ?>CategoryId" tabindex="-1" size="6" readonly value='USER/<?= $activeUser->get('userId') ?>'></td>
-<td align="center"><input type="text" name="category<?= $i ?>ChargeLevel" tabindex="<?= (($i * 2) + 1) ?>" value="100" size="2"> %</td>
-<?php $i++; ?>
-</tr>
 
+$category = new Category();
+$category->set('categoryId', 'USER/'.$activeUser->get('userId'));
+$category->set('category', t('(Inconnue)'));
+DisplayCategorieLine($category, "100");
+?>
 <td colspan=4><b><i><?= t('Catégories privées de ') ?><?= $activeUser->GetPartnerName() ?></i></b></td>
 </tr>
 <?php
-$categoriesHandler = new CategoriesHandler();
 $categories = $categoriesHandler->GetOutcomeCategoriesForUser($activeUser->GetPartnerId());
-
-foreach ($categories as $category)
-{
-	$categoryId = $category->get('categoryId');
-	$category = $category->get('category');
-	?>
-<tr>
-<td><?= $category ?></td>
-<td><input type="text" name="category<?= $i ?>Formula" tabindex="<?= ($i * 2) ?>" size="12" onkeyup="javascript: CalculateAllAmounts();">&nbsp;=&nbsp;</td>
-<td><input type="text" name="category<?= $i ?>Amount"  tabindex="-1" size="6" readonly> &euro;<input type="hidden" name="category<?= $i ?>CategoryId" tabindex="-1" size="6" readonly value='<?= $categoryId ?>'></td>
-<td align="center"><input type="text" name="category<?= $i ?>ChargeLevel" tabindex="<?= (($i * 2) + 1) ?>" value="0" size="2"> %</td>
-</tr>
-<?php
-	$i++;
+foreach ($categories as $category) {
+	DisplayCategorieLine($category, "0");
 }
+
+$category = new Category();
+$category->set('categoryId', 'USER/'.$activeUser->GetPartnerId());
+$category->set('category', t('(Inconnue)'));
+DisplayCategorieLine($category, "0");
 ?>
-<tr>
-<td><i><?= t('(Inconnue)') ?></i></td>
-<td><input type="text" name="category<?= $i ?>Formula" tabindex="<?= ($i * 2) ?>" size="12" onkeyup="javascript: CalculateAllAmounts();">&nbsp;=&nbsp;</td>
-<td><input type="text" name="category<?= $i ?>Amount"  tabindex="-1" size="6" readonly> &euro;<input type="hidden" name="category<?= $i ?>CategoryId" tabindex="-1" size="6" readonly value='USER/<?= $activeUser->GetPartnerId() ?>'></td>
-<td align="center"><input type="text" name="category<?= $i ?>ChargeLevel" tabindex="<?= (($i * 2) + 1) ?>" value="0" size="2"> %</td>
-<?php $i++; ?>
-</tr>
-
 </table>
-
-
 
 <td>
 <?= t('Depuis le compte :') ?><br>
@@ -118,7 +72,6 @@ foreach ($accounts as $account)
 { ?>
 <input type="radio" name="fromAccount" <?= $account->get('accountId') == $activeAccount->get('accountId') ? 'checked' : '' ?> value="<?= $account->get('accountId') ?>"><?= $account->get('name') ?><br>
 <?php } ?>
-&nbsp;&nbsp;<?= t('effectuée par') ?><input type="radio" name="userId" value="<?= $activeUser->get('userId') ?>" checked><?= $activeUser->get('name') ?> </input><?= t('ou'); ?> <input type="radio" name="userId" value="<?= $activeUser->GetPartnerId() ?>"><?= $activeUser->GetPartnerName() ?></input><br>
 <br>
 <input type="radio" name="fromAccount" value="USER/<?= $activeUser->get('userId') ?>"><i><?= $activeUser->get('name') ?> / Compte inconnu</i><br>
 <?php
@@ -140,9 +93,6 @@ Montant <input type="text" name="amount" tabindex="-1" size="6" style='backgroun
 <?php AddFormButton(); ?>
 </td>
 
-
-
-
 <td>
 <?= t('Périodicité:') ?><br>
 <input type="radio" name="periodicity" value="unique" checked><?= t('unique') ?></input><br>
@@ -153,38 +103,3 @@ Montant <input type="text" name="amount" tabindex="-1" size="6" style='backgroun
 
 </table>
 </form>
-
-
-<script type='text/javascript'>
-$("#designation").autocomplete({
-	source: function( request, response ) {
-		$.ajax({
-			type: 'GET',
-			url: "search_designation.php",
-			contentType: "application/json; charset=utf-8",
-			dataType: "json",
-			data: {
-					'search_string': request.term,
-					'type': 2
-				},
-			success: function( data ) {
-				response( $.map( data.items, function( item ) {
-					return {
-						label: item
-					}
-				}));
-			},
-
-			error: function(jqXHR, textStatus, errorThrown){
-				alert(errorThrown);
-			}
-
-		});
-	},
-	minLength: 0,
-	select: function( event, ui ) {
-	}
-});
-
-
-</script>

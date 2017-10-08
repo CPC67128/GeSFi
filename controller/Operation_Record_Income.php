@@ -9,6 +9,7 @@ class Operation_Record_Income extends Operation_Record
 		$this->ValidateRecordDate();
 		$this->ValidatePeriodicity();
 		$this->ValidatePeriodicityNumber();
+		$this->ValidateConfirmed();
 	}
 
 	public function Save()
@@ -39,7 +40,7 @@ class Operation_Record_Income extends Operation_Record
 							$this->_designation,
 							$categoryData['chargeLevel'],
 							$categoryData['categoryId'],
-							0,
+							$this->_confirmed,
 							$uuid
 					);
 					$this->_recordsHandler->Insert($newRecord);

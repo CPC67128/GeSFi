@@ -241,6 +241,25 @@ $( ".datePicker" ).datepicker({
 </script>
 <?php
 }
+
+function DisplayCategorieLine($category, $chargeLevel="50", $isChargeLevelFieldHidden=false)
+{
+	global $i;
+
+	$categoryId = $category->get('categoryId');
+	$category = $category->get('category');
+
+	?>
+	<tr>
+	<td><?= $category ?></td>
+	<td><input type="text" name="category<?= $i ?>Formula" tabindex="<?= ($i * 2) ?>" size="12" onkeyup="javascript: CalculateAllAmounts();">&nbsp;=&nbsp;</td>
+	<td><input type="text" name="category<?= $i ?>Amount"  tabindex="-1" size="6" readonly> &euro;<input type="hidden" name="category<?= $i ?>CategoryId" tabindex="-1" size="6" readonly value='<?= $categoryId ?>'></td>
+	<td align="center"><input type="<?= $isChargeLevelFieldHidden ? 'hidden' : 'text' ?>" name="category<?= $i ?>ChargeLevel" tabindex="<?= (($i * 2) + 1) ?>" value="<?= $chargeLevel ?>" size="2"><?= $isChargeLevelFieldHidden ? '' : ' %' ?></td>
+	</tr>
+	<?php
+	$i++;
+}
+
 ?>
 <script type="text/javascript">
 SetTitle('<?php echo $windowTitle; ?>');

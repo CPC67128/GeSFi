@@ -44,6 +44,7 @@ class Operation_Record_Payment extends Operation_Record
 							$this->_confirmed,
 							$uuid
 					);
+
 					$this->_recordsHandler->Insert($newRecord);
 				}
 			}

@@ -12,7 +12,7 @@ class Operation_Investment_Record_Value extends Operation_Investment_Record
 	{
 		$newRecord = new Record_Remark_Value(
 				$this->_currentAccountId,
-				$this->_currentUserId,
+				$this->_userId,
 				$this->_date,
 				$this->_designation,
 				$this->_value

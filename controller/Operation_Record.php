@@ -10,7 +10,6 @@ class Operation_Record extends Operation
 	protected $_fromAccount;
 	protected $_toAccount;
 	protected $_amount;
-	protected $_userId;
 	protected $_categories;
 	protected $_confirmed;
 

@@ -29,7 +29,7 @@ class Operation_Investment_Record_Credit extends Operation_Investment_Record
 			{
 				$newRecord = new Record_Transfer_Debit(
 						$this->_fromAccount,
-						$this->_currentUserId,
+						$this->_userId,
 						$fromDate,
 						$this->_amount,
 						$this->_designation,
@@ -40,7 +40,7 @@ class Operation_Investment_Record_Credit extends Operation_Investment_Record
 
 			$newRecord = new Record_Transfer_Credit_Investment(
 					$this->_toAccount,
-					$this->_currentUserId,
+					$this->_userId,
 					$toDate,
 					$this->_amount,
 					$this->_amountInvested,

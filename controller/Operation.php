@@ -3,7 +3,7 @@ class Operation
 {
 	protected $_db;
 	protected $_currentAccountId;
-	protected $_currentUserId;
+	protected $_userId;
 	protected $_accountsHandler;
 	protected $_usersHandler;
 	protected $_recordsHandler;
@@ -14,7 +14,7 @@ class Operation
 		if (isset($_SESSION['account_id']))
 			$this->_currentAccountId = $_SESSION['account_id'];
 		if (isset($_SESSION['user_id']))
-			$this->_currentUserId = $_SESSION['user_id'];
+			$this->_userId = $_SESSION['user_id'];
 
 		$this->_accountsHandler = new AccountsHandler();
 		$this->_usersHandler = new UsersHandler();

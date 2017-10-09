@@ -1,7 +1,6 @@
 <?php
 class Operation_User extends Operation
 {
-	protected $_userId;
 	protected $_email;
 	protected $_name;
 	protected $_role;

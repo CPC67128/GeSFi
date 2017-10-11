@@ -11,6 +11,7 @@ class Operation_Investment_Record_Credit extends Operation_Investment_Record
 		$this->ValidateDesignation();
 		$this->ValidatePeriodicity();
 		$this->ValidatePeriodicityNumber();
+		$this->ValidateConfirmed();
 	}
 
 	public function Save()
@@ -33,6 +34,7 @@ class Operation_Investment_Record_Credit extends Operation_Investment_Record
 						$fromDate,
 						$this->_amount,
 						$this->_designation,
+						$this->_confirmed,
 						$uuid
 				);
 				$this->_recordsHandler->Insert($newRecord);
@@ -45,6 +47,7 @@ class Operation_Investment_Record_Credit extends Operation_Investment_Record
 					$this->_amount,
 					$this->_amountInvested,
 					$this->_designation,
+					$this->_confirmed,
 					$uuid
 			);
 			$this->_recordsHandler->Insert($newRecord);

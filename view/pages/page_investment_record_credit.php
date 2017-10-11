@@ -32,7 +32,8 @@ foreach ($accountsTo as $account) { ?>
 <?= t('Versement') ?> <input type="text" name="amount" size="6">&nbsp;&euro;<br>
 <?= t('Montant investi') ?> <input type="text" name="amountInvested" size="6">&nbsp;&euro;<br>
 <!-- <?= t('Valorisation') ?> <input type="text" name="value" size="6">&nbsp;&euro; (optionnel)<br> -->
-<?= t('Désignation') ?> <input type="text" name="designation" id="designation" size="30" value="<?= t('Versement vers placement') ?>">
+<?= t('Désignation') ?> <input type="text" name="designation" id="designation" size="30" value="<?= t('Versement vers placement') ?>"><br><br>
+<?= t("Confirmer l'opération") ?> <input type="checkbox" name="confirmed" id="confirmed" />
 <?php AddFormButton(); ?>
 </td>
 

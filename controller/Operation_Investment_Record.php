@@ -19,6 +19,8 @@ class Operation_Investment_Record extends Operation
 
 	protected $_amountDisinvested;
 
+	protected $_confirmed;
+
 	// -------------------------------------------------------------------------------------------------------------------
 
 	public function ValidateRecordDate()
@@ -139,6 +141,14 @@ class Operation_Investment_Record extends Operation
 	{
 		if (!isset($this->_toDate))
 			throw new Exception('Merci de renseigner la date de l\'opération');
+	}
+
+	public function ValidateConfirmed()
+	{
+		if (!empty($this->_confirmed))
+			$this->_confirmed = 1;
+		else
+			$this->_confirmed = 0;
 	}
 
 	public function CalculateIndicators()

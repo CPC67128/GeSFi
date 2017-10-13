@@ -34,7 +34,7 @@ class StatisticsBalanceHandler extends Handler
 		if ($aggregate)
 			//$this->recordFilter = "and (record_date_year < ".$this->year." or (record_date_month <= ".$this->month." and record_date_year = ".$this->year."))";
 			// Problem because numbers are not displayed correctly during the month
-			$this->recordFilter = "and record_date_year < curdate()";
+			$this->recordFilter = "and record_date <= curdate()";
 		else
 			$this->recordFilter = "and record_date_year = ".$this->year." and record_date_month = ".$this->month;
 
@@ -52,7 +52,6 @@ class StatisticsBalanceHandler extends Handler
 			where record_type in (22)
 			and marked_as_deleted = 0
 			and category_id in (select category_id from {TABLEPREFIX}category where link_type = 'DUO')
-			and record_date <= curdate()
 			and account_id not in (select account_id from {TABLEPREFIX}account where type in (2, 3, 5, 12))
 			".$this->recordFilter."
 			and user_id = '".$this->userId."'";

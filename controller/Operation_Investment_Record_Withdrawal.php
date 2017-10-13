@@ -8,6 +8,7 @@ class Operation_Investment_Record_Withdrawal extends Operation_Investment_Record
 		$this->ValidateToDate();
 		$this->ValidateAmountDisinvested();
 		$this->ValidateDesignation();
+		$this->ValidateConfirmed();
 	}
 
 	public function Save()
@@ -22,6 +23,7 @@ class Operation_Investment_Record_Withdrawal extends Operation_Investment_Record
 				$this->_fromDate,
 				$this->_amountDisinvested,
 				$this->_designation,
+				$this->_confirmed,
 				$uuid
 		);
 		$this->_recordsHandler->Insert($newRecord);
@@ -34,6 +36,7 @@ class Operation_Investment_Record_Withdrawal extends Operation_Investment_Record
 					$this->_toDate,
 					$this->_amountDisinvested,
 					$this->_designation,
+					$this->_confirmed,
 					$uuid
 			);
 			$this->_recordsHandler->Insert($newRecord);

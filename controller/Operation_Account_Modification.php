@@ -67,7 +67,7 @@ class Operation_Account_Modification extends Operation_Account
 		else
 		{
 			$account = $handler->GetAccount($this->_accountId);
-			if ($account->get('ownerUserId') == $this->_currentUserId) // Current user is account first owner
+			if ($account->get('ownerUserId') == $this->_userId) // Current user is account first owner
 			{
 				if ($this->_delete == 'on')
 					$handler->DeleteAccount($this->_accountId);

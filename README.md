@@ -17,6 +17,7 @@ Cette application peut être hébergée sur un [site Internet 1&1](http://www.1a
 * Créer une base de données MariaDB:
   * Nom: « gesfi »
   * Interclassement: « utf8_general_ci »
+
 ![Création base de données](https://stevefuchs.fr/wordpress/wp-content/uploads/2014/09/2017-08-27_232352.png?w=492)
 * [Télécharger l’archive de l’application sur GitHub](https://github.com/CPC67128/GeSFi/archive/master.zip), et la décompresser
 * Sur votre site web, créer un répertoire « gesfi » (ou autre)
@@ -24,6 +25,7 @@ Cette application peut être hébergée sur un [site Internet 1&1](http://www.1a
 * Editer le fichier ./configuration/configuration.php et remplir les paramètres requis (base de données…)
 * Aller sur http://<site web>/gesfi/setup/
 * Cliquer sur « Upgrade database » pour créer la structure de la base de données:
+
 ![Mise à jour de la base](https://stevefuchs.fr/wordpress/wp-content/uploads/2014/09/2015-04-18_155906.png?w=600)
 * Effacer le répertoire ./setup/ de votre répertoire d’installation
 * Se rendre sur la page http://<site web>/gefi/ et se connecter avec un des deux comptes en laissant le champ mot de passe vide

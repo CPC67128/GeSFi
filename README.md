@@ -1,7 +1,48 @@
-GeSFi
-=====
+# GeSFi
+
+## Installation
+Prérequis
+Capacité à installer et à héberger une une application web
+Espace web disposant de PHP 7
+Une base de données MariaDB 10
+Cette application peut être hébergée sur un site Internet 1&1, sur un NAS Synology, un site en local via XAMPP ou WAMP, voir encore un site auto-hébergé sur un Raspberry Pi.
+
+Vous pouvez me contacter pour que j’héberge et je gère votre application si besoin.
+
+Première installation
+Créer une base de données MariaDB:
+Nom: « gesfi »
+Interclassement: « utf8_general_ci »
+
+
+Télécharger l’archive de l’application sur GitHub, et la décompresser
+Sur votre site web, créer un répertoire « gesfi » (ou autre)
+Uploader les fichiers dans ce répertoire
+Editer le fichier ./configuration/configuration.php et remplir les paramètres requis (base de données…)
+Aller sur http://<site web>/gesfi/setup/
+Cliquer sur « Upgrade database » pour créer la structure de la base de données:
+2015-04-18_155906
+
+Effacer le répertoire ./setup/ de votre répertoire d’installation
+Se rendre sur la page http://<site web>/gefi/ et se connecter avec un des deux comptes en laissant le champ mot de passe vide
+Débuter par la configuration des utilisateurs, des comptes et des catégories depuis l’espace d’administration.
+Mise à jour
+Sauvegarder
+Base de données
+Répertoire GeSFi de votre site web
+Dans ce dernier, effacer tout les sous-répertoires excepté ./configuration/
+Télécharger l’archive de l’application sur GitHub, et la décompresser
+Uploader les fichiers excepté le répertoire ./configuration/ sur votre site web
+Aller sur http://<site web>/gesfi/setup/
+Cliquer sur « Upgrade database » pour créer la structure de la base de données:
+Effacer le répertoire ./setup/ de votre répertoire d’installation
+
+
+
 
 http://stevefuchs.fr/wordpress/gesfi/
+
+
 
 Development notes
 =================

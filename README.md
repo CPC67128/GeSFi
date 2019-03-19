@@ -1,18 +1,20 @@
 # GeSFi
 
-## Installation
-Prérequis
-Capacité à installer et à héberger une une application web
-Espace web disposant de PHP 7
-Une base de données MariaDB 10
-Cette application peut être hébergée sur un site Internet 1&1, sur un NAS Synology, un site en local via XAMPP ou WAMP, voir encore un site auto-hébergé sur un Raspberry Pi.
+## Installation (French / Français)
 
-Vous pouvez me contacter pour que j’héberge et je gère votre application si besoin.
+### Prérequis
 
-Première installation
-Créer une base de données MariaDB:
-Nom: « gesfi »
-Interclassement: « utf8_general_ci »
+* Capacité à installer et à héberger une une application web
+* Espace web disposant de PHP 7
+* Une base de données MariaDB 10
+
+Cette application peut être hébergée sur un [site Internet 1&1](http://www.1and1.fr/?kwk=16605005), sur un NAS Synology, un site en local via XAMPP ou WAMP, voir encore un site auto-hébergé sur un Raspberry Pi.
+
+### Première installation
+
+* Créer une base de données MariaDB:
+ * Nom: « gesfi »
+ * Interclassement: « utf8_general_ci »
 
 
 Télécharger l’archive de l’application sur GitHub, et la décompresser

@@ -37,6 +37,7 @@ class RecordsHandler extends Handler
 				$record->getIfSetOrDefault('actor', '0'),
 				$record->getIfSetOrDefault('confirmed', '0')
 				);
+
 		$result = $db->Execute($query);
 
 		$accountsHandler = new AccountsHandler();

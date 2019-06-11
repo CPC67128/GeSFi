@@ -12,18 +12,29 @@ Quelques captures des versions précédentes:
 
 Version 2014
 
+![V2014](https://github.com/CPC67128/GeSFi/blob/master/media/v2014_1.jpg)
+![V2014](https://github.com/CPC67128/GeSFi/blob/master/media/v2014_2.jpg)
+
 Version 3
 
 Transition en programmation PHP objet
+
+![V3](https://github.com/CPC67128/GeSFi/blob/master/media/v3.jpg)
 
 Version 2
 
 Introduction des librairies JavaScript jQuery, jQuery UI, jQuery Mobile et mobile_device_detect.
 
+![V2](https://github.com/CPC67128/GeSFi/blob/master/media/v2_1.png)
+![V2](https://github.com/CPC67128/GeSFi/blob/master/media/v2_2.png)
+![V2](https://github.com/CPC67128/GeSFi/blob/master/media/v2_3.png)
+![V2](https://github.com/CPC67128/GeSFi/blob/master/media/v2_4.png)
+
 Version 1
 
 Le nom du projet initial était "Gestion Financière du Couple" (GFC)
 
+![V1](https://github.com/CPC67128/GeSFi/blob/master/media/v1.jpg)
 
 
 

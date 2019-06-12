@@ -1,14 +1,12 @@
 # GeSFi
 
-Project description: http://stevefuchs.fr/wordpress/gesfi/
-
 ## Description
 
 GeSFi (Gestion Financière) est une application web de gestion financière que je développe et fait évoluer depuis 2010.
 
 Elle permet de gérer sa comptabilité privée (dépenses, revenus) et ses finances personnelles (patrimoine immobilier, placements financiers, emprunts), mais également la comptabilité du couple (partage des dépenses).
 
-Quelques captures des versions précédentes:
+## Historique des versions précédentes
 
 **Version 2014**
 

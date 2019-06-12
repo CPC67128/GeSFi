@@ -1,42 +1,36 @@
 # GeSFi
 
-Project description: http://stevefuchs.fr/wordpress/gesfi/
-
 ## Description
 
-GeSFi (Gestion Financière) est une application web de gestion financière que je développe et fait évoluer depuis 2010.
+GeSFi (Gestion Financière) est une application web de gestion financière que je développe et fait évoluer depuis plusieurs années.
 
 Elle permet de gérer sa comptabilité privée (dépenses, revenus) et ses finances personnelles (patrimoine immobilier, placements financiers, emprunts), mais également la comptabilité du couple (partage des dépenses).
 
-Quelques captures des versions précédentes:
+## Historique des versions
 
-**Version 2014**
+### Version actuelle
 
-![V2014](https://github.com/CPC67128/GeSFi/blob/master/media/v2014_1.jpg)
-![V2014](https://github.com/CPC67128/GeSFi/blob/master/media/v2014_2.jpg)
+![VActuelle](https://github.com/CPC67128/GeSFi/blob/master/media/V171008_1.png)
+![VActuelle](https://github.com/CPC67128/GeSFi/blob/master/media/V171008_2.png)
+![VActuelle](https://github.com/CPC67128/GeSFi/blob/master/media/V171008_3.png)
 
-**Version 3**
+### Version 3
 
 Transition en programmation PHP objet
 
-![V3](https://github.com/CPC67128/GeSFi/blob/master/media/v3.jpg)
-
-**Version 2**
+### Version 2
 
 Introduction des librairies JavaScript jQuery, jQuery UI, jQuery Mobile et mobile_device_detect.
 
-![V2](https://github.com/CPC67128/GeSFi/blob/master/media/v2_1.png)
 ![V2](https://github.com/CPC67128/GeSFi/blob/master/media/v2_2.png)
-![V2](https://github.com/CPC67128/GeSFi/blob/master/media/v2_3.png)
-![V2](https://github.com/CPC67128/GeSFi/blob/master/media/v2_4.png)
 
-**Version 1**
+### Version 1
 
 Le nom du projet initial était "Gestion Financière du Couple" (GFC)
 
 ![V1](https://github.com/CPC67128/GeSFi/blob/master/media/v1.jpg)
 
-## Installation (French / Français)
+## Installation
 
 ### Prérequis
 
@@ -51,16 +45,12 @@ Cette application peut être hébergée sur un [site Internet 1&1](http://www.1a
 * Créer une base de données MariaDB:
   * Nom: « gesfi »
   * Interclassement: « utf8_general_ci »
-
-![Création base de données](https://stevefuchs.fr/wordpress/wp-content/uploads/2014/09/2017-08-27_232352.png?w=492)
-* [Télécharger l’archive de l’application sur GitHub](https://github.com/CPC67128/GeSFi/archive/master.zip), et la décompresser
+* Télécharger l’archive de l’application sur GitHub, et la décompresser
 * Sur votre site web, créer un répertoire « gesfi » (ou autre)
 * Uploader les fichiers dans ce répertoire
 * Editer le fichier ./configuration/configuration.php et remplir les paramètres requis (base de données…)
 * Aller sur http://site web/gesfi/setup/
 * Cliquer sur « Upgrade database » pour créer la structure de la base de données:
-
-![Mise à jour de la base](https://stevefuchs.fr/wordpress/wp-content/uploads/2014/09/2015-04-18_155906.png?w=600)
 * Effacer le répertoire ./setup/ de votre répertoire d’installation
 * Se rendre sur la page http://site web/gefi/ et se connecter avec un des deux comptes en laissant le champ mot de passe vide
 * Débuter par la configuration des utilisateurs, des comptes et des catégories depuis l’espace d’administration.
@@ -71,13 +61,13 @@ Cette application peut être hébergée sur un [site Internet 1&1](http://www.1a
   * Base de données
   * Répertoire GeSFi de votre site web
 * Dans ce dernier, effacer tout les sous-répertoires excepté ./configuration/
-* [Télécharger l’archive de l’application sur GitHub](https://github.com/CPC67128/GeSFi/archive/master.zip), et la décompresser
+* Télécharger l’archive de l’application sur GitHub, et la décompresser
 * Uploader les fichiers excepté le répertoire ./configuration/ sur votre site web
 * Aller sur http://site web/gesfi/setup/
 * Cliquer sur « Upgrade database » pour créer la structure de la base de données:
 * Effacer le répertoire ./setup/ de votre répertoire d’installation
 
-# Development notes
+## Development notes
 
 record_type:
 
@@ -118,7 +108,7 @@ Private real account allowed operations:
     11 (credit coming from partner)            -> 22 (expense)
     12 (money coming from outside)
 
-## Glossaire de l'application
+### Glossaire de l'application
 
 
 Balance
@@ -142,7 +132,7 @@ Investment Account : placement bancaire
 * Deposit
 * Withdrawal
 
-## Coding standards
+### Coding standards
 
 Classes naming:
 - standard: AaaaAaaaAaaa

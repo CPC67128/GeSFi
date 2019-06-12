@@ -18,6 +18,8 @@ Elle permet de gérer sa comptabilité privée (dépenses, revenus) et ses finan
 
 Transition en programmation PHP objet
 
+Refonte graphique de l'application
+
 ### Version 2
 
 Introduction des librairies JavaScript jQuery, jQuery UI, jQuery Mobile et mobile_device_detect.

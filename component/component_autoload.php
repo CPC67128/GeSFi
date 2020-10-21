@@ -1,7 +1,5 @@
 <?php
-
-function __autoload($class_name)
-{
+function my_autoloader($class_name) {
 	$file = '../controller/'.$class_name . '.php';
 	if (!file_exists($file))
 		$file = '../model/'.$class_name . '.php';
@@ -13,3 +11,5 @@ function __autoload($class_name)
 		$file = '../i18n/'.$class_name . '.php';
 	include $file;
 }
+
+spl_autoload_register('my_autoloader');

@@ -11,7 +11,7 @@ foreach ($accounts as $account) {
 		$balance = $account->GetBalance();
 ?>
 <tr>
-<td><a href="#" onclick="javascript:ChangeContext('record','','<?= $account->get("accountId") ?>','')"); return false;"><?= $account->get("name") ?></a></td>
+<td><a href="#" onclick="javascript:ChangeContext('record','','<?= $account->get('accountId') ?>',''); return false;"><?= $account->get("name") ?></a></td>
 <td style='text-align: right;<?php 
 		if ($account->get("type") != 5 && $account->get("type") != 6) {
 			if ($balance <= $account->get("expectedMinimumBalance"))

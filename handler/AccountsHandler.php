@@ -522,7 +522,7 @@ class AccountsHandler extends Handler
 				order by record_date desc
 				limit 1";
 		$row = $db->SelectRow($query);
-		$account->set('lastValueDate', $row['record_date']);
+		$account->set('lastValueDate', $row['record_date'] ?? 0);
 
 		$query = "select CALC_yield_average
 			from {TABLEPREFIX}record
@@ -533,7 +533,7 @@ class AccountsHandler extends Handler
 			order by record_date desc
 			limit 1";
 		$row = $db->SelectRow($query);
-		$account->set('yieldAverage', $row['CALC_yield_average']);
+		$account->set('yieldAverage', $row['CALC_yield_average'] ?? 0);
 
 		$query = "select CALC_yield
 			from {TABLEPREFIX}record
@@ -544,7 +544,7 @@ class AccountsHandler extends Handler
 			order by record_date desc
 			limit 1";
 		$row = $db->SelectRow($query);
-		$account->set('yield', $row['CALC_yield']);
+		$account->set('yield', $row['CALC_yield'] ?? 0);
 
 		$db = new DB();
 		
@@ -558,7 +558,7 @@ class AccountsHandler extends Handler
 			limit 1";
 		$row = $db->SelectRow($query);
 		if (isset($row['value']))
-			$account->set('lastValue', $row['value']);
+			$account->set('lastValue', $row['value'] ?? 0);
 		else
 		{
 			$query = "select CALC_amount_invested_accumulated
@@ -570,7 +570,7 @@ class AccountsHandler extends Handler
 				order by record_date desc, creation_date desc
 				limit 1";
 			$row = $db->SelectRow($query);
-			$account->set('lastValue', $row['CALC_amount_invested_accumulated']);
+			$account->set('lastValue', $row['CALC_amount_invested_accumulated'] ?? 0);
 		}
 
 		$query = "select CALC_amount_invested_accumulated
@@ -582,7 +582,7 @@ class AccountsHandler extends Handler
 			order by record_date desc, creation_date desc
 			limit 1";
 		$row = $db->SelectRow($query);
-		$account->set('amountInvestedAccumulated', $row['CALC_amount_invested_accumulated']);
+		$account->set('amountInvestedAccumulated', $row['CALC_amount_invested_accumulated'] ?? 0);
 
 		$query = "select CALC_withdrawal_sum
 			from {TABLEPREFIX}record
@@ -593,7 +593,7 @@ class AccountsHandler extends Handler
 			order by record_date desc, creation_date desc
 			limit 1";
 		$row = $db->SelectRow($query);
-		$account->set('withdrawalSum', $row['CALC_withdrawal_sum']);
+		$account->set('withdrawalSum', $row['CALC_withdrawal_sum'] ?? 0);
 	}
 
 	public function CalculateAccountBalance($accountId)

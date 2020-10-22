@@ -86,8 +86,8 @@ $("#form").submit( function () {
 				else {
 					$("#formResult").html(response);
 					$("#formPlaceHolder").html('');
-					//listAccounts();
-					//LoadTopMenu();
+					listAccounts();
+					LoadTopMenu();
 				}
 			}
 			else {

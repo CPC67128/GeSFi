@@ -28,6 +28,7 @@ class InvestmentsRecordsHandler extends Handler
 			and ACC.marked_as_closed = 0 
 			and marked_as_deleted = 0
 			and value is not null
+			and ACC.no_yield_display = 0
 			order by PRF.sort_order, ACC.account_id, INR.record_date";
 		$result = $db->Select($query);
 		return $result;

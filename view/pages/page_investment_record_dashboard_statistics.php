@@ -1,5 +1,5 @@
-<script src="../3rd_party/highcharts-5.0.14/code/highcharts.js"></script>
-<script src="../3rd_party/highcharts-5.0.14/code/modules/exporting.js"></script>
+<script src="../3rd_party/highcharts-8.2.2/code/highcharts.js"></script>
+<script src="../3rd_party/highcharts-8.2.2/code/modules/exporting.js"></script>
 
 <div id="container" style="min-width: 1000px; max-width: 1000px; height: 550px; margin: 0 auto"></div>
 

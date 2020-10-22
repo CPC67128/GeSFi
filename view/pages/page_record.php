@@ -154,7 +154,11 @@ function AddRow($index, $row, $mergeRow)
 <td class="amount<?= Record::GetRecordTypeGroup($row['record_type']) ?>" <?php PrintModifyRecordAmountFunction($row) ?>><?php PrintAmount($row) ?></td>
 <td class="category<?= $row['link_type'] ?>"><?php PrintCategory($row); ?></td>
 <td <?php PrintModifyRecordChargeFunction($row); ?>><?php PrintCharge($row); ?></td>
+<td style='text-align: center;'><img src='../media/trash.png' onclick='if (confirm("<?= t('Etes-vous sûr de vouloir supprimer cette entrée ?')?>")) { DeleteRecord("<?= $row['record_id']?>"); }'></td>
+
+<!--
 <td style='text-align: center;'><span class='ui-icon ui-icon-trash' onclick='if (confirm("<?= t('Etes-vous sûr de vouloir supprimer cette entrée ?')?>")) { DeleteRecord("<?= $row['record_id']?>"); }'></span></td>
+-->
 </tr>
 	<?php
 }
@@ -177,7 +181,7 @@ function AddSubTotalRow($index, $row, $subtotal)
 <td></td><td></td><td></td><td></td><td></td>
 <td class="<?= PrintAmountSumClass($row) ?>">= <?= $translator->getCurrencyValuePresentation($subtotal) ?></td>
 <td></td><td></td>
-<td style="text-align: center;"><span class="ui-icon ui-icon-trash" onclick="if (confirm(\''.t('Etes-vous sûr de vouloir supprimer cette entrée ?').'\')) { DeleteRecord(\''.$row['record_id'].'\'); }"></span></td>
+<td style='text-align: center;'><img src='../media/trash.png' onclick='if (confirm("<?= t('Etes-vous sûr de vouloir supprimer cette entrée ?')?>")) { DeleteRecord("<?= $row['record_id']?>"); }'></td>
 </tr>
 <?php
 }

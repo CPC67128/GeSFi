@@ -133,8 +133,19 @@ foreach ($accounts as $account)
 <td style='text-align: right;'><?= $openingDateToDisplay ? $openingYear : '' ?></td>
 <td style='text-align: right;'><?= $translator->getCurrencyValuePresentation($account->GetInvestmentAmountInvestedAccumulated() - $account->GetInvestmentWithdrawalSum()) ?></td>
 <td style='text-align: right;'><?= $translator->getCurrencyValuePresentation($account->GetInvestmentLastValue() - $account->GetInvestmentAmountInvestedAccumulated() + $account->GetInvestmentWithdrawalSum()) ?></td>
+
+<?php if (!$account->get('noYieldDisplay')) { ?>
 <td style='text-align: right;' <?php if (!$account->get('noColorInDashboard')) { PrintTDStyleAttributeForYield($account->GetInvestmentLastYield()); } ?>><?= $translator->getPercentagePresentation($account->GetInvestmentLastYield()) ?></td>
+<?php } else { ?>
+<td />
+<?php } ?>
+
+<?php if (!$account->get('noYieldDisplay')) { ?>
 <td style='text-align: right;' <?php if (!$account->get('noColorInDashboard')) { PrintTDStyleAttributeForYieldAverage($account->GetInvestmentLastYieldAverage()); } ?>><?= $translator->getPercentagePresentation($account->GetInvestmentLastYieldAverage()) ?></td>
+<?php } else { ?>
+<td />
+<?php } ?>
+
 <td style='text-align: right;'><?= $availabilityDateToDisplay ? $availabilityYear : '' ?></td>
 </tr>
 <?php

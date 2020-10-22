@@ -13,10 +13,11 @@
 <h2>Database Upgrade</h2>
 <?php
 
-function __autoload($className)
-{
+function my_autoloader($className) {
 	include $className.'.php';
 }
+
+spl_autoload_register('my_autoloader');
 
 try
 {

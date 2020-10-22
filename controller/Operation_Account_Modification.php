@@ -17,6 +17,7 @@ class Operation_Account_Modification extends Operation_Account
 	protected $_notDisplayedInMenu;
 	protected $_noColorInDashboard;
 	protected $_generateIncome;
+	protected $_noYieldDisplay;
 
 	protected $_delete;
 
@@ -39,10 +40,21 @@ class Operation_Account_Modification extends Operation_Account
 		else
 			$this->_noColorInDashboard = "0";
 
-		if (!empty($this->_generateIncome))
+			if (!empty($this->_generateIncome))
 			$this->_generateIncome = "1";
 		else
 			$this->_generateIncome = "0";
+
+			if (!empty($this->_noYieldDisplay))
+			$this->_noYieldDisplay = "1";
+		else
+			$this->_noYieldDisplay = "0";
+
+		if ($this->_availabilityDate = "0000-00-00")
+			$this->_availabilityDate = null;
+
+		if ($this->_closingDate = "0000-00-00")
+			$this->_closingDate = null;
 	}
 
 	public function Save()
@@ -62,7 +74,8 @@ class Operation_Account_Modification extends Operation_Account
 					$this->_recordConfirmation,
 					$this->_notDisplayedInMenu,
 					$this->_noColorInDashboard,
-					$this->_generateIncome);
+					$this->_generateIncome,
+					$this->_noYieldDisplay);
 		}
 		else
 		{
@@ -85,7 +98,8 @@ class Operation_Account_Modification extends Operation_Account
 							$this->_recordConfirmation,
 							$this->_notDisplayedInMenu,
 							$this->_noColorInDashboard,
-							$this->_generateIncome);
+							$this->_generateIncome,
+							$this->_noYieldDisplay);
 			}
 			else
 			{

@@ -28,11 +28,14 @@ class Entity
 		if (isset($this->$member))
 			return $this->$member;
 
+		if (is_null($this->$member))
+			return $this->$member;
+
 		$function = 'get'.$member;
 		if (method_exists($this, $function))
 			return $this->$function();
-		else
-			throw new Exception('Unknow attribute '.$member);
+
+		throw new Exception('Unknow attribute '.$member);
 	}
 	
 	public function getIfSetOrDefault($member, $default)

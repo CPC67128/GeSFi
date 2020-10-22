@@ -15,6 +15,7 @@ class Account extends Entity
 	protected $_markedAsClosed;
 	protected $_notDisplayedInMenu;
 	protected $_noColorInDashboard;
+	protected $_noYieldDisplay;
 	protected $_generateIncome;
 	protected $_calcBalance;
 	protected $_calcBalanceConfirmed;

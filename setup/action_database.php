@@ -1,9 +1,10 @@
 <?php
 
-function __autoload($className)
-{
+function my_autoloader($className) {
 	include $className.'.php';
 }
+
+spl_autoload_register('my_autoloader');
 
 $db = new DB();
 $scriptsFolder = new ScriptsFolder();
@@ -90,6 +91,6 @@ for ($version = $currentDatabaseVersion + 1; $version <= $expectedDatabaseVersio
 
 ?>
 <br />
-<button onclick="window.location='setup.php';">Back to setup wizard home page</button>
+<button onclick="window.location='index.php';">Back to setup wizard home page</button>
 </body>
 </html>

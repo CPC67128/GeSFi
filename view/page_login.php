@@ -71,7 +71,6 @@ if (!empty($_GET['autologin']))
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <meta name="Description" content="Application en ligne gratuite de gestion financière du couple (compatibilité de couple ou comptabilité commune) écrite par Steve Fuchs">
 
-
 <link rel="stylesheet" href="../3rd_party/jquery-ui-1.12.1/jquery-ui.min.css">
 <script src="../3rd_party/jquery-3.2.1.min.js"></script>
 <script src="../3rd_party/jquery-ui-1.12.1/jquery-ui.min.js"></script>
@@ -84,51 +83,36 @@ if (!empty($_GET['autologin']))
 
 </head>
 <body>
-<table width="100%">
-<tr>
-<td valign="top" align="left">
-<img src="../media/gfc.ico" /> GeSFi par <a href="http://stevefuchs.fr/">Steve Fuchs</a><br />
-<br />
-<a href="copyright.htm" target="blank">Licence et droit d’auteur</a>
-</td>
-<td valign="top" align="right">
-<!-- Ad placeholder -->
-</td>
-</tr>
-</table>
-<br/>
+
+GeSFi par <a href="http://stevefuchs.fr/">Steve Fuchs</a> / <a href="copyright.htm" target="blank">Licence</a>
+
 <div class="centered">
 <form id="saasLoginForm" action="/">
+
 <table>
 
 <tr>
-<td colspan="2">
-<table>
-<tr>
-	<td>Utilisateur</td>
-	<td>
-	<?php
-	$users = $usersHandler->GetAllUsers();
-	$checked = "checked";
-	foreach ($users as $user) { ?>
-	<input type="radio" name="name" value="<?= $user->get('name') ?>" <?= $checked ?>> <?= $user->get('name') ?><br>
-	<?php $checked = ""; } ?>
-	</td>
-</tr>
-<tr>
-	<td>Mot de passe</td>
-	<td><input type="password" name="password" id="password" size="35" /></td>
-</tr>
-<tr>
-    <td><i>Code de sécurité</i></td>
-    <td><i><input id="passwordMD5" style="background-color : #d1d1d1;" readonly="readonly" type="text" name="passwordMD5" size="35" autocomplete="off" value="" /></i></td>
-</tr>
-</table>
+<?php
+$users = $usersHandler->GetAllUsers();
+$checked = "checked";
+foreach ($users as $user) { ?>
+<td style="text-align: center;">
+<img src="../media/user-icon-login-icon.png" width="100"  /><br />
+<input type="radio" name="name" value="<?= $user->get('name') ?>" <?= $checked ?>> <?= $user->get('name') ?>
+<?php $checked = ""; } ?>
 </td>
 </tr>
 
 <tr>
-<td align="right"><input value="Se connecter" name="submit" type="submit"></td>
+<td colspan="2">&nbsp;</td>
+</tr>
+
+<tr>
+<td colspan="2">Mot de passe: <input type="password" name="password" id="password" size="20" /></td>
+</tr>
+
+<tr>
+<td colspan="2" align="right"><input value="Se connecter" name="submit" type="submit"></td>
 </tr>
 
 <tr>
@@ -136,6 +120,9 @@ if (!empty($_GET['autologin']))
 </tr>
 
 </table>
+
+<input id="passwordMD5" style="background-color : #d1d1d1;" readonly="readonly" type="hidden" name="passwordMD5" size="35" autocomplete="off" value="" />
+
 </form>
 
 </div>

@@ -4,15 +4,22 @@ body {
 }
 
 div.centered{
-	display:block;
-	
-	position:absolute;
-	top:40%;
-	left:25%;
-	width:500px;
+	display: block;
+    margin-left: auto;
+    margin-right: auto ;
 }
 
 /*
+div.centered{
+	display:block;
+	
+	position:absolute;
+	top:20%;
+	left:40%;
+	width:500px;
+}
+
+
 .centered {
   position: fixed;
   top: 50%;

@@ -17,14 +17,6 @@ foreach ($accounts as $account)
 
 if ($activeUser->get('role') == 0)
 {
-	$isRepaymentsMonitoringSelected = ($page == 'repayments_monitoring');
-	AddMenuTopItem(!$isRepaymentsMonitoringSelected, $translator->getTranslation('Suivi'), 'repayments_monitoring', 'record', '', '', true);
-
 	$isConfigurationSelected = ($page == 'administration');
 	AddMenuTopItem(!$isConfigurationSelected, $translator->getTranslation('Administration'), 'administration', 'administration', '', '', false);
-}
-else
-{
-	$isRepaymentsMonitoringSelected = ($page == 'repayments_monitoring');
-	AddMenuTopItem(!$isRepaymentsMonitoringSelected, $translator->getTranslation('Suivi'), 'repayments_monitoring', 'record', '', '', false);
 }

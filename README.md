@@ -6,6 +6,7 @@ GeSFi (Gestion Financière) est une application web de gestion financière que j
 
 Elle permet de gérer sa comptabilité privée (dépenses, revenus) et ses finances personnelles (patrimoine immobilier, placements financiers, emprunts), mais également la comptabilité du couple (partage des dépenses).
 
+
 ## Historique des versions
 
 ### Version actuelle

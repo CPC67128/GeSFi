@@ -92,7 +92,7 @@ $usersHandler->StartSession();
 <?php
 $recordsHandler = new RecordsHandler();
 
-$result = $recordsHandler->GetAllRecords(1);
+$result = $recordsHandler->GetAllRecords_v2(1);
 while ($row = $result->fetch())
 {
 ?>

@@ -57,7 +57,7 @@ class DB
 
 	function SelectRow($query)
 	{
-		$query = str_replace('{USERID}', $this->_userId, $query);
+		$query = str_replace('{USERID}', $this->_userId ?? '', $query);
 		$query = str_replace('{ACCOUNTID}', $this->_accountI ?? '', $query);
 		$query = str_replace('{TABLEPREFIX}', $this->_dbTablePrefix, $query);
 
@@ -96,7 +96,7 @@ class DB
 
 	function _Select($query, $returnQueryInException)
 	{
-		$query = str_replace('{USERID}', $this->_userId, $query);
+		$query = str_replace('{USERID}', $this->_userId ?? '', $query);
 		$query = str_replace('{ACCOUNTID}', $this->_accountId ?? '', $query);
 		$query = str_replace('{TABLEPREFIX}', $this->_dbTablePrefix, $query);
 		if ($returnQueryInException)

@@ -97,6 +97,57 @@ class RecordsHandler extends Handler
 		return $result;
 	}
 
+	function GetAllRecords_v2($month)
+	{
+		$accountsHandler = new AccountsHandler();
+		$activeAccount = $accountsHandler->GetCurrentActiveAccount();
+
+		$usersHandler = new UsersHandler();
+		$user = $usersHandler->GetCurrentUser();
+	
+		$db = new DB();
+
+		$query = "select r.*, (amount * (charge / 100)) as part_actor1, (amount * ((100 - charge) / 100)) as part_actor2, c.category, c.link_type, u.name as user_name, a.name as account_name, a.type as account_type
+			from {TABLEPREFIX}record r
+			left join {TABLEPREFIX}category c on r.category_id = c.category_id
+			inner join {TABLEPREFIX}user u on r.user_id = u.user_id
+			left join {TABLEPREFIX}account a on r.account_id = a.account_id
+			where record_date < adddate(curdate(), interval 2 month) ".
+			($activeAccount->get('type') > 0 ? "and r.account_id = '{ACCOUNTID}'" : "")." 
+			and r.user_id = '".$user->get('userId')."'
+			and
+			(
+				r.account_id in (select account_id from {TABLEPREFIX}account where type < 10 and (owner_user_id = '".$user->get('userId')."' or type = 3))
+				or
+				r.account_id = ''
+			) 
+			and record_date > adddate((select max(record_date) from {TABLEPREFIX}record where record_date <= curdate() and user_id = '{USERID}'), interval -".$month." month)
+			
+
+			union all
+
+			select r.*, (amount * ((100 - charge) / 100)) as part_actor1, (amount * (charge / 100)) as part_actor2, c.category, c.link_type, u.name as user_name, a.name as account_name, a.type as account_type
+			from {TABLEPREFIX}record r
+			left join {TABLEPREFIX}category c on r.category_id = c.category_id
+			inner join {TABLEPREFIX}user u on r.user_id = u.user_id
+			left join {TABLEPREFIX}account a on r.account_id = a.account_id
+			where record_date < adddate(curdate(), interval 2 month) ".
+			($activeAccount->get('type') > 0 ? "and r.account_id = '{ACCOUNTID}'" : "")." 
+			and r.user_id = '".$user->GetPartnerId()."'
+			and
+			(
+				r.account_id in (select account_id from {TABLEPREFIX}account where type < 10 and (owner_user_id = '".$user->get('userId')."' or type = 3))
+				or
+				r.account_id = ''
+			) 
+			and record_date > adddate((select max(record_date) from {TABLEPREFIX}record where record_date <= curdate() and user_id = '{USERID}'), interval -".$month." month)
+
+			order by record_date desc, creation_date desc, record_group_id";
+		
+		$result = $db->Select($query);
+		return $result;
+	}
+
 	function GetAllRecordsOfCategory($month, $categoryId, $categoryId2)
 	{
 		$usersHandler = new UsersHandler();

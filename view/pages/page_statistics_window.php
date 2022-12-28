@@ -33,7 +33,7 @@ $index = 0;
 
 $dateEnd = new DateTime(date("Y").'-'.date("m").'-01');
 $dateStart = new DateTime(date("Y-m-d", strtotime($dateEnd->format("Y-m-d") . " -".$nbMonths." months")));
-$categories = $categoriesHandler->GetIncomeCategoriesForUser($activeUser->get('userId'));
+$categories = $categoriesHandler->GetIncomeCategoriesForUser($activeUser->get('userId'), false);
 foreach ($categories as $category)
 {
 	$value = $category->GetTotalIncomeBetween2Dates($dateStart, $dateEnd);
@@ -85,7 +85,7 @@ $totalAverage = 0;
 $averageCharged = 0;
 $totalAverageCharged = 0;
 $index = 0;
-$categories = $categoriesHandler->GetIncomeCategoriesForDuo($activeUser->get('userId'));
+$categories = $categoriesHandler->GetIncomeCategoriesForDuo($activeUser->get('userId'), false);
 foreach ($categories as $category)
 {
 	$value = $category->GetTotalIncomeBetween2Dates($dateStart, $dateEnd);
@@ -185,7 +185,7 @@ $total = 0;
 $average = 0;
 $totalAverage = 0;
 $index = 0;
-$categories = $categoriesHandler->GetOutcomeCategoriesForUser($activeUser->get('userId'));
+$categories = $categoriesHandler->GetOutcomeCategoriesForUser($activeUser->get('userId'), false);
 foreach ($categories as $category)
 {
 	$value = $category->GetTotalExpenseBetween2Dates($dateStart, $dateEnd);
@@ -237,7 +237,7 @@ $totalAverage = 0;
 $averageCharged = 0;
 $totalAverageCharged = 0;
 $index = 0;
-$categories = $categoriesHandler->GetOutcomeCategoriesForDuo($activeUser->get('userId'));
+$categories = $categoriesHandler->GetOutcomeCategoriesForDuo($activeUser->get('userId'), false);
 foreach ($categories as $category)
 {
 	$value = $category->GetTotalExpenseBetween2Dates($dateStart, $dateEnd);

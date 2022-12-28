@@ -41,12 +41,14 @@ $index = 0;
 $currentMonth = 0;
 $indexCategory = 0;
 $totalAverage = 0;
-$categories = $categoriesHandler->GetIncomeCategoriesForDuo($_SESSION['user_id']);
+$categories = $categoriesHandler->GetIncomeCategoriesForDuo($_SESSION['user_id'], false);
 
 // Income
 foreach ($categories as $category)
 {
 	$index++;
+
+	ob_start();
 	?>
 	<tr class="statsTableRow<?= $index % 2 == 0 ? '0' : '1' ?>">
 	<td class="statsTableRowHeader"><?= $category->get('category') ?></td>
@@ -79,6 +81,12 @@ foreach ($categories as $category)
 	</tr>
 
 	<?php
+	$obValue = ob_get_contents();
+	ob_end_clean();
+
+	if ($total > 0)
+		echo $obValue;
+
 	$indexCategory++;
 }
 ?>
@@ -110,11 +118,13 @@ $index = 0;
 $currentMonth = 0;
 $indexCategory = 0;
 $totalAverage = 0;
-$categories = $categoriesHandler->GetOutcomeCategoriesForDuo($_SESSION['user_id']);
+$categories = $categoriesHandler->GetOutcomeCategoriesForDuo($_SESSION['user_id'], false);
 
 foreach ($categories as $category)
 {
 	$index++;
+
+	ob_start();
 	?>
 	<tr class="statsTableRow<?= $index % 2 == 0 ? '0' : '1' ?>">
 	<td class="statsTableRowHeader"><?= $category->get('category') ?></td>
@@ -147,6 +157,12 @@ foreach ($categories as $category)
 	</tr>
 
 	<?php
+	$obValue = ob_get_contents();
+	ob_end_clean();
+
+	if ($total > 0)
+		echo $obValue;
+
 	$indexCategory++;
 }
 ?>

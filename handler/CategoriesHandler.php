@@ -32,27 +32,27 @@ class CategoriesHandler extends Handler
 
 	/*****************************************/
 
-	function GetOutcomeCategoriesForDuo($userId)
+	function GetOutcomeCategoriesForDuo($userId, $activeOnly=true)
 	{
-		return $this->GetActiveCategoriesByTypeAndLinkType($userId, 1, 'DUO');
+		return $this->GetCategoriesByTypeAndLinkType($userId, 1, 'DUO', $activeOnly);
 	}
 	
-	function GetIncomeCategoriesForDuo($userId)
+	function GetIncomeCategoriesForDuo($userId, $activeOnly=true)
 	{
-		return $this->GetActiveCategoriesByTypeAndLinkType($userId, 0, 'DUO');
+		return $this->GetCategoriesByTypeAndLinkType($userId, 0, 'DUO', $activeOnly);
 	}
 	
-	function GetOutcomeCategoriesForUser($userId)
+	function GetOutcomeCategoriesForUser($userId, $activeOnly=true)
 	{
-		return $this->GetActiveCategoriesByTypeAndLinkType($userId, 1, 'USER');
+		return $this->GetCategoriesByTypeAndLinkType($userId, 1, 'USER', $activeOnly);
 	}
 
-	function GetIncomeCategoriesForUser($userId)
+	function GetIncomeCategoriesForUser($userId, $activeOnly=true)
 	{
-		return $this->GetActiveCategoriesByTypeAndLinkType($userId, 0, 'USER');
+		return $this->GetCategoriesByTypeAndLinkType($userId, 0, 'USER', $activeOnly);
 	}
 
-	function GetActiveCategoriesByTypeAndLinkType($userId, $type, $linkType)
+	function GetActiveCategoriesByTypeAndLinkType($userId, $type, $linkType) // TODO TO REMOVE?
 	{
 		$linkId = $userId;
 
@@ -83,6 +83,57 @@ class CategoriesHandler extends Handler
 				and link_id = '".$linkId."'
 				and type = ".$type."
 				and marked_as_inactive = 0
+				order by sort_order, category";
+		}
+
+		$result = $db->Select($query);
+		while ($row = $result->fetch())
+		{
+			$newCategory = new Category();
+			$newCategory->hydrate($row);
+			array_push($categories, $newCategory);
+		}
+	
+		return $categories;
+	}
+
+	function GetCategoriesByTypeAndLinkType($userId, $type, $linkType, $activeOnly=true)
+	{
+		$linkId = $userId;
+
+		if ($linkType == 'DUO')
+		{
+			$usersHandler = new UsersHandler();
+			$currentUser = $usersHandler->GetUser($userId);
+		}
+
+		$activeFilter = "";
+		if ($activeOnly)
+		{
+			$activeFilter = " and marked_as_inactive = 0 ";
+		}
+
+		$categories = array();
+	
+		$db = new DB();
+
+		if ($linkType == 'DUO')
+		{
+			$query = "select *
+				from {TABLEPREFIX}category
+				where link_type = '".$linkType."'
+				and type = ".$type."
+				".$activeFilter."
+				order by sort_order, category";
+		}
+		else
+		{
+			$query = "select *
+				from {TABLEPREFIX}category
+				where link_type = '".$linkType."'
+				and link_id = '".$linkId."'
+				and type = ".$type."
+				".$activeFilter."
 				order by sort_order, category";
 		}
 

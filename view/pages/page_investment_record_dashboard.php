@@ -123,7 +123,7 @@ foreach ($accounts as $account)
 	$valueToUpdate = ($account->GetInvestmentLastValueDate() != '' && strtotime($account->GetInvestmentLastValueDate()) < strtotime("-".$account->get('minimumCheckPeriod')." days"));
 	$openingYear = date("Y", strtotime($account->get('creationDate')));
 	$openingDateToDisplay = ($account->get('creationDate') != '' && $account->get('creationDate') != '0000-00-00');
-	$availabilityYear = date("Y", strtotime($account->get('availabilityDate')));
+	$availabilityYear = date("Y", strtotime($account->get('availabilityDate') ?? ''));
 	$availabilityDateToDisplay = ($account->get('availabilityDate') != '' && $availabilityYear > date("Y"));
 ?>
 <tr>

@@ -27,7 +27,7 @@ foreach ($categories as $category) {
 	if ($page == "'record_payment") 
 		DisplayCategorieLine($category, "100");
 	else
-		DisplayCategorieLine($category, "100", true);
+		DisplayCategorieLine($category, "100", false);
 }
 
 if ($page == "record_payment") {

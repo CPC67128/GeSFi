@@ -25,7 +25,7 @@ $totalAverage = 0;
 $averageCharged = 0;
 $totalAverageCharged = 0;
 $index = 0;
-$categories = $categoriesHandler->GetIncomeCategoriesForDuo($activeUser->get('userId'));
+$categories = $categoriesHandler->GetIncomeCategoriesForDuo($activeUser->get('userId'), false);
 foreach ($categories as $category)
 {
 	$value = $category->GetTotalIncomeBetween2Dates($dateStart, $dateEnd);
@@ -85,7 +85,7 @@ $totalAverage = 0;
 $averageCharged = 0;
 $totalAverageCharged = 0;
 $index = 0;
-$categories = $categoriesHandler->GetOutcomeCategoriesForDuo($activeUser->get('userId'));
+$categories = $categoriesHandler->GetOutcomeCategoriesForDuo($activeUser->get('userId'), false);
 foreach ($categories as $category)
 {
 	$value = $category->GetTotalExpenseBetween2Dates($dateStart, $dateEnd);

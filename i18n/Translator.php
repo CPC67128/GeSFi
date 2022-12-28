@@ -13,8 +13,8 @@ class Translator
 	public function getCurrencyValuePresentation($amount, $excelFriendly = false)
 	{
 		if ($excelFriendly)
-			return number_format($amount,2, ',', '');; 
-		return number_format($amount,2, ',', ' ').'&nbsp;&euro;';
+			return number_format($amount ?? 0,2, ',', '');; 
+		return number_format($amount ?? 0,2, ',', ' ').'&nbsp;&euro;';
 	}
 
 	public function getCurrencyPresentation()

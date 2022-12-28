@@ -1,6 +1,6 @@
 <?php
 $categoriesHandler = new CategoriesHandler();
-$categories = $categoriesHandler->GetOutcomeCategoriesForDuo($_SESSION['user_id']);
+$categories = $categoriesHandler->GetOutcomeCategoriesForDuo($_SESSION['user_id'], false);
 ?>
 <h1><?= $translator->getTranslation('Tableau de bord duo, évolution des dépenses') ?></h1>
 <table id="recordsTable">
